@@ -60,7 +60,7 @@ export default function Home() {
                 <rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />
               </svg>
             </div>
-            <span style={{ fontWeight: 600, fontSize: 15, letterSpacing: '-0.3px' }}>Portfolio Builder</span>
+            <span style={{ fontWeight: 600, fontSize: 15, letterSpacing: '-0.3px' }}>Folio Hub</span>
           </div>
           <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
             <a

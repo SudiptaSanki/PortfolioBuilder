@@ -13,8 +13,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio Builder — Open Source Template Gallery",
-  description: "A curated, open-source collection of professional portfolio templates for every industry and stack. Find, preview, and use free templates for developers, designers, chefs, athletes, and more.",
+  title: "Folio Hub — Open Source Portfolio Templates for Every Profession",
+  description: "Browse 10+ free, professionally designed portfolio templates for developers, designers, chefs, musicians, and more. Open source. Any tech stack. Deploy in minutes.",
+  keywords: ["portfolio templates", "free portfolio", "open source", "developer portfolio", "designer portfolio", "HTML templates", "Next.js", "React"],
+  openGraph: {
+    title: "Folio Hub — Open Source Portfolio Templates",
+    description: "A growing collection of 1000+ free portfolio templates for every profession and tech stack.",
+    type: "website",
+    url: "https://github.com/SudiptaSanki/PorfolioBuilder",
+  },
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
@@ -24,6 +34,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.png" type="image/png" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
