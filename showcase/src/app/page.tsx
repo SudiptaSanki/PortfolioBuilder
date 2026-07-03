@@ -21,6 +21,23 @@ export default function Home() {
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [activeStack, setActiveStack] = useState('All Stacks');
+  const [showStarModal, setShowStarModal] = useState(false);
+  const [targetUrl, setTargetUrl] = useState('');
+
+  const handleLinkClick = (url: string) => {
+    if (typeof window === 'undefined') return;
+    const hasStarred = sessionStorage.getItem('foliohub_starred_or_dismissed');
+    if (hasStarred) {
+      window.open(url, '_blank');
+    } else {
+      if (Math.random() < 0.4) {
+        setTargetUrl(url);
+        setShowStarModal(true);
+      } else {
+        window.open(url, '_blank');
+      }
+    }
+  };
 
   const filtered = useMemo<Template[]>(() => {
     const q = query.toLowerCase().trim();
@@ -103,10 +120,9 @@ export default function Home() {
           Open Source — 10 Templates and Growing
         </div>
         <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-1.5px', marginBottom: 20, color: '#fff' }}>
-          Portfolio templates for{' '}
-          <span style={{ color: 'var(--accent)' }}>every profession</span>
+          Portfolio templates for every profession
         </h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: 16, lineHeight: 1.7, marginBottom: 40, maxWidth: 520, margin: '0 auto 40px' }}>
+        <p style={{ color: 'var(--text-secondary)', fontSize: 16, lineHeight: 1.7, marginBottom: 30, maxWidth: 520, margin: '0 auto 30px' }}>
           Browse a growing, open-source collection of professionally designed portfolio templates across technology, creative fields, business, and more.
         </p>
 
@@ -131,6 +147,32 @@ export default function Home() {
             onFocus={e => (e.target.style.borderColor = 'var(--accent)')}
             onBlur={e => (e.target.style.borderColor = 'var(--border)')}
           />
+        </div>
+
+        {/* Popular Searches */}
+        <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 16, flexWrap: 'wrap' }}>
+          <span style={{ color: 'var(--text-secondary)', fontSize: 12, alignSelf: 'center' }}>Try searching:</span>
+          {['Developer', 'Minimalist', 'Chef', 'Dark', 'React', 'Monochrome'].map((term) => (
+            <button
+              key={term}
+              onClick={() => setQuery(term)}
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid var(--border)',
+                borderRadius: 100,
+                padding: '3px 10px',
+                fontSize: 12,
+                color: 'var(--text-secondary)',
+                cursor: 'pointer',
+                transition: 'all 0.15s',
+                fontFamily: 'inherit',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
+            >
+              {term}
+            </button>
+          ))}
         </div>
       </section>
 
@@ -194,7 +236,7 @@ export default function Home() {
             gap: 24,
           }}>
             {filtered.map((t) => (
-              <TemplateCard key={t.id} template={t} />
+              <TemplateCard key={t.id} template={t} onActionClick={handleLinkClick} />
             ))}
           </div>
         )}
@@ -215,12 +257,76 @@ export default function Home() {
           {' '}and help us reach 1000+ templates.
         </p>
       </footer>
+
+      {/* GitHub Star Prompt Modal */}
+      {showStarModal && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)',
+          backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center',
+          justifyContent: 'center', zIndex: 1000, padding: 24,
+        }}>
+          <div style={{
+            background: 'var(--surface)', border: '1px solid var(--border)',
+            borderRadius: 16, maxWidth: 480, width: '100%', padding: 32,
+            boxShadow: '0 24px 60px rgba(0,0,0,0.8)', textAlign: 'center',
+          }}>
+            <div style={{
+              width: 56, height: 56, borderRadius: '50%', background: 'rgba(108,122,247,0.1)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px',
+            }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+              </svg>
+            </div>
+            <h3 style={{ fontSize: 20, fontWeight: 600, color: '#fff', marginBottom: 12 }}>Support Folio Hub!</h3>
+            <p style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>
+              Folio Hub is a completely free, open-source project. If you like these templates, please consider starring our repository on GitHub. It takes just a second and helps the project grow! ⭐
+            </p>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <button
+                onClick={() => {
+                  sessionStorage.setItem('foliohub_starred_or_dismissed', 'true');
+                  setShowStarModal(false);
+                  window.open('https://github.com/SudiptaSanki/PortfolioBuilder', '_blank');
+                  window.open(targetUrl, '_blank');
+                }}
+                style={{
+                  flex: 1, padding: '12px', borderRadius: 10, background: 'var(--accent)',
+                  color: '#fff', fontSize: 14, fontWeight: 600, border: 'none', cursor: 'pointer',
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'var(--accent-hover)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'var(--accent)')}
+              >
+                Star on GitHub
+              </button>
+              <button
+                onClick={() => {
+                  sessionStorage.setItem('foliohub_starred_or_dismissed', 'true');
+                  setShowStarModal(false);
+                  window.open(targetUrl, '_blank');
+                }}
+                style={{
+                  flex: 1, padding: '12px', borderRadius: 10, background: 'transparent',
+                  border: '1px solid var(--border)', color: 'var(--text-secondary)',
+                  fontSize: 14, fontWeight: 500, cursor: 'pointer', transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--text-secondary)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
+              >
+                Maybe Later
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-function TemplateCard({ template }: { template: Template }) {
+function TemplateCard({ template, onActionClick }: { template: Template; onActionClick: (url: string) => void }) {
   const [hovered, setHovered] = useState(false);
+  const previewUrl = '/' + template.path + '/index.html';
 
   const CATEGORY_COLORS: Record<string, string> = {
     technology: '#4ade80',
@@ -249,15 +355,32 @@ function TemplateCard({ template }: { template: Template }) {
     >
       {/* Preview Image */}
       <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden' }}>
-        <img
-          src={template.preview}
-          alt={template.name}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s', transform: hovered ? 'scale(1.05)' : 'scale(1)' }}
-        />
+        {hovered ? (
+          <iframe
+            src={previewUrl}
+            title={template.name}
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none',
+              pointerEvents: 'none',
+              transform: 'scale(1.02)',
+              transition: 'transform 0.3s',
+              background: 'var(--background)',
+            }}
+          />
+        ) : (
+          <img
+            src={template.preview}
+            alt={template.name}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s', transform: hovered ? 'scale(1.05)' : 'scale(1)' }}
+          />
+        )}
         <div style={{
           position: 'absolute', top: 12, left: 12,
           background: CATEGORY_COLORS[template.category] || '#888',
           color: '#000', padding: '3px 10px', borderRadius: 100, fontSize: 11, fontWeight: 600,
+          zIndex: 10,
         }}>
           {template.stack}
         </div>
@@ -289,6 +412,10 @@ function TemplateCard({ template }: { template: Template }) {
         <div style={{ display: 'flex', gap: 10 }}>
           <a
             href={`https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${template.path}`}
+            onClick={(e) => {
+              e.preventDefault();
+              onActionClick(`https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${template.path}`);
+            }}
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -303,7 +430,11 @@ function TemplateCard({ template }: { template: Template }) {
             View Code
           </a>
           <a
-            href={`https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${template.path}`}
+            href={previewUrl}
+            onClick={(e) => {
+              e.preventDefault();
+              onActionClick(previewUrl);
+            }}
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -314,7 +445,7 @@ function TemplateCard({ template }: { template: Template }) {
             onMouseEnter={e => (e.currentTarget.style.background = 'var(--accent-hover)')}
             onMouseLeave={e => (e.currentTarget.style.background = 'var(--accent)')}
           >
-            Use Template
+            Live Preview
           </a>
         </div>
       </div>
