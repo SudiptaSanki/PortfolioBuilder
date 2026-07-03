@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: "Folio Hub — Open Source Portfolio Templates",
     description: "A growing collection of 1000+ free portfolio templates for every profession and tech stack.",
     type: "website",
-    url: "https://github.com/SudiptaSanki/PorfolioBuilder",
+    url: "https://github.com/SudiptaSanki/PortfolioBuilder",
   },
   icons: {
     icon: "/favicon.png",

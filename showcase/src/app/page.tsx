@@ -64,7 +64,7 @@ export default function Home() {
           </div>
           <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
             <a
-              href="https://github.com/SudiptaSanki/PorfolioBuilder"
+              href="https://github.com/SudiptaSanki/PortfolioBuilder"
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: 'var(--text-secondary)', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6, transition: 'color 0.2s' }}
@@ -77,7 +77,7 @@ export default function Home() {
               GitHub
             </a>
             <a
-              href="https://github.com/SudiptaSanki/PorfolioBuilder/blob/main/CONTRIBUTING.md"
+              href="https://github.com/SudiptaSanki/PortfolioBuilder/blob/main/CONTRIBUTING.md"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -205,7 +205,7 @@ export default function Home() {
         <p style={{ color: 'var(--text-secondary)', fontSize: 13 }}>
           Portfolio Builder is an open-source project.{' '}
           <a
-            href="https://github.com/SudiptaSanki/PorfolioBuilder"
+            href="https://github.com/SudiptaSanki/PortfolioBuilder"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: 'var(--accent)' }}
@@ -288,7 +288,7 @@ function TemplateCard({ template }: { template: Template }) {
         {/* Actions */}
         <div style={{ display: 'flex', gap: 10 }}>
           <a
-            href={`https://github.com/SudiptaSanki/PorfolioBuilder/tree/main/${template.path}`}
+            href={`https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${template.path}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -303,7 +303,7 @@ function TemplateCard({ template }: { template: Template }) {
             View Code
           </a>
           <a
-            href={`https://github.com/SudiptaSanki/PorfolioBuilder/tree/main/${template.path}`}
+            href={`https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${template.path}`}
             target="_blank"
             rel="noopener noreferrer"
             style={{
