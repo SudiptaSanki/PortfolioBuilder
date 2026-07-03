@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import templates from '@/data/templates.json';
 import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from 'framer-motion';
+import HeroSection from '@/components/ui/glassmorphism-trust-hero';
 
 const ALL_CATEGORIES = ['All', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services'];
 const CATEGORY_LABELS: Record<string, string> = {
@@ -125,35 +126,11 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section onMouseMove={handleMouseMove} style={{ padding: '100px 24px 80px', textAlign: 'center', maxWidth: 800, margin: '0 auto', position: 'relative' }}>
-        {/* Glow effect */}
-        <motion.div style={{
-          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-          background: useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, rgba(108,122,247,0.15), transparent 80%)`,
-          pointerEvents: 'none', zIndex: -1,
-        }} />
-        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }} style={{ display: 'flex', justifyContent: 'center' }}>
-          <div style={{
-            display: 'flex', alignItems: 'center', padding: '6px 16px', background: 'rgba(108,122,247,0.12)',
-            border: '1px solid rgba(108,122,247,0.25)', borderRadius: 100, fontSize: 13,
-            color: 'var(--accent)', letterSpacing: '0.5px', marginBottom: 28, fontWeight: 500
-          }}>
-            <span className="pulse-dot"></span>
-            Open Source — 15 Templates and Growing
-          </div>
-        </motion.div>
-        <motion.h1 
-          initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.1 }}
-          className="gradient-text" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-1.5px', marginBottom: 24 }}>
-          Portfolio templates for every profession
-        </motion.h1>
-        <motion.p 
-          initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.2 }}
-          style={{ color: 'var(--text-secondary)', fontSize: 18, lineHeight: 1.6, marginBottom: 40, maxWidth: 580, margin: '0 auto 40px' }}>
-          Browse a growing, open-source collection of professionally designed portfolio templates across technology, creative fields, business, and more.
-        </motion.p>
+      {/* Hero Section */}
+      <HeroSection />
 
+      {/* Search Section */}
+      <section style={{ padding: '40px 24px 20px', textAlign: 'center', maxWidth: 800, margin: '0 auto', position: 'relative' }}>
         {/* Search bar */}
         <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }} style={{ position: 'relative', maxWidth: 560, margin: '0 auto' }}>
           <svg
