@@ -1,81 +1,153 @@
-# Portfolio Builder Templates
+# Portfolio Builder — Open Source Template Gallery
 
-Welcome to the Portfolio Builder Templates collection. This repository contains 5 complete, ready-to-use HTML/CSS/JS portfolio website templates designed for different professionals.
+A growing, open-source collection of professionally designed portfolio templates for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
 
-## 🚀 The Templates
+---
 
-Click on the links below to view the source code and instructions for each specific template.
+## Live Showcase
 
-### 1. [Developer Portfolio](./developer-portfolio)
-**Theme:** Cyberpunk / Neon Dark
-**Ideal For:** Full Stack Developers, Game Developers, Tech Enthusiasts
-**Key Features:**
-- Typing text effect
-- Dark/Light mode toggle
-- Cyberpunk aesthetic with neon accents
+Browse all templates with live search and filtering at the showcase site (deploy from `showcase/` on Vercel).
 
-### 2. [UI/UX Designer Portfolio](./designer-portfolio)
-**Theme:** Clean Minimal / Glassmorphism
-**Ideal For:** UI/UX Designers, Product Designers, Web Designers
-**Key Features:**
-- Soft gradients and glassmorphism elements
-- Clean, typography-focused layout
-- Dark/Light mode toggle
+---
 
-### 3. [Video Editor Portfolio](./editor-portfolio)
-**Theme:** Cinematic Dark
-**Ideal For:** Video Editors, Filmmakers, Colorists, Motion Graphics Artists
-**Key Features:**
-- Fullscreen background video hero section
-- Sharp edges, dark theme with high-contrast accents
-- Heavy focus on visual content over text
+## Template Categories
 
-### 4. [Photographer Portfolio](./photographer-portfolio)
-**Theme:** Minimalist Black & White
-**Ideal For:** Photographers, Fine Artists, Fashion Designers
-**Key Features:**
-- Masonry image gallery layout
-- Fullscreen automatic hero image slider
-- Built-in custom lightbox for viewing images
+Templates are organized with the following deep structure:
 
-### 5. [Software Engineer Portfolio](./engineer-portfolio)
-**Theme:** Sleek Modern Tech (Terminal Inspired)
-**Ideal For:** Software Engineers, Backend Devs, Systems Engineers, DevOps
-**Key Features:**
-- Navy/Cyan color palette with monospace typography
-- Custom hide-on-scroll down, show-on-scroll up navbar
-- Tabular archive format for technical projects
+```
+templates/
+  [industry]/
+    [profession]/
+      [stack]/          ← html-css-js | react | nextjs | vue | etc.
+        [theme-name]/   ← the actual template folder
+```
 
-## 🛠️ Global Features
+### Current Categories
 
-All templates in this repository share the following best practices:
-- **Zero Dependencies**: Pure HTML, CSS (Vanilla), and JavaScript. No build tools required (no NPM, no Webpack).
-- **Fully Responsive**: Mobile-first design principles ensure the sites look perfect on any screen size.
-- **Custom CSS Variables**: Easy global theme changing by just editing the `:root` variables in `style.css`.
-- **Working Contact Forms**: Pre-configured structure to easily plug in [EmailJS](https://www.emailjs.com/) or [Formspree](https://formspree.io/) for free form-to-email functionality without a backend.
-- **Smooth Animations**: Intersection Observer API used for performant scroll-reveal animations.
+| Industry | Professions Covered |
+|---|---|
+| `technology` | Full Stack Developer, Software Engineer, Data Scientist, DevOps, Game Developer |
+| `creative` | UI/UX Designer, Video Editor, Photographer, Musician, Animator, Graphic Designer |
+| `business` | Real Estate Agent, Marketing Consultant, Entrepreneur, Accountant |
+| `academic` | Journalist, Author, Researcher, Professor, Teacher |
+| `health-wellness` | Personal Trainer, Nutritionist, Therapist, Doctor |
+| `services` | Chef, Event Planner, Interior Designer, Freelancer |
 
-## 📝 How to Use
+---
 
-1. **Clone or Download** this repository.
-2. **Choose a template** folder that suits your needs.
-3. **Open the `index.html`** file in your browser to preview it locally.
-4. **Edit the HTML files** to replace the placeholder text and images with your own content.
-5. **Configure the Contact Form** (see below).
-6. **Deploy** by dragging and dropping the folder into [Netlify](https://www.netlify.com/), [Vercel](https://vercel.com/), or [GitHub Pages](https://pages.github.com/).
+## Available Templates (10)
 
-### Setting up EmailJS for Contact Forms
+### Technology
 
-All forms are pre-scripted to work with EmailJS. To activate them:
+| Template | Role | Theme | Stack |
+|---|---|---|---|
+| [Cyberpunk Neon](./templates/technology/full-stack-developer/html-css-js/cyberpunk-neon) | Full Stack Developer | Dark Cyberpunk | HTML/CSS/JS |
+| [Tech Terminal](./templates/technology/software-engineer/html-css-js/tech-terminal) | Software Engineer | Terminal Modern | HTML/CSS/JS |
 
-1. Sign up for a free account at [EmailJS.com](https://www.emailjs.com/).
-2. Add an Email Service (e.g., Gmail).
-3. Create an Email Template.
-4. Get your `Public Key`, `Service ID`, and `Template ID`.
-5. Open the target template's HTML files (e.g., `contact.html` and `index.html`).
-6. Replace `YOUR_PUBLIC_KEY` in the `<head>` script tag.
-7. Open the template's `js/main.js` file.
-8. Replace `YOUR_SERVICE_ID` and `YOUR_Template_ID` inside the `initContactForm()` function.
+### Creative
 
-## 📄 License
-These templates are free to use for personal and commercial projects. Feel free to modify them to fit your exact needs!
+| Template | Role | Theme | Stack |
+|---|---|---|---|
+| [Minimal Glassmorphism](./templates/creative/ui-ux-designer/html-css-js/minimal-glassmorphism) | UI/UX Designer | Glassmorphism | HTML/CSS/JS |
+| [Cinematic Dark](./templates/creative/video-editor/html-css-js/cinematic-dark) | Video Editor | Cinematic | HTML/CSS/JS |
+| [Minimal Monochrome](./templates/creative/photographer/html-css-js/minimal-monochrome) | Photographer | B&W Editorial | HTML/CSS/JS |
+| [Grunge Tour](./templates/creative/musician/html-css-js/grunge-tour) | Musician / Band | Grunge Rock | HTML/CSS/JS |
+
+### Business
+
+| Template | Role | Theme | Stack |
+|---|---|---|---|
+| [Luxury Trust](./templates/business/real-estate/html-css-js/luxury-trust) | Real Estate Agent | Luxury Gold/Navy | HTML/CSS/JS |
+
+### Academic
+
+| Template | Role | Theme | Stack |
+|---|---|---|---|
+| [Classic Editorial](./templates/academic/journalist/html-css-js/classic-editorial) | Journalist / Author | Newspaper Editorial | HTML/CSS/JS |
+
+### Health & Wellness
+
+| Template | Role | Theme | Stack |
+|---|---|---|---|
+| [Bold Energy](./templates/health-wellness/fitness/html-css-js/bold-energy) | Personal Trainer | Yellow/Black Energy | HTML/CSS/JS |
+
+### Services
+
+| Template | Role | Theme | Stack |
+|---|---|---|---|
+| [Elegant Restaurant](./templates/services/culinary/html-css-js/elegant-restaurant) | Chef / Culinary | Warm Elegant | HTML/CSS/JS |
+
+---
+
+## How to Use a Template
+
+1. Clone or download this repository.
+2. Navigate to the template folder of your choice.
+3. Open `index.html` in your browser to preview locally.
+4. Edit the HTML files, update the CSS variables, and personalize the content.
+5. Configure the contact form using [EmailJS](https://emailjs.com/) or [Formspree](https://formspree.io/).
+6. Deploy to [Netlify](https://netlify.com), [Vercel](https://vercel.com), or [GitHub Pages](https://pages.github.com/).
+
+---
+
+## Showcase Website
+
+The `showcase/` folder contains a Next.js application that catalogs all templates with real-time search and filtering.
+
+```bash
+cd showcase
+npm install
+npm run dev
+```
+
+---
+
+## Contributing
+
+**We welcome contributions from developers, designers, and creators of all skill levels.**
+
+This project's goal is to build the largest open-source portfolio template collection in the world — one that covers every profession, style, and tech stack. We can't do it alone.
+
+### How to Contribute a Template
+
+1. **Fork** this repository.
+2. **Create a new template** following the directory structure:
+   ```
+   templates/[industry]/[profession]/[stack]/[your-theme-name]/
+   ```
+3. Ensure your template includes:
+   - A working `index.html` (or equivalent entry point for your framework).
+   - A `README.md` inside the template folder describing the theme, features, and how to use it.
+   - Responsive design (works on mobile and desktop).
+   - A contact form (or instructions for integrating one).
+4. **Add your template** to `showcase/src/data/templates.json` following the existing format.
+5. **Open a Pull Request** with a clear description of your template (role, theme, stack, key features).
+
+### Contribution Guidelines
+
+- Any tech stack is welcome: HTML/CSS/JS, React, Next.js, Vue, Svelte, Angular, etc.
+- Any profession or industry is welcome — the more niche, the better.
+- Any visual style or theme is welcome: dark, light, minimal, maximalist, futuristic, retro, etc.
+- Keep templates self-contained and free of paid dependencies.
+- Do not include copyrighted images. Use [Unsplash](https://unsplash.com/) or similar free resources.
+
+### Ideas for New Templates
+
+Need inspiration? Here are some professions that still need templates:
+
+- Data Scientist, ML Engineer, DevOps Engineer, Game Developer
+- Graphic Designer, Animator, 3D Artist, Illustrator, Architect
+- Marketing Consultant, Financial Advisor, Startup Founder
+- Doctor, Dentist, Therapist, Nutritionist
+- Interior Designer, Event Planner, Wedding Photographer
+- Teacher, Researcher, PhD Student, Scientist
+
+---
+
+## License
+
+All templates in this repository are available under the [MIT License](./LICENSE). Free for personal and commercial use. Attribution appreciated but not required.
+
+---
+
+*Built with love for the open-source community. Star the repo if you find it useful.*
