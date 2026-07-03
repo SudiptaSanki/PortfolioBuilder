@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import templates from '@/data/templates.json';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from 'framer-motion';
 
 const ALL_CATEGORIES = ['All', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services'];
 const CATEGORY_LABELS: Record<string, string> = {
@@ -19,6 +19,16 @@ const STACK_FILTERS = ['All Stacks', 'HTML/CSS/JS', 'React', 'Next.js', 'Vue'];
 type Template = typeof templates[number];
 
 export default function Home() {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
+    const { currentTarget, clientX, clientY } = e;
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [activeStack, setActiveStack] = useState('All Stacks');
@@ -116,11 +126,11 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-      <section style={{ padding: '100px 24px 80px', textAlign: 'center', maxWidth: 800, margin: '0 auto', position: 'relative' }}>
+      <section onMouseMove={handleMouseMove} style={{ padding: '100px 24px 80px', textAlign: 'center', maxWidth: 800, margin: '0 auto', position: 'relative' }}>
         {/* Glow effect */}
-        <div style={{
-          position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-          width: '80%', height: '80%', background: 'radial-gradient(circle, rgba(108,122,247,0.15) 0%, rgba(12,12,14,0) 70%)',
+        <motion.div style={{
+          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+          background: useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, rgba(108,122,247,0.15), transparent 80%)`,
           pointerEvents: 'none', zIndex: -1,
         }} />
         <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5 }} style={{ display: 'flex', justifyContent: 'center' }}>
@@ -257,8 +267,14 @@ export default function Home() {
             gap: 24,
           }}>
             <AnimatePresence>
-              {filtered.map((t) => (
-                <TemplateCard key={t.id} template={t} onActionClick={handleLinkClick} />
+              {filtered.map((t, i) => (
+                <TemplateCard 
+                  key={t.path || t.name} 
+                  template={t} 
+                  index={i}
+                  onActionClick={handleLinkClick} 
+                  onPreviewClick={() => handleLinkClick('/' + t.path + '/index.html')}
+                />
               ))}
             </AnimatePresence>
           </motion.div>
@@ -354,8 +370,17 @@ export default function Home() {
   );
 }
 
-function TemplateCard({ template, onActionClick }: { template: Template; onActionClick: (url: string) => void }) {
+function TemplateCard({ template, index = 0, onActionClick, onPreviewClick }: { template: Template; index?: number; onActionClick: (url: string) => void; onPreviewClick: () => void; }) {
   const [hovered, setHovered] = useState(false);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const { currentTarget, clientX, clientY } = e;
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
   const previewUrl = '/' + template.path + '/index.html';
 
   const CATEGORY_COLORS: Record<string, string> = {
@@ -373,7 +398,8 @@ function TemplateCard({ template, onActionClick }: { template: Template; onActio
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.2, delay: index * 0.05 }}
+      onMouseMove={handleMouseMove}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -388,8 +414,19 @@ function TemplateCard({ template, onActionClick }: { template: Template; onActio
         cursor: 'default',
       }}
     >
+      <motion.div
+        style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, rgba(255,255,255,0.06), transparent 40%)`,
+          opacity: hovered ? 1 : 0,
+          pointerEvents: 'none',
+          transition: 'opacity 0.3s',
+          zIndex: 1
+        }}
+      />
       {/* Preview Image */}
-      <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden' }}>
+      <div onClick={onPreviewClick} style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', cursor: 'pointer' }}>
         {hovered ? (
           <iframe
             src={previewUrl}
