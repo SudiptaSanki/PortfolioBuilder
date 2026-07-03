@@ -111,23 +111,31 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-      <section style={{ padding: '80px 24px 60px', textAlign: 'center', maxWidth: 700, margin: '0 auto' }}>
+      <section style={{ padding: '100px 24px 80px', textAlign: 'center', maxWidth: 800, margin: '0 auto', position: 'relative' }}>
+        {/* Glow effect */}
         <div style={{
-          display: 'inline-block', padding: '4px 12px', background: 'rgba(108,122,247,0.12)',
-          border: '1px solid rgba(108,122,247,0.25)', borderRadius: 100, fontSize: 12,
-          color: 'var(--accent)', letterSpacing: '0.5px', marginBottom: 24,
-        }}>
-          Open Source — 10 Templates and Growing
+          position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+          width: '80%', height: '80%', background: 'radial-gradient(circle, rgba(108,122,247,0.15) 0%, rgba(12,12,14,0) 70%)',
+          pointerEvents: 'none', zIndex: -1,
+        }} />
+        <div className="animate-fade-up">
+          <div style={{
+            display: 'inline-block', padding: '6px 16px', background: 'rgba(108,122,247,0.12)',
+            border: '1px solid rgba(108,122,247,0.25)', borderRadius: 100, fontSize: 13,
+            color: 'var(--accent)', letterSpacing: '0.5px', marginBottom: 28, fontWeight: 500
+          }}>
+            ✨ Open Source — 10 Templates and Growing
+          </div>
         </div>
-        <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 700, lineHeight: 1.15, letterSpacing: '-1.5px', marginBottom: 20, color: '#fff' }}>
+        <h1 className="animate-fade-up delay-100 gradient-text" style={{ fontSize: 'clamp(2.5rem, 6vw, 4.2rem)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-1.5px', marginBottom: 24 }}>
           Portfolio templates for every profession
         </h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: 16, lineHeight: 1.7, marginBottom: 30, maxWidth: 520, margin: '0 auto 30px' }}>
+        <p className="animate-fade-up delay-200" style={{ color: 'var(--text-secondary)', fontSize: 18, lineHeight: 1.6, marginBottom: 40, maxWidth: 580, margin: '0 auto 40px' }}>
           Browse a growing, open-source collection of professionally designed portfolio templates across technology, creative fields, business, and more.
         </p>
 
         {/* Search bar */}
-        <div style={{ position: 'relative', maxWidth: 520, margin: '0 auto' }}>
+        <div className="animate-fade-up delay-300" style={{ position: 'relative', maxWidth: 560, margin: '0 auto' }}>
           <svg
             width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2"
             style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
