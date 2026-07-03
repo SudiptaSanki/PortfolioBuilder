@@ -1,14 +1,19 @@
-/* Musician JS */
 document.addEventListener('DOMContentLoaded', () => {
-  // Simple interactions
-  const btns = document.querySelectorAll('.tour-btn');
-  btns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.target.textContent = 'SOLD OUT';
-      e.target.style.background = '#333';
-      e.target.style.borderColor = '#333';
-      e.target.style.color = '#fff';
-      e.target.style.cursor = 'not-allowed';
+  const navToggle = document.getElementById('nav-toggle');
+  const navLinks = document.getElementById('nav-links');
+  
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('active');
+      navLinks.classList.toggle('active');
     });
-  });
+
+    // Close menu when a link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navToggle.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
+  }
 });

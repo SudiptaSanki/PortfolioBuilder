@@ -35,12 +35,54 @@ templates/
 
 ---
 
-## Available Templates (10)
+## Available Templates (15)
 
 ### Technology
 
-| Template | Role | Theme | Stack |
-|---|---|---|---|
+| Template | Role | Theme | Stack | Live Preview |
+|---|---|---|---|---|
+| [Cyberpunk Developer](./templates/technology/full-stack-developer/html-css-js/cyberpunk-neon) | Full Stack Developer | Cyberpunk Neon Dark | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/technology/full-stack-developer/html-css-js/cyberpunk-neon/index.html) |
+| [Tech Terminal Engineer](./templates/technology/software-engineer/html-css-js/tech-terminal) | Software Engineer | Terminal Modern | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/technology/software-engineer/html-css-js/tech-terminal/index.html) |
+| [Data Scientist Terminal](./templates/technology/data-scientist/html-css-js/tech-data-visualizer) | Data Scientist / AI Engineer | Tech Data Visualizer | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/technology/data-scientist/html-css-js/tech-data-visualizer/index.html) |
+
+### Creative
+
+| Template | Role | Theme | Stack | Live Preview |
+|---|---|---|---|---|
+| [Minimal Glassmorphism Designer](./templates/creative/ui-ux-designer/html-css-js/minimal-glassmorphism) | UI/UX Designer | Glassmorphism Minimal | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/creative/ui-ux-designer/html-css-js/minimal-glassmorphism/index.html) |
+| [Cinematic Video Editor](./templates/creative/video-editor/html-css-js/cinematic-dark) | Video Editor | Cinematic Dark | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/creative/video-editor/html-css-js/cinematic-dark/index.html) |
+| [Monochrome Photographer](./templates/creative/photographer/html-css-js/minimal-monochrome) | Photographer | Minimal Monochrome | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/creative/photographer/html-css-js/minimal-monochrome/index.html) |
+| [Grunge Tour Band](./templates/creative/musician/html-css-js/grunge-tour) | Musician / Band | Grunge Tour | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/creative/musician/html-css-js/grunge-tour/index.html) |
+| [Minimalist Architect](./templates/creative/architect/html-css-js/minimalist-structure) | Architect / Interior Design | Minimalist Structure | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/creative/architect/html-css-js/minimalist-structure/index.html) |
+| [Pro Streamer & Gamer](./templates/creative/streamer/html-css-js/neon-gaming) | E-sports Player / Streamer | Neon Gaming | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/creative/streamer/html-css-js/neon-gaming/index.html) |
+| [Freelance Copywriter](./templates/creative/copywriter/html-css-js/typewriter-clean) | Freelance Writer / Copywriter | Typewriter Clean | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/creative/copywriter/html-css-js/typewriter-clean/index.html) |
+
+### Business
+
+| Template | Role | Theme | Stack | Live Preview |
+|---|---|---|---|---|
+| [Luxury Real Estate](./templates/business/real-estate/html-css-js/luxury-trust) | Real Estate Agent | Luxury Trust | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/business/real-estate/html-css-js/luxury-trust/index.html) |
+| [Corporate Wealth Management](./templates/business/financial-advisor/html-css-js/corporate-trust) | Financial Advisor / Consultant | Corporate Trust | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/business/financial-advisor/html-css-js/corporate-trust/index.html) |
+
+### Academic
+
+| Template | Role | Theme | Stack | Live Preview |
+|---|---|---|---|---|
+| [Classic Editorial Journalist](./templates/academic/journalist/html-css-js/classic-editorial) | Journalist / Author | Classic Editorial | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/academic/journalist/html-css-js/classic-editorial/index.html) |
+
+### Health & Wellness
+
+| Template | Role | Theme | Stack | Live Preview |
+|---|---|---|---|---|
+| [Bold Energy Fitness](./templates/health-wellness/fitness/html-css-js/bold-energy) | Personal Trainer | Bold Energy | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/fitness/html-css-js/bold-energy/index.html) |
+
+### Services
+
+| Template | Role | Theme | Stack | Live Preview |
+|---|---|---|---|---|
+| [Elegant Chef Portfolio](./templates/services/culinary/html-css-js/elegant-restaurant) | Chef / Culinary Artist | Elegant Restaurant | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/services/culinary/html-css-js/elegant-restaurant/index.html) |
+
+---|---|---|---|
 | [Cyberpunk Neon](./templates/technology/full-stack-developer/html-css-js/cyberpunk-neon) | Full Stack Developer | Dark Cyberpunk | HTML/CSS/JS |
 | [Tech Terminal](./templates/technology/software-engineer/html-css-js/tech-terminal) | Software Engineer | Terminal Modern | HTML/CSS/JS |
 

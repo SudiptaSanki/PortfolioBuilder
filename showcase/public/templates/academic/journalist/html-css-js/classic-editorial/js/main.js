@@ -1,9 +1,19 @@
-// Journalist JS — minimal, mostly pure CSS driven design
 document.addEventListener('DOMContentLoaded', () => {
-  // Highlight current nav link
-  const current = location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-bar a').forEach(a => {
-    if (a.getAttribute('href') === current) a.classList.add('active');
-    else a.classList.remove('active');
-  });
+  const navToggle = document.getElementById('nav-toggle');
+  const navLinks = document.getElementById('nav-links');
+  
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('active');
+      navLinks.classList.toggle('active');
+    });
+
+    // Close menu when a link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navToggle.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
+  }
 });
