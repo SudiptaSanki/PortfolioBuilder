@@ -193,3 +193,23 @@ All templates in this repository are available under the [MIT License](./LICENSE
 ---
 
 *Built with love for the open-source community. Star the repo if you find it useful.*
+
+### 16. Clinical Clean Doctor (Medical Doctor / Surgeon)
+- **Tech:** HTML/CSS/JS
+- **Live Preview:** [View Template](https://portfolio4builders.vercel.app/templates/health-wellness/doctor/html-css-js/clinical-clean/index.html)
+
+### 17. Legal Trust Attorney (Lawyer / Legal Counsel)
+- **Tech:** HTML/CSS/JS
+- **Live Preview:** [View Template](https://portfolio4builders.vercel.app/templates/business/lawyer/html-css-js/legal-trust/index.html)
+
+### 18. Spotlight Dark Comedian (Stand-up Comedian)
+- **Tech:** HTML/CSS/JS
+- **Live Preview:** [View Template](https://portfolio4builders.vercel.app/templates/creative/comedian/html-css-js/spotlight-dark/index.html)
+
+### 19. Crypto Neon Web3 Dev (Web3 Developer)
+- **Tech:** HTML/CSS/JS
+- **Live Preview:** [View Template](https://portfolio4builders.vercel.app/templates/technology/web3-developer/html-css-js/crypto-neon/index.html)
+
+### 20. Bright Learning Educator (Teacher / Educator)
+- **Tech:** HTML/CSS/JS
+- **Live Preview:** [View Template](https://portfolio4builders.vercel.app/templates/academic/teacher/html-css-js/bright-learning/index.html)
