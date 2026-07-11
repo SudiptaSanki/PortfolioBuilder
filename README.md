@@ -26,16 +26,16 @@ templates/
 
 | Industry | Professions Covered |
 |---|---|
-| `technology` | Full Stack Developer, Software Engineer, Data Scientist, Web3 Developer, AI Research Scientist |
-| `creative` | UI/UX Designer, Video Editor, Photographer, Musician, Architect, Streamer, Copywriter, Comedian, Architectural Photographer |
-| `business` | Real Estate Agent, Financial Advisor, Lawyer |
+| `technology` | Full Stack Developer, Software Engineer, Data Scientist, Web3 Developer, AI Research Scientist, Cybersecurity Specialist |
+| `creative` | UI/UX Designer, Video Editor, Photographer, Musician, Architect, Streamer, Copywriter, Comedian, Architectural Photographer, Content Creator, 3D Architectural Artist, Fashion Designer |
+| `business` | Real Estate Agent, Financial Advisor, Lawyer, Cryptocurrency Analyst |
 | `academic` | Journalist, Teacher |
 | `health-wellness` | Personal Trainer, Fitness Coach, Doctor |
 | `services` | Chef |
 
 ---
 
-## Available Templates (25)
+## Available Templates (30)
 
 ### Technology
 
@@ -46,6 +46,7 @@ templates/
 | [Data Scientist Terminal](./templates/technology/data-scientist/html-css-js/tech-data-visualizer) | Data Scientist / AI Engineer | Tech Data Visualizer | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/technology/data-scientist/html-css-js/tech-data-visualizer/index.html) |
 | [Crypto Neon Web3 Dev](./templates/technology/web3-developer/html-css-js/crypto-neon) | Web3 Developer | Futuristic Neon | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/technology/web3-developer/html-css-js/crypto-neon/index.html) |
 | [Neural Research Scientist](./templates/technology/ai-scientist/html-css-js/neural-research) | AI Research Scientist | Neural Research | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/technology/ai-scientist/html-css-js/neural-research/index.html) |
+| [Console Hacker Terminal](./templates/technology/cybersecurity/html-css-js/hacker-terminal) | Cybersecurity Specialist | Hacker Terminal | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/technology/cybersecurity/html-css-js/hacker-terminal/index.html) |
 
 ### Creative
 
@@ -60,6 +61,9 @@ templates/
 | [Freelance Copywriter](./templates/creative/copywriter/html-css-js/typewriter-clean) | Freelance Writer / Copywriter | Typewriter Clean | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/creative/copywriter/html-css-js/typewriter-clean/index.html) |
 | [Spotlight Dark Comedian](./templates/creative/comedian/html-css-js/spotlight-dark) | Stand-up Comedian | Bold Energetic Dark | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/creative/comedian/html-css-js/spotlight-dark/index.html) |
 | [Lens Perspective Photographer](./templates/creative/photographer/html-css-js/lens-perspective) | Architectural Photographer | Lens Perspective | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/creative/photographer/html-css-js/lens-perspective/index.html) |
+| [Bento Grid Creator](./templates/creative/content-creator/html-css-js/bento-grid) | Content Creator / Influencer | Bento Grid | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/creative/content-creator/html-css-js/bento-grid/index.html) |
+| [Brutalist Split-Screen Architect](./templates/creative/architect-3d/html-css-js/brutalist-split) | 3D Architectural Artist | Brutalist Split-Screen | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/creative/architect-3d/html-css-js/brutalist-split/index.html) |
+| [Editorial Slides Fashion](./templates/creative/fashion-designer/html-css-js/editorial-slides) | Fashion Designer / Stylist | Editorial Slides | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/creative/fashion-designer/html-css-js/editorial-slides/index.html) |
 
 ### Business
 
@@ -69,6 +73,7 @@ templates/
 | [Corporate Wealth Management](./templates/business/financial-advisor/html-css-js/corporate-trust) | Financial Advisor / Consultant | Corporate Trust | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/business/financial-advisor/html-css-js/corporate-trust/index.html) |
 | [Legal Trust Attorney](./templates/business/lawyer/html-css-js/legal-trust) | Lawyer / Legal Counsel | Classic Professional | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/business/lawyer/html-css-js/legal-trust/index.html) |
 | [Luxury Estate Agent](./templates/business/real-estate/html-css-js/luxury-estate) | Real Estate Agent / Broker | Luxury Estate | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/business/real-estate/html-css-js/luxury-estate/index.html) |
+| [FinTech Neon Dashboard](./templates/business/crypto-analyst/html-css-js/dashboard-neon) | Cryptocurrency Analyst / Trader | Dashboard Neon | HTML/CSS/JS | [Preview](https://portfolio4builders.vercel.app/templates/business/crypto-analyst/html-css-js/dashboard-neon/index.html) |
 
 ### Academic
 
@@ -145,16 +150,6 @@ This project's goal is to build the largest open-source portfolio template colle
 - Any visual style or theme is welcome: dark, light, minimal, maximalist, futuristic, retro, etc.
 - Keep templates self-contained and free of paid dependencies.
 - Do not include copyrighted images. Use [Unsplash](https://unsplash.com/) or similar free resources.
-
-### Ideas for New Templates
-
-Need inspiration? Here are some professions that still need templates:
-
-- Graphic Designer, Animator, 3D Artist, Illustrator
-- Marketing Consultant, Startup Founder
-- Dentist, Therapist, Nutritionist
-- Event Planner, Wedding Photographer
-- Researcher, PhD Student
 
 ---
 
