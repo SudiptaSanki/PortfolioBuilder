@@ -5,9 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const outputArea = document.getElementById('output-area');
 
   const content = {
-    help: 'Available commands: <span class="highlight">about</span>, <span class="highlight">projects</span>, <span class="highlight">contact</span>, <span class="highlight">clear</span>',
+    help: 'Available commands: <span class="highlight">about</span>, <span class="highlight">projects</span>, <span class="highlight">skills</span>, <span class="highlight">education</span>, <span class="highlight">tools</span>, <span class="highlight">logs</span>, <span class="highlight">contact</span>, <span class="highlight">clear</span>',
     about: '<b>Crypt-Shell Analyst:</b> Specialist in penetration testing, threat hunting, and reverse engineering. Certified OSCP & CISSP.',
     projects: '<b>Active Shells:</b><br>- <i>sh-secure:</i> Custom audit script for microservice APIs.<br>- <i>dock-guard:</i> Sandboxed vulnerability inspector for Docker.',
+    skills: '<b>Languages:</b> Python, Bash, Rust, Go, assembly x86<br><b>Frameworks:</b> FastAPI, PyTorch, Docker, Kubernetes',
+    education: '<b>B.S. in Computer Science</b> - ETH Zurich<br><b>Offensive Security Certified Professional (OSCP)</b><br><b>CISSP Certification</b>',
+    tools: '<b>Primary Stack:</b> Nmap, Wireshark, Metasploit, Burp Suite, GDB, Ghidra',
+    logs: '<b>Dynamic Firewall Logs:</b><br>' +
+          '<span class="prompt">[INFO]</span> 14:32:01 Connection accepted from 192.168.1.104<br>' +
+          '<span class="prompt">[WARN]</span> 14:32:05 Attempted brute-force on SSH port 22 blocked from IP 185.220.101.4<br>' +
+          '<span class="prompt">[SUCCESS]</span> 14:32:10 Firewall rules updated successfully.',
     contact: 'Send encrypted mail to: <span class="highlight">sec@crypt-shell.org</span>'
   };
 
