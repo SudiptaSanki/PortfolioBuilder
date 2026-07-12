@@ -5,7 +5,7 @@ import templates from '@/data/templates.json';
 import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from 'framer-motion';
 import HeroSection from '@/components/ui/glassmorphism-trust-hero';
 
-const ALL_CATEGORIES = ['All', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services'];
+const ALL_CATEGORIES = ['All', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services', 'retail', 'startup'];
 const CATEGORY_LABELS: Record<string, string> = {
   'All': 'All Templates',
   'technology': 'Technology',
@@ -14,6 +14,8 @@ const CATEGORY_LABELS: Record<string, string> = {
   'academic': 'Academic',
   'health-wellness': 'Health & Wellness',
   'services': 'Services',
+  'retail': 'Retail & Shops',
+  'startup': 'Startups & Students',
 };
 const STACK_FILTERS = ['All Stacks', 'HTML/CSS/JS', 'React', 'Next.js', 'Vue'];
 const STRUCTURE_FILTERS = ['All Structures', 'Single-page', 'Multi-page'];
