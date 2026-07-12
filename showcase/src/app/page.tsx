@@ -16,6 +16,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   'services': 'Services',
 };
 const STACK_FILTERS = ['All Stacks', 'HTML/CSS/JS', 'React', 'Next.js', 'Vue'];
+const STRUCTURE_FILTERS = ['All Structures', 'Single-page', 'Multi-page'];
 
 type Template = typeof templates[number];
 
@@ -33,6 +34,7 @@ export default function Home() {
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [activeStack, setActiveStack] = useState('All Stacks');
+  const [activeStructure, setActiveStructure] = useState('All Structures');
   const [showStarModal, setShowStarModal] = useState(false);
   const [targetUrl, setTargetUrl] = useState('');
 
@@ -56,15 +58,19 @@ export default function Home() {
     return templates.filter((t) => {
       const matchesCategory = activeCategory === 'All' || t.category === activeCategory;
       const matchesStack = activeStack === 'All Stacks' || t.stack === activeStack;
+      const matchesStructure =
+        activeStructure === 'All Structures' ||
+        (activeStructure === 'Single-page' && t.tags.includes('single-page')) ||
+        (activeStructure === 'Multi-page' && t.tags.includes('multi-page'));
       const matchesQuery =
         !q ||
         t.name.toLowerCase().includes(q) ||
         t.role.toLowerCase().includes(q) ||
         t.theme.toLowerCase().includes(q) ||
         t.tags.some((tag) => tag.toLowerCase().includes(q));
-      return matchesCategory && matchesStack && matchesQuery;
+      return matchesCategory && matchesStack && matchesStructure && matchesQuery;
     });
-  }, [query, activeCategory, activeStack]);
+  }, [query, activeCategory, activeStack, activeStructure]);
 
   return (
     <div style={{ minHeight: '100vh' }}>
@@ -203,7 +209,7 @@ export default function Home() {
             </motion.button>
           ))}
         </div>
-        <div style={{ marginLeft: 'auto' }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 10 }}>
           <select
             value={activeStack}
             onChange={(e) => setActiveStack(e.target.value)}
@@ -214,6 +220,17 @@ export default function Home() {
             }}
           >
             {STACK_FILTERS.map((s) => <option key={s}>{s}</option>)}
+          </select>
+          <select
+            value={activeStructure}
+            onChange={(e) => setActiveStructure(e.target.value)}
+            style={{
+              padding: '6px 14px', borderRadius: 8, fontSize: 13,
+              border: '1px solid var(--border)', background: 'var(--surface)',
+              color: 'var(--text-secondary)', cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
+            }}
+          >
+            {STRUCTURE_FILTERS.map((s) => <option key={s}>{s}</option>)}
           </select>
         </div>
       </div>
@@ -231,7 +248,7 @@ export default function Home() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', padding: '80px 0', color: 'var(--text-secondary)' }}>
             <p style={{ fontSize: 16 }}>No templates match your search.</p>
             <button
-              onClick={() => { setQuery(''); setActiveCategory('All'); setActiveStack('All Stacks'); }}
+              onClick={() => { setQuery(''); setActiveCategory('All'); setActiveStack('All Stacks'); setActiveStructure('All Structures'); }}
               style={{ marginTop: 16, background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 14, fontFamily: 'inherit' }}
             >
               Clear filters
