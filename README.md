@@ -165,3 +165,83 @@ All templates in this repository are available under the [MIT License](./LICENSE
 ---
 
 *Built with love for the open-source community. Star the repo if you find it useful.*
+
+---
+
+## 🙏 Acknowledgements & Credits
+
+This project would not be possible without the incredible generosity of the open-source and creative commons communities. We are deeply grateful to the following platforms and contributors for providing free, high-quality resources that power every template in this gallery.
+
+---
+
+### 📸 Photography & Imagery
+
+| Resource | What We Use It For | License |
+|---|---|---|
+| **[Unsplash](https://unsplash.com/)** | Beautiful, high-resolution hero images, profile photos, and product shots across all 45+ templates | [Unsplash License](https://unsplash.com/license) — Free for commercial & personal use |
+| **[Pexels](https://www.pexels.com/)** | Additional lifestyle and professional photography | [Pexels License](https://www.pexels.com/license/) — Free for commercial & personal use |
+| **[Pixabay](https://pixabay.com/)** | Nature, architecture, and abstract backgrounds | [Pixabay License](https://pixabay.com/service/license-summary/) — Free for commercial & personal use |
+
+> 💚 **A special thank you to every photographer on Unsplash** who chose to share their art with the world for free. Your generosity makes open-source projects like ours possible. Every stunning hero background, every professional headshot, every product showcase in our templates exists because you gave it freely. **Thank you.**
+
+---
+
+### 🔤 Typography
+
+| Resource | What We Use It For | License |
+|---|---|---|
+| **[Google Fonts](https://fonts.google.com/)** | Premium typefaces (Inter, Outfit, Lora, Nunito, Zilla Slab, and 20+ more) used across all templates | [SIL Open Font License](https://openfontlicense.org/) — Free for all uses |
+
+> Typography is the soul of a design. Google Fonts democratized access to world-class typefaces — thank you for keeping it free and fast.
+
+---
+
+### 🧩 Icons & SVGs
+
+| Resource | What We Use It For | License |
+|---|---|---|
+| **[Iconify](https://iconify.design/)** | Icon system with access to 200,000+ open-source icons | Multiple open licenses |
+| **[Heroicons](https://heroicons.com/)** | Clean, hand-crafted SVG icons | MIT License |
+| **[Font Awesome](https://fontawesome.com/)** | Social media and UI icons in select templates | Free tier — CC BY 4.0 |
+| **[Feather Icons](https://feathericons.com/)** | Lightweight stroke icons | MIT License |
+
+---
+
+### 🌐 Web Technologies & APIs
+
+| Resource | What We Use It For | License |
+|---|---|---|
+| **[Google Maps Embed API](https://developers.google.com/maps/documentation/embed)** | "Find Us" maps in retail and service templates | Free tier available |
+| **[Google `<model-viewer>`](https://modelviewer.dev/)** | WebGL 3D model rendering in advanced templates | Apache 2.0 License |
+| **[Leaflet.js](https://leafletjs.com/)** | Open-source interactive maps | BSD 2-Clause License |
+
+---
+
+### 🛠️ Developer Tools
+
+| Resource | What We Use It For |
+|---|---|
+| **[Next.js](https://nextjs.org/)** | Powers the showcase app |
+| **[Vercel](https://vercel.com/)** | Free hosting for the live showcase |
+| **[GitHub](https://github.com/)** | Version control and open-source collaboration |
+| **[Node.js](https://nodejs.org/)** | Build scripts and template generation tools |
+
+---
+
+### 🌍 Our Open-Source Mission
+
+Portfolio Builder is built on the belief that **every person — regardless of budget — deserves a professional online presence.**
+
+The resources above share that same belief. By providing world-class photography, fonts, icons, and APIs for free, they lower the barrier for millions of developers, designers, students, and small businesses worldwide. This project is our way of paying that generosity forward.
+
+> *"Alone we can do so little; together we can do so much."* — Helen Keller
+
+If you use this project, consider **giving back to the open-source community** by:
+- ⭐ Starring this repository
+- 🤝 Contributing a new template
+- 📣 Sharing it with someone who needs a portfolio
+- 💛 [Donating to Unsplash photographers](https://unsplash.com/donate) whose work powers this project
+
+---
+
+*Built with love for the open-source community. Star the repo if you find it useful.*
