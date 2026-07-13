@@ -35,7 +35,7 @@ templates/
 
 ---
 
-## Available Templates (50)
+## Available Templates (55)
 
 ### Technology
 
@@ -68,6 +68,9 @@ templates/
 | [Insights UX Researcher]([./templates/creative/ux-researcher/html-css-js/case-studies](./templates/creative/ux-researcher/html-css-js/case-studies)) | undefined | Insights UX Researcher | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
 | [Literary Classic]([./templates/creative/author/html-css-js/literary-classic](./templates/creative/author/html-css-js/literary-classic)) | Author | Literary Classic | HTML/CSS/JS | single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/author/html-css-js/literary-classic/index.html) |
 | [Modern Spaces]([./templates/creative/interior-designer/html-css-js/modern-spaces](./templates/creative/interior-designer/html-css-js/modern-spaces)) | Interior Designer | Modern Spaces | HTML/CSS/JS | single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/interior-designer/html-css-js/modern-spaces/index.html) |
+| [wanderlust-layered]([./templates/creative/travel-blogger/html-css-js/wanderlust-layered](./templates/creative/travel-blogger/html-css-js/wanderlust-layered)) | travel-blogger | wanderlust-layered | html-css-js | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/travel-blogger/html-css-js/wanderlust-layered/index.html) |
+| [audio-wave]([./templates/creative/podcaster/html-css-js/audio-wave](./templates/creative/podcaster/html-css-js/audio-wave)) | podcaster | audio-wave | html-css-js | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/podcaster/html-css-js/audio-wave/index.html) |
+| [ink-and-skin]([./templates/creative/tattoo-artist/html-css-js/ink-and-skin](./templates/creative/tattoo-artist/html-css-js/ink-and-skin)) | tattoo-artist | ink-and-skin | html-css-js | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/tattoo-artist/html-css-js/ink-and-skin/index.html) |
 
 ### Business
 
@@ -79,6 +82,7 @@ templates/
 | [Luxury Estate Agent]([./templates/business/real-estate/html-css-js/luxury-estate](./templates/business/real-estate/html-css-js/luxury-estate)) | undefined | Luxury Estate Agent | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
 | [FinTech Neon Dashboard]([./templates/business/crypto-analyst/html-css-js/dashboard-neon](./templates/business/crypto-analyst/html-css-js/dashboard-neon)) | undefined | FinTech Neon Dashboard | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
 | [Injury Defense Advocate]([./templates/business/personal-injury-lawyer/html-css-js/defense-advocate](./templates/business/personal-injury-lawyer/html-css-js/defense-advocate)) | undefined | Injury Defense Advocate | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [civic-duty]([./templates/business/politician/html-css-js/civic-duty](./templates/business/politician/html-css-js/civic-duty)) | politician | civic-duty | html-css-js | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/business/politician/html-css-js/civic-duty/index.html) |
 
 ### Academic
 
@@ -96,6 +100,7 @@ templates/
 | [Fit Transform Coach]([./templates/health-wellness/personal-trainer/html-css-js/fit-transform](./templates/health-wellness/personal-trainer/html-css-js/fit-transform)) | undefined | Fit Transform Coach | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
 | [Lumina Smile Clinic]([./templates/health-wellness/dentist/html-css-js/smile-clinic](./templates/health-wellness/dentist/html-css-js/smile-clinic)) | undefined | Lumina Smile Clinic | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
 | [Zen Flow]([./templates/health-wellness/yoga-instructor/html-css-js/zen-flow](./templates/health-wellness/yoga-instructor/html-css-js/zen-flow)) | Yoga Instructor | Zen Flow | HTML/CSS/JS | single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/yoga-instructor/html-css-js/zen-flow/index.html) |
+| [glamour-glow]([./templates/health-wellness/makeup-artist/html-css-js/glamour-glow](./templates/health-wellness/makeup-artist/html-css-js/glamour-glow)) | makeup-artist | glamour-glow | html-css-js | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/makeup-artist/html-css-js/glamour-glow/index.html) |
 
 ### Services
 
