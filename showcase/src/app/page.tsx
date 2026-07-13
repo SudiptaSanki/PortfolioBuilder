@@ -66,9 +66,9 @@ export default function Home() {
         (activeStructure === 'Multi-page' && (t.tags || []).includes('multi-page'));
       const matchesQuery =
         !q ||
-        t.name.toLowerCase().includes(q) ||
-        t.role.toLowerCase().includes(q) ||
-        t.theme.toLowerCase().includes(q) ||
+        (t.name || '').toLowerCase().includes(q) ||
+        (t.role || t.profession || '').toLowerCase().includes(q) ||
+        (t.theme || '').toLowerCase().includes(q) ||
         (t.tags || []).some((tag) => tag.toLowerCase().includes(q));
       return matchesCategory && matchesStack && matchesStructure && matchesQuery;
     });
@@ -458,10 +458,10 @@ function TemplateCard({ template, index = 0, onActionClick, onPreviewClick }: { 
       <div style={{ padding: 20 }}>
         <div style={{ marginBottom: 10 }}>
           <h3 style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.3px', marginBottom: 4 }}>{template.name}</h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{template.role} &bull; {template.theme}</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{template.role || template.profession} &bull; {template.theme || 'Custom Theme'}</p>
         </div>
         <p style={{ color: 'var(--text-secondary)', fontSize: 13, lineHeight: 1.6, marginBottom: 16 }}>
-          {template.description}
+          {template.description || 'A beautifully designed template crafted for professionals.'}
         </p>
 
         {/* Tags */}
