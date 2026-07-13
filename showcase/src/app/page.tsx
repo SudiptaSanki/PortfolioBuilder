@@ -62,14 +62,14 @@ export default function Home() {
       const matchesStack = activeStack === 'All Stacks' || t.stack === activeStack;
       const matchesStructure =
         activeStructure === 'All Structures' ||
-        (activeStructure === 'Single-page' && t.tags.includes('single-page')) ||
-        (activeStructure === 'Multi-page' && t.tags.includes('multi-page'));
+        (activeStructure === 'Single-page' && (t.tags || []).includes('single-page')) ||
+        (activeStructure === 'Multi-page' && (t.tags || []).includes('multi-page'));
       const matchesQuery =
         !q ||
         t.name.toLowerCase().includes(q) ||
         t.role.toLowerCase().includes(q) ||
         t.theme.toLowerCase().includes(q) ||
-        t.tags.some((tag) => tag.toLowerCase().includes(q));
+        (t.tags || []).some((tag) => tag.toLowerCase().includes(q));
       return matchesCategory && matchesStack && matchesStructure && matchesQuery;
     });
   }, [query, activeCategory, activeStack, activeStructure]);
@@ -466,7 +466,7 @@ function TemplateCard({ template, index = 0, onActionClick, onPreviewClick }: { 
 
         {/* Tags */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
-          {template.tags.slice(0, 4).map((tag) => (
+          {(template.tags || []).slice(0, 4).map((tag) => (
             <span key={tag} style={{
               padding: '3px 8px', background: 'rgba(255,255,255,0.06)', borderRadius: 6,
               fontSize: 11, color: 'var(--text-secondary)',
