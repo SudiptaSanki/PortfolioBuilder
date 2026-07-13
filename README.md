@@ -35,72 +35,97 @@ templates/
 
 ---
 
-## Available Templates (35)
+## Available Templates (50)
 
 ### Technology
 
 | Template | Role | Theme | Stack | Structure | Live Preview |
 |---|---|---|---|---|---|
-| [Cyberpunk Developer](./templates/technology/full-stack-developer/html-css-js/cyberpunk-neon) | Full Stack Developer | Cyberpunk Neon Dark | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/full-stack-developer/html-css-js/cyberpunk-neon/index.html) |
-| [Tech Terminal Engineer](./templates/technology/software-engineer/html-css-js/tech-terminal) | Software Engineer | Terminal Modern | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/software-engineer/html-css-js/tech-terminal/index.html) |
-| [Data Scientist Terminal](./templates/technology/data-scientist/html-css-js/tech-data-visualizer) | Data Scientist / AI Engineer | Tech Data Visualizer | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/data-scientist/html-css-js/tech-data-visualizer/index.html) |
-| [Crypto Neon Web3 Dev](./templates/technology/web3-developer/html-css-js/crypto-neon) | Web3 Developer | Futuristic Neon | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/web3-developer/html-css-js/crypto-neon/index.html) |
-| [Neural Research Scientist](./templates/technology/ai-scientist/html-css-js/neural-research) | AI Research Scientist | Neural Research | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/ai-scientist/html-css-js/neural-research/index.html) |
-| [Console Hacker Terminal](./templates/technology/cybersecurity/html-css-js/hacker-terminal) | Cybersecurity Specialist | Hacker Terminal | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/cybersecurity/html-css-js/hacker-terminal/index.html) |
+| [Cyberpunk Developer]([./templates/technology/full-stack-developer/html-css-js/cyberpunk-neon](./templates/technology/full-stack-developer/html-css-js/cyberpunk-neon)) | undefined | Cyberpunk Developer | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Tech Terminal Engineer]([./templates/technology/software-engineer/html-css-js/tech-terminal](./templates/technology/software-engineer/html-css-js/tech-terminal)) | undefined | Tech Terminal Engineer | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Data Scientist Terminal]([./templates/technology/data-scientist/html-css-js/tech-data-visualizer](./templates/technology/data-scientist/html-css-js/tech-data-visualizer)) | undefined | Data Scientist Terminal | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Crypto Neon Web3 Dev]([./templates/technology/web3-developer/html-css-js/crypto-neon](./templates/technology/web3-developer/html-css-js/crypto-neon)) | undefined | Crypto Neon Web3 Dev | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Neural Research Scientist]([./templates/technology/ai-scientist/html-css-js/neural-research](./templates/technology/ai-scientist/html-css-js/neural-research)) | undefined | Neural Research Scientist | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Console Hacker Terminal]([./templates/technology/cybersecurity/html-css-js/hacker-terminal](./templates/technology/cybersecurity/html-css-js/hacker-terminal)) | undefined | Console Hacker Terminal | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
 
 ### Creative
 
 | Template | Role | Theme | Stack | Structure | Live Preview |
 |---|---|---|---|---|---|
-| [Minimal Glassmorphism Designer](./templates/creative/ui-ux-designer/html-css-js/minimal-glassmorphism) | UI/UX Designer | Glassmorphism Minimal | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/ui-ux-designer/html-css-js/minimal-glassmorphism/index.html) |
-| [Cinematic Video Editor](./templates/creative/video-editor/html-css-js/cinematic-dark) | Video Editor | Cinematic Dark | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/video-editor/html-css-js/cinematic-dark/index.html) |
-| [Monochrome Photographer](./templates/creative/photographer/html-css-js/minimal-monochrome) | Photographer | Minimal Monochrome | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/photographer/html-css-js/minimal-monochrome/index.html) |
-| [Grunge Tour Band](./templates/creative/musician/html-css-js/grunge-tour) | Musician / Band | Grunge Tour | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/musician/html-css-js/grunge-tour/index.html) |
-| [Minimalist Architect](./templates/creative/architect/html-css-js/minimalist-structure) | Architect / Interior Design | Minimalist Structure | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/architect/html-css-js/minimalist-structure/index.html) |
-| [Pro Streamer & Gamer](./templates/creative/streamer/html-css-js/neon-gaming) | E-sports Player / Streamer | Neon Gaming | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/streamer/html-css-js/neon-gaming/index.html) |
-| [Freelance Copywriter](./templates/creative/copywriter/html-css-js/typewriter-clean) | Freelance Writer / Copywriter | Typewriter Clean | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/copywriter/html-css-js/typewriter-clean/index.html) |
-| [Spotlight Dark Comedian](./templates/creative/comedian/html-css-js/spotlight-dark) | Stand-up Comedian | Bold Energetic Dark | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/comedian/html-css-js/spotlight-dark/index.html) |
-| [Lens Perspective Photographer](./templates/creative/photographer/html-css-js/lens-perspective) | Architectural Photographer | Lens Perspective | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/photographer/html-css-js/lens-perspective/index.html) |
-| [Bento Grid Creator](./templates/creative/content-creator/html-css-js/bento-grid) | Content Creator / Influencer | Bento Grid | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/content-creator/html-css-js/bento-grid/index.html) |
-| [Brutalist Split-Screen Architect](./templates/creative/architect-3d/html-css-js/brutalist-split) | 3D Architectural Artist | Brutalist Split-Screen | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/architect-3d/html-css-js/brutalist-split/index.html) |
-| [Editorial Slides Fashion](./templates/creative/fashion-designer/html-css-js/editorial-slides) | Fashion Designer / Stylist | Editorial Slides | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/fashion-designer/html-css-js/editorial-slides/index.html) |
-| [Audio Beat Producer](./templates/creative/music-producer/html-css-js/beat-portfolio) | Music Producer / DJ | KryptBeats | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/music-producer/html-css-js/beat-portfolio/index.html) |
-| [Insights UX Researcher](./templates/creative/ux-researcher/html-css-js/case-studies) | UX Researcher | Insights Portfolio | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/ux-researcher/html-css-js/case-studies/index.html) |
+| [Minimal Glassmorphism Designer]([./templates/creative/ui-ux-designer/html-css-js/minimal-glassmorphism](./templates/creative/ui-ux-designer/html-css-js/minimal-glassmorphism)) | undefined | Minimal Glassmorphism Designer | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Cinematic Video Editor]([./templates/creative/video-editor/html-css-js/cinematic-dark](./templates/creative/video-editor/html-css-js/cinematic-dark)) | undefined | Cinematic Video Editor | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Monochrome Photographer]([./templates/creative/photographer/html-css-js/minimal-monochrome](./templates/creative/photographer/html-css-js/minimal-monochrome)) | undefined | Monochrome Photographer | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Grunge Tour Band]([./templates/creative/musician/html-css-js/grunge-tour](./templates/creative/musician/html-css-js/grunge-tour)) | undefined | Grunge Tour Band | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Minimalist Architect]([./templates/creative/architect/html-css-js/minimalist-structure](./templates/creative/architect/html-css-js/minimalist-structure)) | undefined | Minimalist Architect | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Pro Streamer & Gamer]([./templates/creative/streamer/html-css-js/neon-gaming](./templates/creative/streamer/html-css-js/neon-gaming)) | undefined | Pro Streamer & Gamer | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Freelance Copywriter]([./templates/creative/copywriter/html-css-js/typewriter-clean](./templates/creative/copywriter/html-css-js/typewriter-clean)) | undefined | Freelance Copywriter | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Spotlight Dark Comedian]([./templates/creative/comedian/html-css-js/spotlight-dark](./templates/creative/comedian/html-css-js/spotlight-dark)) | undefined | Spotlight Dark Comedian | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Lens Perspective Photographer]([./templates/creative/photographer/html-css-js/lens-perspective](./templates/creative/photographer/html-css-js/lens-perspective)) | undefined | Lens Perspective Photographer | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Bento Grid Creator]([./templates/creative/content-creator/html-css-js/bento-grid](./templates/creative/content-creator/html-css-js/bento-grid)) | undefined | Bento Grid Creator | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Brutalist Split-Screen Architect]([./templates/creative/architect-3d/html-css-js/brutalist-split](./templates/creative/architect-3d/html-css-js/brutalist-split)) | undefined | Brutalist Split-Screen Architect | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Editorial Slides Fashion]([./templates/creative/fashion-designer/html-css-js/editorial-slides](./templates/creative/fashion-designer/html-css-js/editorial-slides)) | undefined | Editorial Slides Fashion | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Audio Beat Producer]([./templates/creative/music-producer/html-css-js/beat-portfolio](./templates/creative/music-producer/html-css-js/beat-portfolio)) | undefined | Audio Beat Producer | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Insights UX Researcher]([./templates/creative/ux-researcher/html-css-js/case-studies](./templates/creative/ux-researcher/html-css-js/case-studies)) | undefined | Insights UX Researcher | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Literary Classic]([./templates/creative/author/html-css-js/literary-classic](./templates/creative/author/html-css-js/literary-classic)) | Author | Literary Classic | HTML/CSS/JS | single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/author/html-css-js/literary-classic/index.html) |
+| [Modern Spaces]([./templates/creative/interior-designer/html-css-js/modern-spaces](./templates/creative/interior-designer/html-css-js/modern-spaces)) | Interior Designer | Modern Spaces | HTML/CSS/JS | single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/interior-designer/html-css-js/modern-spaces/index.html) |
 
 ### Business
 
 | Template | Role | Theme | Stack | Structure | Live Preview |
 |---|---|---|---|---|---|
-| [Luxury Real Estate](./templates/business/real-estate/html-css-js/luxury-trust) | Real Estate Agent | Luxury Trust | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/business/real-estate/html-css-js/luxury-trust/index.html) |
-| [Corporate Wealth Management](./templates/business/financial-advisor/html-css-js/corporate-trust) | Financial Advisor / Consultant | Corporate Trust | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/business/financial-advisor/html-css-js/corporate-trust/index.html) |
-| [Legal Trust Attorney](./templates/business/lawyer/html-css-js/legal-trust) | Lawyer / Legal Counsel | Classic Professional | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/business/lawyer/html-css-js/legal-trust/index.html) |
-| [Luxury Estate Agent](./templates/business/real-estate/html-css-js/luxury-estate) | Real Estate Agent / Broker | Luxury Estate | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/business/real-estate/html-css-js/luxury-estate/index.html) |
-| [FinTech Neon Dashboard](./templates/business/crypto-analyst/html-css-js/dashboard-neon) | Cryptocurrency Analyst / Trader | Dashboard Neon | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/business/crypto-analyst/html-css-js/dashboard-neon/index.html) |
-| [Injury Defense Advocate](./templates/business/personal-injury-lawyer/html-css-js/defense-advocate) | Personal Injury Lawyer | Thorne Injury Law | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/business/personal-injury-lawyer/html-css-js/defense-advocate/index.html) |
+| [Luxury Real Estate]([./templates/business/real-estate/html-css-js/luxury-trust](./templates/business/real-estate/html-css-js/luxury-trust)) | undefined | Luxury Real Estate | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Corporate Wealth Management]([./templates/business/financial-advisor/html-css-js/corporate-trust](./templates/business/financial-advisor/html-css-js/corporate-trust)) | undefined | Corporate Wealth Management | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Legal Trust Attorney]([./templates/business/lawyer/html-css-js/legal-trust](./templates/business/lawyer/html-css-js/legal-trust)) | undefined | Legal Trust Attorney | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Luxury Estate Agent]([./templates/business/real-estate/html-css-js/luxury-estate](./templates/business/real-estate/html-css-js/luxury-estate)) | undefined | Luxury Estate Agent | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [FinTech Neon Dashboard]([./templates/business/crypto-analyst/html-css-js/dashboard-neon](./templates/business/crypto-analyst/html-css-js/dashboard-neon)) | undefined | FinTech Neon Dashboard | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Injury Defense Advocate]([./templates/business/personal-injury-lawyer/html-css-js/defense-advocate](./templates/business/personal-injury-lawyer/html-css-js/defense-advocate)) | undefined | Injury Defense Advocate | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
 
 ### Academic
 
 | Template | Role | Theme | Stack | Structure | Live Preview |
 |---|---|---|---|---|---|
-| [Classic Editorial Journalist](./templates/academic/journalist/html-css-js/classic-editorial) | Journalist / Author | Classic Editorial | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/journalist/html-css-js/classic-editorial/index.html) |
-| [Bright Learning Educator](./templates/academic/teacher/html-css-js/bright-learning) | Teacher / Educator | Friendly Accessible | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/teacher/html-css-js/bright-learning/index.html) |
+| [Classic Editorial Journalist]([./templates/academic/journalist/html-css-js/classic-editorial](./templates/academic/journalist/html-css-js/classic-editorial)) | undefined | Classic Editorial Journalist | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Bright Learning Educator]([./templates/academic/teacher/html-css-js/bright-learning](./templates/academic/teacher/html-css-js/bright-learning)) | undefined | Bright Learning Educator | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
 
-### Health & Wellness
+### Health Wellness
 
 | Template | Role | Theme | Stack | Structure | Live Preview |
 |---|---|---|---|---|---|
-| [Bold Energy Fitness](./templates/health-wellness/fitness/html-css-js/bold-energy) | Personal Trainer | Bold Energy | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/fitness/html-css-js/bold-energy/index.html) |
-| [Clinical Clean Doctor](./templates/health-wellness/doctor/html-css-js/clinical-clean) | Medical Doctor / Surgeon | Minimalist Trustworthy | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/doctor/html-css-js/clinical-clean/index.html) |
-| [Fit Transform Coach](./templates/health-wellness/personal-trainer/html-css-js/fit-transform) | Fitness Coach / Personal Trainer | Fit Transform | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/personal-trainer/html-css-js/fit-transform/index.html) |
-| [Lumina Smile Clinic](./templates/health-wellness/dentist/html-css-js/smile-clinic) | Dentist / Orthodontist | Lumina Dental | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/dentist/html-css-js/smile-clinic/index.html) |
+| [Bold Energy Fitness]([./templates/health-wellness/fitness/html-css-js/bold-energy](./templates/health-wellness/fitness/html-css-js/bold-energy)) | undefined | Bold Energy Fitness | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Clinical Clean Doctor]([./templates/health-wellness/doctor/html-css-js/clinical-clean](./templates/health-wellness/doctor/html-css-js/clinical-clean)) | undefined | Clinical Clean Doctor | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Fit Transform Coach]([./templates/health-wellness/personal-trainer/html-css-js/fit-transform](./templates/health-wellness/personal-trainer/html-css-js/fit-transform)) | undefined | Fit Transform Coach | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Lumina Smile Clinic]([./templates/health-wellness/dentist/html-css-js/smile-clinic](./templates/health-wellness/dentist/html-css-js/smile-clinic)) | undefined | Lumina Smile Clinic | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Zen Flow]([./templates/health-wellness/yoga-instructor/html-css-js/zen-flow](./templates/health-wellness/yoga-instructor/html-css-js/zen-flow)) | Yoga Instructor | Zen Flow | HTML/CSS/JS | single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/yoga-instructor/html-css-js/zen-flow/index.html) |
 
 ### Services
 
 | Template | Role | Theme | Stack | Structure | Live Preview |
 |---|---|---|---|---|---|
-| [Elegant Chef Portfolio](./templates/services/culinary/html-css-js/elegant-restaurant) | Chef / Culinary Artist | Elegant Restaurant | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/culinary/html-css-js/elegant-restaurant/index.html) |
-| [Gourmet Minimal Chef](./templates/services/chef/html-css-js/gourmet-minimal) | Chef / Culinary Artist | Gourmet Minimalist | HTML/CSS/JS | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/services/chef/html-css-js/gourmet-minimal/index.html) |
-| [Specialty Coffee Roaster](./templates/services/barista/html-css-js/specialty-roasters) | Barista / Coffee Roaster | Bean Culture | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/barista/html-css-js/specialty-roasters/index.html) |
+| [Elegant Chef Portfolio]([./templates/services/culinary/html-css-js/elegant-restaurant](./templates/services/culinary/html-css-js/elegant-restaurant)) | undefined | Elegant Chef Portfolio | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Gourmet Minimal Chef]([./templates/services/chef/html-css-js/gourmet-minimal](./templates/services/chef/html-css-js/gourmet-minimal)) | undefined | Gourmet Minimal Chef | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Specialty Coffee Roaster]([./templates/services/barista/html-css-js/specialty-roasters](./templates/services/barista/html-css-js/specialty-roasters)) | undefined | Specialty Coffee Roaster | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Pawfect Pet Care]([./templates/services/pet-care/html-css-js/pawfect-care](./templates/services/pet-care/html-css-js/pawfect-care)) | undefined | Pawfect Pet Care | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [GreenSpaces Landscaping]([./templates/services/landscaping/html-css-js/green-spaces](./templates/services/landscaping/html-css-js/green-spaces)) | undefined | GreenSpaces Landscaping | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Elegant Events]([./templates/services/event-planner/html-css-js/elegant-events](./templates/services/event-planner/html-css-js/elegant-events)) | Event Planner | Elegant Events | HTML/CSS/JS | single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/event-planner/html-css-js/elegant-events/index.html) |
+| [Auto Pro]([./templates/services/mechanic/html-css-js/auto-pro](./templates/services/mechanic/html-css-js/auto-pro)) | Mechanic | Auto Pro | HTML/CSS/JS | single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/mechanic/html-css-js/auto-pro/index.html) |
+
+### Retail
+
+| Template | Role | Theme | Stack | Structure | Live Preview |
+|---|---|---|---|---|---|
+| [Harvest Roots Farm Stand]([./templates/retail/farm-stand/html-css-js/harvest-roots](./templates/retail/farm-stand/html-css-js/harvest-roots)) | undefined | Harvest Roots Farm Stand | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Golden Crust Artisan Bakery]([./templates/retail/bakery/html-css-js/golden-crust](./templates/retail/bakery/html-css-js/golden-crust)) | undefined | Golden Crust Artisan Bakery | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Bloom Studio Florist]([./templates/retail/florist/html-css-js/bloom-studio](./templates/retail/florist/html-css-js/bloom-studio)) | undefined | Bloom Studio Florist | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Artisan Market Crafts]([./templates/retail/handmade/html-css-js/artisan-market](./templates/retail/handmade/html-css-js/artisan-market)) | undefined | Artisan Market Crafts | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [EarthFirst Eco Store]([./templates/retail/eco-store/html-css-js/earth-first](./templates/retail/eco-store/html-css-js/earth-first)) | undefined | EarthFirst Eco Store | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+
+### Startup
+
+| Template | Role | Theme | Stack | Structure | Live Preview |
+|---|---|---|---|---|---|
+| [Campus Folio Student Portfolio]([./templates/startup/student/html-css-js/campus-folio](./templates/startup/student/html-css-js/campus-folio)) | undefined | Campus Folio Student Portfolio | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [LaunchPad AI Startup]([./templates/startup/tech-startup/html-css-js/launchpad-ai](./templates/startup/tech-startup/html-css-js/launchpad-ai)) | undefined | LaunchPad AI Startup | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [GigPro Freelancer]([./templates/startup/freelancer/html-css-js/gig-portfolio](./templates/startup/freelancer/html-css-js/gig-portfolio)) | undefined | GigPro Freelancer | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
 
 ---
 
