@@ -377,7 +377,8 @@ function TemplateCard({ template, index = 0, onActionClick, onPreviewClick }: { 
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
   }
-  const previewUrl = '/' + template.path + '/index.html';
+  const cleanPath = template.path.replace(/^\/+/, '');
+  const previewUrl = '/' + cleanPath + '/index.html';
 
   const CATEGORY_COLORS: Record<string, string> = {
     technology: '#4ade80',
@@ -481,10 +482,10 @@ function TemplateCard({ template, index = 0, onActionClick, onPreviewClick }: { 
           <motion.a
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            href={`https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${template.path}`}
+            href={`https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${cleanPath}`}
             onClick={(e: any) => {
               e.preventDefault();
-              onActionClick(`https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${template.path}`);
+              onActionClick(`https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${cleanPath}`);
             }}
             target="_blank"
             rel="noopener noreferrer"
