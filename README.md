@@ -29,13 +29,15 @@ templates/
 | `technology` | Full Stack Developer, Software Engineer, Data Scientist, Web3 Developer, AI Research Scientist, Cybersecurity Specialist |
 | `creative` | UI/UX Designer, Video Editor, Photographer, Musician, Architect, Streamer, Copywriter, Comedian, Architectural Photographer, Content Creator, 3D Architectural Artist, Fashion Designer, Music Producer, UX Researcher |
 | `business` | Real Estate Agent, Financial Advisor, Lawyer, Cryptocurrency Analyst, Personal Injury Lawyer |
-| `academic` | Journalist, Teacher |
+| `academic` | Journalist, Teacher, Researcher |
 | `health-wellness` | Personal Trainer, Fitness Coach, Doctor, Dentist |
 | `services` | Chef, Barista |
+| `retail` | Baker / Bakery Shop, Farmer / Farm Stand |
+| `startup` | Student |
 
 ---
 
-## Available Templates (55)
+## Available Templates (60)
 
 ### Technology
 
@@ -71,6 +73,8 @@ templates/
 | [wanderlust-layered]([./templates/creative/travel-blogger/html-css-js/wanderlust-layered](./templates/creative/travel-blogger/html-css-js/wanderlust-layered)) | travel-blogger | wanderlust-layered | html-css-js | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/travel-blogger/html-css-js/wanderlust-layered/index.html) |
 | [audio-wave]([./templates/creative/podcaster/html-css-js/audio-wave](./templates/creative/podcaster/html-css-js/audio-wave)) | podcaster | audio-wave | html-css-js | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/podcaster/html-css-js/audio-wave/index.html) |
 | [ink-and-skin]([./templates/creative/tattoo-artist/html-css-js/ink-and-skin](./templates/creative/tattoo-artist/html-css-js/ink-and-skin)) | tattoo-artist | ink-and-skin | html-css-js | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/tattoo-artist/html-css-js/ink-and-skin/index.html) |
+| [Brutal Structure]([./templates/creative/architect/html-css-js/brutal-structure](./templates/creative/architect/html-css-js/brutal-structure)) | Architect | Brutal Structure | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/architect/html-css-js/brutal-structure/index.html) |
+| [Synth Pulse]([./templates/creative/music-producer/html-css-js/synth-pulse](./templates/creative/music-producer/html-css-js/synth-pulse)) | Music Producer | Synth Pulse | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/music-producer/html-css-js/synth-pulse/index.html) |
 
 ### Business
 
@@ -90,6 +94,7 @@ templates/
 |---|---|---|---|---|---|
 | [Classic Editorial Journalist]([./templates/academic/journalist/html-css-js/classic-editorial](./templates/academic/journalist/html-css-js/classic-editorial)) | undefined | Classic Editorial Journalist | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
 | [Bright Learning Educator]([./templates/academic/teacher/html-css-js/bright-learning](./templates/academic/teacher/html-css-js/bright-learning)) | undefined | Bright Learning Educator | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Scholastic Press]([./templates/academic/researcher/html-css-js/scholastic-press](./templates/academic/researcher/html-css-js/scholastic-press)) | Researcher | Scholastic Press | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/researcher/html-css-js/scholastic-press/index.html) |
 
 ### Health Wellness
 
@@ -119,10 +124,12 @@ templates/
 | Template | Role | Theme | Stack | Structure | Live Preview |
 |---|---|---|---|---|---|
 | [Harvest Roots Farm Stand]([./templates/retail/farm-stand/html-css-js/harvest-roots](./templates/retail/farm-stand/html-css-js/harvest-roots)) | undefined | Harvest Roots Farm Stand | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
-| [Golden Crust Artisan Bakery]([./templates/retail/bakery/html-css-js/golden-crust](./templates/retail/bakery/html-css-js/golden-crust)) | undefined | Golden Crust Artisan Bakery | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Golden Crust Artisan Bakery]([./templates/retail/bakery/html-css-js/golden-crust](./templates/retail/golden-crust/html-css-js/golden-crust)) | undefined | Golden Crust Artisan Bakery | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
 | [Bloom Studio Florist]([./templates/retail/florist/html-css-js/bloom-studio](./templates/retail/florist/html-css-js/bloom-studio)) | undefined | Bloom Studio Florist | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
 | [Artisan Market Crafts]([./templates/retail/handmade/html-css-js/artisan-market](./templates/retail/handmade/html-css-js/artisan-market)) | undefined | Artisan Market Crafts | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
 | [EarthFirst Eco Store]([./templates/retail/eco-store/html-css-js/earth-first](./templates/retail/eco-store/html-css-js/earth-first)) | undefined | EarthFirst Eco Store | HTML/CSS/JS | undefined | [Preview](https://portfolio4builders.vercel.appundefined) |
+| [Bento Crumbs]([./templates/retail/bakery/html-css-js/bento-crumbs](./templates/retail/bakery/html-css-js/bento-crumbs)) | Bakery | Bento Crumbs | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/retail/bakery/html-css-js/bento-crumbs/index.html) |
+| [Earth Harvest]([./templates/retail/farm-stand/html-css-js/earth-harvest](./templates/retail/farm-stand/html-css-js/earth-harvest)) | Farm Stand | Earth Harvest | HTML/CSS/JS | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/retail/farm-stand/html-css-js/earth-harvest/index.html) |
 
 ### Startup
 
