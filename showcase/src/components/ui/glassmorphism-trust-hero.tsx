@@ -1,4 +1,5 @@
 import React from "react";
+import templates from "@/data/templates.json";
 import { 
   ArrowRight, 
   Play, 
@@ -136,7 +137,7 @@ export default function HeroSection() {
                     <Target className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-3xl font-bold tracking-tight text-white">15+</div>
+                    <div className="text-3xl font-bold tracking-tight text-white">{templates.length}+</div>
                     <div className="text-sm text-zinc-400">Templates Created</div>
                   </div>
                 </div>
