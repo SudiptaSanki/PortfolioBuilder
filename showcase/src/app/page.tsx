@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import templates from '@/data/templates.json';
 import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from 'framer-motion';
 import HeroSection from '@/components/ui/glassmorphism-trust-hero';
@@ -43,7 +43,7 @@ export default function Home() {
   const [showStarModal, setShowStarModal] = useState(false);
   const [targetUrl, setTargetUrl] = useState('');
 
-  const handleLinkClick = (url: string) => {
+  const handleLinkClick = useCallback((url: string) => {
     if (typeof window === 'undefined') return;
     const hasStarred = sessionStorage.getItem('foliohub_starred_or_dismissed');
     if (hasStarred) {
@@ -56,7 +56,7 @@ export default function Home() {
         window.open(url, '_blank');
       }
     }
-  };
+  }, []);
 
   const filtered = useMemo<Template[]>(() => {
     const q = query.toLowerCase().trim();
@@ -272,7 +272,7 @@ export default function Home() {
                   template={t} 
                   index={i}
                   onActionClick={handleLinkClick} 
-                  onPreviewClick={() => handleLinkClick('/' + t.path + '/index.html')}
+                  onPreviewClick={() => handleLinkClick('/' + t.path.replace(/^\/+/, '') + '/index.html')}
                 />
               ))}
             </AnimatePresence>
