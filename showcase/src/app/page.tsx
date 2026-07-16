@@ -272,7 +272,6 @@ export default function Home() {
                   template={t} 
                   index={i}
                   onActionClick={handleLinkClick} 
-                  onPreviewClick={() => handleLinkClick('/' + t.path.replace(/^\/+/, '') + '/index.html')}
                 />
               ))}
             </AnimatePresence>
@@ -369,7 +368,7 @@ export default function Home() {
   );
 }
 
-function TemplateCard({ template, index = 0, onActionClick, onPreviewClick }: { template: Template; index?: number; onActionClick: (url: string) => void; onPreviewClick: () => void; }) {
+function TemplateCard({ template, index = 0, onActionClick }: { template: Template; index?: number; onActionClick: (url: string) => void; }) {
   const [hovered, setHovered] = useState(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -426,7 +425,7 @@ function TemplateCard({ template, index = 0, onActionClick, onPreviewClick }: { 
         }}
       />
       {/* Preview Image */}
-      <div onClick={onPreviewClick} style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', cursor: 'pointer' }}>
+      <div onClick={(e: any) => { e.preventDefault(); onActionClick(previewUrl); }} style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', cursor: 'pointer' }}>
         {hovered ? (
           <iframe
             src={previewUrl}
