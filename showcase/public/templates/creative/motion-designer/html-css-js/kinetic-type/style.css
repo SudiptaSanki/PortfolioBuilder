@@ -1,5 +1,5 @@
 :root {
-    --bg: #ff3366; /* Vibrant motion pink */
+    --pink: #ff3366; /* Vibrant motion pink */
     --dark: #0a0a0c;
     --text: #ffffff;
     --font-head: 'Oswald', sans-serif;
@@ -19,6 +19,10 @@ body {
     overflow-x: hidden;
 }
 
+body.gate-active {
+    overflow: hidden;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
@@ -27,11 +31,11 @@ body {
     background: var(--dark);
 }
 ::-webkit-scrollbar-thumb {
-    background: var(--bg);
+    background: var(--pink);
     border-radius: 4px;
 }
 
-/* Nav */
+/* Nav (Only visible or active when gate is inactive) */
 .nav {
     position: fixed;
     top: 0;
@@ -44,12 +48,21 @@ body {
     backdrop-filter: blur(10px);
     background: rgba(10, 10, 12, 0.7);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s, visibility 0.5s;
+}
+body:not(.gate-active) .nav {
+    opacity: 1;
+    visibility: visible;
 }
 .logo {
     font-family: var(--font-head);
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: 1px;
+    color: var(--text);
+    text-decoration: none;
 }
 .nav-links a {
     color: var(--text);
@@ -61,13 +74,13 @@ body {
     transition: color 0.3s;
 }
 .nav-links a:hover {
-    color: var(--bg);
+    color: var(--pink);
 }
 
 /* Only show custom cursor on devices that support hover */
 @media (hover: hover) {
     body { cursor: none; }
-    .nav-links a, button, .work-card, .close-modal { cursor: none !important; }
+    .nav-links a, button, .work-card, .close-modal, .logo { cursor: none !important; }
     .cursor-dot {
         width: 20px;
         height: 20px;
@@ -87,7 +100,25 @@ body {
     .cursor-dot { display: none; }
 }
 
-/* Kinetic Scroll Text (Background layer in Hero) */
+/* --- GATEKEEPER SCREEN (Pink landing page) --- */
+.gate-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--pink);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+body:not(.gate-active) .gate-screen {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Kinetic Scroll Text (Inside Gatekeeper) */
 .scroll-container {
     position: absolute;
     top: 0;
@@ -108,6 +139,7 @@ body {
     font-family: var(--font-head);
     animation: scroll-left 20s linear infinite;
     text-transform: uppercase;
+    color: white;
 }
 .kinetic-text.reverse {
     animation: scroll-right 25s linear infinite;
@@ -116,15 +148,7 @@ body {
 @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 @keyframes scroll-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
 
-/* Hero Section */
-.hero-section {
-    position: relative;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(circle at center, rgba(255, 51, 102, 0.15) 0%, transparent 70%);
-}
+/* Center Content */
 .center-content {
     position: relative;
     z-index: 10;
@@ -139,14 +163,14 @@ body {
     color: var(--text);
 }
 .center-content h1:hover {
-    color: var(--dark);
+    color: var(--pink);
     -webkit-text-stroke: 2px white;
 }
 .center-content p {
     font-size: 1.5rem;
     margin: 2rem 0;
     font-weight: 300;
-    color: #ccc;
+    color: white;
 }
 
 /* Ripple Button */
@@ -163,7 +187,7 @@ body {
     transition: 0.3s;
 }
 .btn-ripple:hover {
-    color: var(--dark);
+    color: var(--pink);
 }
 .btn-ripple::after {
     content: '';
@@ -199,9 +223,9 @@ body {
     100% { transform: translate(3px, -5px) rotate(-1deg); }
 }
 
-/* Works Section */
+/* --- MAIN PORTFOLIO SECTIONS --- */
 .works-section {
-    padding: 8rem 10%;
+    padding: 12rem 10% 8rem;
     background: #070708;
 }
 .section-title {
@@ -224,7 +248,7 @@ body {
 }
 .work-card:hover {
     transform: translateY(-10px);
-    border-color: var(--bg);
+    border-color: var(--pink);
 }
 .work-img {
     height: 250px;
@@ -267,7 +291,7 @@ body {
 .about-text h2 {
     font-family: var(--font-head);
     font-size: clamp(2.5rem, 5vw, 4rem);
-    color: var(--bg);
+    color: var(--pink);
     margin-bottom: 2rem;
 }
 .about-text p {
@@ -283,7 +307,7 @@ body {
 }
 .tool-tag {
     background: rgba(255, 51, 102, 0.1);
-    color: var(--bg);
+    color: var(--pink);
     padding: 0.5rem 1.2rem;
     border: 1px solid rgba(255, 51, 102, 0.3);
     font-weight: 500;
@@ -318,7 +342,7 @@ body {
 }
 .contact-form input:focus, .contact-form textarea:focus {
     outline: none;
-    border-color: var(--bg);
+    border-color: var(--pink);
 }
 
 /* Modal Overlay */
@@ -327,7 +351,7 @@ body {
     top: 0; left: 0; width: 100vw; height: 100vh;
     background: rgba(10, 10, 12, 0.95);
     backdrop-filter: blur(15px);
-    z-index: 1000;
+    z-index: 1001; /* Must sit higher than the fixed gate screen */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -344,7 +368,7 @@ body {
     width: 90%;
     max-width: 1000px;
     aspect-ratio: 16/9;
-    border: 4px solid var(--bg);
+    border: 4px solid var(--pink);
 }
 .video-container {
     width: 100%;
@@ -368,10 +392,11 @@ body {
     transition: color 0.3s;
 }
 .close-modal:hover {
-    color: var(--bg);
+    color: var(--pink);
 }
 
 @media (max-width: 768px) {
     .nav-links { display: none; }
     .works-section, .about-section, .contact-section { padding: 5rem 5%; }
+    .works-section { padding-top: 8rem; }
 }

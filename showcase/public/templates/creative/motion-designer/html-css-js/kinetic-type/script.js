@@ -7,7 +7,7 @@ if (window.matchMedia('(hover: hover)').matches && cursor) {
     });
 
     // Expand cursor on hover
-    document.querySelectorAll('a, button, .work-card').forEach(el => {
+    document.querySelectorAll('a, button, .work-card, h1').forEach(el => {
         el.addEventListener('mouseenter', () => {
             cursor.style.width = '60px';
             cursor.style.height = '60px';
@@ -29,7 +29,7 @@ function getAudioContext() {
 }
 
 // Heavy bass sound on hover of H1
-const hoverHeader = document.querySelector('h1');
+const hoverHeader = document.querySelector('.shake-extreme');
 if (hoverHeader) {
     hoverHeader.addEventListener('mouseenter', () => {
         try {
@@ -56,7 +56,7 @@ if (hoverHeader) {
     });
 }
 
-// Short beep for links
+// Short beep for links/buttons
 function playBeep() {
     try {
         const ctx = getAudioContext();
@@ -80,37 +80,55 @@ function playBeep() {
     }
 }
 
-document.querySelectorAll('.sound-hover').forEach(el => {
+document.querySelectorAll('.sound-hover, .btn-ripple').forEach(el => {
     el.addEventListener('mouseenter', playBeep);
 });
 
-// Modal Logic
+// Navigation Transitions (Gatekeeper Overlay)
+const enterBtn = document.getElementById('enterBtn');
+const backToGate = document.getElementById('backToGate');
 const modal = document.getElementById('showreelModal');
-const showreelBtn = document.getElementById('showreelBtn');
 const closeModal = document.getElementById('closeModal');
 const iframe = modal ? modal.querySelector('iframe') : null;
 let originalIframeSrc = iframe ? iframe.getAttribute('src') : '';
 
-if (showreelBtn && modal && closeModal) {
-    showreelBtn.addEventListener('click', () => {
+if (enterBtn) {
+    enterBtn.addEventListener('click', () => {
         playBeep();
-        modal.classList.add('active');
-        if (iframe && originalIframeSrc) {
-            // Force play on open by modifying src (if supported)
-            iframe.setAttribute('src', originalIframeSrc.replace('autoplay=0', 'autoplay=1'));
+        
+        // Remove gate active class from body to reveal site and enable scroll
+        document.body.classList.remove('gate-active');
+        
+        // Open showreel modal automatically
+        if (modal) {
+            modal.classList.add('active');
+            if (iframe && originalIframeSrc) {
+                iframe.setAttribute('src', originalIframeSrc.replace('autoplay=0', 'autoplay=1'));
+            }
         }
     });
+}
 
+if (backToGate) {
+    backToGate.addEventListener('click', () => {
+        playBeep();
+        
+        // Return to gatekeeper screen
+        document.body.classList.add('gate-active');
+        window.scrollTo(0, 0);
+    });
+}
+
+// Modal closing logic
+if (modal && closeModal) {
     closeModal.addEventListener('click', () => {
         playBeep();
         modal.classList.remove('active');
         if (iframe) {
-            // Stop video playing by resetting src
             iframe.setAttribute('src', originalIframeSrc);
         }
     });
 
-    // Close on click outside modal content
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.classList.remove('active');
