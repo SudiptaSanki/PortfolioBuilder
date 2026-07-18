@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MERCH | ZERO_COOL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236c7af7'/%3E%3Ctext x='50' y='67' font-family='system-ui, -apple-system, sans-serif' font-size='60' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+    <div class="glitch-overlay"></div>
+    <nav class="nav">
+        <a href="index.html" class="logo glitch sound-hover" data-text="Z_COOL">Z_COOL</a>
+        <div class="links">
+            <a href="stream.html" class="sound-hover">STREAM</a>
+            <a href="merch.html" class="sound-hover active">MERCH</a>
+            <a href="setup.html" class="sound-hover">SETUP</a>
+        </div>
+    </nav>
+
+    <header class="merch-header">
+        <h1 class="glitch" data-text="OFFICIAL SHOP">OFFICIAL SHOP</h1>
+        <p>Elevate your battle station with exclusive Z_COOL apparel and hardware</p>
+    </header>
+
+    <section class="merch-grid">
+        <div class="merch-card sound-hover">
+            <div class="merch-img">
+                <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=400&q=80" alt="Glitch Hoodie">
+            </div>
+            <div class="merch-info">
+                <h3>GLITCH HOODIE (LIMITED)</h3>
+                <span class="merch-price">$55.00</span>
+                <button class="btn-buy sound-hover" onclick="addToCart('GLITCH HOODIE')">ADD TO CART</button>
+            </div>
+        </div>
+
+        <div class="merch-card sound-hover">
+            <div class="merch-img">
+                <img src="https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=400&q=80" alt="Mechanical Keyboard">
+            </div>
+            <div class="merch-info">
+                <h3>CYBERBOARD MK.1</h3>
+                <span class="merch-price">$120.00</span>
+                <button class="btn-buy sound-hover" onclick="addToCart('CYBERBOARD MK.1')">ADD TO CART</button>
+            </div>
+        </div>
+
+        <div class="merch-card sound-hover">
+            <div class="merch-img">
+                <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=400&q=80" alt="Neon mousepad">
+            </div>
+            <div class="merch-info">
+                <h3>LED MATRIX MOUSEPAD</h3>
+                <span class="merch-price">$30.00</span>
+                <button class="btn-buy sound-hover" onclick="addToCart('LED MATRIX MOUSEPAD')">ADD TO CART</button>
+            </div>
+        </div>
+
+        <div class="merch-card sound-hover">
+            <div class="merch-img">
+                <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=400&q=80" alt="Neon headset">
+            </div>
+            <div class="merch-info">
+                <h3>VOID HEADPHONES Pro</h3>
+                <span class="merch-price">$85.00</span>
+                <button class="btn-buy sound-hover" onclick="addToCart('VOID HEADPHONES Pro')">ADD TO CART</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Overlay Notification -->
+    <div id="cartNotification" class="cart-notif">
+        <span id="cartMsg">ADDED TO CART!</span>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function addToCart(itemName) {
+            const notif = document.getElementById('cartNotification');
+            const msg = document.getElementById('cartMsg');
+            msg.textContent = 'ADDED TO CART: ' + itemName;
+            notif.classList.add('show');
+            
+            // Play a success sound
+            if(typeof audioCtx !== 'undefined') {
+                if(audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.15);
+            }
+            
+            setTimeout(() => {
+                notif.classList.remove('show');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
