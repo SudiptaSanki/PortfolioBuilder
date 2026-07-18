@@ -15,23 +15,29 @@ function updateMenu() {
 }
 
 // 8-bit blip sound
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let audioCtx;
+function getAudioContext() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioCtx;
+}
 function playBlip() {
-    if(audioCtx.state === 'suspended') audioCtx.resume();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
+    if(getAudioContext().state === 'suspended') getAudioContext().resume();
+    const osc = getAudioContext().createOscillator();
+    const gain = getAudioContext().createGain();
     
     osc.type = 'square';
-    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+    osc.frequency.setValueAtTime(600, getAudioContext().currentTime);
+    osc.frequency.exponentialRampToValueAtTime(800, getAudioContext().currentTime + 0.1);
     
-    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.1, getAudioContext().currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, getAudioContext().currentTime + 0.1);
     
     osc.connect(gain);
-    gain.connect(audioCtx.destination);
+    gain.connect(getAudioContext().destination);
     osc.start();
-    osc.stop(audioCtx.currentTime + 0.1);
+    osc.stop(getAudioContext().currentTime + 0.1);
 }
 
 menuItems.forEach((item, index) => {
@@ -56,7 +62,7 @@ document.addEventListener('keydown', (e) => {
 
 // Unlock Web Audio API on first user interaction (click/touch)
 document.addEventListener('click', () => {
-    if (typeof audioCtx !== 'undefined' && audioCtx.state === 'suspended') {
-        audioCtx.resume();
+    if (typeof audioCtx !== 'undefined' && getAudioContext().state === 'suspended') {
+        getAudioContext().resume();
     }
 }, { once: true });

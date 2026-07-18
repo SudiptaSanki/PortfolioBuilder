@@ -7,24 +7,30 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // Sound effects on hover using Web Audio API to avoid external assets
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let audioCtx;
+function getAudioContext() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioCtx;
+}
 function playHoverSound() {
-    if(audioCtx.state === 'suspended') audioCtx.resume();
-    const osc = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
+    if(getAudioContext().state === 'suspended') getAudioContext().resume();
+    const osc = getAudioContext().createOscillator();
+    const gainNode = getAudioContext().createGain();
     
     osc.type = 'square';
-    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.1);
+    osc.frequency.setValueAtTime(150, getAudioContext().currentTime);
+    osc.frequency.exponentialRampToValueAtTime(40, getAudioContext().currentTime + 0.1);
     
-    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    gainNode.gain.setValueAtTime(0.1, getAudioContext().currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, getAudioContext().currentTime + 0.1);
     
     osc.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
+    gainNode.connect(getAudioContext().destination);
     
     osc.start();
-    osc.stop(audioCtx.currentTime + 0.1);
+    osc.stop(getAudioContext().currentTime + 0.1);
 }
 
 document.querySelectorAll('.sound-hover').forEach(el => {
@@ -33,7 +39,7 @@ document.querySelectorAll('.sound-hover').forEach(el => {
 
 // Unlock Web Audio API on first user interaction (click/touch)
 document.addEventListener('click', () => {
-    if (typeof audioCtx !== 'undefined' && audioCtx.state === 'suspended') {
-        audioCtx.resume();
+    if (typeof audioCtx !== 'undefined' && getAudioContext().state === 'suspended') {
+        getAudioContext().resume();
     }
 }, { once: true });
