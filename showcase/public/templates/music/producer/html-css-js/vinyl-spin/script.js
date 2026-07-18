@@ -97,3 +97,10 @@ function playPluck() {
 document.querySelectorAll('.sound-hover').forEach(el => {
     el.addEventListener('mouseenter', playPluck);
 });
+
+// Unlock Web Audio API on first user interaction (click/touch)
+document.addEventListener('click', () => {
+    if (typeof audioCtx !== 'undefined' && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}, { once: true });

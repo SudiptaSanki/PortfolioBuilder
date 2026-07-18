@@ -36,3 +36,10 @@ document.querySelector('h1').addEventListener('mouseenter', () => {
     osc.start();
     osc.stop(audioCtx.currentTime + 0.3);
 });
+
+// Unlock Web Audio API on first user interaction (click/touch)
+document.addEventListener('click', () => {
+    if (typeof audioCtx !== 'undefined' && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}, { once: true });

@@ -53,3 +53,10 @@ document.addEventListener('keydown', (e) => {
         playBlip();
     }
 });
+
+// Unlock Web Audio API on first user interaction (click/touch)
+document.addEventListener('click', () => {
+    if (typeof audioCtx !== 'undefined' && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}, { once: true });
