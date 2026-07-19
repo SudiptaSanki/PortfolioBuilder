@@ -2,24 +2,30 @@ const title = document.querySelector('.sound-trigger');
 const lights = document.querySelectorAll('.light');
 let strobeInterval;
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let audioCtx;
+function getAudioContext() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioCtx;
+}
 
 function playBassDrop() {
-    if(audioCtx.state === 'suspended') audioCtx.resume();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
+    if(getAudioContext().state === 'suspended') getAudioContext().resume();
+    const osc = getAudioContext().createOscillator();
+    const gain = getAudioContext().createGain();
     
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 1);
+    osc.frequency.setValueAtTime(120, getAudioContext().currentTime);
+    osc.frequency.exponentialRampToValueAtTime(30, getAudioContext().currentTime + 1);
     
-    gain.gain.setValueAtTime(1, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1);
+    gain.gain.setValueAtTime(1, getAudioContext().currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, getAudioContext().currentTime + 1);
     
     osc.connect(gain);
-    gain.connect(audioCtx.destination);
+    gain.connect(getAudioContext().destination);
     osc.start();
-    osc.stop(audioCtx.currentTime + 1);
+    osc.stop(getAudioContext().currentTime + 1);
 }
 
 title.addEventListener('mouseenter', () => {
@@ -49,3 +55,10 @@ title.addEventListener('mouseenter', () => {
         }
     }, 100);
 });
+
+// Unlock Web Audio API on first user interaction (click/touch)
+document.addEventListener('click', () => {
+    if (typeof audioCtx !== 'undefined' && getAudioContext().state === 'suspended') {
+        getAudioContext().resume();
+    }
+}, { once: true });
