@@ -379,8 +379,11 @@ function TemplateCard({ template, index = 0, onActionClick }: { template: Templa
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
   }
-  const cleanPath = template.path.replace(/^\/+/, '');
-  const previewUrl = '/' + cleanPath + '/index.html';
+  const rawPath = (template as any).path || '';
+  const cleanPath = rawPath.replace(/^\/+/, '').replace(/\/index\.html$/, '');
+  const previewUrl = '/' + cleanPath + (cleanPath.endsWith('.html') ? '' : '/index.html');
+  const codePath = cleanPath.replace(/\/(dist|out)$/, '');
+  const githubUrl = `https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${codePath}`;
 
   const CATEGORY_COLORS: Record<string, string> = {
     technology: '#4ade80',
@@ -484,10 +487,10 @@ function TemplateCard({ template, index = 0, onActionClick }: { template: Templa
           <motion.a
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            href={`https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${cleanPath}`}
+            href={githubUrl}
             onClick={(e: any) => {
               e.preventDefault();
-              onActionClick(`https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${cleanPath}`);
+              onActionClick(githubUrl);
             }}
             target="_blank"
             rel="noopener noreferrer"
