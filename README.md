@@ -1,6 +1,6 @@
 # Portfolio Builder — Open Source Template Gallery
 
-A growing, open-source collection of **110 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
+A growing, open-source collection of **115 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
 
 ---
 
@@ -24,16 +24,16 @@ templates/
         [theme-name]/   ← individual self-contained template folder
 ```
 
-### Industry Categories Summary (110 Templates Total)
+### Industry Categories Summary (115 Templates Total)
 
 | Industry / Category | Templates Count |
 |---|---|
-| `technology` — Technology & Engineering | **19** |
-| `creative` — Creative & Arts | **36** |
+| `technology` — Technology & Engineering | **20** |
+| `creative` — Creative & Arts | **38** |
 | `business` — Business, Finance & Legal | **11** |
-| `academic` — Academic & Research | **6** |
+| `academic` — Academic & Research | **7** |
 | `health-wellness` — Health & Wellness | **8** |
-| `services` — Services & Hospitality | **11** |
+| `services` — Services & Hospitality | **12** |
 | `retail` — Retail & E-Commerce | **10** |
 | `startup` — Startups & Students | **4** |
 | `events` — Events & Entertainment | **2** |
@@ -43,9 +43,9 @@ templates/
 
 ---
 
-## 🎨 Available Templates (110)
+## 🎨 Available Templates (115)
 
-### Technology & Engineering (19)
+### Technology & Engineering (20)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -68,8 +68,9 @@ templates/
 | [Retro Arcade Game Dev](./templates/technology/game-developer/html-css-js/retro-arcade-gamedev) | Indie Game Developer | 8-Bit Arcade Neon (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/game-developer/html-css-js/retro-arcade-gamedev/index.html) |
 | [Zero Day Pentester](./templates/technology/pentester/html-css-js/zero-day) | Cybersecurity Specialist & Ethical Hacker | Terminal Hacker Alert (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/pentester/html-css-js/zero-day/index.html) |
 | [Qubit State Quantum Engineer](./templates/technology/quantum-engineer/html-css-js/qubit-state) | Quantum Computing Engineer | Quantum Hologram (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/quantum-engineer/html-css-js/qubit-state/index.html) |
+| [Cyber Servo Robotics](./templates/technology/robotics-engineer/html-css-js/cyber-servo) | Robotics Engineer & Mechatronics Specialist | Industrial Cybernetic HUD (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/robotics-engineer/html-css-js/cyber-servo/index.html) |
 
-### Creative & Arts (36)
+### Creative & Arts (38)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -109,6 +110,8 @@ templates/
 | [Vintage Celluloid Film Director](./templates/creative/film-director/html-css-js/vintage-celluloid) | Indie Film Director & Auteur | 16mm Vintage Cinema (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/film-director/html-css-js/vintage-celluloid/index.html) |
 | [Concrete Brutalist Architecture](./templates/creative/architectural-photographer/html-css-js/concrete-brutalis) | Architectural Photographer | High Contrast Brutalist (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/architectural-photographer/html-css-js/concrete-brutalis/index.html) |
 | [Spray Can Graffiti Artist](./templates/creative/graffiti-artist/html-css-js/spray-can) | Graffiti Artist & Street Muralist | Urban Spray Graffiti (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/graffiti-artist/html-css-js/spray-can/index.html) |
+| [Haute Couture Fashion Stylist](./templates/creative/fashion-stylist/html-css-js/haute-couture) | Runway Fashion Stylist & Creative Director | Editorial Rose Gold (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/fashion-stylist/html-css-js/haute-couture/index.html) |
+| [Mars Colony Space Architect](./templates/creative/space-architect/html-css-js/mars-colony) | Off-World Habitat & Space Architect | Martian Habitat Titanium (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/space-architect/html-css-js/mars-colony/index.html) |
 
 ### Business, Finance & Legal (11)
 
@@ -126,7 +129,7 @@ templates/
 | [Enterprise Executive Hub](./templates/business/nextjs-developer/nextjs/next-corporate/out) | Enterprise Agency / Executive | Corporate Tailwind (Next.js) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/business/nextjs-developer/nextjs/next-corporate/out/index.html) |
 | [High Frequency Quant Trader](./templates/business/quant-trader/html-css-js/candlestick-pulse) | Quant Analyst & Algorithmic Trader | Bloomberg Dark Terminal (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/business/quant-trader/html-css-js/candlestick-pulse/index.html) |
 
-### Academic & Research (6)
+### Academic & Research (7)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -136,6 +139,7 @@ templates/
 | [clean-science](./templates/academic/researcher/html-css-js/clean-science) | researcher | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/researcher/html-css-js/clean-science/index.html) |
 | [Quantum Physicist Lab](./templates/academic/quantum-physicist/html-css-js/quantum-researcher) | Quantum Physicist & Researcher | Quantum Physics Clean (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/quantum-physicist/html-css-js/quantum-researcher/index.html) |
 | [Cosmic Void Astrophysics](./templates/academic/astrophysicist/html-css-js/cosmic-void) | Astrophysicist & Space Researcher | Cosmic Void Dark (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/astrophysicist/html-css-js/cosmic-void/index.html) |
+| [Deep Abyss Oceanographer](./templates/academic/oceanographer/html-css-js/deep-abyss) | Marine Biologist & Oceanographer | Bioluminescent Deep Sea (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/oceanographer/html-css-js/deep-abyss/index.html) |
 
 ### Health & Wellness (8)
 
@@ -150,7 +154,7 @@ templates/
 | [fresh-organic](./templates/health-wellness/nutritionist/html-css-js/fresh-organic) | nutritionist | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/nutritionist/html-css-js/fresh-organic/index.html) |
 | [zen-minimal](./templates/health-wellness/yoga-instructor/html-css-js/zen-minimal) | yoga-instructor | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/yoga-instructor/html-css-js/zen-minimal/index.html) |
 
-### Services & Hospitality (11)
+### Services & Hospitality (12)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -165,6 +169,7 @@ templates/
 | [classic-barber](./templates/services/barber/html-css-js/classic-barber) | barber | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/barber/html-css-js/classic-barber/index.html) |
 | [Black & Grey Tattoo Parlor](./templates/services/tattoo-artist/html-css-js/ink-master) | Tattoo Artist / Studio | Dark Needle Ink (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/services/tattoo-artist/html-css-js/ink-master/index.html) |
 | [Chrono Craft Watchmaker](./templates/services/horologist/html-css-js/chrono-craft) | Horologist & Luxury Watchmaker | Luxury Champagne Gold (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/horologist/html-css-js/chrono-craft/index.html) |
+| [Vintage Reserve Sommelier](./templates/services/sommelier/html-css-js/vintage-reserve) | Master Sommelier & Wine Estate Director | Burgundy Reserve Gold (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/sommelier/html-css-js/vintage-reserve/index.html) |
 
 ### Retail & E-Commerce (10)
 
