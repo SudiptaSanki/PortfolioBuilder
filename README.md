@@ -1,6 +1,6 @@
 # Portfolio Builder — Open Source Template Gallery
 
-A growing, open-source collection of **135 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
+A growing, open-source collection of **145 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
 
 ---
 
@@ -24,16 +24,16 @@ templates/
         [theme-name]/   ← individual self-contained template folder
 ```
 
-### Industry Categories Summary (135 Templates Total)
+### Industry Categories Summary (145 Templates Total)
 
 | Industry / Category | Templates Count |
 |---|---|
-| `technology` — Technology & Engineering | **25** |
-| `creative` — Creative & Arts | **45** |
+| `technology` — Technology & Engineering | **27** |
+| `creative` — Creative & Arts | **49** |
 | `business` — Business, Finance & Legal | **11** |
-| `academic` — Academic & Research | **10** |
+| `academic` — Academic & Research | **11** |
 | `health-wellness` — Health & Wellness | **8** |
-| `services` — Services & Hospitality | **17** |
+| `services` — Services & Hospitality | **19** |
 | `retail` — Retail & E-Commerce | **10** |
 | `startup` — Startups & Students | **4** |
 | `events` — Events & Entertainment | **2** |
@@ -43,9 +43,9 @@ templates/
 
 ---
 
-## 🎨 Available Templates (135)
+## 🎨 Available Templates (145)
 
-### Technology & Engineering (25)
+### Technology & Engineering (27)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -74,8 +74,10 @@ templates/
 | [Synapse Core Neuromorphic AI](./templates/technology/ai-researcher/html-css-js/synapse-core) | Neuromorphic AI & Synaptic Engineer | Synaptic Neural Network (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/ai-researcher/html-css-js/synapse-core/index.html) |
 | [Cipher Vault Quantum Cryptography](./templates/technology/quantum-cryptographer/html-css-js/cipher-vault) | Quantum Cryptographer & Cyber-Defense Specialist | Cipher Amber HUD (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/quantum-cryptographer/html-css-js/cipher-vault/index.html) |
 | [Living Materials Bio Designer](./templates/technology/bio-designer/html-css-js/living-materials) | Synthetic Biologist & Bio-Fabricator | Emerald Bio-Luminescence (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/bio-designer/html-css-js/living-materials/index.html) |
+| [Zero Trust Cyber Security](./templates/technology/cybersecurity-expert/html-css-js/zero-trust) | Ethical Hacker & Red Team Lead | Terminal Cyber Security (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/cybersecurity-expert/html-css-js/zero-trust/index.html) |
+| [Sky Telemetry Drone Robotics](./templates/technology/drone-engineer/html-css-js/sky-telemetry) | Autonomous UAV Systems Engineer | Drone Telemetry Cyan HUD (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/drone-engineer/html-css-js/sky-telemetry/index.html) |
 
-### Creative & Arts (45)
+### Creative & Arts (49)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -124,6 +126,10 @@ templates/
 | [Dystopian Haze Concept Artist](./templates/creative/concept-artist/html-css-js/dystopian-haze) | Cyberpunk & Dystopian Concept Artist | Dystopian Neon Glitch (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/concept-artist/html-css-js/dystopian-haze/index.html) |
 | [Nautical Prestige Superyacht Architect](./templates/creative/yacht-designer/html-css-js/nautical-prestige) | Luxury Superyacht Architect | Nautical Navy Gold (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/yacht-designer/html-css-js/nautical-prestige/index.html) |
 | [CRT Cabinet Arcade Restorer](./templates/creative/arcade-restorer/html-css-js/crt-cabinet) | Vintage Arcade Restorer & Hardware Modder | 80s Arcade CRT Scanline (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/arcade-restorer/html-css-js/crt-cabinet/index.html) |
+| [Cinematic Score Film Composer](./templates/creative/film-composer/html-css-js/cinematic-score) | Hollywood Film Scoring Composer & Conductor | Gold & Ebony Cinematic DAW (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/film-composer/html-css-js/cinematic-score/index.html) |
+| [Hyper Render 3D ArchViz](./templates/creative/archviz-artist/html-css-js/hyper-render) | Senior 3D Architectural Visualizer | Raytraced Modern Architecture (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/archviz-artist/html-css-js/hyper-render/index.html) |
+| [Particle Field VFX Supervisor](./templates/creative/vfx-supervisor/html-css-js/particle-field) | Feature Film VFX Supervisor & Particle TD | VFX Particle Burst (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/vfx-supervisor/html-css-js/particle-field/index.html) |
+| [Biophilic Design Eco Architect](./templates/creative/eco-architect/html-css-js/biophilic-design) | Biophilic & Zero-Carbon Architect | Sage Green Biophilic (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/eco-architect/html-css-js/biophilic-design/index.html) |
 
 ### Business, Finance & Legal (11)
 
@@ -141,7 +147,7 @@ templates/
 | [Enterprise Executive Hub](./templates/business/nextjs-developer/nextjs/next-corporate/out) | Enterprise Agency / Executive | Corporate Tailwind (Next.js) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/business/nextjs-developer/nextjs/next-corporate/out/index.html) |
 | [High Frequency Quant Trader](./templates/business/quant-trader/html-css-js/candlestick-pulse) | Quant Analyst & Algorithmic Trader | Bloomberg Dark Terminal (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/business/quant-trader/html-css-js/candlestick-pulse/index.html) |
 
-### Academic & Research (10)
+### Academic & Research (11)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -155,6 +161,7 @@ templates/
 | [Magma Core Volcanology](./templates/academic/volcanologist/html-css-js/magma-core) | Volcanologist & Geothermal Researcher | Magma Ember Obsidian (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/volcanologist/html-css-js/magma-core/index.html) |
 | [Astro Geology Planetary Science](./templates/academic/planetary-scientist/html-css-js/astro-geology) | Exoplanet Geologist & Planetary Scientist | Planetary Orbital Dark (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/planetary-scientist/html-css-js/astro-geology/index.html) |
 | [Strato Cloud Geo-Engineer](./templates/academic/geo-engineer/html-css-js/strato-cloud) | Atmospheric Geo-Engineer & Cloud Seeder | Stratospheric Cyan Cloud (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/geo-engineer/html-css-js/strato-cloud/index.html) |
+| [Trench Explorer Submersible Pilot](./templates/academic/submersible-pilot/html-css-js/trench-explorer) | Deep Sea Submersible Pilot & Hydrothermal Vent Oceanographer | Mariana Abyss Ocean Navy (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/submersible-pilot/html-css-js/trench-explorer/index.html) |
 
 ### Health & Wellness (8)
 
@@ -169,7 +176,7 @@ templates/
 | [fresh-organic](./templates/health-wellness/nutritionist/html-css-js/fresh-organic) | nutritionist | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/nutritionist/html-css-js/fresh-organic/index.html) |
 | [zen-minimal](./templates/health-wellness/yoga-instructor/html-css-js/zen-minimal) | yoga-instructor | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/yoga-instructor/html-css-js/zen-minimal/index.html) |
 
-### Services & Hospitality (17)
+### Services & Hospitality (19)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -190,6 +197,8 @@ templates/
 | [Sonic Boom Test Pilot](./templates/services/test-pilot/html-css-js/sonic-boom) | Aerospace Test Pilot & Flight Instructor | Aviation Cockpit HUD (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/test-pilot/html-css-js/sonic-boom/index.html) |
 | [Forge and Anvil Blacksmith](./templates/services/blacksmith/html-css-js/forge-and-anvil) | Master Artisan Blacksmith & Bladesmith | Molten Ember Steel (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/blacksmith/html-css-js/forge-and-anvil/index.html) |
 | [Savile Thread Bespoke Tailor](./templates/services/bespoke-tailor/html-css-js/savile-thread) | Savile Row Bespoke Tailor & Artisan | Charcoal Wool Gold Thread (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/bespoke-tailor/html-css-js/savile-thread/index.html) |
+| [Grand Vintage Master Sommelier](./templates/services/master-sommelier/html-css-js/grand-vintage) | Master Sommelier & International Wine Director | Burgundy Reserve Gold (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/master-sommelier/html-css-js/grand-vintage/index.html) |
+| [Tourbillon Master Horologist](./templates/services/horologist/html-css-js/tourbillon-master) | Master Horologist & Bespoke Watchmaker | Rose Gold Tourbillon Escapement (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/horologist/html-css-js/tourbillon-master/index.html) |
 
 ### Retail & E-Commerce (10)
 
