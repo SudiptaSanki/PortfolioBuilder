@@ -1,6 +1,6 @@
 # Portfolio Builder — Open Source Template Gallery
 
-A growing, open-source collection of **160 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
+A growing, open-source collection of **165 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
 
 ---
 
@@ -24,16 +24,16 @@ templates/
         [theme-name]/   ← individual self-contained template folder
 ```
 
-### Industry Categories Summary (160 Templates Total)
+### Industry Categories Summary (165 Templates Total)
 
 | Industry / Category | Templates Count |
 |---|---|
-| `technology` — Technology & Engineering | **29** |
-| `creative` — Creative & Arts | **57** |
+| `technology` — Technology & Engineering | **30** |
+| `creative` — Creative & Arts | **59** |
 | `business` — Business, Finance & Legal | **11** |
-| `academic` — Academic & Research | **13** |
+| `academic` — Academic & Research | **14** |
 | `health-wellness` — Health & Wellness | **8** |
-| `services` — Services & Hospitality | **22** |
+| `services` — Services & Hospitality | **23** |
 | `retail` — Retail & E-Commerce | **10** |
 | `startup` — Startups & Students | **4** |
 | `events` — Events & Entertainment | **2** |
@@ -43,9 +43,9 @@ templates/
 
 ---
 
-## 🎨 Available Templates (160)
+## 🎨 Available Templates (165)
 
-### Technology & Engineering (29)
+### Technology & Engineering (30)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -78,8 +78,9 @@ templates/
 | [Sky Telemetry Drone Robotics](./templates/technology/drone-engineer/html-css-js/sky-telemetry) | Autonomous UAV Systems Engineer | Drone Telemetry Cyan HUD (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/drone-engineer/html-css-js/sky-telemetry/index.html) |
 | [Glass Synth AI Vision](./templates/technology/ai-vision/html-css-js/glass-synth) | AI Computer Vision Researcher | Glassmorphism Cyan (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/ai-vision/html-css-js/glass-synth/index.html) |
 | [Quants Pulse Algorithmic Trader](./templates/technology/algo-trader/html-css-js/quants-pulse) | FinTech Quantitative Developer & Algo Trader | Financial Matrix Green Neon (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/algo-trader/html-css-js/quants-pulse/index.html) |
+| [Vocal Cortex Neuro-Linguist](./templates/technology/neuro-linguist/html-css-js/vocal-cortex) | Computational Neuro-Linguist & Speech AI | Neon Violet Waveform (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/neuro-linguist/html-css-js/vocal-cortex/index.html) |
 
-### Creative & Arts (57)
+### Creative & Arts (59)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -140,6 +141,8 @@ templates/
 | [Timber Cabin Tiny Home Architect](./templates/creative/tiny-home-architect/html-css-js/timber-cabin) | Off-Grid Solar Tiny Home Architect | Earthy Terracotta & Moss (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/tiny-home-architect/html-css-js/timber-cabin/index.html) |
 | [8Bit Pulse Chiptune Artist](./templates/creative/chiptune-artist/html-css-js/8bit-pulse) | Retro Chiptune Composer & Hardware Modder | Brutalist Monospaced Green (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/chiptune-artist/html-css-js/8bit-pulse/index.html) |
 | [Iso World Environment Artist](./templates/creative/environment-artist/html-css-js/iso-world) | Isometric 3D Environment Artist | Isometric 3D Slate (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/environment-artist/html-css-js/iso-world/index.html) |
+| [Flora Archive Botanical Illustrator](./templates/creative/botanical-illustrator/html-css-js/flora-archive) | Vintage Botanical Illustrator & Taxonomist | Parchment Sage Green (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/botanical-illustrator/html-css-js/flora-archive/index.html) |
+| [Holo Mesh Hologram Designer](./templates/creative/hologram-designer/html-css-js/holo-mesh) | Spatial Holographic Interface Designer | Holographic Cyan Prism (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/hologram-designer/html-css-js/holo-mesh/index.html) |
 
 ### Business, Finance & Legal (11)
 
@@ -157,7 +160,7 @@ templates/
 | [Enterprise Executive Hub](./templates/business/nextjs-developer/nextjs/next-corporate/out) | Enterprise Agency / Executive | Corporate Tailwind (Next.js) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/business/nextjs-developer/nextjs/next-corporate/out/index.html) |
 | [High Frequency Quant Trader](./templates/business/quant-trader/html-css-js/candlestick-pulse) | Quant Analyst & Algorithmic Trader | Bloomberg Dark Terminal (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/business/quant-trader/html-css-js/candlestick-pulse/index.html) |
 
-### Academic & Research (13)
+### Academic & Research (14)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -174,6 +177,7 @@ templates/
 | [Trench Explorer Submersible Pilot](./templates/academic/submersible-pilot/html-css-js/trench-explorer) | Deep Sea Submersible Pilot & Hydrothermal Vent Oceanographer | Mariana Abyss Ocean Navy (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/submersible-pilot/html-css-js/trench-explorer/index.html) |
 | [Radio Cosmos Astrophysicist](./templates/academic/astrophysicist/html-css-js/radio-cosmos) | Astrophysicist & Radio Astronomer | Cosmic Nebular Blue (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/astrophysicist/html-css-js/radio-cosmos/index.html) |
 | [Arctic Frost Glaciologist](./templates/academic/glaciologist/html-css-js/arctic-frost) | Glaciologist & Polar Climate Researcher | Frost Glass Ice Blue (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/glaciologist/html-css-js/arctic-frost/index.html) |
+| [Orbital Drill Asteroid Miner](./templates/academic/asteroid-miner/html-css-js/orbital-drill) | Deep Space Asteroid Mining Engineer | Dark Titanium & Cosmic Gold (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/asteroid-miner/html-css-js/orbital-drill/index.html) |
 
 ### Health & Wellness (8)
 
@@ -188,7 +192,7 @@ templates/
 | [fresh-organic](./templates/health-wellness/nutritionist/html-css-js/fresh-organic) | nutritionist | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/nutritionist/html-css-js/fresh-organic/index.html) |
 | [zen-minimal](./templates/health-wellness/yoga-instructor/html-css-js/zen-minimal) | yoga-instructor | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/yoga-instructor/html-css-js/zen-minimal/index.html) |
 
-### Services & Hospitality (22)
+### Services & Hospitality (23)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -214,6 +218,7 @@ templates/
 | [Cryo Flame Molecular Chef](./templates/services/molecular-chef/html-css-js/cryo-flame) | Molecular Gastronomy Chef & Culinary Innovator | Claymorphism Nitrogen Frost (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/molecular-chef/html-css-js/cryo-flame/index.html) |
 | [Algae Glow Marine Farmer](./templates/services/bio-farmer/html-css-js/algae-glow) | Bioluminescent Marine Algae Farmer | Bioluminescent Marine Teal (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/bio-farmer/html-css-js/algae-glow/index.html) |
 | [Gold Nib Pen Craftsman](./templates/services/pen-craftsman/html-css-js/gold-nib) | Bespoke Fountain Pen Craftsman | Golden Parchment Luxury (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/pen-craftsman/html-css-js/gold-nib/index.html) |
+| [Olfactory Notes Master Perfumer](./templates/services/master-perfumer/html-css-js/olfactory-notes) | Artisan Perfumer & Olfactory Artist | Velvet Amber Rose Gold (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/master-perfumer/html-css-js/olfactory-notes/index.html) |
 
 ### Retail & E-Commerce (10)
 
