@@ -1,6 +1,6 @@
 # Portfolio Builder — Open Source Template Gallery
 
-A growing, open-source collection of **199 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
+A growing, open-source collection of **202 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
 
 ---
 
@@ -24,16 +24,16 @@ templates/
         [theme-name]/   ← individual self-contained template folder
 ```
 
-### Industry Categories Summary (199 Templates Total)
+### Industry Categories Summary (202 Templates Total)
 
 | Industry / Category | Templates Count |
 |---|---|
-| `technology` — Technology & Engineering | **38** |
-| `creative` — Creative & Arts | **70** |
+| `technology` — Technology & Engineering | **39** |
+| `creative` — Creative & Arts | **71** |
 | `business` — Business, Finance & Legal | **11** |
 | `academic` — Academic & Research | **21** |
 | `health-wellness` — Health & Wellness | **8** |
-| `services` — Services & Hospitality | **31** |
+| `services` — Services & Hospitality | **32** |
 | `retail` — Retail & E-Commerce | **10** |
 | `startup` — Startups & Students | **4** |
 | `events` — Events & Entertainment | **2** |
@@ -43,9 +43,9 @@ templates/
 
 ---
 
-## 🎨 Available Templates (199)
+## 🎨 Available Templates (202)
 
-### Technology & Engineering (38)
+### Technology & Engineering (39)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -87,8 +87,9 @@ templates/
 | [Qubit Cipher Quantum Cryptographer](./templates/technology/quantum-cryptographer/html-css-js/qubit-cipher) | Post-Quantum Cryptography Researcher | Indigo Qubit Lattice Grid (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/quantum-cryptographer/html-css-js/qubit-cipher/index.html) |
 | [Deep Hull Submarine Designer](./templates/technology/submarine-designer/html-css-js/deep-hull) | Submarine Pressure Hull Engineer | Abyss Navy Sonar Green (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/submarine-designer/html-css-js/deep-hull/index.html) |
 | [FPV Velocity Drone Racer](./templates/technology/drone-racer/html-css-js/fpv-velocity) | FPV Drone Racing Champion & Freestyle Pilot | Neon Speed Trail HUD (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/drone-racer/html-css-js/fpv-velocity/index.html) |
+| [Apogee Pilot Space Tourism](./templates/technology/space-pilot/html-css-js/apogee-pilot) | Sub-Orbital Commercial Spacecraft Commander | Horizon Curve Zero-G Void (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/space-pilot/html-css-js/apogee-pilot/index.html) |
 
-### Creative & Arts (70)
+### Creative & Arts (71)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -162,6 +163,7 @@ templates/
 | [Marionette Stage Puppet Director](./templates/creative/puppet-director/html-css-js/marionette-stage) | Master Puppeteer & Shadow Theatre Director | Velvet Curtain Stage Gold (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/puppet-director/html-css-js/marionette-stage/index.html) |
 | [Boreal Lens Aurora Photographer](./templates/creative/aurora-photographer/html-css-js/boreal-lens) | Northern Lights & Astrophotographer | Aurora Green Purple Gradient (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/aurora-photographer/html-css-js/boreal-lens/index.html) |
 | [Obsidian Breath Glassblower](./templates/creative/glassblower/html-css-js/obsidian-breath) | Volcanic Glass & Borosilicate Artisan | Molten Glass Orange Smoke (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/glassblower/html-css-js/obsidian-breath/index.html) |
+| [Neon Restorer Sign Historian](./templates/creative/neon-restorer/html-css-js/neon-restorer) | Vintage Neon Sign Restorer & Glass Bending Historian | Amber Argon Glow Brick (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/neon-restorer/html-css-js/neon-restorer/index.html) |
 
 ### Business, Finance & Legal (11)
 
@@ -218,7 +220,7 @@ templates/
 | [fresh-organic](./templates/health-wellness/nutritionist/html-css-js/fresh-organic) | nutritionist | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/nutritionist/html-css-js/fresh-organic/index.html) |
 | [zen-minimal](./templates/health-wellness/yoga-instructor/html-css-js/zen-minimal) | yoga-instructor | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/yoga-instructor/html-css-js/zen-minimal/index.html) |
 
-### Services & Hospitality (31)
+### Services & Hospitality (32)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -253,6 +255,7 @@ templates/
 | [Frequency Room Sound Engineer](./templates/services/sound-engineer/html-css-js/frequency-room) | Acoustic Engineer & Studio Designer | Dark Studio Waveform Amber (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/sound-engineer/html-css-js/frequency-room/index.html) |
 | [Mainspring Atelier Watch Restorer](./templates/services/watch-restorer/html-css-js/mainspring-atelier) | Master Horologist & Vintage Watch Restorer | Gilded Brass Mechanism Dark (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/watch-restorer/html-css-js/mainspring-atelier/index.html) |
 | [Anvil Forge Master Blacksmith](./templates/services/blacksmith/html-css-js/anvil-forge) | Artisan Blacksmith & Damascus Steel Forger | Forge Fire Dark Iron (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/blacksmith/html-css-js/anvil-forge/index.html) |
+| [Pyro Master Fireworks Designer](./templates/services/fireworks-designer/html-css-js/pyro-master) | Pyrotechnic Displays & Fireworks Choreographer | Midnight Sky Chrysanthemum Sparks (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/fireworks-designer/html-css-js/pyro-master/index.html) |
 
 ### Retail & E-Commerce (10)
 
