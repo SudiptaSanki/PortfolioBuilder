@@ -1,0 +1,1 @@
+document.addEventListener('mousemove',e=>{const x=e.clientX/window.innerWidth;const y=e.clientY/window.innerHeight;document.querySelector('.layer-1').style.transform='translate('+x*30+'px,'+y*30+'px)';document.querySelector('.layer-2').style.transform='translate('+-x*20+'px,'+-y*20+'px)';});

@@ -1,0 +1,1 @@
+document.addEventListener('mousemove',e=>{const sx=e.clientX/window.innerWidth-.5;const sy=e.clientY/window.innerHeight-.5;document.querySelectorAll('.smoke').forEach((s,i)=>{const f=(i+1)*15;s.style.transform='translate('+sx*f+'px,'+sy*f+'px)'})});

@@ -1,6 +1,6 @@
 # Portfolio Builder — Open Source Template Gallery
 
-A growing, open-source collection of **180 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
+A growing, open-source collection of **199 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
 
 ---
 
@@ -24,16 +24,16 @@ templates/
         [theme-name]/   ← individual self-contained template folder
 ```
 
-### Industry Categories Summary (180 Templates Total)
+### Industry Categories Summary (199 Templates Total)
 
 | Industry / Category | Templates Count |
 |---|---|
-| `technology` — Technology & Engineering | **34** |
-| `creative` — Creative & Arts | **64** |
+| `technology` — Technology & Engineering | **38** |
+| `creative` — Creative & Arts | **70** |
 | `business` — Business, Finance & Legal | **11** |
-| `academic` — Academic & Research | **17** |
+| `academic` — Academic & Research | **21** |
 | `health-wellness` — Health & Wellness | **8** |
-| `services` — Services & Hospitality | **26** |
+| `services` — Services & Hospitality | **31** |
 | `retail` — Retail & E-Commerce | **10** |
 | `startup` — Startups & Students | **4** |
 | `events` — Events & Entertainment | **2** |
@@ -43,9 +43,9 @@ templates/
 
 ---
 
-## 🎨 Available Templates (180)
+## 🎨 Available Templates (199)
 
-### Technology & Engineering (34)
+### Technology & Engineering (38)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -83,8 +83,12 @@ templates/
 | [Digital Aroma Scent Engineer](./templates/technology/scent-engineer/html-css-js/digital-aroma) | Digital Scent Synthesizer & Olfactory AI Engineer | Violet Vapor Glassmorphism (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/scent-engineer/html-css-js/digital-aroma/index.html) |
 | [Orbital Truss Space Station Engineer](./templates/technology/space-station-engineer/html-css-js/orbital-truss) | Orbital Habitat & Space Station Architect | Titanium White Void Black (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/space-station-engineer/html-css-js/orbital-truss/index.html) |
 | [Cryo Thruster Rocket Engineer](./templates/technology/rocket-engineer/html-css-js/cryo-thruster) | Liquid Rocket Engine & Turbopump Specialist | Cryo Oxygen Blue Exhaust Flame (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/rocket-engineer/html-css-js/cryo-thruster/index.html) |
+| [Red Shell Penetration Tester](./templates/technology/red-teamer/html-css-js/red-shell) | Offensive Security Red Team Lead | Terminal Red Matrix Glitch (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/red-teamer/html-css-js/red-shell/index.html) |
+| [Qubit Cipher Quantum Cryptographer](./templates/technology/quantum-cryptographer/html-css-js/qubit-cipher) | Post-Quantum Cryptography Researcher | Indigo Qubit Lattice Grid (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/quantum-cryptographer/html-css-js/qubit-cipher/index.html) |
+| [Deep Hull Submarine Designer](./templates/technology/submarine-designer/html-css-js/deep-hull) | Submarine Pressure Hull Engineer | Abyss Navy Sonar Green (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/submarine-designer/html-css-js/deep-hull/index.html) |
+| [FPV Velocity Drone Racer](./templates/technology/drone-racer/html-css-js/fpv-velocity) | FPV Drone Racing Champion & Freestyle Pilot | Neon Speed Trail HUD (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/drone-racer/html-css-js/fpv-velocity/index.html) |
 
-### Creative & Arts (64)
+### Creative & Arts (70)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -152,6 +156,12 @@ templates/
 | [Rosewood Tone Guitar Luthier](./templates/creative/guitar-luthier/html-css-js/rosewood-tone) | Master Acoustic Guitar Luthier | Brazilian Rosewood & Spruce (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/guitar-luthier/html-css-js/rosewood-tone/index.html) |
 | [Keycap Vault Keyboard Artisan](./templates/creative/keyboard-artisan/html-css-js/keycap-vault) | Custom Mechanical Keyboard & Switch Specialist | Pastel Mechanical Keycaps (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/keyboard-artisan/html-css-js/keycap-vault/index.html) |
 | [Pendulum Wave Kinetic Sculptor](./templates/creative/kinetic-sculptor/html-css-js/pendulum-wave) | Wind & Solar Kinetic Sculptor | Metallic Bronze Fluid Geometry (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/kinetic-sculptor/html-css-js/pendulum-wave/index.html) |
+| [Kintsugi Glow Ceramicist](./templates/creative/ceramicist/html-css-js/kintsugi-glow) | Japanese Ceramicist & Kintsugi Restoration Artist | Gold Crack Wabi-Sabi (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/ceramicist/html-css-js/kintsugi-glow/index.html) |
+| [Compass Rose Cartographer](./templates/creative/cartographer/html-css-js/compass-rose) | Antique Map Illustrator & Cartographer | Sepia Parchment Aged Ink (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/cartographer/html-css-js/compass-rose/index.html) |
+| [Frost Chisel Ice Sculptor](./templates/creative/ice-sculptor/html-css-js/frost-chisel) | Competition Ice Sculptor & Frozen Art Installer | Frozen Crystal Blue Frost (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/ice-sculptor/html-css-js/frost-chisel/index.html) |
+| [Marionette Stage Puppet Director](./templates/creative/puppet-director/html-css-js/marionette-stage) | Master Puppeteer & Shadow Theatre Director | Velvet Curtain Stage Gold (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/puppet-director/html-css-js/marionette-stage/index.html) |
+| [Boreal Lens Aurora Photographer](./templates/creative/aurora-photographer/html-css-js/boreal-lens) | Northern Lights & Astrophotographer | Aurora Green Purple Gradient (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/aurora-photographer/html-css-js/boreal-lens/index.html) |
+| [Obsidian Breath Glassblower](./templates/creative/glassblower/html-css-js/obsidian-breath) | Volcanic Glass & Borosilicate Artisan | Molten Glass Orange Smoke (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/glassblower/html-css-js/obsidian-breath/index.html) |
 
 ### Business, Finance & Legal (11)
 
@@ -169,7 +179,7 @@ templates/
 | [Enterprise Executive Hub](./templates/business/nextjs-developer/nextjs/next-corporate/out) | Enterprise Agency / Executive | Corporate Tailwind (Next.js) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/business/nextjs-developer/nextjs/next-corporate/out/index.html) |
 | [High Frequency Quant Trader](./templates/business/quant-trader/html-css-js/candlestick-pulse) | Quant Analyst & Algorithmic Trader | Bloomberg Dark Terminal (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/business/quant-trader/html-css-js/candlestick-pulse/index.html) |
 
-### Academic & Research (17)
+### Academic & Research (21)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -180,7 +190,6 @@ templates/
 | [Quantum Physicist Lab](./templates/academic/quantum-physicist/html-css-js/quantum-researcher) | Quantum Physicist & Researcher | Quantum Physics Clean (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/quantum-physicist/html-css-js/quantum-researcher/index.html) |
 | [Cosmic Void Astrophysics](./templates/academic/astrophysicist/html-css-js/cosmic-void) | Astrophysicist & Space Researcher | Cosmic Void Dark (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/astrophysicist/html-css-js/cosmic-void/index.html) |
 | [Deep Abyss Oceanographer](./templates/academic/oceanographer/html-css-js/deep-abyss) | Marine Biologist & Oceanographer | Bioluminescent Deep Sea (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/oceanographer/html-css-js/deep-abyss/index.html) |
-| [Magma Core Volcanology](./templates/academic/volcanologist/html-css-js/magma-core) | Volcanologist & Geothermal Researcher | Magma Ember Obsidian (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/volcanologist/html-css-js/magma-core/index.html) |
 | [Astro Geology Planetary Science](./templates/academic/planetary-scientist/html-css-js/astro-geology) | Exoplanet Geologist & Planetary Scientist | Planetary Orbital Dark (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/planetary-scientist/html-css-js/astro-geology/index.html) |
 | [Strato Cloud Geo-Engineer](./templates/academic/geo-engineer/html-css-js/strato-cloud) | Atmospheric Geo-Engineer & Cloud Seeder | Stratospheric Cyan Cloud (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/geo-engineer/html-css-js/strato-cloud/index.html) |
 | [Trench Explorer Submersible Pilot](./templates/academic/submersible-pilot/html-css-js/trench-explorer) | Deep Sea Submersible Pilot & Hydrothermal Vent Oceanographer | Mariana Abyss Ocean Navy (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/submersible-pilot/html-css-js/trench-explorer/index.html) |
@@ -190,6 +199,11 @@ templates/
 | [Hadron Collision Particle Physicist](./templates/academic/particle-physicist/html-css-js/hadron-collision) | Quantum Hadron Physicist & CERN Researcher | LHC Collision Amber & Violet (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/particle-physicist/html-css-js/hadron-collision/index.html) |
 | [Supercell Radar Storm Chaser](./templates/academic/storm-chaser/html-css-js/supercell-radar) | Extreme Weather Storm Chaser & Radar Scientist | Tornado Radar Green & Cyan (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/storm-chaser/html-css-js/supercell-radar/index.html) |
 | [Stratosphere Probe Balloon Scientist](./templates/academic/balloon-scientist/html-css-js/stratosphere-probe) | Near-Space Balloon Probe Specialist | Stratosphere Cyan Cloud (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/balloon-scientist/html-css-js/stratosphere-probe/index.html) |
+| [Chitin Archive Forensic Entomologist](./templates/academic/forensic-entomologist/html-css-js/chitin-archive) | Forensic Entomologist & Insect Taxonomy Specialist | Dark Amber Specimen Glass (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/forensic-entomologist/html-css-js/chitin-archive/index.html) |
+| [Magma Core Volcanic Geologist](./templates/academic/volcanic-geologist/html-css-js/magma-core) | Volcanologist & Magma Dynamics Researcher | Lava Orange Obsidian Black (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/volcanic-geologist/html-css-js/magma-core/index.html) |
+| [Spore Network Mycologist](./templates/academic/mycologist/html-css-js/spore-network) | Field Mycologist & Fungal Network Researcher | Forest Floor Mycelium Glow (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/mycologist/html-css-js/spore-network/index.html) |
+| [Root Remedy Ethno-Botanist](./templates/academic/ethno-botanist/html-css-js/root-remedy) | Ethno-Botanist & Traditional Medicine Researcher | Herbal Sage Botanical Plate (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/ethno-botanist/html-css-js/root-remedy/index.html) |
+| [Fossil Stratum Paleontologist](./templates/academic/paleontologist/html-css-js/fossil-stratum) | Vertebrate Paleontologist & Fossil Preparator | Sandstone Stratigraphy Earth (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/paleontologist/html-css-js/fossil-stratum/index.html) |
 
 ### Health & Wellness (8)
 
@@ -204,7 +218,7 @@ templates/
 | [fresh-organic](./templates/health-wellness/nutritionist/html-css-js/fresh-organic) | nutritionist | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/nutritionist/html-css-js/fresh-organic/index.html) |
 | [zen-minimal](./templates/health-wellness/yoga-instructor/html-css-js/zen-minimal) | yoga-instructor | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/yoga-instructor/html-css-js/zen-minimal/index.html) |
 
-### Services & Hospitality (26)
+### Services & Hospitality (31)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -234,6 +248,11 @@ templates/
 | [Moss Biome Terrarium Architect](./templates/services/terrarium-architect/html-css-js/moss-biome) | Ecosystem Terrarium & Paludarium Designer | Rainforest Emerald Moss (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/terrarium-architect/html-css-js/moss-biome/index.html) |
 | [Gilt Leather Bookbinder](./templates/services/bookbinder/html-css-js/gilt-leather) | Master Bookbinder & Rare Manuscripts Restorer | Gilt Gold Marbled Parchment (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/bookbinder/html-css-js/gilt-leather/index.html) |
 | [Hadal Flare Trench Diver](./templates/services/trench-diver/html-css-js/hadal-flare) | Hadal Zone Ocean Diver & Subsea Welder | Deep Ocean Bio Flare Cyan (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/trench-diver/html-css-js/hadal-flare/index.html) |
+| [Ancient Branch Bonsai Master](./templates/services/bonsai-master/html-css-js/ancient-branch) | Japanese Bonsai Master & Landscape Curator | Zen Moss Green Washi Paper (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/bonsai-master/html-css-js/ancient-branch/index.html) |
+| [Peat Smoke Whisky Distiller](./templates/services/whisky-distiller/html-css-js/peat-smoke) | Master Scotch Whisky Distiller | Smoky Amber Copper Pot (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/whisky-distiller/html-css-js/peat-smoke/index.html) |
+| [Frequency Room Sound Engineer](./templates/services/sound-engineer/html-css-js/frequency-room) | Acoustic Engineer & Studio Designer | Dark Studio Waveform Amber (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/sound-engineer/html-css-js/frequency-room/index.html) |
+| [Mainspring Atelier Watch Restorer](./templates/services/watch-restorer/html-css-js/mainspring-atelier) | Master Horologist & Vintage Watch Restorer | Gilded Brass Mechanism Dark (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/watch-restorer/html-css-js/mainspring-atelier/index.html) |
+| [Anvil Forge Master Blacksmith](./templates/services/blacksmith/html-css-js/anvil-forge) | Artisan Blacksmith & Damascus Steel Forger | Forge Fire Dark Iron (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/blacksmith/html-css-js/anvil-forge/index.html) |
 
 ### Retail & E-Commerce (10)
 
