@@ -1,0 +1,1 @@
+document.addEventListener('mousemove',e=>{const g=document.querySelector('.glyph');if(g){const x=(e.clientX/window.innerWidth-.5)*10;g.style.transform='translateX('+x+'px)'}});
