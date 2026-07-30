@@ -1,0 +1,1 @@
+const c=document.getElementById('xenonCanvas'),ctx=c.getContext('2d');function resize(){c.width=window.innerWidth;c.height=window.innerHeight}window.addEventListener('resize',resize);resize();function draw(){ctx.fillStyle=Math.random()>.95?'rgba(236,72,153,0.15)':'rgba(0,0,0,0.1)';ctx.fillRect(0,0,c.width,c.height);requestAnimationFrame(draw)}draw();
