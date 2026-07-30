@@ -1,6 +1,6 @@
 # Portfolio Builder — Open Source Template Gallery
 
-A growing, open-source collection of **242 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
+A growing, open-source collection of **247 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
 
 ---
 
@@ -24,28 +24,28 @@ templates/
         [theme-name]/   ← individual self-contained template folder
 ```
 
-### Industry Categories Summary (242 Templates Total)
+### Industry Categories Summary (247 Templates Total)
 
 | Industry / Category | Templates Count |
 |---|---|
-| `technology` — Technology & Engineering | **49** |
-| `creative` — Creative & Arts | **83** |
+| `technology` — Technology & Engineering | **51** |
+| `creative` — Creative & Arts | **84** |
 | `business` — Business, Finance & Legal | **11** |
-| `academic` — Academic & Research | **31** |
+| `academic` — Academic & Research | **32** |
 | `health-wellness` — Health & Wellness | **8** |
 | `services` — Services & Hospitality | **40** |
 | `retail` — Retail & E-Commerce | **10** |
 | `startup` — Startups & Students | **4** |
 | `events` — Events & Entertainment | **2** |
-| `gaming` — Gaming & Esports | **1** |
+| `gaming` — Gaming & Esports | **2** |
 | `music` — Music & Audio | **2** |
 
 
 ---
 
-## 🎨 Available Templates (242)
+## 🎨 Available Templates (247)
 
-### Technology & Engineering (49)
+### Technology & Engineering (51)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -98,8 +98,10 @@ templates/
 | [Atomic Vapor Cell Magnetometer Architect](./templates/technology/quantum-magnetometer/html-css-js/atomic-vapor-cell) | Atomic Magnetometer & Optically Pumped Magnetometry Specialist | Rubidium Vapor Amber Laser Emerald (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/quantum-magnetometer/html-css-js/atomic-vapor-cell/index.html) |
 | [Stratospheric Hull Airship Engineer](./templates/technology/airship-engineer/html-css-js/stratospheric-hull) | Stratospheric Solar Airship & Envelope Engineer | Solar Gold Stratosphere Silver (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/airship-engineer/html-css-js/stratospheric-hull/index.html) |
 | [Proton Exchange Membrane Fuel Cell Engineer](./templates/technology/fuel-cell-engineer/html-css-js/proton-exchange-membrane) | Proton Exchange Membrane (PEM) Fuel Cell Architect | Hydrogen Clean Teal Electric Blue (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/fuel-cell-engineer/html-css-js/proton-exchange-membrane/index.html) |
+| [Aurora Borealis Analyst](./templates/technology/data-scientist/html-css-js/aurora-borealis) | Data Scientist | Aurora Borealis Dark (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/data-scientist/html-css-js/aurora-borealis/index.html) |
+| [Midnight Sapphire Analyst](./templates/technology/cybersecurity-analyst/html-css-js/midnight-sapphire) | Cybersecurity Analyst | Midnight Sapphire Matrix (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/cybersecurity-analyst/html-css-js/midnight-sapphire/index.html) |
 
-### Creative & Arts (83)
+### Creative & Arts (84)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -186,6 +188,7 @@ templates/
 | [Cathedral Rose Window Glass Restorer](./templates/creative/glass-restorer/html-css-js/cathedral-rose-window) | Cathedral Stained Glass Conservation Specialist | Gothic Rose Ruby Sapphire Prismatic Glass (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/glass-restorer/html-css-js/cathedral-rose-window/index.html) |
 | [Katana Hamon Sword Polisher](./templates/creative/togishi/html-css-js/katana-hamon) | Traditional Japanese Sword Polisher (Togishi) & Blade Conservator | Charcoal Polishing Stone Steel Hamon (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/togishi/html-css-js/katana-hamon/index.html) |
 | [Marquetry Veneer Intarsia Woodworker](./templates/creative/intarsia-woodworker/html-css-js/marquetry-veneer) | Master Marquetry & Intarsia Wood Veneer Artisan | Ebony Satinwood Rosewood Veneers (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/intarsia-woodworker/html-css-js/marquetry-veneer/index.html) |
+| [Terracotta Warmth Designer](./templates/creative/interior-designer/html-css-js/terracotta-warmth) | Interior Designer | Terracotta Warm Earthy (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/interior-designer/html-css-js/terracotta-warmth/index.html) |
 
 ### Business, Finance & Legal (11)
 
@@ -203,7 +206,7 @@ templates/
 | [Enterprise Executive Hub](./templates/business/nextjs-developer/nextjs/next-corporate/out) | Enterprise Agency / Executive | Corporate Tailwind (Next.js) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/business/nextjs-developer/nextjs/next-corporate/out/index.html) |
 | [High Frequency Quant Trader](./templates/business/quant-trader/html-css-js/candlestick-pulse) | Quant Analyst & Algorithmic Trader | Bloomberg Dark Terminal (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/business/quant-trader/html-css-js/candlestick-pulse/index.html) |
 
-### Academic & Research (31)
+### Academic & Research (32)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -238,6 +241,7 @@ templates/
 | [LIGO Interferometer Gravitational Physicist](./templates/academic/gravitational-physicist/html-css-js/ligo-interferometer) | LIGO Gravitational Wave Analyst & Binary Black Hole Researcher | Spacetime Grid Distortion Deep Violet (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/gravitational-physicist/html-css-js/ligo-interferometer/index.html) |
 | [Arctic Albedo Melt Pond Scientist](./templates/academic/melt-pond-scientist/html-css-js/arctic-albedo) | Arctic Sea Ice Albedo & Melt Pond Dynamics Researcher | Arctic Cyan Deep Polar Ocean (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/melt-pond-scientist/html-css-js/arctic-albedo/index.html) |
 | [Karst Aquifer Hydrogeologist](./templates/academic/hydrogeologist/html-css-js/karst-aquifer) | Groundwater Hydrologist & Subsurface Aquifer Modeler | Groundwater Cyan Stratigraphic Brown (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/hydrogeologist/html-css-js/karst-aquifer/index.html) |
+| [Coral Reef Biologist](./templates/academic/marine-biologist/html-css-js/coral-reef) | Marine Biologist | Ocean Coral Deep Blue (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/marine-biologist/html-css-js/coral-reef/index.html) |
 
 ### Health & Wellness (8)
 
@@ -328,11 +332,12 @@ templates/
 | [club-strobe](./templates/events/dj/html-css-js/club-strobe) | dj | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/events/dj/html-css-js/club-strobe/index.html) |
 | [Club EDM Producer](./templates/events/dj-producer/html-css-js/bass-drop) | DJ / Music Producer | Bass Drop Strobe (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/events/dj-producer/html-css-js/bass-drop/index.html) |
 
-### Gaming & Esports (1)
+### Gaming & Esports (2)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
 | [cyber-neon](./templates/gaming/streamer/html-css-js/cyber-neon) | streamer | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/gaming/streamer/html-css-js/cyber-neon/index.html) |
+| [Obsidian Forge Developer](./templates/gaming/game-developer/html-css-js/obsidian-forge) | Game Developer | Obsidian Forge Ember (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/gaming/game-developer/html-css-js/obsidian-forge/index.html) |
 
 ### Music & Audio (2)
 
