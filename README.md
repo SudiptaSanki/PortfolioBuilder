@@ -1,6 +1,6 @@
 # Portfolio Builder — Open Source Template Gallery
 
-A growing, open-source collection of **247 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
+A growing, open-source collection of **257 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
 
 ---
 
@@ -24,16 +24,16 @@ templates/
         [theme-name]/   ← individual self-contained template folder
 ```
 
-### Industry Categories Summary (247 Templates Total)
+### Industry Categories Summary (257 Templates Total)
 
 | Industry / Category | Templates Count |
 |---|---|
-| `technology` — Technology & Engineering | **51** |
-| `creative` — Creative & Arts | **84** |
+| `technology` — Technology & Engineering | **53** |
+| `creative` — Creative & Arts | **87** |
 | `business` — Business, Finance & Legal | **11** |
-| `academic` — Academic & Research | **32** |
+| `academic` — Academic & Research | **35** |
 | `health-wellness` — Health & Wellness | **8** |
-| `services` — Services & Hospitality | **40** |
+| `services` — Services & Hospitality | **42** |
 | `retail` — Retail & E-Commerce | **10** |
 | `startup` — Startups & Students | **4** |
 | `events` — Events & Entertainment | **2** |
@@ -43,9 +43,9 @@ templates/
 
 ---
 
-## 🎨 Available Templates (247)
+## 🎨 Available Templates (257)
 
-### Technology & Engineering (51)
+### Technology & Engineering (53)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -100,8 +100,10 @@ templates/
 | [Proton Exchange Membrane Fuel Cell Engineer](./templates/technology/fuel-cell-engineer/html-css-js/proton-exchange-membrane) | Proton Exchange Membrane (PEM) Fuel Cell Architect | Hydrogen Clean Teal Electric Blue (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/fuel-cell-engineer/html-css-js/proton-exchange-membrane/index.html) |
 | [Aurora Borealis Analyst](./templates/technology/data-scientist/html-css-js/aurora-borealis) | Data Scientist | Aurora Borealis Dark (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/data-scientist/html-css-js/aurora-borealis/index.html) |
 | [Midnight Sapphire Analyst](./templates/technology/cybersecurity-analyst/html-css-js/midnight-sapphire) | Cybersecurity Analyst | Midnight Sapphire Matrix (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/cybersecurity-analyst/html-css-js/midnight-sapphire/index.html) |
+| [Superconducting Qubit Architect](./templates/technology/superconducting-qubit/html-css-js/superconducting-qubit) | Cryogenic Quantum Hardware & Transmon Qubit Engineer | Cryogenic Dilution Cyan Deep Blue (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/superconducting-qubit/html-css-js/superconducting-qubit/index.html) |
+| [Subsea Autonomous Robotics Engineer](./templates/technology/subsea-robotics/html-css-js/subsea-robotics) | Autonomous Underwater Vehicle (AUV) & Sonar Engineer | Subsea Sonar Trench Cyan Emerald (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/technology/subsea-robotics/html-css-js/subsea-robotics/index.html) |
 
-### Creative & Arts (84)
+### Creative & Arts (87)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -189,6 +191,9 @@ templates/
 | [Katana Hamon Sword Polisher](./templates/creative/togishi/html-css-js/katana-hamon) | Traditional Japanese Sword Polisher (Togishi) & Blade Conservator | Charcoal Polishing Stone Steel Hamon (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/togishi/html-css-js/katana-hamon/index.html) |
 | [Marquetry Veneer Intarsia Woodworker](./templates/creative/intarsia-woodworker/html-css-js/marquetry-veneer) | Master Marquetry & Intarsia Wood Veneer Artisan | Ebony Satinwood Rosewood Veneers (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/intarsia-woodworker/html-css-js/marquetry-veneer/index.html) |
 | [Terracotta Warmth Designer](./templates/creative/interior-designer/html-css-js/terracotta-warmth) | Interior Designer | Terracotta Warm Earthy (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/interior-designer/html-css-js/terracotta-warmth/index.html) |
+| [Artisan Chocolatier & Cocoa Sculptor](./templates/creative/chocolatier-artisan/html-css-js/chocolatier-artisan) | Bean-to-Bar Chocolatier & Structural Cocoa Artist | Dark Cocoa Roasted Gold Silk (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/chocolatier-artisan/html-css-js/chocolatier-artisan/index.html) |
+| [Kinetic Art Sculptor](./templates/creative/kinetic-sculptor/html-css-js/kinetic-sculptor) | Wind-Driven & Mechanical Kinetic Sculptor | Wireframe Copper Kinetic Oscillating (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/kinetic-sculptor/html-css-js/kinetic-sculptor/index.html) |
+| [Stained Glass Architectural Artist](./templates/creative/stained-glass-mosaic/html-css-js/stained-glass-mosaic) | Stained Glass Window & Cathedral Mosaic Architect | Stained Glass Sunbeam Sapphire Ruby (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/creative/stained-glass-mosaic/html-css-js/stained-glass-mosaic/index.html) |
 
 ### Business, Finance & Legal (11)
 
@@ -206,7 +211,7 @@ templates/
 | [Enterprise Executive Hub](./templates/business/nextjs-developer/nextjs/next-corporate/out) | Enterprise Agency / Executive | Corporate Tailwind (Next.js) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/business/nextjs-developer/nextjs/next-corporate/out/index.html) |
 | [High Frequency Quant Trader](./templates/business/quant-trader/html-css-js/candlestick-pulse) | Quant Analyst & Algorithmic Trader | Bloomberg Dark Terminal (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/business/quant-trader/html-css-js/candlestick-pulse/index.html) |
 
-### Academic & Research (32)
+### Academic & Research (35)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -242,6 +247,9 @@ templates/
 | [Arctic Albedo Melt Pond Scientist](./templates/academic/melt-pond-scientist/html-css-js/arctic-albedo) | Arctic Sea Ice Albedo & Melt Pond Dynamics Researcher | Arctic Cyan Deep Polar Ocean (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/melt-pond-scientist/html-css-js/arctic-albedo/index.html) |
 | [Karst Aquifer Hydrogeologist](./templates/academic/hydrogeologist/html-css-js/karst-aquifer) | Groundwater Hydrologist & Subsurface Aquifer Modeler | Groundwater Cyan Stratigraphic Brown (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/hydrogeologist/html-css-js/karst-aquifer/index.html) |
 | [Coral Reef Biologist](./templates/academic/marine-biologist/html-css-js/coral-reef) | Marine Biologist | Ocean Coral Deep Blue (HTML/CSS/JS) | Multi-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/marine-biologist/html-css-js/coral-reef/index.html) |
+| [Paleobotanist Amber Resin](./templates/academic/paleo-botanist/html-css-js/paleo-botanist) | Fossilized Plant & Amber Inclusion Researcher | Amber Glow Fossil Vein Earth (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/paleo-botanist/html-css-js/paleo-botanist/index.html) |
+| [Tectonic Seismologist](./templates/academic/seismologist-fault/html-css-js/seismologist-fault) | Seismologist & Earthquake Dynamics Analyst | Seismograph Crimson Obsidian Matrix (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/seismologist-fault/html-css-js/seismologist-fault/index.html) |
+| [Physical Volcanologist](./templates/academic/volcanologist-magma/html-css-js/volcanologist-magma) | Physical Volcanologist & Lava Flow Dynamics Researcher | Obsidian Magma Orange Basalt Dark (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/academic/volcanologist-magma/html-css-js/volcanologist-magma/index.html) |
 
 ### Health & Wellness (8)
 
@@ -256,7 +264,7 @@ templates/
 | [fresh-organic](./templates/health-wellness/nutritionist/html-css-js/fresh-organic) | nutritionist | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/nutritionist/html-css-js/fresh-organic/index.html) |
 | [zen-minimal](./templates/health-wellness/yoga-instructor/html-css-js/zen-minimal) | yoga-instructor | Modern (html-css-js) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/health-wellness/yoga-instructor/html-css-js/zen-minimal/index.html) |
 
-### Services & Hospitality (40)
+### Services & Hospitality (42)
 
 | Template | Role | Theme / Stack | Structure | Live Preview |
 |---|---|---|---|---|
@@ -300,6 +308,8 @@ templates/
 | [Equestrian Welt Saddle Maker](./templates/services/saddle-maker/html-css-js/equestrian-welt) | Master Equestrian Saddler & Leather Craftsman | Rich Havana Leather Brass Hardware (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/saddle-maker/html-css-js/equestrian-welt/index.html) |
 | [Titanium Monobloc Case Machinist](./templates/services/case-machinist/html-css-js/titanium-monobloc) | High-Horology CNC Case Machinist & Titanium Finisher | Grade 5 Titanium Gray Lapped Mirror (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/case-machinist/html-css-js/titanium-monobloc/index.html) |
 | [Abrasive Stream Waterjet Specialist](./templates/services/waterjet-operator/html-css-js/abrasive-stream) | Precision Abrasive Waterjet Machinist & Material Cutting Specialist | Ultra-High Pressure Jet Cyan Garnet Red (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/waterjet-operator/html-css-js/abrasive-stream/index.html) |
+| [Hyperbaric Deep-Sea Welder](./templates/services/hyperbaric-welder/html-css-js/hyperbaric-welder) | Saturation Diving & Underwater Pipeline Welder | Abyssal Oceanic Arc Spark Cyan (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/hyperbaric-welder/html-css-js/hyperbaric-welder/index.html) |
+| [Master Horologist Clock Restoration](./templates/services/horology-restorer/html-css-js/horology-restorer) | Master Horologist & Tourbillon Watch Restorer | Brass Damaskeening Steel Antique (HTML/CSS/JS) | Single-page | [Preview](https://portfolio4builders.vercel.app/templates/services/horology-restorer/html-css-js/horology-restorer/index.html) |
 
 ### Retail & E-Commerce (10)
 
