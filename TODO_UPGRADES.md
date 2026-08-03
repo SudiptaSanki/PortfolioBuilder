@@ -82,7 +82,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Marquetry Veneer Intarsia Woodworker** (`marquetry-veneer`)
 - [x] **Artisan Chocolatier & Cocoa Sculptor** (`chocolatier-artisan`)
 - [x] **Kinetic Art Sculptor** (`kinetic-sculptor`)
-- [ ] **Stained Glass Architectural Artist** (`stained-glass-mosaic`)
+- [x] **Stained Glass Architectural Artist** (`stained-glass-mosaic`)
 
 ### HEALTH-WELLNESS
 - [ ] **Bold Energy Fitness** (`fitness-bold-energy`)
