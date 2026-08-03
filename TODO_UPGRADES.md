@@ -140,7 +140,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Console Hacker Terminal** (`cybersecurity-hacker-terminal`)
 - [x] **glitch-forge** (`technology-game-developer-glitch-forge`)
 - [x] **prompt-console** (`technology-ai-engineer-prompt-console`)
-- [ ] **bento-apps** (`technology-mobile-developer-bento-apps`)
+- [x] **bento-apps** (`technology-mobile-developer-bento-apps`)
 - [ ] **server-rack-dark** (`technology-devops-engineer-server-rack-dark`)
 - [ ] **pixel-retro** (`technology-game-dev-pixel-retro`)
 - [ ] **Cyberpunk Digital Showcase** (`react-neon`)
