@@ -43,7 +43,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Nautical Prestige Superyacht Architect** (`nautical-prestige`)
 - [x] **CRT Cabinet Arcade Restorer** (`crt-cabinet`)
 - [x] **Cinematic Score Film Composer** (`cinematic-score`)
-- [ ] **Hyper Render 3D ArchViz** (`hyper-render`)
+- [x] **Hyper Render 3D ArchViz** (`hyper-render`)
 - [ ] **Particle Field VFX Supervisor** (`particle-field`)
 - [ ] **Biophilic Design Eco Architect** (`biophilic-design`)
 - [ ] **Matte Lumen Lighting Designer** (`matte-lumen`)
