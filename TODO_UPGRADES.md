@@ -85,7 +85,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Stained Glass Architectural Artist** (`stained-glass-mosaic`)
 
 ### HEALTH-WELLNESS
-- [ ] **Bold Energy Fitness** (`fitness-bold-energy`)
+- [x] **Bold Energy Fitness** (`fitness-bold-energy`)
 - [ ] **Clinical Clean Doctor** (`doctor-clinical-clean`)
 - [ ] **Lumina Smile Clinic** (`dentist-smile-clinic`)
 - [ ] **Zen Flow** (`zen-flow`)
