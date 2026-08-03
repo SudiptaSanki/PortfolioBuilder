@@ -206,7 +206,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Orbital Drill Asteroid Miner** (`orbital-drill`)
 - [x] **Hadron Collision Particle Physicist** (`hadron-collision`)
 - [x] **Supercell Radar Storm Chaser** (`supercell-radar`)
-- [ ] **Stratosphere Probe Balloon Scientist** (`stratosphere-probe`)
+- [x] **Stratosphere Probe Balloon Scientist** (`stratosphere-probe`)
 - [ ] **Chitin Archive Forensic Entomologist** (`chitin-archive`)
 - [ ] **Magma Core Volcanic Geologist** (`magma-core`)
 - [ ] **Spore Network Mycologist** (`spore-network`)
