@@ -123,7 +123,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Mainspring Atelier Watch Restorer** (`mainspring-atelier`)
 - [x] **Anvil Forge Master Blacksmith** (`anvil-forge`)
 - [x] **Pyro Master Fireworks Designer** (`pyro-master`)
-- [ ] **Handstitched Welt Master Cobbler** (`handstitched-welt`)
+- [x] **Handstitched Welt Master Cobbler** (`handstitched-welt`)
 - [ ] **Charred Oak Master Cooper** (`charred-oak`)
 - [ ] **Iridium Point Nib Meister** (`iridium-point`)
 - [ ] **Alembic Extract Perfume Distiller** (`alembic-extract`)
