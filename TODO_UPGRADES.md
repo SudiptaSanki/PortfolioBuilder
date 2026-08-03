@@ -218,7 +218,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Cryosphere Core Polar Glaciologist** (`cryosphere-core`)
 - [x] **Silver Iodide Cloud Seeder** (`silver-iodide`)
 - [x] **Abyssal Smoker Vent Ecologist** (`abyssal-smoker`)
-- [ ] **Aerosol Nucleation Cloud Physicist** (`aerosol-nucleation`)
+- [x] **Aerosol Nucleation Cloud Physicist** (`aerosol-nucleation`)
 - [ ] **LIGO Interferometer Gravitational Physicist** (`ligo-interferometer`)
 - [ ] **Arctic Albedo Melt Pond Scientist** (`arctic-albedo`)
 - [ ] **Karst Aquifer Hydrogeologist** (`karst-aquifer`)
