@@ -184,7 +184,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Subsea Autonomous Robotics Engineer** (`subsea-robotics`)
 
 ### BUSINESS
-- [ ] **Corporate Wealth Management** (`financial-advisor-corporate-trust`)
+- [x] **Corporate Wealth Management** (`financial-advisor-corporate-trust`)
 - [ ] **Legal Trust Attorney** (`lawyer-legal-trust`)
 - [ ] **civic-duty** (`business-politician-civic-duty`)
 - [ ] **corporate-gold** (`business-venture-capitalist-corporate-gold`)
