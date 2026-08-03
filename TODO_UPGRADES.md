@@ -90,7 +90,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Lumina Smile Clinic** (`dentist-smile-clinic`)
 - [x] **Zen Flow** (`zen-flow`)
 - [x] **glamour-glow** (`health-wellness-makeup-artist-glamour-glow`)
-- [ ] **fresh-organic** (`health-wellness-nutritionist-fresh-organic`)
+- [x] **fresh-organic** (`health-wellness-nutritionist-fresh-organic`)
 - [ ] **zen-minimal** (`health-wellness-yoga-instructor-zen-minimal`)
 
 ### SERVICES
