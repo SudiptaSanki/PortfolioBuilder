@@ -104,7 +104,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Chrono Craft Watchmaker** (`chrono-craft`)
 - [x] **Vintage Reserve Sommelier** (`vintage-reserve`)
 - [x] **Velvet Cocoa Chocolatier** (`velvet-cocoa`)
-- [ ] **Needle and Steel Piercing** (`needle-and-steel`)
+- [x] **Needle and Steel Piercing** (`needle-and-steel`)
 - [ ] **Sonic Boom Test Pilot** (`sonic-boom`)
 - [ ] **Forge and Anvil Blacksmith** (`forge-and-anvil`)
 - [ ] **Savile Thread Bespoke Tailor** (`savile-thread`)
