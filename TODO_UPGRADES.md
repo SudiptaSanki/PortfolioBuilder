@@ -48,7 +48,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Biophilic Design Eco Architect** (`biophilic-design`)
 - [x] **Matte Lumen Lighting Designer** (`matte-lumen`)
 - [x] **Scandi Wood Nordic Artisan** (`scandi-wood`)
-- [ ] **Cyber Headset VR Developer** (`cyber-headset`)
+- [x] **Cyber Headset VR Developer** (`cyber-headset`)
 - [ ] **Shred Core Metal Guitarist** (`shred-core`)
 - [ ] **Haute Vogue Runway Model** (`haute-vogue`)
 - [ ] **Timber Cabin Tiny Home Architect** (`timber-cabin`)
