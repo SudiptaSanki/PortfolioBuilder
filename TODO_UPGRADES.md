@@ -216,7 +216,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Chromosphere Corona Heliophysicist** (`chromosphere-corona`)
 - [x] **Reef Nursery Coral Restorer** (`reef-nursery`)
 - [x] **Cryosphere Core Polar Glaciologist** (`cryosphere-core`)
-- [ ] **Silver Iodide Cloud Seeder** (`silver-iodide`)
+- [x] **Silver Iodide Cloud Seeder** (`silver-iodide`)
 - [ ] **Abyssal Smoker Vent Ecologist** (`abyssal-smoker`)
 - [ ] **Aerosol Nucleation Cloud Physicist** (`aerosol-nucleation`)
 - [ ] **LIGO Interferometer Gravitational Physicist** (`ligo-interferometer`)
