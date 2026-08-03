@@ -105,7 +105,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Vintage Reserve Sommelier** (`vintage-reserve`)
 - [x] **Velvet Cocoa Chocolatier** (`velvet-cocoa`)
 - [x] **Needle and Steel Piercing** (`needle-and-steel`)
-- [ ] **Sonic Boom Test Pilot** (`sonic-boom`)
+- [x] **Sonic Boom Test Pilot** (`sonic-boom`)
 - [ ] **Forge and Anvil Blacksmith** (`forge-and-anvil`)
 - [ ] **Savile Thread Bespoke Tailor** (`savile-thread`)
 - [ ] **Grand Vintage Master Sommelier** (`grand-vintage`)
