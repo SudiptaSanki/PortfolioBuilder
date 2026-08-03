@@ -233,7 +233,7 @@ The following single-page templates (landing pages) need to be expanded into com
 
 ### RETAIL
 - [x] **bento-crumbs** (`retail-bakery-bento-crumbs`)
-- [ ] **earth-harvest** (`retail-farm-stand-earth-harvest`)
+- [x] **earth-harvest** (`retail-farm-stand-earth-harvest`)
 - [ ] **clay-craft** (`retail-handmade-clay-craft`)
 - [ ] **gazette-harvest** (`retail-farm-stand-gazette-harvest`)
 - [ ] **Hypebeast Sneaker Vault** (`hype-beast`)
