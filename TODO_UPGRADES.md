@@ -161,7 +161,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Glass Synth AI Vision** (`glass-synth`)
 - [x] **Quants Pulse Algorithmic Trader** (`quants-pulse`)
 - [x] **Vocal Cortex Neuro-Linguist** (`vocal-cortex`)
-- [ ] **Neural Link BCI Engineer** (`neural-link`)
+- [x] **Neural Link BCI Engineer** (`neural-link`)
 - [ ] **Digital Aroma Scent Engineer** (`digital-aroma`)
 - [ ] **Orbital Truss Space Station Engineer** (`orbital-truss`)
 - [ ] **Cryo Thruster Rocket Engineer** (`cryo-thruster`)
