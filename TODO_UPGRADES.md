@@ -213,7 +213,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Root Remedy Ethno-Botanist** (`root-remedy`)
 - [x] **Fossil Stratum Paleontologist** (`fossil-stratum`)
 - [x] **Abyssal Cave Speleologist** (`abyssal-cave`)
-- [ ] **Chromosphere Corona Heliophysicist** (`chromosphere-corona`)
+- [x] **Chromosphere Corona Heliophysicist** (`chromosphere-corona`)
 - [ ] **Reef Nursery Coral Restorer** (`reef-nursery`)
 - [ ] **Cryosphere Core Polar Glaciologist** (`cryosphere-core`)
 - [ ] **Silver Iodide Cloud Seeder** (`silver-iodide`)
