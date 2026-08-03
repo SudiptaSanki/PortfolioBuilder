@@ -143,7 +143,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **bento-apps** (`technology-mobile-developer-bento-apps`)
 - [x] **server-rack-dark** (`technology-devops-engineer-server-rack-dark`)
 - [x] **pixel-retro** (`technology-game-dev-pixel-retro`)
-- [ ] **Cyberpunk Digital Showcase** (`react-neon`)
+- [x] **Cyberpunk Digital Showcase** (`react-neon`)
 - [ ] **3D Holographic Developer** (`3d-hologram-dev`)
 - [ ] **AI Agent OS Studio** (`ai-agent-os`)
 - [ ] **Cyber Red Team Hacker Terminal** (`cyber-redteam-hacker`)
