@@ -130,7 +130,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Bamboo Craft Frame Sculptor** (`bamboo-craft`)
 - [x] **Equestrian Welt Saddle Maker** (`equestrian-welt`)
 - [x] **Titanium Monobloc Case Machinist** (`titanium-monobloc`)
-- [ ] **Abrasive Stream Waterjet Specialist** (`abrasive-stream`)
+- [x] **Abrasive Stream Waterjet Specialist** (`abrasive-stream`)
 - [ ] **Hyperbaric Deep-Sea Welder** (`hyperbaric-welder`)
 - [ ] **Master Horologist Clock Restoration** (`horology-restorer`)
 
