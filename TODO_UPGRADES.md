@@ -207,7 +207,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Hadron Collision Particle Physicist** (`hadron-collision`)
 - [x] **Supercell Radar Storm Chaser** (`supercell-radar`)
 - [x] **Stratosphere Probe Balloon Scientist** (`stratosphere-probe`)
-- [ ] **Chitin Archive Forensic Entomologist** (`chitin-archive`)
+- [x] **Chitin Archive Forensic Entomologist** (`chitin-archive`)
 - [ ] **Magma Core Volcanic Geologist** (`magma-core`)
 - [ ] **Spore Network Mycologist** (`spore-network`)
 - [ ] **Root Remedy Ethno-Botanist** (`root-remedy`)
