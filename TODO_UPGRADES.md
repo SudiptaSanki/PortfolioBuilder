@@ -62,7 +62,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Keycap Vault Keyboard Artisan** (`keycap-vault`)
 - [x] **Pendulum Wave Kinetic Sculptor** (`pendulum-wave`)
 - [x] **Kintsugi Glow Ceramicist** (`kintsugi-glow`)
-- [ ] **Compass Rose Cartographer** (`compass-rose`)
+- [x] **Compass Rose Cartographer** (`compass-rose`)
 - [ ] **Frost Chisel Ice Sculptor** (`frost-chisel`)
 - [ ] **Marionette Stage Puppet Director** (`marionette-stage`)
 - [ ] **Boreal Lens Aurora Photographer** (`boreal-lens`)
