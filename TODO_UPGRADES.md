@@ -154,7 +154,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Gene Synth Bio-Hacker** (`gene-synth`)
 - [x] **Solar Pulse CleanTech** (`solar-pulse`)
 - [x] **Synapse Core Neuromorphic AI** (`synapse-core`)
-- [ ] **Cipher Vault Quantum Cryptography** (`cipher-vault`)
+- [x] **Cipher Vault Quantum Cryptography** (`cipher-vault`)
 - [ ] **Living Materials Bio Designer** (`living-materials`)
 - [ ] **Zero Trust Cyber Security** (`zero-trust`)
 - [ ] **Sky Telemetry Drone Robotics** (`sky-telemetry`)
