@@ -51,7 +51,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Cyber Headset VR Developer** (`cyber-headset`)
 - [x] **Shred Core Metal Guitarist** (`shred-core`)
 - [x] **Haute Vogue Runway Model** (`haute-vogue`)
-- [ ] **Timber Cabin Tiny Home Architect** (`timber-cabin`)
+- [x] **Timber Cabin Tiny Home Architect** (`timber-cabin`)
 - [ ] **8Bit Pulse Chiptune Artist** (`8bit-pulse`)
 - [ ] **Iso World Environment Artist** (`iso-world`)
 - [ ] **Flora Archive Botanical Illustrator** (`flora-archive`)
