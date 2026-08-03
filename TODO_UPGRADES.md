@@ -131,7 +131,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Equestrian Welt Saddle Maker** (`equestrian-welt`)
 - [x] **Titanium Monobloc Case Machinist** (`titanium-monobloc`)
 - [x] **Abrasive Stream Waterjet Specialist** (`abrasive-stream`)
-- [ ] **Hyperbaric Deep-Sea Welder** (`hyperbaric-welder`)
+- [x] **Hyperbaric Deep-Sea Welder** (`hyperbaric-welder`)
 - [ ] **Master Horologist Clock Restoration** (`horology-restorer`)
 
 ### TECHNOLOGY
