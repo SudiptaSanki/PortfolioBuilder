@@ -110,7 +110,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Savile Thread Bespoke Tailor** (`savile-thread`)
 - [x] **Grand Vintage Master Sommelier** (`grand-vintage`)
 - [x] **Tourbillon Master Horologist** (`tourbillon-master`)
-- [ ] **Cryo Flame Molecular Chef** (`cryo-flame`)
+- [x] **Cryo Flame Molecular Chef** (`cryo-flame`)
 - [ ] **Algae Glow Marine Farmer** (`algae-glow`)
 - [ ] **Gold Nib Pen Craftsman** (`gold-nib`)
 - [ ] **Olfactory Notes Master Perfumer** (`olfactory-notes`)
