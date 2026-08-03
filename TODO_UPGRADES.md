@@ -224,7 +224,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Karst Aquifer Hydrogeologist** (`karst-aquifer`)
 - [x] **Paleobotanist Amber Resin** (`paleo-botanist`)
 - [x] **Tectonic Seismologist** (`seismologist-fault`)
-- [ ] **Physical Volcanologist** (`volcanologist-magma`)
+- [x] **Physical Volcanologist** (`volcanologist-magma`)
 
 ### STARTUP
 - [ ] **Campus Folio Student Portfolio** (`student-campus-folio`)
