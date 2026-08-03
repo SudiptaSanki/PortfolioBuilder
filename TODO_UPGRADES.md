@@ -91,7 +91,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Zen Flow** (`zen-flow`)
 - [x] **glamour-glow** (`health-wellness-makeup-artist-glamour-glow`)
 - [x] **fresh-organic** (`health-wellness-nutritionist-fresh-organic`)
-- [ ] **zen-minimal** (`health-wellness-yoga-instructor-zen-minimal`)
+- [x] **zen-minimal** (`health-wellness-yoga-instructor-zen-minimal`)
 
 ### SERVICES
 - [ ] **Elegant Chef Portfolio** (`culinary-elegant-restaurant`)
