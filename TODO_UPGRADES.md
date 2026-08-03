@@ -114,7 +114,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Algae Glow Marine Farmer** (`algae-glow`)
 - [x] **Gold Nib Pen Craftsman** (`gold-nib`)
 - [x] **Olfactory Notes Master Perfumer** (`olfactory-notes`)
-- [ ] **Moss Biome Terrarium Architect** (`moss-biome`)
+- [x] **Moss Biome Terrarium Architect** (`moss-biome`)
 - [ ] **Gilt Leather Bookbinder** (`gilt-leather`)
 - [ ] **Hadal Flare Trench Diver** (`hadal-flare`)
 - [ ] **Ancient Branch Bonsai Master** (`ancient-branch`)
