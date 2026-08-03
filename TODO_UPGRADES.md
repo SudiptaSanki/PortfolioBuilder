@@ -64,7 +64,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Kintsugi Glow Ceramicist** (`kintsugi-glow`)
 - [x] **Compass Rose Cartographer** (`compass-rose`)
 - [x] **Frost Chisel Ice Sculptor** (`frost-chisel`)
-- [ ] **Marionette Stage Puppet Director** (`marionette-stage`)
+- [x] **Marionette Stage Puppet Director** (`marionette-stage`)
 - [ ] **Boreal Lens Aurora Photographer** (`boreal-lens`)
 - [ ] **Obsidian Breath Glassblower** (`obsidian-breath`)
 - [ ] **Neon Restorer Sign Historian** (`neon-restorer`)
