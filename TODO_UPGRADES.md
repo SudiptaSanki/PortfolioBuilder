@@ -108,7 +108,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Sonic Boom Test Pilot** (`sonic-boom`)
 - [x] **Forge and Anvil Blacksmith** (`forge-and-anvil`)
 - [x] **Savile Thread Bespoke Tailor** (`savile-thread`)
-- [ ] **Grand Vintage Master Sommelier** (`grand-vintage`)
+- [x] **Grand Vintage Master Sommelier** (`grand-vintage`)
 - [ ] **Tourbillon Master Horologist** (`tourbillon-master`)
 - [ ] **Cryo Flame Molecular Chef** (`cryo-flame`)
 - [ ] **Algae Glow Marine Farmer** (`algae-glow`)
