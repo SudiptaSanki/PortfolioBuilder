@@ -55,7 +55,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **8Bit Pulse Chiptune Artist** (`8bit-pulse`)
 - [x] **Iso World Environment Artist** (`iso-world`)
 - [x] **Flora Archive Botanical Illustrator** (`flora-archive`)
-- [ ] **Holo Mesh Hologram Designer** (`holo-mesh`)
+- [x] **Holo Mesh Hologram Designer** (`holo-mesh`)
 - [ ] **Prismatic Light Stained Glass** (`prismatic-light`)
 - [ ] **Gas Discharge Neon Craftsman** (`gas-discharge`)
 - [ ] **Rosewood Tone Guitar Luthier** (`rosewood-tone`)
