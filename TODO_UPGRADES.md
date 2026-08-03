@@ -7,11 +7,11 @@ The following single-page templates (landing pages) need to be expanded into com
 ## Single-Page Templates
 
 ### CREATIVE
-- [ ] **Grunge Tour Band** (`musician-grunge-tour`)
-- [ ] **Minimalist Architect** (`architect-minimalist-structure`)
-- [ ] **Pro Streamer & Gamer** (`streamer-neon-gaming`)
-- [ ] **Freelance Copywriter** (`copywriter-typewriter-clean`)
-- [ ] **Spotlight Dark Comedian** (`comedian-spotlight-dark`)
+- [x] **Grunge Tour Band** (`musician-grunge-tour`)
+- [x] **Minimalist Architect** (`architect-minimalist-structure`)
+- [x] **Pro Streamer & Gamer** (`streamer-neon-gaming`)
+- [x] **Freelance Copywriter** (`copywriter-typewriter-clean`)
+- [x] **Spotlight Dark Comedian** (`comedian-spotlight-dark`)
 - [ ] **Literary Classic** (`literary-classic`)
 - [ ] **Modern Spaces** (`modern-spaces`)
 - [ ] **wanderlust-layered** (`creative-travel-blogger-wanderlust-layered`)
