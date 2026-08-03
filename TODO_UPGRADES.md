@@ -99,7 +99,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Elegant Events** (`elegant-events`)
 - [x] **Auto Pro** (`auto-pro`)
 - [x] **moss-tea** (`services-barista-moss-tea`)
-- [ ] **classic-barber** (`services-barber-classic-barber`)
+- [x] **classic-barber** (`services-barber-classic-barber`)
 - [ ] **Black & Grey Tattoo Parlor** (`ink-master`)
 - [ ] **Chrono Craft Watchmaker** (`chrono-craft`)
 - [ ] **Vintage Reserve Sommelier** (`vintage-reserve`)
