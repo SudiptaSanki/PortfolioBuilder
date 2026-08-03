@@ -67,7 +67,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Marionette Stage Puppet Director** (`marionette-stage`)
 - [x] **Boreal Lens Aurora Photographer** (`boreal-lens`)
 - [x] **Obsidian Breath Glassblower** (`obsidian-breath`)
-- [ ] **Neon Restorer Sign Historian** (`neon-restorer`)
+- [x] **Neon Restorer Sign Historian** (`neon-restorer`)
 - [ ] **Geometric Fold Origami Architect** (`geometric-fold`)
 - [ ] **Champleve Enamel Dial Painter** (`champleve-enamel`)
 - [ ] **Azulejo Pattern Tile Artisan** (`azulejo-pattern`)
