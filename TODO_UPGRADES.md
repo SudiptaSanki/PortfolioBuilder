@@ -243,7 +243,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Synthwave Audio Producer** (`synthwave-audio`)
 
 ### EVENTS
-- [ ] **club-strobe** (`events-dj-club-strobe`)
+- [x] **club-strobe** (`events-dj-club-strobe`)
 - [ ] **Club EDM Producer** (`bass-drop`)
 
 ### MEDICAL
