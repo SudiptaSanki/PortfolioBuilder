@@ -116,7 +116,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Olfactory Notes Master Perfumer** (`olfactory-notes`)
 - [x] **Moss Biome Terrarium Architect** (`moss-biome`)
 - [x] **Gilt Leather Bookbinder** (`gilt-leather`)
-- [ ] **Hadal Flare Trench Diver** (`hadal-flare`)
+- [x] **Hadal Flare Trench Diver** (`hadal-flare`)
 - [ ] **Ancient Branch Bonsai Master** (`ancient-branch`)
 - [ ] **Peat Smoke Whisky Distiller** (`peat-smoke`)
 - [ ] **Frequency Room Sound Engineer** (`frequency-room`)
