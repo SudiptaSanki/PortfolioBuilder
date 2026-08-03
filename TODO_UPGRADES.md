@@ -78,7 +78,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Terracotta Pantile Roof Restorer** (`terracotta-pantile`)
 - [x] **Xenon Discharge Neon Sculptor** (`xenon-discharge`)
 - [x] **Cathedral Rose Window Glass Restorer** (`cathedral-rose-window`)
-- [ ] **Katana Hamon Sword Polisher** (`katana-hamon`)
+- [x] **Katana Hamon Sword Polisher** (`katana-hamon`)
 - [ ] **Marquetry Veneer Intarsia Woodworker** (`marquetry-veneer`)
 - [ ] **Artisan Chocolatier & Cocoa Sculptor** (`chocolatier-artisan`)
 - [ ] **Kinetic Art Sculptor** (`kinetic-sculptor`)
