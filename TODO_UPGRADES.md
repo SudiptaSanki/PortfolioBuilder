@@ -202,7 +202,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Strato Cloud Geo-Engineer** (`strato-cloud`)
 - [x] **Trench Explorer Submersible Pilot** (`trench-explorer`)
 - [x] **Radio Cosmos Astrophysicist** (`radio-cosmos`)
-- [ ] **Arctic Frost Glaciologist** (`arctic-frost`)
+- [x] **Arctic Frost Glaciologist** (`arctic-frost`)
 - [ ] **Orbital Drill Asteroid Miner** (`orbital-drill`)
 - [ ] **Hadron Collision Particle Physicist** (`hadron-collision`)
 - [ ] **Supercell Radar Storm Chaser** (`supercell-radar`)
