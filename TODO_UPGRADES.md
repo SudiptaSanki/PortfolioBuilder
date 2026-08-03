@@ -126,7 +126,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Handstitched Welt Master Cobbler** (`handstitched-welt`)
 - [x] **Charred Oak Master Cooper** (`charred-oak`)
 - [x] **Iridium Point Nib Meister** (`iridium-point`)
-- [ ] **Alembic Extract Perfume Distiller** (`alembic-extract`)
+- [x] **Alembic Extract Perfume Distiller** (`alembic-extract`)
 - [ ] **Bamboo Craft Frame Sculptor** (`bamboo-craft`)
 - [ ] **Equestrian Welt Saddle Maker** (`equestrian-welt`)
 - [ ] **Titanium Monobloc Case Machinist** (`titanium-monobloc`)
