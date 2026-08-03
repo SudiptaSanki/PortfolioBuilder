@@ -228,7 +228,7 @@ The following single-page templates (landing pages) need to be expanded into com
 
 ### STARTUP
 - [x] **Campus Folio Student Portfolio** (`student-campus-folio`)
-- [ ] **LaunchPad AI Startup** (`startup-launchpad-ai`)
+- [x] **LaunchPad AI Startup** (`startup-launchpad-ai`)
 - [ ] **gradient-saas** (`startup-saas-founder-gradient-saas`)
 
 ### RETAIL
