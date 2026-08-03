@@ -66,7 +66,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Frost Chisel Ice Sculptor** (`frost-chisel`)
 - [x] **Marionette Stage Puppet Director** (`marionette-stage`)
 - [x] **Boreal Lens Aurora Photographer** (`boreal-lens`)
-- [ ] **Obsidian Breath Glassblower** (`obsidian-breath`)
+- [x] **Obsidian Breath Glassblower** (`obsidian-breath`)
 - [ ] **Neon Restorer Sign Historian** (`neon-restorer`)
 - [ ] **Geometric Fold Origami Architect** (`geometric-fold`)
 - [ ] **Champleve Enamel Dial Painter** (`champleve-enamel`)
