@@ -209,7 +209,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Stratosphere Probe Balloon Scientist** (`stratosphere-probe`)
 - [x] **Chitin Archive Forensic Entomologist** (`chitin-archive`)
 - [x] **Magma Core Volcanic Geologist** (`magma-core`)
-- [ ] **Spore Network Mycologist** (`spore-network`)
+- [x] **Spore Network Mycologist** (`spore-network`)
 - [ ] **Root Remedy Ethno-Botanist** (`root-remedy`)
 - [ ] **Fossil Stratum Paleontologist** (`fossil-stratum`)
 - [ ] **Abyssal Cave Speleologist** (`abyssal-cave`)
