@@ -236,7 +236,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **earth-harvest** (`retail-farm-stand-earth-harvest`)
 - [x] **clay-craft** (`retail-handmade-clay-craft`)
 - [x] **gazette-harvest** (`retail-farm-stand-gazette-harvest`)
-- [ ] **Hypebeast Sneaker Vault** (`hype-beast`)
+- [x] **Hypebeast Sneaker Vault** (`hype-beast`)
 
 ### MUSIC
 - [ ] **vinyl-spin** (`music-producer-vinyl-spin`)
