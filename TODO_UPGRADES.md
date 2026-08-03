@@ -120,7 +120,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Ancient Branch Bonsai Master** (`ancient-branch`)
 - [x] **Peat Smoke Whisky Distiller** (`peat-smoke`)
 - [x] **Frequency Room Sound Engineer** (`frequency-room`)
-- [ ] **Mainspring Atelier Watch Restorer** (`mainspring-atelier`)
+- [x] **Mainspring Atelier Watch Restorer** (`mainspring-atelier`)
 - [ ] **Anvil Forge Master Blacksmith** (`anvil-forge`)
 - [ ] **Pyro Master Fireworks Designer** (`pyro-master`)
 - [ ] **Handstitched Welt Master Cobbler** (`handstitched-welt`)
