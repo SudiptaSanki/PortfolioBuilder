@@ -247,5 +247,5 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Club EDM Producer** (`bass-drop`)
 
 ### MEDICAL
-- [ ] **Da Vinci Precision Surgical Robotics** (`da-vinci-precision`)
+- [x] **Da Vinci Precision Surgical Robotics** (`da-vinci-precision`)
 
