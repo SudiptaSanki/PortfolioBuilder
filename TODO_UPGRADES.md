@@ -76,7 +76,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Prismatic Mirror Kaleidoscopist** (`prismatic-mirror`)
 - [x] **Gilded Script Manuscript Illuminator** (`gilded-script`)
 - [x] **Terracotta Pantile Roof Restorer** (`terracotta-pantile`)
-- [ ] **Xenon Discharge Neon Sculptor** (`xenon-discharge`)
+- [x] **Xenon Discharge Neon Sculptor** (`xenon-discharge`)
 - [ ] **Cathedral Rose Window Glass Restorer** (`cathedral-rose-window`)
 - [ ] **Katana Hamon Sword Polisher** (`katana-hamon`)
 - [ ] **Marquetry Veneer Intarsia Woodworker** (`marquetry-veneer`)
