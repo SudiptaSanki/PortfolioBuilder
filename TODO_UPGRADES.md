@@ -53,7 +53,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Haute Vogue Runway Model** (`haute-vogue`)
 - [x] **Timber Cabin Tiny Home Architect** (`timber-cabin`)
 - [x] **8Bit Pulse Chiptune Artist** (`8bit-pulse`)
-- [ ] **Iso World Environment Artist** (`iso-world`)
+- [x] **Iso World Environment Artist** (`iso-world`)
 - [ ] **Flora Archive Botanical Illustrator** (`flora-archive`)
 - [ ] **Holo Mesh Hologram Designer** (`holo-mesh`)
 - [ ] **Prismatic Light Stained Glass** (`prismatic-light`)
