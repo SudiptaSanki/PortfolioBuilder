@@ -179,7 +179,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Oceanic Hydrophone Acoustic Specialist** (`oceanic-hydrophone`)
 - [x] **Atomic Vapor Cell Magnetometer Architect** (`atomic-vapor-cell`)
 - [x] **Stratospheric Hull Airship Engineer** (`stratospheric-hull`)
-- [ ] **Proton Exchange Membrane Fuel Cell Engineer** (`proton-exchange-membrane`)
+- [x] **Proton Exchange Membrane Fuel Cell Engineer** (`proton-exchange-membrane`)
 - [ ] **Superconducting Qubit Architect** (`superconducting-qubit`)
 - [ ] **Subsea Autonomous Robotics Engineer** (`subsea-robotics`)
 
