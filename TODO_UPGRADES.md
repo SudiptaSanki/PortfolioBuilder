@@ -135,7 +135,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Master Horologist Clock Restoration** (`horology-restorer`)
 
 ### TECHNOLOGY
-- [ ] **Data Scientist Terminal** (`data-scientist-tech-data`)
+- [x] **Data Scientist Terminal** (`data-scientist-tech-data`)
 - [ ] **Crypto Neon Web3 Dev** (`web3-developer-crypto-neon`)
 - [ ] **Console Hacker Terminal** (`cybersecurity-hacker-terminal`)
 - [ ] **glitch-forge** (`technology-game-developer-glitch-forge`)
