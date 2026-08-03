@@ -196,7 +196,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **scholastic-press** (`academic-researcher-scholastic-press`)
 - [x] **clean-science** (`academic-researcher-clean-science`)
 - [x] **Quantum Physicist Lab** (`quantum-researcher`)
-- [ ] **Cosmic Void Astrophysics** (`cosmic-void`)
+- [x] **Cosmic Void Astrophysics** (`cosmic-void`)
 - [ ] **Deep Abyss Oceanographer** (`deep-abyss`)
 - [ ] **Astro Geology Planetary Science** (`astro-geology`)
 - [ ] **Strato Cloud Geo-Engineer** (`strato-cloud`)
