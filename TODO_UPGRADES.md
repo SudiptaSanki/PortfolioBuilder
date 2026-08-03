@@ -165,7 +165,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Digital Aroma Scent Engineer** (`digital-aroma`)
 - [x] **Orbital Truss Space Station Engineer** (`orbital-truss`)
 - [x] **Cryo Thruster Rocket Engineer** (`cryo-thruster`)
-- [ ] **Red Shell Penetration Tester** (`red-shell`)
+- [x] **Red Shell Penetration Tester** (`red-shell`)
 - [ ] **Qubit Cipher Quantum Cryptographer** (`qubit-cipher`)
 - [ ] **Deep Hull Submarine Designer** (`deep-hull`)
 - [ ] **FPV Velocity Drone Racer** (`fpv-velocity`)
