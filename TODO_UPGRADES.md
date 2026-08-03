@@ -44,7 +44,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **CRT Cabinet Arcade Restorer** (`crt-cabinet`)
 - [x] **Cinematic Score Film Composer** (`cinematic-score`)
 - [x] **Hyper Render 3D ArchViz** (`hyper-render`)
-- [ ] **Particle Field VFX Supervisor** (`particle-field`)
+- [x] **Particle Field VFX Supervisor** (`particle-field`)
 - [ ] **Biophilic Design Eco Architect** (`biophilic-design`)
 - [ ] **Matte Lumen Lighting Designer** (`matte-lumen`)
 - [ ] **Scandi Wood Nordic Artisan** (`scandi-wood`)
