@@ -118,7 +118,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Gilt Leather Bookbinder** (`gilt-leather`)
 - [x] **Hadal Flare Trench Diver** (`hadal-flare`)
 - [x] **Ancient Branch Bonsai Master** (`ancient-branch`)
-- [ ] **Peat Smoke Whisky Distiller** (`peat-smoke`)
+- [x] **Peat Smoke Whisky Distiller** (`peat-smoke`)
 - [ ] **Frequency Room Sound Engineer** (`frequency-room`)
 - [ ] **Mainspring Atelier Watch Restorer** (`mainspring-atelier`)
 - [ ] **Anvil Forge Master Blacksmith** (`anvil-forge`)
