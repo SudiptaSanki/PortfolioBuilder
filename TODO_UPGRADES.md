@@ -117,7 +117,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Moss Biome Terrarium Architect** (`moss-biome`)
 - [x] **Gilt Leather Bookbinder** (`gilt-leather`)
 - [x] **Hadal Flare Trench Diver** (`hadal-flare`)
-- [ ] **Ancient Branch Bonsai Master** (`ancient-branch`)
+- [x] **Ancient Branch Bonsai Master** (`ancient-branch`)
 - [ ] **Peat Smoke Whisky Distiller** (`peat-smoke`)
 - [ ] **Frequency Room Sound Engineer** (`frequency-room`)
 - [ ] **Mainspring Atelier Watch Restorer** (`mainspring-atelier`)
