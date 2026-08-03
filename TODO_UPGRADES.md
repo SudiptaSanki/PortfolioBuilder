@@ -46,7 +46,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Hyper Render 3D ArchViz** (`hyper-render`)
 - [x] **Particle Field VFX Supervisor** (`particle-field`)
 - [x] **Biophilic Design Eco Architect** (`biophilic-design`)
-- [ ] **Matte Lumen Lighting Designer** (`matte-lumen`)
+- [x] **Matte Lumen Lighting Designer** (`matte-lumen`)
 - [ ] **Scandi Wood Nordic Artisan** (`scandi-wood`)
 - [ ] **Cyber Headset VR Developer** (`cyber-headset`)
 - [ ] **Shred Core Metal Guitarist** (`shred-core`)
