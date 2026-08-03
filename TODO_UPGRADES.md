@@ -244,7 +244,7 @@ The following single-page templates (landing pages) need to be expanded into com
 
 ### EVENTS
 - [x] **club-strobe** (`events-dj-club-strobe`)
-- [ ] **Club EDM Producer** (`bass-drop`)
+- [x] **Club EDM Producer** (`bass-drop`)
 
 ### MEDICAL
 - [ ] **Da Vinci Precision Surgical Robotics** (`da-vinci-precision`)
