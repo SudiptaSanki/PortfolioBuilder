@@ -214,7 +214,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Fossil Stratum Paleontologist** (`fossil-stratum`)
 - [x] **Abyssal Cave Speleologist** (`abyssal-cave`)
 - [x] **Chromosphere Corona Heliophysicist** (`chromosphere-corona`)
-- [ ] **Reef Nursery Coral Restorer** (`reef-nursery`)
+- [x] **Reef Nursery Coral Restorer** (`reef-nursery`)
 - [ ] **Cryosphere Core Polar Glaciologist** (`cryosphere-core`)
 - [ ] **Silver Iodide Cloud Seeder** (`silver-iodide`)
 - [ ] **Abyssal Smoker Vent Ecologist** (`abyssal-smoker`)
