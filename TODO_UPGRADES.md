@@ -171,7 +171,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **FPV Velocity Drone Racer** (`fpv-velocity`)
 - [x] **Apogee Pilot Space Tourism** (`apogee-pilot`)
 - [x] **Photon Interferometer Optical Engineer** (`photon-interferometer`)
-- [ ] **Meissner Levitation Quantum Physicist** (`meissner-levitation`)
+- [x] **Meissner Levitation Quantum Physicist** (`meissner-levitation`)
 - [ ] **Maglev Slipstream Rail Engineer** (`maglev-slipstream`)
 - [ ] **Orbital Greenhouse Space Hydroponicist** (`orbital-greenhouse`)
 - [ ] **Orbital Tether Space Engineer** (`orbital-tether`)
