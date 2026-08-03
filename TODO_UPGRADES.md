@@ -177,7 +177,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Orbital Tether Space Engineer** (`orbital-tether`)
 - [x] **CVD Plasma Diamond Engineer** (`cvd-plasma`)
 - [x] **Oceanic Hydrophone Acoustic Specialist** (`oceanic-hydrophone`)
-- [ ] **Atomic Vapor Cell Magnetometer Architect** (`atomic-vapor-cell`)
+- [x] **Atomic Vapor Cell Magnetometer Architect** (`atomic-vapor-cell`)
 - [ ] **Stratospheric Hull Airship Engineer** (`stratospheric-hull`)
 - [ ] **Proton Exchange Membrane Fuel Cell Engineer** (`proton-exchange-membrane`)
 - [ ] **Superconducting Qubit Architect** (`superconducting-qubit`)
