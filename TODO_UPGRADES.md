@@ -168,7 +168,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Red Shell Penetration Tester** (`red-shell`)
 - [x] **Qubit Cipher Quantum Cryptographer** (`qubit-cipher`)
 - [x] **Deep Hull Submarine Designer** (`deep-hull`)
-- [ ] **FPV Velocity Drone Racer** (`fpv-velocity`)
+- [x] **FPV Velocity Drone Racer** (`fpv-velocity`)
 - [ ] **Apogee Pilot Space Tourism** (`apogee-pilot`)
 - [ ] **Photon Interferometer Optical Engineer** (`photon-interferometer`)
 - [ ] **Meissner Levitation Quantum Physicist** (`meissner-levitation`)
