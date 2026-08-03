@@ -193,7 +193,7 @@ The following single-page templates (landing pages) need to be expanded into com
 
 ### ACADEMIC
 - [x] **Bright Learning Educator** (`teacher-bright-learning`)
-- [ ] **scholastic-press** (`academic-researcher-scholastic-press`)
+- [x] **scholastic-press** (`academic-researcher-scholastic-press`)
 - [ ] **clean-science** (`academic-researcher-clean-science`)
 - [ ] **Quantum Physicist Lab** (`quantum-researcher`)
 - [ ] **Cosmic Void Astrophysics** (`cosmic-void`)
