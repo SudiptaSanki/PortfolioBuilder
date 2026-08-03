@@ -59,7 +59,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Prismatic Light Stained Glass** (`prismatic-light`)
 - [x] **Gas Discharge Neon Craftsman** (`gas-discharge`)
 - [x] **Rosewood Tone Guitar Luthier** (`rosewood-tone`)
-- [ ] **Keycap Vault Keyboard Artisan** (`keycap-vault`)
+- [x] **Keycap Vault Keyboard Artisan** (`keycap-vault`)
 - [ ] **Pendulum Wave Kinetic Sculptor** (`pendulum-wave`)
 - [ ] **Kintsugi Glow Ceramicist** (`kintsugi-glow`)
 - [ ] **Compass Rose Cartographer** (`compass-rose`)
