@@ -72,7 +72,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Champleve Enamel Dial Painter** (`champleve-enamel`)
 - [x] **Azulejo Pattern Tile Artisan** (`azulejo-pattern`)
 - [x] **Lead Type Foundry Punchcutter** (`lead-type-foundry`)
-- [ ] **Harmonic Resonance Chime Sculptor** (`harmonic-resonance`)
+- [x] **Harmonic Resonance Chime Sculptor** (`harmonic-resonance`)
 - [ ] **Prismatic Mirror Kaleidoscopist** (`prismatic-mirror`)
 - [ ] **Gilded Script Manuscript Illuminator** (`gilded-script`)
 - [ ] **Terracotta Pantile Roof Restorer** (`terracotta-pantile`)
