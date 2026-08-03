@@ -71,7 +71,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Geometric Fold Origami Architect** (`geometric-fold`)
 - [x] **Champleve Enamel Dial Painter** (`champleve-enamel`)
 - [x] **Azulejo Pattern Tile Artisan** (`azulejo-pattern`)
-- [ ] **Lead Type Foundry Punchcutter** (`lead-type-foundry`)
+- [x] **Lead Type Foundry Punchcutter** (`lead-type-foundry`)
 - [ ] **Harmonic Resonance Chime Sculptor** (`harmonic-resonance`)
 - [ ] **Prismatic Mirror Kaleidoscopist** (`prismatic-mirror`)
 - [ ] **Gilded Script Manuscript Illuminator** (`gilded-script`)
