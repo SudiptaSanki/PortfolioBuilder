@@ -240,7 +240,7 @@ The following single-page templates (landing pages) need to be expanded into com
 
 ### MUSIC
 - [x] **vinyl-spin** (`music-producer-vinyl-spin`)
-- [ ] **Synthwave Audio Producer** (`synthwave-audio`)
+- [x] **Synthwave Audio Producer** (`synthwave-audio`)
 
 ### EVENTS
 - [ ] **club-strobe** (`events-dj-club-strobe`)
