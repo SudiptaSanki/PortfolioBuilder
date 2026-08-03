@@ -170,7 +170,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Deep Hull Submarine Designer** (`deep-hull`)
 - [x] **FPV Velocity Drone Racer** (`fpv-velocity`)
 - [x] **Apogee Pilot Space Tourism** (`apogee-pilot`)
-- [ ] **Photon Interferometer Optical Engineer** (`photon-interferometer`)
+- [x] **Photon Interferometer Optical Engineer** (`photon-interferometer`)
 - [ ] **Meissner Levitation Quantum Physicist** (`meissner-levitation`)
 - [ ] **Maglev Slipstream Rail Engineer** (`maglev-slipstream`)
 - [ ] **Orbital Greenhouse Space Hydroponicist** (`orbital-greenhouse`)
