@@ -169,7 +169,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Qubit Cipher Quantum Cryptographer** (`qubit-cipher`)
 - [x] **Deep Hull Submarine Designer** (`deep-hull`)
 - [x] **FPV Velocity Drone Racer** (`fpv-velocity`)
-- [ ] **Apogee Pilot Space Tourism** (`apogee-pilot`)
+- [x] **Apogee Pilot Space Tourism** (`apogee-pilot`)
 - [ ] **Photon Interferometer Optical Engineer** (`photon-interferometer`)
 - [ ] **Meissner Levitation Quantum Physicist** (`meissner-levitation`)
 - [ ] **Maglev Slipstream Rail Engineer** (`maglev-slipstream`)
