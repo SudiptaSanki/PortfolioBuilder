@@ -180,7 +180,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Atomic Vapor Cell Magnetometer Architect** (`atomic-vapor-cell`)
 - [x] **Stratospheric Hull Airship Engineer** (`stratospheric-hull`)
 - [x] **Proton Exchange Membrane Fuel Cell Engineer** (`proton-exchange-membrane`)
-- [ ] **Superconducting Qubit Architect** (`superconducting-qubit`)
+- [x] **Superconducting Qubit Architect** (`superconducting-qubit`)
 - [ ] **Subsea Autonomous Robotics Engineer** (`subsea-robotics`)
 
 ### BUSINESS
