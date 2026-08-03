@@ -181,7 +181,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Stratospheric Hull Airship Engineer** (`stratospheric-hull`)
 - [x] **Proton Exchange Membrane Fuel Cell Engineer** (`proton-exchange-membrane`)
 - [x] **Superconducting Qubit Architect** (`superconducting-qubit`)
-- [ ] **Subsea Autonomous Robotics Engineer** (`subsea-robotics`)
+- [x] **Subsea Autonomous Robotics Engineer** (`subsea-robotics`)
 
 ### BUSINESS
 - [ ] **Corporate Wealth Management** (`financial-advisor-corporate-trust`)
