@@ -95,7 +95,7 @@ The following single-page templates (landing pages) need to be expanded into com
 
 ### SERVICES
 - [x] **Elegant Chef Portfolio** (`culinary-elegant-restaurant`)
-- [ ] **Specialty Coffee Roaster** (`barista-specialty-roasters`)
+- [x] **Specialty Coffee Roaster** (`barista-specialty-roasters`)
 - [ ] **Elegant Events** (`elegant-events`)
 - [ ] **Auto Pro** (`auto-pro`)
 - [ ] **moss-tea** (`services-barista-moss-tea`)
