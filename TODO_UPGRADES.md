@@ -232,7 +232,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **gradient-saas** (`startup-saas-founder-gradient-saas`)
 
 ### RETAIL
-- [ ] **bento-crumbs** (`retail-bakery-bento-crumbs`)
+- [x] **bento-crumbs** (`retail-bakery-bento-crumbs`)
 - [ ] **earth-harvest** (`retail-farm-stand-earth-harvest`)
 - [ ] **clay-craft** (`retail-handmade-clay-craft`)
 - [ ] **gazette-harvest** (`retail-farm-stand-gazette-harvest`)
