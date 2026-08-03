@@ -173,7 +173,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Photon Interferometer Optical Engineer** (`photon-interferometer`)
 - [x] **Meissner Levitation Quantum Physicist** (`meissner-levitation`)
 - [x] **Maglev Slipstream Rail Engineer** (`maglev-slipstream`)
-- [ ] **Orbital Greenhouse Space Hydroponicist** (`orbital-greenhouse`)
+- [x] **Orbital Greenhouse Space Hydroponicist** (`orbital-greenhouse`)
 - [ ] **Orbital Tether Space Engineer** (`orbital-tether`)
 - [ ] **CVD Plasma Diamond Engineer** (`cvd-plasma`)
 - [ ] **Oceanic Hydrophone Acoustic Specialist** (`oceanic-hydrophone`)
