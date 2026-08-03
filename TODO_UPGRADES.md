@@ -147,7 +147,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **3D Holographic Developer** (`3d-hologram-dev`)
 - [x] **AI Agent OS Studio** (`ai-agent-os`)
 - [x] **Cyber Red Team Hacker Terminal** (`cyber-redteam-hacker`)
-- [ ] **Retro Arcade Game Dev** (`retro-arcade-gamedev`)
+- [x] **Retro Arcade Game Dev** (`retro-arcade-gamedev`)
 - [ ] **Zero Day Pentester** (`zero-day`)
 - [ ] **Qubit State Quantum Engineer** (`qubit-state`)
 - [ ] **Cyber Servo Robotics** (`cyber-servo`)
