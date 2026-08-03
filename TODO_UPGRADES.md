@@ -151,7 +151,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Zero Day Pentester** (`zero-day`)
 - [x] **Qubit State Quantum Engineer** (`qubit-state`)
 - [x] **Cyber Servo Robotics** (`cyber-servo`)
-- [ ] **Gene Synth Bio-Hacker** (`gene-synth`)
+- [x] **Gene Synth Bio-Hacker** (`gene-synth`)
 - [ ] **Solar Pulse CleanTech** (`solar-pulse`)
 - [ ] **Synapse Core Neuromorphic AI** (`synapse-core`)
 - [ ] **Cipher Vault Quantum Cryptography** (`cipher-vault`)
