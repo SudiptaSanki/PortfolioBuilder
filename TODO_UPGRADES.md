@@ -211,7 +211,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Magma Core Volcanic Geologist** (`magma-core`)
 - [x] **Spore Network Mycologist** (`spore-network`)
 - [x] **Root Remedy Ethno-Botanist** (`root-remedy`)
-- [ ] **Fossil Stratum Paleontologist** (`fossil-stratum`)
+- [x] **Fossil Stratum Paleontologist** (`fossil-stratum`)
 - [ ] **Abyssal Cave Speleologist** (`abyssal-cave`)
 - [ ] **Chromosphere Corona Heliophysicist** (`chromosphere-corona`)
 - [ ] **Reef Nursery Coral Restorer** (`reef-nursery`)
