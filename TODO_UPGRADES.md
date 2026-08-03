@@ -68,7 +68,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Boreal Lens Aurora Photographer** (`boreal-lens`)
 - [x] **Obsidian Breath Glassblower** (`obsidian-breath`)
 - [x] **Neon Restorer Sign Historian** (`neon-restorer`)
-- [ ] **Geometric Fold Origami Architect** (`geometric-fold`)
+- [x] **Geometric Fold Origami Architect** (`geometric-fold`)
 - [ ] **Champleve Enamel Dial Painter** (`champleve-enamel`)
 - [ ] **Azulejo Pattern Tile Artisan** (`azulejo-pattern`)
 - [ ] **Lead Type Foundry Punchcutter** (`lead-type-foundry`)
