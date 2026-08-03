@@ -221,7 +221,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Aerosol Nucleation Cloud Physicist** (`aerosol-nucleation`)
 - [x] **LIGO Interferometer Gravitational Physicist** (`ligo-interferometer`)
 - [x] **Arctic Albedo Melt Pond Scientist** (`arctic-albedo`)
-- [ ] **Karst Aquifer Hydrogeologist** (`karst-aquifer`)
+- [x] **Karst Aquifer Hydrogeologist** (`karst-aquifer`)
 - [ ] **Paleobotanist Amber Resin** (`paleo-botanist`)
 - [ ] **Tectonic Seismologist** (`seismologist-fault`)
 - [ ] **Physical Volcanologist** (`volcanologist-magma`)
