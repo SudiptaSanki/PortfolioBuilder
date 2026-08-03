@@ -132,7 +132,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Titanium Monobloc Case Machinist** (`titanium-monobloc`)
 - [x] **Abrasive Stream Waterjet Specialist** (`abrasive-stream`)
 - [x] **Hyperbaric Deep-Sea Welder** (`hyperbaric-welder`)
-- [ ] **Master Horologist Clock Restoration** (`horology-restorer`)
+- [x] **Master Horologist Clock Restoration** (`horology-restorer`)
 
 ### TECHNOLOGY
 - [ ] **Data Scientist Terminal** (`data-scientist-tech-data`)
