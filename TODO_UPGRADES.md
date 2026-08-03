@@ -98,7 +98,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Specialty Coffee Roaster** (`barista-specialty-roasters`)
 - [x] **Elegant Events** (`elegant-events`)
 - [x] **Auto Pro** (`auto-pro`)
-- [ ] **moss-tea** (`services-barista-moss-tea`)
+- [x] **moss-tea** (`services-barista-moss-tea`)
 - [ ] **classic-barber** (`services-barber-classic-barber`)
 - [ ] **Black & Grey Tattoo Parlor** (`ink-master`)
 - [ ] **Chrono Craft Watchmaker** (`chrono-craft`)
