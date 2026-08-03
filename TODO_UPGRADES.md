@@ -42,7 +42,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Dystopian Haze Concept Artist** (`dystopian-haze`)
 - [x] **Nautical Prestige Superyacht Architect** (`nautical-prestige`)
 - [x] **CRT Cabinet Arcade Restorer** (`crt-cabinet`)
-- [ ] **Cinematic Score Film Composer** (`cinematic-score`)
+- [x] **Cinematic Score Film Composer** (`cinematic-score`)
 - [ ] **Hyper Render 3D ArchViz** (`hyper-render`)
 - [ ] **Particle Field VFX Supervisor** (`particle-field`)
 - [ ] **Biophilic Design Eco Architect** (`biophilic-design`)
