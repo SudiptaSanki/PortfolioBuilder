@@ -94,7 +94,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **zen-minimal** (`health-wellness-yoga-instructor-zen-minimal`)
 
 ### SERVICES
-- [ ] **Elegant Chef Portfolio** (`culinary-elegant-restaurant`)
+- [x] **Elegant Chef Portfolio** (`culinary-elegant-restaurant`)
 - [ ] **Specialty Coffee Roaster** (`barista-specialty-roasters`)
 - [ ] **Elegant Events** (`elegant-events`)
 - [ ] **Auto Pro** (`auto-pro`)
