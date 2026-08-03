@@ -223,7 +223,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Arctic Albedo Melt Pond Scientist** (`arctic-albedo`)
 - [x] **Karst Aquifer Hydrogeologist** (`karst-aquifer`)
 - [x] **Paleobotanist Amber Resin** (`paleo-botanist`)
-- [ ] **Tectonic Seismologist** (`seismologist-fault`)
+- [x] **Tectonic Seismologist** (`seismologist-fault`)
 - [ ] **Physical Volcanologist** (`volcanologist-magma`)
 
 ### STARTUP
