@@ -57,7 +57,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Flora Archive Botanical Illustrator** (`flora-archive`)
 - [x] **Holo Mesh Hologram Designer** (`holo-mesh`)
 - [x] **Prismatic Light Stained Glass** (`prismatic-light`)
-- [ ] **Gas Discharge Neon Craftsman** (`gas-discharge`)
+- [x] **Gas Discharge Neon Craftsman** (`gas-discharge`)
 - [ ] **Rosewood Tone Guitar Luthier** (`rosewood-tone`)
 - [ ] **Keycap Vault Keyboard Artisan** (`keycap-vault`)
 - [ ] **Pendulum Wave Kinetic Sculptor** (`pendulum-wave`)
