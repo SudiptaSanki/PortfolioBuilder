@@ -101,7 +101,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **moss-tea** (`services-barista-moss-tea`)
 - [x] **classic-barber** (`services-barber-classic-barber`)
 - [x] **Black & Grey Tattoo Parlor** (`ink-master`)
-- [ ] **Chrono Craft Watchmaker** (`chrono-craft`)
+- [x] **Chrono Craft Watchmaker** (`chrono-craft`)
 - [ ] **Vintage Reserve Sommelier** (`vintage-reserve`)
 - [ ] **Velvet Cocoa Chocolatier** (`velvet-cocoa`)
 - [ ] **Needle and Steel Piercing** (`needle-and-steel`)
