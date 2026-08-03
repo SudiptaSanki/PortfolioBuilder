@@ -86,7 +86,7 @@ The following single-page templates (landing pages) need to be expanded into com
 
 ### HEALTH-WELLNESS
 - [x] **Bold Energy Fitness** (`fitness-bold-energy`)
-- [ ] **Clinical Clean Doctor** (`doctor-clinical-clean`)
+- [x] **Clinical Clean Doctor** (`doctor-clinical-clean`)
 - [ ] **Lumina Smile Clinic** (`dentist-smile-clinic`)
 - [ ] **Zen Flow** (`zen-flow`)
 - [ ] **glamour-glow** (`health-wellness-makeup-artist-glamour-glow`)
