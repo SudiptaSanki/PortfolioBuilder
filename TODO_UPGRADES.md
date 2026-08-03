@@ -73,7 +73,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Azulejo Pattern Tile Artisan** (`azulejo-pattern`)
 - [x] **Lead Type Foundry Punchcutter** (`lead-type-foundry`)
 - [x] **Harmonic Resonance Chime Sculptor** (`harmonic-resonance`)
-- [ ] **Prismatic Mirror Kaleidoscopist** (`prismatic-mirror`)
+- [x] **Prismatic Mirror Kaleidoscopist** (`prismatic-mirror`)
 - [ ] **Gilded Script Manuscript Illuminator** (`gilded-script`)
 - [ ] **Terracotta Pantile Roof Restorer** (`terracotta-pantile`)
 - [ ] **Xenon Discharge Neon Sculptor** (`xenon-discharge`)
