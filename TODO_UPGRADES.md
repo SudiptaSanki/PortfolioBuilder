@@ -204,7 +204,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Radio Cosmos Astrophysicist** (`radio-cosmos`)
 - [x] **Arctic Frost Glaciologist** (`arctic-frost`)
 - [x] **Orbital Drill Asteroid Miner** (`orbital-drill`)
-- [ ] **Hadron Collision Particle Physicist** (`hadron-collision`)
+- [x] **Hadron Collision Particle Physicist** (`hadron-collision`)
 - [ ] **Supercell Radar Storm Chaser** (`supercell-radar`)
 - [ ] **Stratosphere Probe Balloon Scientist** (`stratosphere-probe`)
 - [ ] **Chitin Archive Forensic Entomologist** (`chitin-archive`)
