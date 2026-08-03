@@ -89,7 +89,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Clinical Clean Doctor** (`doctor-clinical-clean`)
 - [x] **Lumina Smile Clinic** (`dentist-smile-clinic`)
 - [x] **Zen Flow** (`zen-flow`)
-- [ ] **glamour-glow** (`health-wellness-makeup-artist-glamour-glow`)
+- [x] **glamour-glow** (`health-wellness-makeup-artist-glamour-glow`)
 - [ ] **fresh-organic** (`health-wellness-nutritionist-fresh-organic`)
 - [ ] **zen-minimal** (`health-wellness-yoga-instructor-zen-minimal`)
 
