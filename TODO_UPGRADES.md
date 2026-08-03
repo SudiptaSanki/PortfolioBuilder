@@ -189,7 +189,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **civic-duty** (`business-politician-civic-duty`)
 - [x] **corporate-gold** (`business-venture-capitalist-corporate-gold`)
 - [x] **luxury-listings** (`business-real-estate-agent-luxury-listings`)
-- [ ] **High Frequency Quant Trader** (`candlestick-pulse`)
+- [x] **High Frequency Quant Trader** (`candlestick-pulse`)
 
 ### ACADEMIC
 - [ ] **Bright Learning Educator** (`teacher-bright-learning`)
