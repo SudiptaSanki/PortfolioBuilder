@@ -49,7 +49,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Matte Lumen Lighting Designer** (`matte-lumen`)
 - [x] **Scandi Wood Nordic Artisan** (`scandi-wood`)
 - [x] **Cyber Headset VR Developer** (`cyber-headset`)
-- [ ] **Shred Core Metal Guitarist** (`shred-core`)
+- [x] **Shred Core Metal Guitarist** (`shred-core`)
 - [ ] **Haute Vogue Runway Model** (`haute-vogue`)
 - [ ] **Timber Cabin Tiny Home Architect** (`timber-cabin`)
 - [ ] **8Bit Pulse Chiptune Artist** (`8bit-pulse`)
