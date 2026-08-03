@@ -119,7 +119,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Hadal Flare Trench Diver** (`hadal-flare`)
 - [x] **Ancient Branch Bonsai Master** (`ancient-branch`)
 - [x] **Peat Smoke Whisky Distiller** (`peat-smoke`)
-- [ ] **Frequency Room Sound Engineer** (`frequency-room`)
+- [x] **Frequency Room Sound Engineer** (`frequency-room`)
 - [ ] **Mainspring Atelier Watch Restorer** (`mainspring-atelier`)
 - [ ] **Anvil Forge Master Blacksmith** (`anvil-forge`)
 - [ ] **Pyro Master Fireworks Designer** (`pyro-master`)
