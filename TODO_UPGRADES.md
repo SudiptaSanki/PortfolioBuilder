@@ -239,7 +239,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Hypebeast Sneaker Vault** (`hype-beast`)
 
 ### MUSIC
-- [ ] **vinyl-spin** (`music-producer-vinyl-spin`)
+- [x] **vinyl-spin** (`music-producer-vinyl-spin`)
 - [ ] **Synthwave Audio Producer** (`synthwave-audio`)
 
 ### EVENTS
