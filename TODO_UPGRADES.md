@@ -124,7 +124,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Anvil Forge Master Blacksmith** (`anvil-forge`)
 - [x] **Pyro Master Fireworks Designer** (`pyro-master`)
 - [x] **Handstitched Welt Master Cobbler** (`handstitched-welt`)
-- [ ] **Charred Oak Master Cooper** (`charred-oak`)
+- [x] **Charred Oak Master Cooper** (`charred-oak`)
 - [ ] **Iridium Point Nib Meister** (`iridium-point`)
 - [ ] **Alembic Extract Perfume Distiller** (`alembic-extract`)
 - [ ] **Bamboo Craft Frame Sculptor** (`bamboo-craft`)
