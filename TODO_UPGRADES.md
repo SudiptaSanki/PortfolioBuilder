@@ -199,7 +199,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Cosmic Void Astrophysics** (`cosmic-void`)
 - [x] **Deep Abyss Oceanographer** (`deep-abyss`)
 - [x] **Astro Geology Planetary Science** (`astro-geology`)
-- [ ] **Strato Cloud Geo-Engineer** (`strato-cloud`)
+- [x] **Strato Cloud Geo-Engineer** (`strato-cloud`)
 - [ ] **Trench Explorer Submersible Pilot** (`trench-explorer`)
 - [ ] **Radio Cosmos Astrophysicist** (`radio-cosmos`)
 - [ ] **Arctic Frost Glaciologist** (`arctic-frost`)
