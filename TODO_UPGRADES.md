@@ -121,7 +121,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Peat Smoke Whisky Distiller** (`peat-smoke`)
 - [x] **Frequency Room Sound Engineer** (`frequency-room`)
 - [x] **Mainspring Atelier Watch Restorer** (`mainspring-atelier`)
-- [ ] **Anvil Forge Master Blacksmith** (`anvil-forge`)
+- [x] **Anvil Forge Master Blacksmith** (`anvil-forge`)
 - [ ] **Pyro Master Fireworks Designer** (`pyro-master`)
 - [ ] **Handstitched Welt Master Cobbler** (`handstitched-welt`)
 - [ ] **Charred Oak Master Cooper** (`charred-oak`)
