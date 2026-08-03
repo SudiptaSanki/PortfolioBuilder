@@ -188,7 +188,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Legal Trust Attorney** (`lawyer-legal-trust`)
 - [x] **civic-duty** (`business-politician-civic-duty`)
 - [x] **corporate-gold** (`business-venture-capitalist-corporate-gold`)
-- [ ] **luxury-listings** (`business-real-estate-agent-luxury-listings`)
+- [x] **luxury-listings** (`business-real-estate-agent-luxury-listings`)
 - [ ] **High Frequency Quant Trader** (`candlestick-pulse`)
 
 ### ACADEMIC
