@@ -217,7 +217,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Reef Nursery Coral Restorer** (`reef-nursery`)
 - [x] **Cryosphere Core Polar Glaciologist** (`cryosphere-core`)
 - [x] **Silver Iodide Cloud Seeder** (`silver-iodide`)
-- [ ] **Abyssal Smoker Vent Ecologist** (`abyssal-smoker`)
+- [x] **Abyssal Smoker Vent Ecologist** (`abyssal-smoker`)
 - [ ] **Aerosol Nucleation Cloud Physicist** (`aerosol-nucleation`)
 - [ ] **LIGO Interferometer Gravitational Physicist** (`ligo-interferometer`)
 - [ ] **Arctic Albedo Melt Pond Scientist** (`arctic-albedo`)
