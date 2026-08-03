@@ -137,7 +137,7 @@ The following single-page templates (landing pages) need to be expanded into com
 ### TECHNOLOGY
 - [x] **Data Scientist Terminal** (`data-scientist-tech-data`)
 - [x] **Crypto Neon Web3 Dev** (`web3-developer-crypto-neon`)
-- [ ] **Console Hacker Terminal** (`cybersecurity-hacker-terminal`)
+- [x] **Console Hacker Terminal** (`cybersecurity-hacker-terminal`)
 - [ ] **glitch-forge** (`technology-game-developer-glitch-forge`)
 - [ ] **prompt-console** (`technology-ai-engineer-prompt-console`)
 - [ ] **bento-apps** (`technology-mobile-developer-bento-apps`)
