@@ -111,7 +111,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Grand Vintage Master Sommelier** (`grand-vintage`)
 - [x] **Tourbillon Master Horologist** (`tourbillon-master`)
 - [x] **Cryo Flame Molecular Chef** (`cryo-flame`)
-- [ ] **Algae Glow Marine Farmer** (`algae-glow`)
+- [x] **Algae Glow Marine Farmer** (`algae-glow`)
 - [ ] **Gold Nib Pen Craftsman** (`gold-nib`)
 - [ ] **Olfactory Notes Master Perfumer** (`olfactory-notes`)
 - [ ] **Moss Biome Terrarium Architect** (`moss-biome`)
