@@ -129,7 +129,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Alembic Extract Perfume Distiller** (`alembic-extract`)
 - [x] **Bamboo Craft Frame Sculptor** (`bamboo-craft`)
 - [x] **Equestrian Welt Saddle Maker** (`equestrian-welt`)
-- [ ] **Titanium Monobloc Case Machinist** (`titanium-monobloc`)
+- [x] **Titanium Monobloc Case Machinist** (`titanium-monobloc`)
 - [ ] **Abrasive Stream Waterjet Specialist** (`abrasive-stream`)
 - [ ] **Hyperbaric Deep-Sea Welder** (`hyperbaric-welder`)
 - [ ] **Master Horologist Clock Restoration** (`horology-restorer`)
