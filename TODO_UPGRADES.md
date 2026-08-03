@@ -152,7 +152,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Qubit State Quantum Engineer** (`qubit-state`)
 - [x] **Cyber Servo Robotics** (`cyber-servo`)
 - [x] **Gene Synth Bio-Hacker** (`gene-synth`)
-- [ ] **Solar Pulse CleanTech** (`solar-pulse`)
+- [x] **Solar Pulse CleanTech** (`solar-pulse`)
 - [ ] **Synapse Core Neuromorphic AI** (`synapse-core`)
 - [ ] **Cipher Vault Quantum Cryptography** (`cipher-vault`)
 - [ ] **Living Materials Bio Designer** (`living-materials`)
