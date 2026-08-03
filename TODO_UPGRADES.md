@@ -156,7 +156,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Synapse Core Neuromorphic AI** (`synapse-core`)
 - [x] **Cipher Vault Quantum Cryptography** (`cipher-vault`)
 - [x] **Living Materials Bio Designer** (`living-materials`)
-- [ ] **Zero Trust Cyber Security** (`zero-trust`)
+- [x] **Zero Trust Cyber Security** (`zero-trust`)
 - [ ] **Sky Telemetry Drone Robotics** (`sky-telemetry`)
 - [ ] **Glass Synth AI Vision** (`glass-synth`)
 - [ ] **Quants Pulse Algorithmic Trader** (`quants-pulse`)
