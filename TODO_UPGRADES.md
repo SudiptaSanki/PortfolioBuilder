@@ -81,7 +81,7 @@ The following single-page templates (landing pages) need to be expanded into com
 - [x] **Katana Hamon Sword Polisher** (`katana-hamon`)
 - [x] **Marquetry Veneer Intarsia Woodworker** (`marquetry-veneer`)
 - [x] **Artisan Chocolatier & Cocoa Sculptor** (`chocolatier-artisan`)
-- [ ] **Kinetic Art Sculptor** (`kinetic-sculptor`)
+- [x] **Kinetic Art Sculptor** (`kinetic-sculptor`)
 - [ ] **Stained Glass Architectural Artist** (`stained-glass-mosaic`)
 
 ### HEALTH-WELLNESS
