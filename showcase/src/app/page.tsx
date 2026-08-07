@@ -3,12 +3,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import templates from '@/data/templates.json';
 import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from 'framer-motion';
 import HeroSection from '@/components/ui/glassmorphism-trust-hero';
+import { useAuth } from '@/context/AuthContext';
+import { doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
-const ALL_CATEGORIES = ['All', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services', 'retail', 'startup'];
+const ALL_CATEGORIES = ['All', '⭐ Starred', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services', 'retail', 'startup'];
 const CATEGORY_LABELS: Record<string, string> = {
   'All': 'All Templates',
   'technology': 'Technology',
@@ -26,8 +29,56 @@ const STRUCTURE_FILTERS = ['All Structures', 'Single-page', 'Multi-page'];
 type Template = typeof templates[number];
 
 export default function Home() {
+  const { user, login, logout } = useAuth();
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+
+  const [favorites, setFavorites] = useState<string[]>([]);
+  
+  useEffect(() => {
+    const local = localStorage.getItem('foliohub_favorites');
+    let localFavs: string[] = [];
+    if (local) {
+      try { localFavs = JSON.parse(local); setFavorites(localFavs); } catch(e) {}
+    }
+    if (user) {
+      import('firebase/firestore').then(({ collection, getDocs, doc, setDoc }) => {
+        getDocs(collection(db, 'users', user.uid, 'favorites')).then(snap => {
+           const firestoreFavs = snap.docs.map(d => d.id);
+           const merged = Array.from(new Set([...localFavs, ...firestoreFavs]));
+           setFavorites(merged);
+           localStorage.setItem('foliohub_favorites', JSON.stringify(merged));
+           
+           // Sync local to firestore
+           localFavs.forEach(fav => {
+             if (!firestoreFavs.includes(fav)) {
+               setDoc(doc(db, 'users', user.uid, 'favorites', fav), { timestamp: new Date().toISOString() });
+             }
+           });
+        });
+      });
+    }
+  }, [user]);
+
+  const toggleFavorite = useCallback((templateName: string, templatePath: string) => {
+    setFavorites(prev => {
+      const isFav = prev.includes(templateName);
+      const newFavs = isFav ? prev.filter(f => f !== templateName) : [...prev, templateName];
+      localStorage.setItem('foliohub_favorites', JSON.stringify(newFavs));
+      
+      if (user) {
+        import('firebase/firestore').then(({ doc, setDoc, deleteDoc }) => {
+          const docRef = doc(db, 'users', user.uid, 'favorites', templateName);
+          if (isFav) {
+            deleteDoc(docRef);
+          } else {
+            setDoc(docRef, { name: templateName, path: templatePath, timestamp: new Date().toISOString() });
+          }
+        });
+      }
+      return newFavs;
+    });
+  }, [user]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
     const { currentTarget, clientX, clientY } = e;
@@ -61,7 +112,12 @@ export default function Home() {
   const filtered = useMemo<Template[]>(() => {
     const q = query.toLowerCase().trim();
     return templates.filter((t) => {
-      const matchesCategory = activeCategory === 'All' || t.category === activeCategory;
+      if (activeCategory === '⭐ Starred') {
+        if (!favorites.includes(t.name)) return false;
+      } else if (activeCategory !== 'All' && t.category !== activeCategory) {
+        return false;
+      }
+      
       const matchesStack = activeStack === 'All Stacks' || t.stack === activeStack;
       const matchesStructure =
         activeStructure === 'All Structures' ||
@@ -73,9 +129,9 @@ export default function Home() {
         (t.role || t.profession || '').toLowerCase().includes(q) ||
         (t.theme || '').toLowerCase().includes(q) ||
         (t.tags || []).some((tag) => tag.toLowerCase().includes(q));
-      return matchesCategory && matchesStack && matchesStructure && matchesQuery;
+      return matchesStack && matchesStructure && matchesQuery;
     });
-  }, [query, activeCategory, activeStack, activeStructure]);
+  }, [query, activeCategory, activeStack, activeStructure, favorites]);
 
   return (
     <div style={{ minHeight: '100vh' }}>
@@ -133,6 +189,33 @@ export default function Home() {
             >
               Contribute
             </motion.a>
+            {user ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginLeft: 8 }}>
+                <img src={user.photoURL || ''} alt="User" style={{ width: 28, height: 28, borderRadius: '50%' }} />
+                <button
+                  onClick={logout}
+                  style={{
+                    background: 'transparent', border: 'none', color: 'var(--text-secondary)',
+                    fontSize: 13, cursor: 'pointer', fontFamily: 'inherit',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-primary)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                >
+                  Log out
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={login}
+                style={{
+                  background: 'rgba(255,255,255,0.1)', border: '1px solid var(--border)',
+                  color: 'var(--text-primary)', padding: '6px 14px', borderRadius: 8,
+                  fontSize: 13, fontWeight: 500, cursor: 'pointer', marginLeft: 8, fontFamily: 'inherit'
+                }}
+              >
+                Sign in
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -272,6 +355,8 @@ export default function Home() {
                   template={t} 
                   index={i}
                   onActionClick={handleLinkClick} 
+                  isFavorite={favorites.includes(t.name)}
+                  toggleFavorite={() => toggleFavorite(t.name, t.path || '')}
                 />
               ))}
             </AnimatePresence>
@@ -368,11 +453,11 @@ export default function Home() {
   );
 }
 
-function TemplateCard({ template, index = 0, onActionClick }: { template: Template; index?: number; onActionClick: (url: string) => void; }) {
+function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFavorite }: { template: Template; index?: number; onActionClick: (url: string) => void; isFavorite: boolean; toggleFavorite: (e: any) => void; }) {
   const [hovered, setHovered] = useState(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  
+
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     const { currentTarget, clientX, clientY } = e;
     const { left, top } = currentTarget.getBoundingClientRect();
@@ -381,9 +466,24 @@ function TemplateCard({ template, index = 0, onActionClick }: { template: Templa
   }
   const rawPath = (template as any).path || '';
   const cleanPath = rawPath.replace(/^\/+/, '').replace(/\/index\.html$/, '');
-  const previewUrl = '/' + cleanPath + (cleanPath.endsWith('.html') ? '' : '/index.html');
+  
+  let previewUrl = '/' + cleanPath + (cleanPath.endsWith('.html') ? '' : '/index.html');
+  let assetBaseUrl = '/' + cleanPath;
+  
+  if (cleanPath.includes('templates/github-pages/')) {
+    assetBaseUrl = `https://sudiptasanki.github.io/PortfolioBuilder/${cleanPath}`;
+    previewUrl = `${assetBaseUrl}/index.html`;
+  } else if (cleanPath.includes('templates/netlify/')) {
+    assetBaseUrl = `https://portfolio4builders.netlify.app/${cleanPath.replace('templates/netlify/', '')}`;
+    previewUrl = assetBaseUrl;
+  } else if (cleanPath.includes('templates/vercel/')) {
+    assetBaseUrl = `https://portfolio4builders.vercel.app/${cleanPath.replace('templates/vercel/', '')}`;
+    previewUrl = assetBaseUrl;
+  }
+
   const codePath = cleanPath.replace(/\/(dist|out)$/, '');
   const githubUrl = `https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${codePath}`;
+  const previewImageSrc = template.preview?.startsWith('http') ? template.preview : `${assetBaseUrl}/preview.jpg`;
 
   const CATEGORY_COLORS: Record<string, string> = {
     technology: '#4ade80',
@@ -445,7 +545,7 @@ function TemplateCard({ template, index = 0, onActionClick }: { template: Templa
           />
         ) : (
           <img
-            src={template.preview}
+            src={previewImageSrc}
             alt={template.name}
             style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s', transform: hovered ? 'scale(1.05)' : 'scale(1)' }}
           />
@@ -458,6 +558,19 @@ function TemplateCard({ template, index = 0, onActionClick }: { template: Templa
         }}>
           {template.stack}
         </div>
+        <button
+          onClick={(e) => { e.stopPropagation(); toggleFavorite(e); }}
+          style={{
+            position: 'absolute', top: 12, right: 12, zIndex: 10,
+            background: 'rgba(0,0,0,0.5)', border: 'none', borderRadius: '50%',
+            width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', backdropFilter: 'blur(4px)'
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill={isFavorite ? "#facc15" : "none"} stroke={isFavorite ? "#facc15" : "white"} strokeWidth="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+        </button>
       </div>
 
       {/* Card Body */}
