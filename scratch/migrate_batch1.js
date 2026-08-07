@@ -52,7 +52,7 @@ for (const temp of templates) {
         const content = fs.readFileSync(indexHtml, 'utf8');
         if (content.match(urlRegex)) {
             targetTemplates.push(temp);
-            if (targetTemplates.length >= 20) break;
+            if (targetTemplates.length >= 50) break;
         }
     }
 }
