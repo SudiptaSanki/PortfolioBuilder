@@ -471,7 +471,7 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
   let assetBaseUrl = '/' + cleanPath;
   
   if (cleanPath.includes('templates/github-pages/')) {
-    assetBaseUrl = `https://sudiptasanki.github.io/PortfolioBuilder/${cleanPath}`;
+    assetBaseUrl = `https://sudiptasanki.github.io/PortfolioBuilder/${cleanPath.replace('templates/github-pages/', '')}`;
     previewUrl = `${assetBaseUrl}/index.html`;
   } else if (cleanPath.includes('templates/netlify/')) {
     assetBaseUrl = `https://portfolio4builders.netlify.app/${cleanPath.replace('templates/netlify/', '')}`;
