@@ -64,10 +64,11 @@ export default function HeroSection() {
         .delay-500 { animation-delay: 0.5s; }
       `}</style>
 
-      {/* Background Image with Gradient Mask */}
+      {/* Fast CSS Mesh Gradient Background */}
       <div 
-        className="absolute inset-0 z-0 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center opacity-40"
+        className="absolute inset-0 z-0 opacity-40"
         style={{
+          background: "radial-gradient(circle at 15% 50%, rgba(108, 122, 247, 0.15), transparent 25%), radial-gradient(circle at 85% 30%, rgba(167, 139, 250, 0.15), transparent 25%)",
           maskImage: "linear-gradient(180deg, transparent, black 0%, black 70%, transparent)",
           WebkitMaskImage: "linear-gradient(180deg, transparent, black 0%, black 70%, transparent)",
         }}

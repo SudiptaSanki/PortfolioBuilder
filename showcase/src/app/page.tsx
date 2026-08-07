@@ -475,7 +475,7 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
     previewUrl = `${assetBaseUrl}/index.html`;
   } else if (cleanPath.includes('templates/netlify/')) {
     assetBaseUrl = `https://portfolio4builders.netlify.app/${cleanPath.replace('templates/netlify/', '')}`;
-    previewUrl = assetBaseUrl;
+    previewUrl = `${assetBaseUrl}/index.html`;
   } else if (cleanPath.includes('templates/vercel/')) {
     assetBaseUrl = `https://portfolio4builders.vercel.app/${cleanPath.replace('templates/vercel/', '')}`;
     previewUrl = assetBaseUrl;
