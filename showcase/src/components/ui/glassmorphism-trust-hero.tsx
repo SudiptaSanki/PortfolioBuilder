@@ -64,47 +64,14 @@ export default function HeroSection() {
         .delay-500 { animation-delay: 0.5s; }
       `}</style>
 
-      {/* Dynamic Animated Glowing Orbs Background */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div 
-          className="absolute -top-40 -left-20 w-[500px] h-[500px] rounded-full opacity-70 blur-[100px]"
-          style={{
-            background: "radial-gradient(circle, rgba(108,122,247,0.8) 0%, rgba(167,139,250,0.3) 60%, transparent 100%)",
-            animation: "orbitOrb1 18s ease-in-out infinite alternate"
-          }}
-        />
-        <div 
-          className="absolute top-1/4 -right-20 w-[600px] h-[600px] rounded-full opacity-60 blur-[120px]"
-          style={{
-            background: "radial-gradient(circle, rgba(236,72,153,0.7) 0%, rgba(139,92,246,0.4) 60%, transparent 100%)",
-            animation: "orbitOrb2 22s ease-in-out infinite alternate"
-          }}
-        />
-        <div 
-          className="absolute -bottom-20 left-1/3 w-[550px] h-[550px] rounded-full opacity-60 blur-[110px]"
-          style={{
-            background: "radial-gradient(circle, rgba(56,189,248,0.7) 0%, rgba(59,130,246,0.3) 60%, transparent 100%)",
-            animation: "orbitOrb3 20s ease-in-out infinite alternate"
-          }}
-        />
-      </div>
-      <style>{`
-        @keyframes orbitOrb1 {
-          0% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(120px, 80px) scale(1.15); }
-          100% { transform: translate(-50px, 150px) scale(0.9); }
-        }
-        @keyframes orbitOrb2 {
-          0% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(-100px, -60px) scale(1.1); }
-          100% { transform: translate(40px, -120px) scale(0.95); }
-        }
-        @keyframes orbitOrb3 {
-          0% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(80px, -90px) scale(1.2); }
-          100% { transform: translate(-100px, 40px) scale(0.85); }
-        }
-      `}</style>
+      {/* Original Fluid Liquid Background Image */}
+      <div 
+        className="absolute inset-0 z-0 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&fm=webp&w=1600&q=80')] bg-cover bg-center opacity-60 pointer-events-none"
+        style={{
+          maskImage: "linear-gradient(180deg, transparent, black 0%, black 75%, transparent)",
+          WebkitMaskImage: "linear-gradient(180deg, transparent, black 0%, black 75%, transparent)",
+        }}
+      />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 pt-24 pb-12 sm:px-6 md:pt-32 md:pb-20 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8 items-start">
