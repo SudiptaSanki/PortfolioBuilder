@@ -64,14 +64,24 @@ export default function HeroSection() {
         .delay-500 { animation-delay: 0.5s; }
       `}</style>
 
-      {/* Background Image with Gradient Mask (Optimized) */}
+      {/* Dynamic Animated CSS Gradient Background (No Images, No Lag) */}
       <div 
-        className="absolute inset-0 z-0 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&fm=webp&w=1200&q=60')] bg-cover bg-center opacity-40"
+        className="absolute inset-0 z-0 opacity-40"
         style={{
+          background: "radial-gradient(circle at 15% 50%, rgba(108, 122, 247, 0.4), transparent 50%), radial-gradient(circle at 85% 30%, rgba(167, 139, 250, 0.4), transparent 50%), radial-gradient(circle at 50% 80%, rgba(14, 165, 233, 0.3), transparent 50%)",
+          filter: "blur(60px)",
+          animation: "pulseGradient 15s ease-in-out infinite alternate",
           maskImage: "linear-gradient(180deg, transparent, black 0%, black 70%, transparent)",
           WebkitMaskImage: "linear-gradient(180deg, transparent, black 0%, black 70%, transparent)",
         }}
       />
+      <style>{`
+        @keyframes pulseGradient {
+          0% { transform: scale(1) rotate(0deg); }
+          50% { transform: scale(1.1) rotate(5deg); }
+          100% { transform: scale(1) rotate(-5deg); }
+        }
+      `}</style>
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 pt-24 pb-12 sm:px-6 md:pt-32 md:pb-20 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8 items-start">
