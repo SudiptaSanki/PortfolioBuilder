@@ -52,7 +52,7 @@ for (const temp of templates) {
         const content = fs.readFileSync(indexHtml, 'utf8');
         if (content.match(urlRegex)) {
             targetTemplates.push(temp);
-            if (targetTemplates.length >= 50) break;
+            if (targetTemplates.length >= 500) break;
         }
     }
 }
@@ -126,7 +126,16 @@ async function processTemplates() {
             fs.writeFileSync('scratch/urlMap.json', JSON.stringify(urlMap, null, 2));
           } catch (e) {
             console.error(`Error downloading ${originalUrl}:`, e.message);
-            continue; // Skip replacing if download failed
+            // Fallback to a random existing image
+            const existingImages = Object.values(urlMap);
+            if (existingImages.length > 0) {
+              filename = existingImages[Math.floor(Math.random() * existingImages.length)];
+              urlMap[originalUrl] = filename;
+              fs.writeFileSync('scratch/urlMap.json', JSON.stringify(urlMap, null, 2));
+              console.log(`Fell back to existing image: ${filename}`);
+            } else {
+              continue; // Skip replacing if no fallback available
+            }
           }
         }
         
