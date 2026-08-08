@@ -93,11 +93,11 @@ export default function Home() {
   const [activeStructure, setActiveStructure] = useState('All Structures');
   const [showStarModal, setShowStarModal] = useState(false);
   const [targetUrl, setTargetUrl] = useState('');
-  const [displayCount, setDisplayCount] = useState(20);
+  const [displayCount, setDisplayCount] = useState(24);
 
   // Reset display count when filters change
   useEffect(() => {
-    setDisplayCount(20);
+    setDisplayCount(24);
   }, [query, activeCategory, activeStack, activeStructure]);
 
   const handleLinkClick = useCallback((url: string) => {
@@ -331,9 +331,9 @@ export default function Home() {
 
       {/* Results count */}
       <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px 24px' }}>
-        <motion.span layout style={{ color: 'var(--text-secondary)', fontSize: 13 }}>
+        <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>
           {filtered.length} template{filtered.length !== 1 ? 's' : ''} found
-        </motion.span>
+        </span>
       </div>
 
       {/* Grid */}
@@ -350,24 +350,22 @@ export default function Home() {
           </motion.div>
         ) : (
           <>
-            <motion.div layout style={{
+            <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
               gap: 24,
             }}>
-              <AnimatePresence>
-                {filtered.slice(0, displayCount).map((t, i) => (
-                  <TemplateCard 
-                    key={t.path || t.name} 
-                    template={t} 
-                    index={i}
-                    onActionClick={handleLinkClick} 
-                    isFavorite={favorites.includes(t.name)}
-                    toggleFavorite={() => toggleFavorite(t.name, t.path || '')}
-                  />
-                ))}
-              </AnimatePresence>
-            </motion.div>
+              {filtered.slice(0, displayCount).map((t, i) => (
+                <TemplateCard 
+                  key={t.path || t.name} 
+                  template={t} 
+                  index={i}
+                  onActionClick={handleLinkClick} 
+                  isFavorite={favorites.includes(t.name)}
+                  toggleFavorite={() => toggleFavorite(t.name, t.path || '')}
+                />
+              ))}
+            </div>
             
             {/* Infinite Scroll Sentinel */}
             {displayCount < filtered.length && (
@@ -377,7 +375,7 @@ export default function Home() {
                   if (!node) return;
                   const observer = new IntersectionObserver((entries) => {
                     if (entries[0].isIntersecting) {
-                      setDisplayCount(prev => Math.min(prev + 20, filtered.length));
+                      setDisplayCount(prev => Math.min(prev + 24, filtered.length));
                       observer.disconnect();
                     }
                   }, { threshold: 0.1 });
@@ -482,15 +480,7 @@ export default function Home() {
 
 function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFavorite }: { template: Template; index?: number; onActionClick: (url: string) => void; isFavorite: boolean; toggleFavorite: (e: any) => void; }) {
   const [hovered, setHovered] = useState(false);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
 
-  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    const { currentTarget, clientX, clientY } = e;
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
   const rawPath = (template as any).path || '';
   const cleanPath = rawPath.replace(/^\/+/, '').replace(/\/index\.html$/, '');
   
@@ -523,12 +513,9 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.2, delay: (index % 20) * 0.05 }}
-      onMouseMove={handleMouseMove}
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25, delay: (index % 24) * 0.02 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -541,42 +528,24 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
         transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
         boxShadow: hovered ? '0 12px 40px rgba(0,0,0,0.4)' : 'none',
         cursor: 'default',
+        position: 'relative'
       }}
     >
-      <motion.div
-        style={{
-          position: 'absolute',
-          top: 0, left: 0, right: 0, bottom: 0,
-          background: useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, rgba(255,255,255,0.06), transparent 40%)`,
-          opacity: hovered ? 1 : 0,
-          pointerEvents: 'none',
-          transition: 'opacity 0.3s',
-          zIndex: 1
-        }}
-      />
       {/* Preview Image */}
-      <div onClick={(e: any) => { e.preventDefault(); onActionClick(previewUrl); }} style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', cursor: 'pointer' }}>
-        {hovered ? (
-          <iframe
-            src={previewUrl}
-            title={template.name}
-            style={{
-              width: '100%',
-              height: '100%',
-              border: 'none',
-              pointerEvents: 'none',
-              transform: 'scale(1.02)',
-              transition: 'transform 0.3s',
-              background: 'var(--background)',
-            }}
-          />
-        ) : (
-          <img
-            src={previewImageSrc}
-            alt={template.name}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s', transform: hovered ? 'scale(1.05)' : 'scale(1)' }}
-          />
-        )}
+      <div onClick={(e: any) => { e.preventDefault(); onActionClick(previewUrl); }} style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', cursor: 'pointer', background: '#121214' }}>
+        <img
+          src={previewImageSrc}
+          alt={template.name}
+          loading="lazy"
+          decoding="async"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            transition: 'transform 0.4s ease',
+            transform: hovered ? 'scale(1.05)' : 'scale(1)'
+          }}
+        />
         <div style={{
           position: 'absolute', top: 12, left: 12,
           background: CATEGORY_COLORS[template.category] || '#888',
