@@ -480,6 +480,19 @@ export default function Home() {
 
 function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFavorite }: { template: Template; index?: number; onActionClick: (url: string) => void; isFavorite: boolean; toggleFavorite: (e: any) => void; }) {
   const [hovered, setHovered] = useState(false);
+  const [showIframe, setShowIframe] = useState(false);
+
+  useEffect(() => {
+    let timer: any;
+    if (hovered) {
+      timer = setTimeout(() => {
+        setShowIframe(true);
+      }, 450);
+    } else {
+      setShowIframe(false);
+    }
+    return () => clearTimeout(timer);
+  }, [hovered]);
 
   const rawPath = (template as any).path || '';
   const cleanPath = rawPath.replace(/^\/+/, '').replace(/\/index\.html$/, '');
@@ -488,19 +501,24 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
   let assetBaseUrl = '/' + cleanPath;
   
   if (cleanPath.includes('templates/github-pages/')) {
-    assetBaseUrl = `https://sudiptasanki.github.io/PortfolioBuilder/${cleanPath}`;
+    const relPath = cleanPath.replace('templates/github-pages/', '');
+    assetBaseUrl = `https://sudiptasanki.github.io/PortfolioBuilder/${relPath}`;
     previewUrl = `${assetBaseUrl}/index.html`;
   } else if (cleanPath.includes('templates/netlify/')) {
-    assetBaseUrl = `https://portfolio4builders.netlify.app/${cleanPath.replace('templates/netlify/', '')}`;
+    const relPath = cleanPath.replace('templates/netlify/', '');
+    assetBaseUrl = `https://portfolio4builders.netlify.app/${relPath}`;
     previewUrl = `${assetBaseUrl}/index.html`;
   } else if (cleanPath.includes('templates/vercel/')) {
-    assetBaseUrl = `https://portfolio4builders.vercel.app/${cleanPath.replace('templates/vercel/', '')}`;
+    const relPath = cleanPath.replace('templates/vercel/', '');
+    assetBaseUrl = `https://portfolio4builders.vercel.app/${relPath}`;
     previewUrl = assetBaseUrl;
   }
 
   const codePath = cleanPath.replace(/\/(dist|out)$/, '');
   const githubUrl = `https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${codePath}`;
-  const previewImageSrc = template.preview?.startsWith('http') ? template.preview : `${assetBaseUrl}/preview.jpg`;
+  const previewImageSrc = template.preview
+    ? (template.preview.startsWith('http') || template.preview.startsWith('/') ? template.preview : `${assetBaseUrl}/${template.preview}`)
+    : `${assetBaseUrl}/preview.jpg`;
 
   const CATEGORY_COLORS: Record<string, string> = {
     technology: '#4ade80',
@@ -531,21 +549,36 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
         position: 'relative'
       }}
     >
-      {/* Preview Image */}
+      {/* Preview Image / Live Iframe */}
       <div onClick={(e: any) => { e.preventDefault(); onActionClick(previewUrl); }} style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', cursor: 'pointer', background: '#121214' }}>
-        <img
-          src={previewImageSrc}
-          alt={template.name}
-          loading="lazy"
-          decoding="async"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            transition: 'transform 0.4s ease',
-            transform: hovered ? 'scale(1.05)' : 'scale(1)'
-          }}
-        />
+        {showIframe ? (
+          <iframe
+            src={previewUrl}
+            title={template.name}
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none',
+              pointerEvents: 'none',
+              transform: 'scale(1)',
+              transformOrigin: 'top left',
+            }}
+          />
+        ) : (
+          <img
+            src={previewImageSrc}
+            alt={template.name}
+            loading="lazy"
+            decoding="async"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              transition: 'transform 0.4s ease',
+              transform: hovered ? 'scale(1.05)' : 'scale(1)'
+            }}
+          />
+        )}
         <div style={{
           position: 'absolute', top: 12, left: 12,
           background: CATEGORY_COLORS[template.category] || '#888',

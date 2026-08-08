@@ -64,22 +64,45 @@ export default function HeroSection() {
         .delay-500 { animation-delay: 0.5s; }
       `}</style>
 
-      {/* Dynamic Animated CSS Gradient Background (No Images, No Lag) */}
-      <div 
-        className="absolute inset-0 z-0 opacity-40"
-        style={{
-          background: "radial-gradient(circle at 15% 50%, rgba(108, 122, 247, 0.4), transparent 50%), radial-gradient(circle at 85% 30%, rgba(167, 139, 250, 0.4), transparent 50%), radial-gradient(circle at 50% 80%, rgba(14, 165, 233, 0.3), transparent 50%)",
-          filter: "blur(60px)",
-          animation: "pulseGradient 15s ease-in-out infinite alternate",
-          maskImage: "linear-gradient(180deg, transparent, black 0%, black 70%, transparent)",
-          WebkitMaskImage: "linear-gradient(180deg, transparent, black 0%, black 70%, transparent)",
-        }}
-      />
+      {/* Dynamic Animated Glowing Orbs Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div 
+          className="absolute -top-40 -left-20 w-[500px] h-[500px] rounded-full opacity-70 blur-[100px]"
+          style={{
+            background: "radial-gradient(circle, rgba(108,122,247,0.8) 0%, rgba(167,139,250,0.3) 60%, transparent 100%)",
+            animation: "orbitOrb1 18s ease-in-out infinite alternate"
+          }}
+        />
+        <div 
+          className="absolute top-1/4 -right-20 w-[600px] h-[600px] rounded-full opacity-60 blur-[120px]"
+          style={{
+            background: "radial-gradient(circle, rgba(236,72,153,0.7) 0%, rgba(139,92,246,0.4) 60%, transparent 100%)",
+            animation: "orbitOrb2 22s ease-in-out infinite alternate"
+          }}
+        />
+        <div 
+          className="absolute -bottom-20 left-1/3 w-[550px] h-[550px] rounded-full opacity-60 blur-[110px]"
+          style={{
+            background: "radial-gradient(circle, rgba(56,189,248,0.7) 0%, rgba(59,130,246,0.3) 60%, transparent 100%)",
+            animation: "orbitOrb3 20s ease-in-out infinite alternate"
+          }}
+        />
+      </div>
       <style>{`
-        @keyframes pulseGradient {
-          0% { transform: scale(1) rotate(0deg); }
-          50% { transform: scale(1.1) rotate(5deg); }
-          100% { transform: scale(1) rotate(-5deg); }
+        @keyframes orbitOrb1 {
+          0% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(120px, 80px) scale(1.15); }
+          100% { transform: translate(-50px, 150px) scale(0.9); }
+        }
+        @keyframes orbitOrb2 {
+          0% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(-100px, -60px) scale(1.1); }
+          100% { transform: translate(40px, -120px) scale(0.95); }
+        }
+        @keyframes orbitOrb3 {
+          0% { transform: translate(0, 0) scale(1); }
+          50% { transform: translate(80px, -90px) scale(1.2); }
+          100% { transform: translate(-100px, 40px) scale(0.85); }
         }
       `}</style>
 
