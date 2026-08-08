@@ -93,6 +93,12 @@ export default function Home() {
   const [activeStructure, setActiveStructure] = useState('All Structures');
   const [showStarModal, setShowStarModal] = useState(false);
   const [targetUrl, setTargetUrl] = useState('');
+  const [displayCount, setDisplayCount] = useState(20);
+
+  // Reset display count when filters change
+  useEffect(() => {
+    setDisplayCount(20);
+  }, [query, activeCategory, activeStack, activeStructure]);
 
   const handleLinkClick = useCallback((url: string) => {
     if (typeof window === 'undefined') return;
@@ -343,24 +349,45 @@ export default function Home() {
             </button>
           </motion.div>
         ) : (
-          <motion.div layout style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-            gap: 24,
-          }}>
-            <AnimatePresence>
-              {filtered.map((t, i) => (
-                <TemplateCard 
-                  key={t.path || t.name} 
-                  template={t} 
-                  index={i}
-                  onActionClick={handleLinkClick} 
-                  isFavorite={favorites.includes(t.name)}
-                  toggleFavorite={() => toggleFavorite(t.name, t.path || '')}
-                />
-              ))}
-            </AnimatePresence>
-          </motion.div>
+          <>
+            <motion.div layout style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+              gap: 24,
+            }}>
+              <AnimatePresence>
+                {filtered.slice(0, displayCount).map((t, i) => (
+                  <TemplateCard 
+                    key={t.path || t.name} 
+                    template={t} 
+                    index={i}
+                    onActionClick={handleLinkClick} 
+                    isFavorite={favorites.includes(t.name)}
+                    toggleFavorite={() => toggleFavorite(t.name, t.path || '')}
+                  />
+                ))}
+              </AnimatePresence>
+            </motion.div>
+            
+            {/* Infinite Scroll Sentinel */}
+            {displayCount < filtered.length && (
+              <div 
+                style={{ textAlign: 'center', padding: '40px 0' }}
+                ref={(node) => {
+                  if (!node) return;
+                  const observer = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting) {
+                      setDisplayCount(prev => Math.min(prev + 20, filtered.length));
+                      observer.disconnect();
+                    }
+                  }, { threshold: 0.1 });
+                  observer.observe(node);
+                }}
+              >
+                <span style={{ color: 'var(--text-secondary)' }}>Loading more templates...</span>
+              </div>
+            )}
+          </>
         )}
       </main>
 
@@ -500,7 +527,7 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.2, delay: index * 0.05 }}
+      transition={{ duration: 0.2, delay: (index % 20) * 0.05 }}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
