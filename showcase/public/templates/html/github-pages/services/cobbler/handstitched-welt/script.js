@@ -1,0 +1,1 @@
+const sb=document.querySelector('.stitch-border');document.addEventListener('mousemove',e=>{const x=(e.clientX/window.innerWidth-.5)*6;const y=(e.clientY/window.innerHeight-.5)*6;sb.style.transform='translate('+x+'px,'+y+'px)'});

@@ -11,7 +11,7 @@ import { useAuth } from '@/context/AuthContext';
 import { doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
-const ALL_CATEGORIES = ['All', '⭐ Starred', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services', 'retail', 'startup'];
+const ALL_CATEGORIES = ['All', '⭐ Starred', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services', 'retail', 'startup', 'gaming', 'music', 'events', 'medical'];
 const CATEGORY_LABELS: Record<string, string> = {
   'All': 'All Templates',
   'technology': 'Technology',
@@ -22,6 +22,10 @@ const CATEGORY_LABELS: Record<string, string> = {
   'services': 'Services',
   'retail': 'Retail & Shops',
   'startup': 'Startups & Students',
+  'gaming': 'Gaming',
+  'music': 'Music',
+  'events': 'Events',
+  'medical': 'Medical',
 };
 const STACK_FILTERS = ['All Stacks', 'HTML/CSS/JS', 'React', 'Next.js', 'Vue'];
 const STRUCTURE_FILTERS = ['All Structures', 'Single-page', 'Multi-page'];

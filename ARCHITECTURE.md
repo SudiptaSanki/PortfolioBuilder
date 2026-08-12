@@ -9,14 +9,34 @@ To prevent hitting the limits of any single platform, we are adopting a decouple
 *   **The Nodes (Individual Templates):** Each template (or small batch of templates) is deployed as its own standalone project across various platforms. The Directory simply links out to these Node subdomains (e.g., `template104.vercel.app`, `vue-portfolio.netlify.app`).
 *   **The CDN (Assets Repo):** All heavy assets (images, 3D models, fonts) live in the `Assets` repository and are served directly via GitHub's Raw CDN or jsDelivr, ensuring our hosting providers never waste bandwidth serving static media.
 
-## 2. Platform Distribution & Specialization
+## 2. Repository Structure: Organized by Tech Stack
+
+**The Strict 5-Level Foundation Taxonomy:**
+To ensure automated deployment works flawlessly as we scale to thousands of templates, every template must strictly follow this 5-level hierarchy:
+`templates / <Tech Stack> / <Platform> / <Genre> / <Role> / <Theme Name>`
+
+1. **Tech Stack:** `nextjs`, `vue`, `react`, `html` (Separates core frameworks)
+2. **Platform:** `vercel`, `netlify`, `cloudflare`, `firebase`, `github-pages` (Sets the Root Directory for CI/CD)
+3. **Genre:** `business`, `gaming`, `creative`, `technology`, etc. (Categorizes for the frontend)
+4. **Role:** `ui-ux-designer`, `software-engineer`, etc. (Targets specific professions)
+5. **Theme Name:** The actual project directory containing the code.
+
+**Allowed Platform Mappings:**
+*   `/templates/nextjs/vercel/...` (Next.js is exclusively mapped to Vercel)
+*   `/templates/vue/netlify/...` or `/templates/vue/cloudflare/...` (Vue is majorly Netlify, with Cloudflare for load distribution)
+*   `/templates/react/netlify/...`, `/templates/react/cloudflare/...`, or `/templates/react/firebase/...` (React SPAs)
+*   `/templates/html/github-pages/...`, `/templates/html/cloudflare/...`, or `/templates/html/firebase/...` (Static HTML)
+
+This taxonomy provides ultimate flexibility while allowing us to configure CI/CD pipelines trivially (e.g., point Vercel's Root Directory to `/templates/nextjs/vercel/` and it will automatically isolate itself).
+
+## 3. Platform Distribution & Specialization
 
 We will assign templates to platforms based on their technological strengths and free-tier limits:
 
-### 🟢 Vercel (Next.js & React ecosystem)
-*   **Role:** The premier host for complex Next.js templates.
-*   **Usage:** Any portfolio template utilizing Next.js (App/Pages router), Server Actions, or complex React state.
-*   **Why:** Vercel is built for Next.js. Deploying individual Next.js templates as separate Vercel projects gives each template its own 100GB bandwidth limit and edge execution pool.
+### 🟢 Vercel (Next.js exclusively)
+*   **Role:** The premier host specifically for Next.js templates.
+*   **Usage:** EXCLUSIVELY for portfolio templates utilizing Next.js (App/Pages router) and Server Actions. We will NOT host standard React SPAs, Vue, or vanilla templates here.
+*   **Why:** Vercel is built natively for Next.js and optimizes its SSR/ISR capabilities best. Reserving Vercel strictly for Next.js ensures we don't waste its generous 100GB bandwidth limit per project on simpler static sites that can be hosted elsewhere.
 
 ### 🟠 Cloudflare Pages & Workers (Edge SSR, 3D & High Traffic)
 *   **Role:** The powerhouse for SSR, HTML/CSS/JS native templates, and heavy 3D WebGL experiences (like Three.js/React Three Fiber).
@@ -35,8 +55,9 @@ We will assign templates to platforms based on their technological strengths and
 
 ### ⚪ GitHub (Asset CDN & Static Pages)
 *   **Role:** The decentralized asset manager and static HTML host.
-*   **Usage:** Storing all `.webp` images, `.glb`/`.gltf` 3D models, heavy CSS/JS bundles, and hosting simple static HTML portfolio pages via GitHub Pages directly from the main account.
-*   **Why:** By linking directly to `raw.githubusercontent.com` or caching via `cdn.jsdelivr.net/gh/...`, we completely offload media bandwidth from Vercel/Netlify. Additionally, deploying lightweight, pure HTML/CSS/JS templates directly to GitHub Pages further distributes the hosting load at zero cost.
+*   **Usage:** Storing all `.webp` images, `.glb`/`.gltf` 3D models, heavy CSS/JS bundles, and hosting simple static HTML portfolio pages via GitHub Pages directly from the main account (e.g., `https://sudiptasanki.github.io/PortfolioBuilder/technology/full-stack-developer/html-css-js/cyberpunk-neon/index.html`).
+*   **Why:** By linking directly to `raw.githubusercontent.com` or caching via `cdn.jsdelivr.net/gh/...`, we completely offload media bandwidth from Vercel/Netlify. Additionally, deploying lightweight, pure HTML/CSS/JS templates directly to GitHub Pages further distributes the hosting load at zero cost. If needed as we scale, we can utilize secondary GitHub accounts dedicated to hosting additional simple HTML builds to bypass any per-account size limits.
+
 
 ## 3. Deployment Scaling Strategy (Reaching 100k)
 
