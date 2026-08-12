@@ -504,16 +504,16 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
   let previewUrl = '/' + cleanPath + (cleanPath.endsWith('.html') ? '' : '/index.html');
   let assetBaseUrl = '/' + cleanPath;
   
-  if (cleanPath.includes('templates/github-pages/')) {
-    const relPath = cleanPath.replace('templates/github-pages/', '');
+  if (cleanPath.includes('/github-pages/')) {
+    const relPath = cleanPath.split('/github-pages/')[1];
     assetBaseUrl = `https://sudiptasanki.github.io/PortfolioBuilder/${relPath}`;
     previewUrl = `${assetBaseUrl}/index.html`;
-  } else if (cleanPath.includes('templates/netlify/')) {
-    const relPath = cleanPath.replace('templates/netlify/', '');
+  } else if (cleanPath.includes('/netlify/')) {
+    const relPath = cleanPath.split('/netlify/')[1];
     assetBaseUrl = `https://portfolio4builders.netlify.app/${relPath}`;
     previewUrl = `${assetBaseUrl}/index.html`;
-  } else if (cleanPath.includes('templates/vercel/')) {
-    const relPath = cleanPath.replace('templates/vercel/', '');
+  } else if (cleanPath.includes('/vercel/')) {
+    const relPath = cleanPath.split('/vercel/')[1];
     assetBaseUrl = `https://portfolio4builders.vercel.app/${relPath}`;
     previewUrl = assetBaseUrl;
   }
