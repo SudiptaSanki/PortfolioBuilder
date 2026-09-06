@@ -415,3 +415,7 @@ Special thanks to the open-source communities powering our designs:
 - **[Google Fonts](https://fonts.google.com/)** for typography.
 - **[Iconify](https://iconify.design/)** & **[Heroicons](https://heroicons.com/)** for icons.
 - **[Next.js](https://nextjs.org/)** & **[Vercel](https://vercel.com/)** for powering the live showcase platform.
+
+<!-- autobot:start -->
+<!-- s:8e61d157 t:2026-09-06T15:38:26.335Z a:refactored module b:6601 -->
+<!-- autobot:end -->
