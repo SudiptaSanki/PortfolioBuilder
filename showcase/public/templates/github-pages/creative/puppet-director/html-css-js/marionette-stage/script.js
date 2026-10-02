@@ -1,1 +1,0 @@
-document.addEventListener('mousemove',e=>{const x=e.clientX/window.innerWidth;const spot=document.querySelector('.spotlight');spot.style.left=x*100+'%';});

@@ -10,6 +10,7 @@ import HeroSection from '@/components/ui/glassmorphism-trust-hero';
 import { useAuth } from '@/context/AuthContext';
 import { doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { resolveTemplateUrl } from '@/lib/urlResolver';
 
 const ALL_CATEGORIES = ['All', '⭐ Starred', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services', 'retail', 'startup', 'gaming', 'music', 'events', 'medical'];
 const CATEGORY_LABELS: Record<string, string> = {
@@ -136,7 +137,7 @@ export default function Home() {
       const matchesQuery =
         !q ||
         (t.name || '').toLowerCase().includes(q) ||
-        (t.role || t.profession || '').toLowerCase().includes(q) ||
+        (t.role || (t as any).profession || '').toLowerCase().includes(q) ||
         (t.theme || '').toLowerCase().includes(q) ||
         (t.tags || []).some((tag) => tag.toLowerCase().includes(q));
       return matchesStack && matchesStructure && matchesQuery;
@@ -498,31 +499,7 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
     return () => clearTimeout(timer);
   }, [hovered]);
 
-  const rawPath = (template as any).path || '';
-  const cleanPath = rawPath.replace(/^\/+/, '').replace(/\/index\.html$/, '');
-  
-  let previewUrl = '/' + cleanPath + (cleanPath.endsWith('.html') ? '' : '/index.html');
-  let assetBaseUrl = '/' + cleanPath;
-  
-  if (cleanPath.includes('/github-pages/')) {
-    const relPath = cleanPath.split('/github-pages/')[1];
-    assetBaseUrl = `https://sudiptasanki.github.io/PortfolioBuilder/${relPath}`;
-    previewUrl = `${assetBaseUrl}/index.html`;
-  } else if (cleanPath.includes('/netlify/')) {
-    const relPath = cleanPath.split('/netlify/')[1];
-    assetBaseUrl = `https://portfolio4builders.netlify.app/${relPath}`;
-    previewUrl = `${assetBaseUrl}/index.html`;
-  } else if (cleanPath.includes('/vercel/')) {
-    const relPath = cleanPath.split('/vercel/')[1];
-    assetBaseUrl = `https://portfolio4builders.vercel.app/${relPath}`;
-    previewUrl = assetBaseUrl;
-  }
-
-  const codePath = cleanPath.replace(/\/(dist|out)$/, '');
-  const githubUrl = `https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${codePath}`;
-  const previewImageSrc = template.preview
-    ? (template.preview.startsWith('http') || template.preview.startsWith('/') ? template.preview : `${assetBaseUrl}/${template.preview}`)
-    : `${assetBaseUrl}/preview.jpg`;
+  const { previewUrl, githubUrl, previewImageSrc } = resolveTemplateUrl(template);
 
   const CATEGORY_COLORS: Record<string, string> = {
     technology: '#4ade80',
@@ -610,7 +587,7 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
       <div style={{ padding: 20 }}>
         <div style={{ marginBottom: 10 }}>
           <h3 style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.3px', marginBottom: 4 }}>{template.name}</h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{template.role || template.profession} &bull; {template.theme || 'Custom Theme'}</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{template.role || (template as any).profession} &bull; {template.theme || 'Custom Theme'}</p>
         </div>
         <p style={{ color: 'var(--text-secondary)', fontSize: 13, lineHeight: 1.6, marginBottom: 16 }}>
           {template.description || 'A beautifully designed template crafted for professionals.'}

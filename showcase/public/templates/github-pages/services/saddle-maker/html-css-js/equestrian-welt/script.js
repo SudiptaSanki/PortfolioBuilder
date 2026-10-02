@@ -1,1 +1,0 @@
-const rb=document.querySelector('.rivet-border');document.addEventListener('mousemove',e=>{const x=(e.clientX/window.innerWidth-.5)*5;const y=(e.clientY/window.innerHeight-.5)*5;rb.style.transform='translate('+x+'px,'+y+'px)'});
