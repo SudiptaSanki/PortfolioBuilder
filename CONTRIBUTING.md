@@ -1,29 +1,47 @@
 # Contributing to Portfolio Builder
 
-Thank you for your interest in contributing! This project aims to build the largest open-source portfolio template collection for every profession and stack.
+Thank you for your interest in contributing! Portfolio Builder is an open-source catalog designed to scale to 100,000+ free portfolio templates.
 
-## Quick Start
+Our architecture is **provider-independent**: templates can be hosted on GitHub Pages, Cloudflare Pages, Vercel, Netlify, or your own infrastructure without changing their identity in the catalog.
 
-1. Fork the repo and clone it locally.
-2. Create your template under:
+---
+
+## ⚡ Quick Contributor Workflow
+
+1. **Fork and clone** the repository.
+2. **Create your template folder** under `templates/<framework>/<provider>/<genre>/<role>/<theme-name>/` (or `templates/<theme-name>/`).
+3. **Add your source code** (Ensure all HTML/CSS/JS assets use relative paths).
+4. **Create `template.json`** inside your template folder (never manually edit the central catalog!).
+5. **Run automated validation locally**:
+   ```bash
+   npm run validate
    ```
-   templates/[industry]/[profession]/[stack]/[theme-name]/
+6. **Compile the catalog**:
+   ```bash
+   npm run catalog:generate
    ```
-3. Add a `README.md` inside your template folder.
-4. Add your entry to `showcase/src/data/templates.json`.
-5. Open a Pull Request — we review within a few days.
+7. **Submit a Pull Request** — GitHub Actions CI will automatically validate your template.
 
-## Template Requirements
+---
 
-- Responsive (mobile + desktop)
-- Self-contained (no paid dependencies)
-- Free-license images only (Unsplash, Pexels, etc.)
-- Contact form integration or clear instructions
+## 🔒 Contributor Hosting Ownership Contract
 
-## Tech Stacks Welcome
+You have full ownership of your deployment:
 
-HTML/CSS/JS, React, Next.js, Vue, Svelte, Angular, Astro — all are welcome.
+- **For Static HTML/CSS/JS:** Your template can automatically be deployed to our shared static hosting pool (`github-pages-01`). You don't need any hosting account!
+- **For React, Vue, Next.js SSR, or Custom Backends:** You can deploy your template on your **own free-tier hosting account** (Vercel, Netlify, Cloudflare Pages, GitHub Pages, or a custom domain).
+- **Zero Credentials Needed:** We will **never** ask for your Vercel token, Netlify credentials, or Cloudflare API keys. You simply provide your live preview URL in `template.json`.
+- **Permanent Template Identity:** If your personal hosting node ever goes offline, your template is not deleted from the catalog. It is simply marked as `status: "broken"` or `status: "pending"` with direct links to your source code on GitHub until a new URL is registered.
+
+---
+
+## 📖 Detailed Submission Guide
+
+For the full specification, metadata schema, asset path rules, and local preview instructions, read:
+👉 **[Template Submission Guide](docs/contributing/template-submission.md)**
+
+---
 
 ## Code of Conduct
 
-Be respectful. Be helpful. We're building something for everyone.
+Be respectful, welcoming, and supportive. We are building the world's most accessible open-source portfolio directory together.

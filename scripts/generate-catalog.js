@@ -82,6 +82,7 @@ for (const filePath of metadataFiles) {
         provider: data.deployment?.provider || 'github-pages',
         type: data.deployment?.type || 'shared-static',
         shard: data.deployment?.shard || 'default',
+        status: data.deployment?.status || 'active',
         baseUrl: data.deployment?.baseUrl || '',
         path: data.deployment?.path || '',
         liveUrl: data.deployment?.liveUrl || ''

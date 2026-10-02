@@ -499,7 +499,7 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
     return () => clearTimeout(timer);
   }, [hovered]);
 
-  const { previewUrl, githubUrl, previewImageSrc } = resolveTemplateUrl(template);
+  const { previewUrl, githubUrl, previewImageSrc, isAvailable, status, statusMessage } = resolveTemplateUrl(template);
 
   const CATEGORY_COLORS: Record<string, string> = {
     technology: '#4ade80',
@@ -531,8 +531,18 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
       }}
     >
       {/* Preview Image / Live Iframe */}
-      <div onClick={(e: any) => { e.preventDefault(); onActionClick(previewUrl); }} style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', cursor: 'pointer', background: '#121214' }}>
-        {showIframe ? (
+      <div 
+        onClick={(e: any) => { 
+          e.preventDefault(); 
+          if (isAvailable) {
+            onActionClick(previewUrl); 
+          } else {
+            onActionClick(githubUrl);
+          }
+        }} 
+        style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', cursor: 'pointer', background: '#121214' }}
+      >
+        {showIframe && isAvailable ? (
           <iframe
             src={previewUrl}
             title={template.name}
@@ -568,6 +578,16 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
         }}>
           {template.stack}
         </div>
+        {status !== 'active' && (
+          <div style={{
+            position: 'absolute', top: 12, right: 52,
+            background: status === 'broken' ? '#ef4444' : '#f59e0b',
+            color: '#fff', padding: '3px 8px', borderRadius: 6, fontSize: 10, fontWeight: 600,
+            zIndex: 10, textTransform: 'uppercase', letterSpacing: '0.5px'
+          }}>
+            {status}
+          </div>
+        )}
         <button
           onClick={(e) => { e.stopPropagation(); toggleFavorite(e); }}
           style={{
@@ -631,22 +651,29 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
           <motion.a
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            href={previewUrl}
+            href={isAvailable ? previewUrl : githubUrl}
             onClick={(e: any) => {
               e.preventDefault();
-              onActionClick(previewUrl);
+              if (isAvailable) {
+                onActionClick(previewUrl);
+              } else {
+                onActionClick(githubUrl);
+              }
             }}
             target="_blank"
             rel="noopener noreferrer"
             style={{
               flex: 1, textAlign: 'center', padding: '9px', borderRadius: 9,
-              background: 'var(--accent)', color: '#fff',
+              background: isAvailable ? 'var(--accent)' : 'rgba(255,255,255,0.08)',
+              color: isAvailable ? '#fff' : 'var(--text-secondary)',
               fontSize: 13, fontWeight: 500, textDecoration: 'none',
+              cursor: 'pointer'
             }}
-            onMouseEnter={(e: any) => (e.currentTarget.style.background = 'var(--accent-hover)')}
-            onMouseLeave={(e: any) => (e.currentTarget.style.background = 'var(--accent)')}
+            onMouseEnter={(e: any) => { if (isAvailable) e.currentTarget.style.background = 'var(--accent-hover)'; }}
+            onMouseLeave={(e: any) => { if (isAvailable) e.currentTarget.style.background = 'var(--accent)'; }}
+            title={statusMessage || 'Live Preview'}
           >
-            Live Preview
+            {isAvailable ? 'Live Preview' : 'Code Only'}
           </motion.a>
         </div>
       </div>

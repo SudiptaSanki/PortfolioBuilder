@@ -18,6 +18,7 @@ const ALLOWED_CATEGORIES = [
   'technology', 'creative', 'business', 'academic', 'health-wellness',
   'services', 'retail', 'startup', 'gaming', 'music', 'events', 'medical'
 ];
+const ALLOWED_STATUSES = ['active', 'pending', 'broken', 'deprecated', 'migrated'];
 
 function findMetadataFiles(dir, fileList = []) {
   if (!fs.existsSync(dir)) return fileList;
@@ -165,6 +166,9 @@ for (const filePath of metadataFiles) {
     }
     if (!dep.liveUrl || typeof dep.liveUrl !== 'string' || !/^https?:\/\//i.test(dep.liveUrl)) {
       templateErrors.push(`Invalid 'deployment.liveUrl': '${dep.liveUrl}'. Must be a valid http(s) URL.`);
+    }
+    if (dep.status && !ALLOWED_STATUSES.includes(dep.status)) {
+      templateErrors.push(`Invalid 'deployment.status': '${dep.status}'. Allowed: ${ALLOWED_STATUSES.join(', ')}`);
     }
   }
 
