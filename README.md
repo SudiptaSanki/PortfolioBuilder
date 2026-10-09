@@ -417,5 +417,5 @@ Special thanks to the open-source communities powering our designs:
 - **[Next.js](https://nextjs.org/)** & **[Vercel](https://vercel.com/)** for powering the live showcase platform.
 
 <!-- autobot:start -->
-<!-- s:f24850e4 t:2026-10-09T18:29:56.616Z a:schema migration b:5593 -->
+<!-- s:98772977 t:2026-10-09T18:30:08.117Z a:performance profiling b:4148 -->
 <!-- autobot:end -->
