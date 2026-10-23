@@ -417,5 +417,5 @@ Special thanks to the open-source communities powering our designs:
 - **[Next.js](https://nextjs.org/)** & **[Vercel](https://vercel.com/)** for powering the live showcase platform.
 
 <!-- autobot:start -->
-<!-- s:867e89ff t:2026-10-23T09:34:19.299Z a:fixed edge case b:1712 -->
+<!-- s:a1692d2a t:2026-10-23T09:34:27.313Z a:fixed edge case b:1098 -->
 <!-- autobot:end -->
