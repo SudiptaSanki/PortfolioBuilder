@@ -41,6 +41,12 @@ const CATEGORY_LABELS: Record<string, string> = {
 const STACK_FILTERS = ['All Stacks', 'HTML/CSS/JS', 'React', 'Next.js', 'Vue'];
 const STRUCTURE_FILTERS = ['All Structures', 'Single-page', 'Multi-page'];
 const COLLECTION_FILTERS = ['All Collections', 'Core Library', 'Festival & Puja', 'Interactive 3D', 'Genre Lab'];
+const COLLECTION_TAG_MAP: Record<string, string> = {
+  'Core Library': 'core',
+  'Festival & Puja': 'festival',
+  'Interactive 3D': 'collection',
+  'Genre Lab': 'genre-lab',
+};
 const SORT_OPTIONS = ['Featured', 'Name A–Z', 'Name Z–A', 'Category', 'Stack', 'Role A–Z'];
 
 type Template = typeof templates[number];
@@ -132,6 +138,23 @@ export default function Home() {
         window.open(url, '_blank');
       }
     }
+  }, []);
+
+  const visibleCategories = useMemo(() => {
+    const present = new Set(templates.map((t) => t.category));
+    return ALL_CATEGORIES.filter((cat) => cat === 'All' || cat === '⭐ Starred' || present.has(cat));
+  }, []);
+
+  const visibleCollections = useMemo(() => {
+    const presentTags = new Set<string>();
+    for (const t of templates) {
+      for (const tag of t.tags || []) presentTags.add(tag);
+    }
+    return COLLECTION_FILTERS.filter((col) => {
+      if (col === 'All Collections') return true;
+      const requiredTag = COLLECTION_TAG_MAP[col];
+      return requiredTag ? presentTags.has(requiredTag) : true;
+    });
   }, []);
 
   const filtered = useMemo<Template[]>(() => {
@@ -324,7 +347,7 @@ export default function Home() {
       {/* Filters */}
       <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px 24px', display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-          {ALL_CATEGORIES.map((cat) => (
+          {visibleCategories.map((cat) => (
             <motion.button
               key={cat}
               onClick={() => setActiveCategory(cat)}
@@ -352,7 +375,7 @@ export default function Home() {
               color: 'var(--text-secondary)', cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
             }}
           >
-            {COLLECTION_FILTERS.map((s) => <option key={s}>{s}</option>)}
+            {visibleCollections.map((s) => <option key={s}>{s}</option>)}
           </select>
           <select
             value={activeStack}

@@ -128,9 +128,12 @@ function main() {
   const catOther = rest.filter(t => !catAssigned.has(t.id));
   if (catOther.length) catBuckets.push(['Other Templates', catOther]);
 
+  const indiaList = indiaBuckets.flatMap(([, l]) => l);
+  const worldList = worldBuckets.flatMap(([, l]) => l);
+
   let sections = '';
-  sections += sectionHTML('india', '🪔 Festival Batch — India', 'Indian puja & festival aesthetics: torans, diyas, rangoli, kash grass. Mode chips show each template\'s garland / float / scroll / reveal style.', indiaBuckets.flatMap(([, l]) => l));
-  sections += sectionHTML('world', '🌍 Festival Batch — World', 'Festive modes from around the world, each with its own garland, floating elements and footer.', worldBuckets.flatMap(([, l]) => l));
+  sections += sectionHTML('india', '🪔 Festival Batch — India', 'Indian puja & festival aesthetics: torans, diyas, rangoli, kash grass. Mode chips show each template\'s garland / float / scroll / reveal style.', indiaList);
+  sections += sectionHTML('world', '🌍 Festival Batch — World', 'Festive modes from around the world, each with its own garland, floating elements and footer.', worldList);
   for (const [label, list] of catBuckets) {
     const id = 'cat-' + label.toLowerCase().replace(/[^a-z]+/g, '-');
     sections += sectionHTML(id, label, '', list);
@@ -185,9 +188,9 @@ function main() {
 <div class="searchrow">
   <input id="q" type="text" placeholder="Search by name, role, theme, garland, float... (e.g. sakura, toran, snow, lights)">
   <nav class="nav">
-    <a href="#india">🪔 India</a>
-    <a href="#world">🌍 World</a>
-    ${CATEGORIES.map(([k, l]) => `<a href="#cat-${l.toLowerCase().replace(/[^a-z]+/g, '-')}">${esc(l.split(' &')[0].split(',')[0])}</a>`).join('')}
+    ${indiaList.length ? '<a href="#india">🪔 India</a>' : ''}
+    ${worldList.length ? '<a href="#world">🌍 World</a>' : ''}
+    ${catBuckets.filter(([, list]) => list.length > 0).map(([l]) => `<a href="#cat-${l.toLowerCase().replace(/[^a-z]+/g, '-')}">${esc(l.split(' &')[0].split(',')[0])}</a>`).join('')}
   </nav>
 </div>
 <main>${sections}

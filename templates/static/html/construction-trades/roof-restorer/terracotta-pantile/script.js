@@ -1,1 +1,0 @@
-document.addEventListener('mousemove',e=>{const x=(e.clientX/window.innerWidth-.5)*6;const card=document.querySelector('.pant-card');if(card)card.style.transform='translateX('+x+'px)'});
