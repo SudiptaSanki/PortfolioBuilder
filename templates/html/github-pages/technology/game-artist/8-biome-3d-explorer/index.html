@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>World Explorer 3D — 8-Biome 3D World Explorer</title>
+<meta name="description" content="An interactive 3D world you can explore: eight glowing artifacts, eight chapters of a career in creative development. Three.js + GSAP concept study." />
+<meta name="theme-color" content="#05070e" />
+<link rel="stylesheet" href="assets/css/fonts.css" />
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="is-locked">
+
+<!-- ================= SCENE ================= -->
+<div id="stage" aria-hidden="true">
+  <canvas id="scene"></canvas>
+</div>
+<div class="fx fx-vignette" aria-hidden="true"></div>
+<div class="fx fx-grain" aria-hidden="true"></div>
+<div class="fx fx-flash" id="flash" aria-hidden="true"></div>
+
+<!-- ================= HUD ================= -->
+<header class="topbar" id="topbar">
+  <a class="brand" href="#top" aria-label="World Explorer 3D, back to the start of the journey">
+    <span class="brand__mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="currentColor" stroke-width="1" opacity=".45"/><path d="M16 3v7M16 22v7M3 16h7M22 16h7" stroke="currentColor" stroke-width="1"/><circle cx="16" cy="16" r="3.4" fill="currentColor"/></svg>
+    </span>
+    <span class="brand__txt">
+      <span class="brand__name">World Explorer 3D</span>
+      <span class="brand__role">Creative developer · Paris</span>
+    </span>
+  </a>
+
+  <div class="topbar__right">
+    <button class="icon-btn" id="soundBtn" aria-pressed="false" aria-label="Toggle ambient sound">
+      <svg class="ic ic--on" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9v6h3l5 4V5L7 9H4Z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <svg class="ic ic--off" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9v6h3l5 4V5L7 9H4Z" fill="currentColor"/><path d="m16 9 5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span class="icon-btn__label" id="soundLabel">Sound off</span>
+    </button>
+    <button class="txt-btn" id="aboutBtn">About</button>
+    <button class="txt-btn" id="contactBtn">Contact</button>
+  </div>
+</header>
+
+<aside class="hud-counter" id="hudCounter" aria-live="polite">
+  <div class="hud-counter__label">Collectibles</div>
+  <div class="hud-counter__value"><span id="countNow">00</span><i>/</i><span id="countTotal">08</span></div>
+  <div class="hud-counter__ticks" id="ticks" aria-hidden="true"></div>
+  <div class="hud-counter__foot">Artifacts logged</div>
+</aside>
+
+<nav class="waypoints" id="waypoints" aria-label="Jump to an artifact"></nav>
+
+<div class="hud-left">
+  <button class="mode-btn" id="modeBtn" aria-pressed="false">
+    <span class="mode-btn__dot" aria-hidden="true"></span>
+    <span class="mode-btn__txt">Scroll journey</span>
+  </button>
+  <p class="hud-hint" id="hudHint">
+    <span class="hud-hint__k"><b>Scroll</b> travel</span>
+    <span class="hud-hint__k"><b>WASD</b> walk</span>
+    <span class="hud-hint__k"><b>Drag</b> look</span>
+    <span class="hud-hint__k"><b>Click</b> beacon</span>
+  </p>
+</div>
+
+<div class="chip chip--pos" id="posChip" aria-hidden="true">SECTOR 01 · <span id="posName">Cyan Grid Valley</span></div>
+
+<div class="zone-card" id="zoneCard" aria-hidden="true">
+  <span class="zone-card__rule" aria-hidden="true"></span>
+  <span class="zone-card__n mono" id="zoneNum">01</span>
+  <span class="zone-card__body">
+    <span class="zone-card__label mono">Now entering</span>
+    <span class="zone-card__name" id="zoneName">Cyan Grid Valley</span>
+  </span>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- scroll driver for the guided path -->
+<main id="journey">
+  <div class="journey__intro" id="journeyIntro">
+    <h1 class="hero__name">Théo<br>Marchand</h1>
+    <p class="hero__line">Creative developer. Eight worlds, eight artifacts — one for every chapter of the work.</p>
+    <p class="hero__cue">Scroll to disembark <span aria-hidden="true">↓</span></p>
+  </div>
+  <div class="journey__tail"></div>
+</main>
+
+<!-- ================= PRELOADER ================= -->
+<div class="preloader" id="preloader">
+  <div class="preloader__grid" aria-hidden="true"></div>
+  <div class="preloader__top">
+    <span class="mono">T.MARCHAND — SPACE GAMEFOLIO</span>
+    <span class="mono" id="plBuild">BUILD 2025.12 / WEBGL</span>
+  </div>
+  <div class="preloader__core">
+    <p class="mono preloader__eyebrow" id="plStatus">Loading the planet</p>
+    <div class="preloader__pct"><span id="plPct">0</span><i>%</i></div>
+    <div class="preloader__bar"><span id="plBar"></span></div>
+    <p class="preloader__sub" id="plSub">Generating terrain field · seeding 08 artifacts</p>
+    <button class="enter-btn" id="enterBtn" disabled>
+      <span class="enter-btn__txt" id="plBtnTxt">Calibrating…</span>
+      <span class="enter-btn__glow" aria-hidden="true"></span>
+    </button>
+    <p class="mono preloader__note">This experience uses sound</p>
+  </div>
+  <div class="preloader__bottom">
+    <span class="mono">THREE.JS · GSAP</span>
+    <span class="mono">PARIS, FR</span>
+  </div>
+</div>
+
+<!-- ================= CASE STUDY DRAWER ================= -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
+  <button class="drawer__x" id="drawerX" aria-label="Close case study">✕</button>
+  <div class="drawer__scroll" id="drawerScroll">
+    <div class="drawer__media">
+      <img id="drwImg" alt="" />
+      <div class="drawer__media-grad" aria-hidden="true"></div>
+      <div class="drawer__media-top">
+        <span class="tag" id="drwCode">A-01</span>
+        <span class="tag tag--dim" id="drwIdx">Collectible 01 / 08</span>
+      </div>
+      <h2 class="drawer__title" id="drawerTitle">Bubblemaps</h2>
+    </div>
+    <div class="drawer__body">
+      <p class="drawer__kicker" id="drwKicker">Data visualisation · 2026 — now</p>
+      <dl class="meta" id="drwMeta"></dl>
+      <div class="drawer__prose" id="drwProse"></div>
+      <div class="drawer__notes">
+        <h3 class="mono-label">Field notes</h3>
+        <ul id="drwNotes"></ul>
+      </div>
+      <figure class="drawer__figure">
+        <img id="drwImg2" alt="" loading="lazy" />
+        <figcaption id="drwCap" class="mono"></figcaption>
+      </figure>
+      <div class="drawer__tags" id="drwTags"></div>
+      <div class="drawer__foot">
+        <button class="btn btn--ghost" id="drwNext">Next artifact <span aria-hidden="true">→</span></button>
+        <button class="btn btn--line" id="drwClose">Close</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ================= ABOUT ================= -->
+<div class="modal-wrap" id="aboutModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+    <button class="modal__x" data-close aria-label="Close">✕</button>
+    <p class="mono-label">Dossier / 01</p>
+    <h2 class="modal__title" id="aboutTitle">The human<br>behind the helmet</h2>
+    <p class="modal__lede">French creative developer, eight years in. I build the kind of web that behaves like a place: real-time 3D, choreographed motion, and interfaces that keep their promises on a phone.</p>
+    <p class="modal__body">Currently lead frontend engineer at Bubblemaps and founder of Pasokon Studio, after years writing smart contracts and product front-ends across crypto. Blender for the objects, Three.js for the worlds, GSAP when things have to move with intent.</p>
+    <div class="timeline" id="timeline"></div>
+    <div class="chips" id="skillChips"></div>
+    <div class="modal__foot">
+      <p class="mono">Paris, France · FR / EN / 日本語</p>
+      <button class="btn btn--line" data-close>Close dossier</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= CONTACT ================= -->
+<div class="modal-wrap" id="contactModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+    <button class="modal__x" data-close aria-label="Close">✕</button>
+    <p class="mono-label">Dossier / 02</p>
+    <h2 class="modal__title" id="contactTitle">Open a channel</h2>
+    <p class="modal__lede">Freelance collaborations, creative-development partnerships, or a question about how this world was built. Signals reach Paris.</p>
+    <form class="form" id="contactForm" novalidate>
+      <label class="field"><span>Name</span><input type="text" name="name" autocomplete="name" required placeholder="Ada Lovelace" /></label>
+      <label class="field"><span>Email</span><input type="email" name="email" autocomplete="email" required placeholder="you@studio.com" /></label>
+      <label class="field"><span>Message</span><textarea name="message" rows="3" required placeholder="What are we building?"></textarea></label>
+      <button class="btn btn--solid" type="submit">Transmit</button>
+      <p class="form__note" id="formNote" role="status"></p>
+    </form>
+    <div class="links" id="contactLinks"></div>
+  </div>
+</div>
+
+<noscript><div class="noscript">This world needs JavaScript and WebGL. The work is also listed in the About panel.</div></noscript>
+
+<!-- ================= FINALE ================= -->
+<div class="finale" id="finale" hidden>
+  <div class="finale__scrim"></div>
+  <div class="finale__rays" aria-hidden="true"></div>
+  <div class="finale__card" role="dialog" aria-modal="true" aria-labelledby="finaleTitle">
+    <button class="finale__close" id="finaleClose" aria-label="Keep exploring">
+      <span aria-hidden="true">✕</span>
+    </button>
+    <p class="finale__eyebrow mono" id="finaleEyebrow">Journey complete · 08 / 08 artifacts</p>
+    <h2 class="finale__title" id="finaleTitle">Thank you<br>for visiting</h2>
+    <p class="finale__stat mono" id="finaleStat">Eight worlds walked · eight chapters recovered</p>
+    <p class="finale__lede">You walked from the grid valley to the golden gate. If any of these eight worlds looks like something you want to build, the channel is open.</p>
+    <div class="finale__cta">
+      <button class="btn btn--solid" id="finaleContact">Get in touch <span aria-hidden="true">→</span></button>
+      <button class="btn btn--ghost" id="finaleReplay">Walk it again</button>
+    </div>
+    <div class="finale__links" id="finaleLinks"></div>
+    <p class="finale__meta mono">Pasokon Studio · Paris, France · FR / EN / 日本語</p>
+  </div>
+</div>
+
+<script src="vendor/three.min.js"></script>
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="assets/js/audio.js"></script>
+<script src="assets/js/world.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

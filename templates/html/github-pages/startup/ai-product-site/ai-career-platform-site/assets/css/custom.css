@@ -1,0 +1,376 @@
+/* ==========================================================================
+   CareerForge AI — additions on top of the original stylesheet
+   (promo bar, nav dropdowns, scroll reveals, drawer state, tabs)
+   ========================================================================== */
+
+:root {
+  --ds-pink: var(--primary-color, #e6007e);
+}
+
+html { scroll-behavior: smooth; }
+body { margin: 0; }
+
+/* ---------- promo bar ---------------------------------------------------- */
+.ds-promo {
+  position: relative;
+  z-index: 120;
+  background:
+    radial-gradient(120% 240% at 50% -60%, #4a1c58 0%, #1b1024 45%, #100a16 100%);
+  color: #fff;
+  padding: 10px 0 6px;
+  overflow: hidden;
+}
+.ds-promo::before,
+.ds-promo::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 260px;
+  height: 160px;
+  transform: translateY(-50%);
+  background: radial-gradient(closest-side, rgba(230, 0, 126, .35), transparent 70%);
+  pointer-events: none;
+}
+.ds-promo::before { left: -40px; }
+.ds-promo::after { right: -40px; }
+.ds-promo-inner { display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap; }
+.ds-promo-text { font-size: 15px; font-weight: 500; color: #f3e9f6; letter-spacing: -.01em; }
+.ds-promo-text strong { color: #ffd84d; font-weight: 800; font-size: 17px; margin-left: 2px; }
+.ds-promo-code {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; color: #111; border-radius: 8px;
+  padding: 4px 8px 4px 10px; box-shadow: 0 2px 10px rgba(0,0,0,.35);
+}
+.ds-promo-code em {
+  font-style: normal; font-size: 8px; font-weight: 800; letter-spacing: .06em;
+  color: #6b7280; line-height: 1.05; text-transform: uppercase;
+}
+.ds-promo-code b { font-size: 16px; font-weight: 900; letter-spacing: -.02em; }
+.ds-promo-code svg { color: #9aa0aa; }
+.ds-promo-fine {
+  margin: 2px 0 0; text-align: center; font-size: 9px; color: rgba(255,255,255,.55);
+}
+@media (max-width: 640px) {
+  .ds-promo-text { font-size: 12px; }
+  .ds-promo-text strong { font-size: 13px; }
+  .ds-promo-code b { font-size: 13px; }
+}
+
+/* ---------- desktop nav dropdown panels ---------------------------------- */
+.ds-item { position: relative; }
+.ds-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 250px;
+  background: #fff;
+  color: #111;
+  border: 1px solid rgba(0,0,0,.07);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px -12px rgba(0,0,0,.28), 0 2px 8px rgba(0,0,0,.06);
+  padding: 10px;
+  opacity: 0;
+  transform: translateY(8px);
+  visibility: hidden;
+  transition: opacity .18s ease, transform .18s ease, visibility .18s;
+  z-index: 130;
+}
+.ds-item:hover .ds-menu,
+.ds-item:focus-within .ds-menu,
+.ds-item.ds-open .ds-menu {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+.ds-menu a {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1f2937;
+  text-decoration: none;
+  transition: background .16s ease, color .16s ease;
+}
+.ds-menu a:hover { background: #fdf0f7; color: var(--ds-pink); }
+.ds-menu a span.ds-desc { display: block; font-size: 11px; font-weight: 400; color: #6b7280; margin-top: 2px; }
+.ds-item.ds-open > button svg { transform: rotate(180deg); }
+.ds-item > button svg { transition: transform .2s ease; }
+.ds-menu-tight { min-width: 190px; }
+
+/* ---------- mobile drawer ------------------------------------------------ */
+#ds-drawer.ds-drawer-open { visibility: visible !important; pointer-events: auto !important; }
+#ds-drawer.ds-drawer-open > div { transform: translateX(0%) !important; }
+body.ds-locked { overflow: hidden; }
+.ds-acc-panel {
+  display: none;
+  padding: 6px 0 14px 6px;
+  flex-direction: column;
+  gap: 4px;
+}
+.ds-acc-panel.ds-open { display: flex; }
+.ds-acc-panel a {
+  font-size: 15px;
+  color: #4b5563;
+  padding: 6px 0;
+  text-decoration: none;
+}
+.ds-acc-panel a:hover { color: var(--ds-pink); }
+.ds-acc-item.ds-open > button svg { transform: rotate(180deg); }
+.ds-acc-item > button svg { transition: transform .25s ease; }
+
+/* ---------- scroll reveal ------------------------------------------------ */
+html.js .ds-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);
+  will-change: opacity, transform;
+}
+html.js .ds-reveal.ds-in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js .ds-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- trending / certifications tabs ------------------------------- */
+.ds-tabpanel[hidden] { display: none !important; }
+.ds-certs { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.ds-cert {
+  background: #fff;
+  border: 1px solid #ececf1;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 10px 30px -18px rgba(0,0,0,.35);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.ds-cert:hover { transform: translateY(-4px); border-color: rgba(230,0,126,.35); box-shadow: 0 18px 40px -22px rgba(230,0,126,.5); }
+.ds-cert h3 { font-size: 16px; font-weight: 800; color: #111; margin: 0 0 6px; }
+.ds-cert p { font-size: 13px; color: #6b7280; margin: 0 0 14px; line-height: 1.5; }
+.ds-cert .ds-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ds-pink); background: #fdf0f7; border-radius: 999px; padding: 5px 10px;
+}
+
+/* ---------- misc -------------------------------------------------------- */
+/* keep the section headings from colliding with the fixed navbar */
+section[id] { scroll-margin-top: 96px; }
+
+/* nav starts below the promo bar until the script measures it */
+:root { --promo-offset: 64px; }
+
+/* ==========================================================================
+   Sections restored to match the original layout:
+   "Everything a student needs, in one app."  ·  "Not sure which path to choose?"
+   "Practice labs that review your method, not just your answer."
+   ========================================================================== */
+
+/* ---------- shared ------------------------------------------------------- */
+.ds-sec { background: #fff; }
+.ds-sec h2 { margin: 0; letter-spacing: -.02em; color: #000; }
+.ds-pink-link { color: #b40b8e; text-decoration: underline; text-underline-offset: 4px; font-weight: 500; }
+.ds-pink-link:hover { color: #ee11bd; }
+
+/* ---------- 1. everything a student needs -------------------------------- */
+.ds-features { padding: 48px 0 80px; }
+@media (min-width: 1024px) { .ds-features { padding: 64px 0 96px; } }
+.ds-features-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px 32px;
+  align-items: start;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+@media (min-width: 1024px) {
+  .ds-features-grid { grid-template-columns: minmax(0, 400px) 300px minmax(0, 1fr); padding: 0 64px; }
+}
+.ds-feat-title { font-size: 30px; line-height: 38px; font-weight: 700; color: #2d3639; }
+@media (min-width: 640px) { .ds-feat-title { font-size: 40px; line-height: 48px; } }
+.ds-feat-copy > p { margin: 12px 0 0; font-size: 15px; line-height: 24px; color: #384347; }
+.ds-feat-copy > .ds-feat-cta { margin-top: 12px; display: flex; flex-wrap: wrap; align-items: center; }
+.ds-feat-cta a {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 0; font-size: 15px; font-weight: 500; line-height: 22px;
+  color: #b40b8e; text-decoration: underline; text-underline-offset: 4px;
+}
+.ds-feat-cta svg { width: 16px; height: 16px; }
+.ds-squiggle { display: none; margin: 8px 0 0 auto; width: 131px; height: 100px; color: #404040; }
+@media (min-width: 1024px) { .ds-squiggle { display: block; } }
+
+.ds-tabs { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 640px) and (max-width: 1023px) {
+  .ds-tabs { grid-template-columns: 1fr 1fr; gap: 12px; }
+}
+@media (min-width: 1024px) { .ds-tabs { margin-top: 12px; gap: 10px; } }
+.ds-tab {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; height: 56px; padding: 0 16px 0 2px;
+  border: 0; border-radius: 20px; background: transparent;
+  font: inherit; color: #262626; text-align: left; cursor: pointer;
+  transition: background .3s ease, color .3s ease;
+}
+.ds-tab:hover { background: #fafafa; }
+.ds-tab-icon {
+  display: grid; place-items: center;
+  width: 52px; height: 52px; flex: 0 0 auto;
+  border-radius: 999px; border: 2px solid #e5e5e5; background: #fff; color: #b40b8e;
+  transition: background .3s ease, border-color .3s ease, color .3s ease;
+}
+.ds-tab-icon svg { width: 24px; height: 24px; }
+.ds-tab-label { font-size: 15px; font-weight: 600; line-height: 20px; }
+.ds-tab.is-active {
+  background: linear-gradient(90deg, #ee11bd, #c90b9f);
+  color: #fff;
+}
+.ds-tab.is-active .ds-tab-icon {
+  border-color: rgba(255, 255, 255, .7);
+  background: rgba(255, 255, 255, .15);
+  color: #fff;
+}
+.ds-panel {
+  position: relative; width: 100%; overflow: hidden;
+  aspect-ratio: 1534 / 726;
+  border-radius: 12px; border: 1px solid #e5e5e5; background: #f5f5f5;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, .12);
+}
+@media (min-width: 1024px) {
+  .ds-panel { aspect-ratio: auto; height: 100%; min-height: 420px; }
+}
+.ds-panel img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+.ds-panel-fade { transition: opacity .25s ease; }
+.ds-panel-fade.is-fading { opacity: 0; }
+
+/* ---------- 2. not sure which path to choose ----------------------------- */
+.ds-assess { padding: 64px 24px; }
+@media (min-width: 1024px) { .ds-assess { padding: 80px 24px; } }
+.ds-assess-card {
+  position: relative; display: flex; align-items: center;
+  width: 100%; max-width: 1280px; min-height: 320px; margin: 0 auto;
+  overflow: hidden; border-radius: 28px;
+  border: 1px solid rgba(238, 17, 189, .15);
+  background: linear-gradient(100deg, #ffffff 0%, #fdf2fb 55%, #fbd5f1 100%);
+  padding: 48px 32px;
+  box-shadow: 0 12px 40px rgba(238, 17, 189, .08);
+}
+@media (min-width: 1024px) { .ds-assess-card { padding: 48px 64px; } }
+.ds-assess-copy { position: relative; z-index: 10; max-width: 560px; }
+.ds-assess-title { font-size: 32px; line-height: 40px; font-weight: 700; color: #000; }
+@media (min-width: 640px) { .ds-assess-title { font-size: 44px; line-height: 52px; } }
+.ds-assess-copy > p { margin: 16px 0 0; font-size: 20px; line-height: 30px; color: #404040; }
+.ds-assess-btn {
+  display: inline-flex; align-items: center; height: 56px; margin-top: 28px;
+  border-radius: 12px; background: #ee11bd; padding: 0 36px;
+  font-size: 18px; font-weight: 700; color: #fff; text-decoration: none;
+  box-shadow: 0 10px 24px rgba(238, 17, 189, .3);
+  transition: transform .2s ease;
+}
+.ds-assess-btn:hover { transform: translateY(-2px); }
+.ds-assess-note { margin: 20px 0 0; font-size: 16px; font-weight: 500; font-style: italic; color: #b40b8e; }
+.ds-assess-art { position: absolute; top: 0; bottom: 0; right: 0; width: 46%; display: none; pointer-events: none; }
+@media (min-width: 1024px) { .ds-assess-art { display: block; } }
+.ds-assess-art > svg { width: 100%; height: 100%; }
+.ds-coupon {
+  position: absolute; left: 18%; top: 50%; width: 110px; height: 190px;
+  transform: translateY(-50%) rotate(-28deg);
+  border-radius: 16px; padding: 16px;
+  background: linear-gradient(160deg, #ee11bd, #c90b9f); color: #fff;
+  box-shadow: 0 18px 36px rgba(201, 11, 159, .35);
+}
+.ds-coupon-pct { font-size: 34px; font-weight: 900; line-height: 1; }
+.ds-coupon-off { margin-top: 12px; font-size: 26px; font-weight: 900; line-height: 1.05; }
+.ds-coupon-dash { margin-top: 16px; border-top: 2px dashed rgba(255, 255, 255, .5); }
+
+/* ---------- 3. practice labs --------------------------------------------- */
+.ds-labs { padding: 64px 0; }
+.ds-labs-inner { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+.ds-labs-title { max-width: 48rem; font-size: 30px; line-height: 1.12; font-weight: 700; }
+@media (min-width: 768px) { .ds-labs-title { font-size: 48px; } }
+.ds-labs-sub { margin: 16px 0 0; max-width: 42rem; font-size: 18px; line-height: 1.5; color: #404040; }
+.ds-labs-grid { margin-top: 40px; display: grid; grid-template-columns: 1fr; gap: 20px; }
+@media (min-width: 1024px) { .ds-labs-grid { grid-template-columns: 2fr 1fr; } }
+.ds-labs-col { display: flex; flex-direction: column; gap: 20px; }
+.ds-lab {
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 208px; padding: 20px;
+  border: 1px solid #e5e5e5; background: #fff;
+  box-shadow: 0 10px 24px -10px rgba(15, 23, 42, .1);
+  transition: border-color .25s ease;
+}
+@media (min-width: 1024px) { .ds-lab { min-height: 240px; padding: 32px; } }
+.ds-lab:hover { border-color: #ee11bd; }
+.ds-lab-head { position: relative; z-index: 1; display: flex; align-items: center; gap: 12px; }
+.ds-lab-title { margin: 0; font-size: 20px; font-weight: 500; line-height: 26px; letter-spacing: -.2px; color: #000; }
+.ds-lab-arrow {
+  display: grid; place-items: center; width: 24px; height: 24px;
+  border: 1px solid #d4d4d4; color: #171717;
+  transition: background .25s ease, border-color .25s ease, color .25s ease;
+}
+.ds-lab-arrow svg { width: 14px; height: 14px; }
+.ds-lab:hover .ds-lab-arrow { background: #ee11bd; border-color: #ee11bd; color: #fff; }
+.ds-lab-desc { position: relative; z-index: 1; margin: 8px 0 0; max-width: 28rem; font-size: 14px; line-height: 21px; color: #525252; }
+.ds-lab-chips { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; padding: 0; max-width: 78%; list-style: none; }
+.ds-lab-chip { border: 1px solid #d4d4d4; padding: 4px 12px; font-size: 12px; font-weight: 500; line-height: 16.8px; color: #262626; }
+.ds-lab-foot { position: relative; z-index: 1; margin-top: auto; padding-top: 20px; }
+.ds-lab-foot-label { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: #737373; }
+.ds-lab-brands { display: flex; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.ds-lab-brand { display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid #e5e5e5; border-radius: 5px; background: #fff; }
+.ds-lab-brand img { width: 18px; height: 18px; object-fit: contain; }
+.ds-lab-art {
+  position: absolute; right: 0; bottom: 0; width: 48%; max-width: 300px;
+  transform: translate(24px, 24px) rotate(-4deg);
+  padding: 16px; border: 1px solid #e5e5e5; border-radius: 12px; background: #fafafa;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+  pointer-events: none; transition: transform .5s ease;
+}
+.ds-lab:hover .ds-lab-art { transform: translate(12px, -4px) rotate(-4deg); }
+.ds-lab-art svg { display: block; width: 100%; height: auto; }
+.ds-lab-dots { display: flex; gap: 6px; margin-bottom: 12px; }
+.ds-lab-dots span { width: 8px; height: 8px; border-radius: 999px; background: #e5e5e5; }
+.ds-lab-dots span:first-child { background: #ee11bd; }
+.ds-lab-dots span:nth-child(2) { background: #d4d4d4; }
+@media (max-width: 639px) {
+  /* the decorative panel would sit on the card copy at phone width */
+  .ds-lab-art { display: none; }
+  .ds-lab-chips { max-width: 100%; }
+}
+
+/* ---------- refinements after visual review ------------------------------ */
+@media (min-width: 1024px) {
+  /* the feature screenshot bleeds to the right edge, as in the original */
+  .ds-panel { margin-right: calc(-1 * max(4rem, (100vw - 1440px) / 2 + 4rem)); }
+}
+/* crop the app screenshot past its sidebar so the old brand chrome is not in frame */
+.ds-panel img { object-position: 68% top; }
+
+/* keep lab copy readable where the decorative panel meets it */
+.ds-lab-foot { z-index: 2; }
+.ds-lab-art { width: 42%; max-width: 260px; transform: translate(28px, 30px) rotate(-4deg); }
+.ds-lab:hover .ds-lab-art { transform: translate(18px, 2px) rotate(-4deg); }
+@media (max-width: 1023px) and (min-width: 640px) {
+  .ds-lab-art { width: 34%; }
+}
+
+/* labs grid: 1 full-width lab + two rows of two, as in the original */
+.ds-labs-pair { display: grid; grid-template-columns: 1fr; gap: 20px; }
+@media (min-width: 640px) { .ds-labs-pair { grid-template-columns: 1fr 1fr; } }
+.ds-labs-pair .ds-lab { min-height: 208px; }
+@media (min-width: 1024px) { .ds-labs-pair .ds-lab { padding: 24px; } }
+@media (max-width: 1023px) { .ds-lab-art { width: 38%; max-width: 220px; } }
+.ds-lab-art { width: 44%; max-width: 240px; transform: translate(34px, 40px) rotate(-4deg); }
+.ds-lab:hover .ds-lab-art { transform: translate(24px, 12px) rotate(-4deg); }
+
+/* feature panel: show the whole app screenshot, wide like the original */
+.ds-panel { aspect-ratio: 1534 / 682; height: auto; min-height: 0; margin-right: 0; }
+.ds-panel img { object-fit: cover; object-position: center top; }
+@media (min-width: 1024px) {
+  /* let the app screenshot run out to the right edge, as in the original */
+  .ds-panel { margin-right: min(0px, calc((1440px - 100vw) / 2 - 4rem)); }
+}

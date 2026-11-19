@@ -16,7 +16,7 @@ const ALLOWED_DEPLOY_TYPES = ['shared-static', 'contributor-hosted', 'managed-ru
 const ALLOWED_PROVIDERS = ['github-pages', 'cloudflare-pages', 'vercel', 'netlify', 'custom', 'external'];
 const ALLOWED_CATEGORIES = [
   'technology', 'creative', 'business', 'academic', 'health-wellness',
-  'services', 'retail', 'startup', 'gaming', 'music', 'events', 'medical'
+  'services', 'retail', 'startup', 'gaming', 'music', 'events', 'medical', 'festival'
 ];
 const ALLOWED_STATUSES = ['active', 'pending', 'broken', 'deprecated', 'migrated'];
 

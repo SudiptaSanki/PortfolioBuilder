@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>NEON CIRCUIT — Story, Art & Technology</title>
+<meta name="description" content="An independent digital experience studio building spatial interfaces, realtime graphics and audio-reactive worlds." />
+<meta name="theme-color" content="#05060a" />
+<link rel="stylesheet" href="assets/fonts.css" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="is-loading">
+
+<!-- ░░ LOADER ░░ -->
+<div id="loader" aria-hidden="true">
+  <div class="ld-inner">
+    <div class="ld-top">
+      <span class="mono">NEON CIRCUIT / SPATIAL SYSTEM</span>
+      <span class="mono">V6.0.1</span>
+    </div>
+    <div class="ld-mid">
+      <div class="ld-num"><span id="ldPct">000</span><i>%</i></div>
+      <div class="ld-bars" id="ldBars"></div>
+    </div>
+    <div class="ld-log mono" id="ldLog"></div>
+    <div class="ld-line"><i id="ldFill"></i></div>
+  </div>
+</div>
+
+<!-- ░░ REALTIME FIELD ░░ -->
+<div class="field" id="field">
+  <canvas id="gl"></canvas>
+  <div class="field-fallback" aria-hidden="true"></div>
+</div>
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<!-- ░░ CURSOR ░░ -->
+<div class="cursor" id="cursor" aria-hidden="true">
+  <span class="cur-ring"></span>
+  <span class="cur-dot"></span>
+  <span class="cur-label mono" id="curLabel"></span>
+</div>
+
+<!-- ░░ HUD ░░ -->
+<div class="hud" aria-hidden="true">
+  <div class="hud-corner hud-tl">
+    <a class="mark" href="#top" data-cursor="HOME">
+      <svg viewBox="0 0 40 40" width="26" height="26" aria-hidden="true">
+        <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1"/>
+        <path d="M20 6 L33 30 H7 Z" fill="none" stroke="currentColor" stroke-width="1"/>
+        <circle cx="20" cy="20" r="3.2" fill="currentColor"/>
+      </svg>
+      <span class="mark-txt">ACTIVE<br/>THEORY</span>
+    </a>
+  </div>
+
+  <div class="hud-corner hud-tr">
+    <button class="hud-btn" id="soundBtn" data-cursor="AUDIO">
+      <span class="hud-eq" id="eq"><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="mono">SOUND <b id="soundState">OFF</b></span>
+    </button>
+    <button class="hud-btn" id="menuBtn" data-cursor="MENU">
+      <span class="hud-burger"><i></i><i></i></span>
+      <span class="mono">MENU</span>
+    </button>
+  </div>
+
+  <div class="hud-mid-left mono">REALTIME SPATIAL SYSTEM — WEBGL2 / WEB AUDIO</div>
+
+  <div class="hud-corner hud-bl mono">
+    <div class="hud-row"><span>PTR</span><b id="hudXY">X +0.000&nbsp;&nbsp;Y +0.000</b></div>
+    <div class="hud-row"><span>DEPTH</span><b id="hudZ">Z -13.000</b></div>
+    <div class="hud-row"><span>FRAME</span><b id="hudFps">60.0 FPS</b></div>
+  </div>
+
+  <div class="hud-corner hud-br mono">
+    <div class="hud-row"><span>GEO</span><b>34.0195° N / 118.4912° W</b></div>
+    <div class="hud-row"><span>UTC</span><b id="hudClock">00:00:00</b></div>
+    <div class="hud-row"><span>NODES</span><b id="hudNodes">00000</b></div>
+  </div>
+
+  <div class="reticle" id="reticle">
+    <svg viewBox="0 0 80 80" width="80" height="80">
+      <circle cx="40" cy="40" r="26" fill="none" stroke="currentColor" stroke-width="0.6" stroke-dasharray="2 5"/>
+      <path d="M40 6 v8 M40 66 v8 M6 40 h8 M66 40 h8" stroke="currentColor" stroke-width="0.8"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ░░ MENU ░░ -->
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Spatial index">
+  <div class="menu-head">
+    <span class="mono">SPATIAL INDEX / 01—05</span>
+    <button class="menu-close mono" id="menuClose" data-cursor="CLOSE">CLOSE <span>×</span></button>
+  </div>
+  <nav class="menu-list" aria-label="Sections">
+    <a href="#hero" class="menu-item" data-idx="01"><span class="mono">01</span><em>ORIGIN</em><i class="mono">34.0195 N</i></a>
+    <a href="#work" class="menu-item" data-idx="02"><span class="mono">02</span><em>WORK</em><i class="mono">06 SYSTEMS</i></a>
+    <a href="#studio" class="menu-item" data-idx="03"><span class="mono">03</span><em>STUDIO</em><i class="mono">12 PEOPLE</i></a>
+    <a href="#signal" class="menu-item" data-idx="04"><span class="mono">04</span><em>SIGNAL</em><i class="mono">OPEN CHANNEL</i></a>
+    <a href="#signal" class="menu-item" data-idx="05"><span class="mono">05</span><em>CONTACT</em><i class="mono">LA / AMS</i></a>
+  </nav>
+  <div class="menu-foot mono">
+    <span>EST. 2011 — LOS ANGELES · AMSTERDAM</span>
+    <span class="menu-foot-r">SCROLL OR SELECT A COORDINATE</span>
+  </div>
+</div>
+
+<!-- ░░ CASE MODAL ░░ -->
+<div class="case-modal" id="caseModal" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+  <div class="cm-scrim" data-close="1"></div>
+  <div class="cm-panel">
+    <div class="cm-top mono">
+      <span id="cmIndex">001 / CASE STUDY</span>
+      <button class="cm-close" id="cmClose" data-cursor="CLOSE" aria-label="Close case study">CLOSE ×</button>
+    </div>
+    <div class="cm-scroll">
+      <div class="cm-hero">
+        <img id="cmImg" src="./assets/photos/img_c8787321eee0.webp" alt="" />
+        <div class="cm-scan" aria-hidden="true"></div>
+      </div>
+      <div class="cm-info">
+        <div class="cm-info-l">
+          <h3 id="cmTitle">NEBULA ENGINE</h3>
+          <p id="cmDesc"></p>
+          <div class="cm-tags" id="cmTags"></div>
+        </div>
+        <div class="cm-info-r mono">
+          <div><span>CLIENT</span><b id="cmClient"></b></div>
+          <div><span>YEAR</span><b id="cmYear"></b></div>
+          <div><span>ROLE</span><b id="cmRole"></b></div>
+          <div><span>STACK</span><b id="cmStack"></b></div>
+        </div>
+      </div>
+      <div class="cm-metrics mono" id="cmMetrics"></div>
+      <div class="cm-second">
+        <img id="cmImg2" src="./assets/photos/img_a05d1e002413.webp" alt="" />
+      </div>
+      <p class="cm-note mono" id="cmNote"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ░░ SITE ░░ -->
+<header class="topbar" id="topbar">
+  <div class="tb-l mono">STORY / ART / TECHNOLOGY</div>
+  <div class="tb-c mono"><span id="tbStatus">● LIVE</span> <span class="tb-sep">/</span> <span id="tbSection">ORIGIN</span></div>
+  <div class="tb-r mono"><a href="#signal" data-cursor="SIGNAL">START A PROJECT ↗</a></div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-stage">
+      <div class="hero-eyebrow mono"><span class="blip"></span> REALTIME / SIGNAL 06 — TRANSMISSION OPEN</div>
+      <h1 class="hero-type">
+        <span class="hl"><span class="hl-in">STORY,</span></span>
+        <span class="hl"><span class="hl-in">ART &amp;</span></span>
+        <span class="hl"><span class="hl-in">TECHNOLOGY</span></span>
+      </h1>
+      <div class="hero-foot">
+        <p class="hero-copy">
+          An independent digital experience studio building spatial interfaces,
+          realtime graphics and audio-reactive worlds. We treat the screen as
+          a place you enter, not a page you read.
+        </p>
+        <div class="hero-actions">
+          <button class="enter" id="enterBtn" data-cursor="DIVE">
+            <span class="enter-ring" aria-hidden="true"></span>
+            <span class="enter-txt">ENTER</span>
+          </button>
+          <div class="hero-scroll mono">SCROLL TO DESCEND <i></i></div>
+        </div>
+      </div>
+      <div class="hero-meta mono">
+        <div><span>EST.</span><b>2011</b></div>
+        <div><span>BASES</span><b>LA / AMS</b></div>
+        <div><span>SYSTEMS</span><b>06 LIVE</b></div>
+        <div><span>FIELD</span><b id="heroNodes">00000 NODES</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="work" id="work">
+    <div class="sec-head">
+      <div class="sec-label mono"><span>002</span> SELECTED WORK</div>
+      <h2 class="sec-title">BUILT IN<br/><em>REALTIME</em></h2>
+      <p class="sec-copy">
+        Six systems shipped between 2023 and 2026. Each one is a place:
+        particle engines, spectral operating systems, archives you can walk
+        through. Open a case to step inside.
+      </p>
+    </div>
+
+    <div class="cases" id="cases">
+      <!-- cards injected by app.js -->
+    </div>
+
+    <div class="work-foot mono">
+      <span>006 SYSTEMS SHOWN / 214 IN ARCHIVE</span>
+      <a href="#signal" data-cursor="SIGNAL">REQUEST ARCHIVE ACCESS ↗</a>
+    </div>
+  </section>
+
+  <!-- STUDIO -->
+  <section class="studio" id="studio">
+    <div class="studio-grid">
+      <div class="sec-label mono"><span>003</span> THE STUDIO</div>
+      <h2 class="studio-title">WE BUILD<br/>PLACES, NOT<br/><em>PAGES.</em></h2>
+      <div class="studio-copy">
+        <p>
+          Cybernetic 3D Experience Studio is a collective of engineers, designers and directors
+          working where story, art and technology overlap. We prototype in the
+          browser, ship in the browser, and measure success in frames per second.
+        </p>
+        <p>
+          Our practice is spatial: cameras instead of scrollbars, sound instead
+          of silence, and systems that respond to the body in front of them.
+        </p>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>14</b><span class="mono">YEARS IN ORBIT</span></div>
+        <div class="stat"><b>220</b><span class="mono">SYSTEMS SHIPPED</span></div>
+        <div class="stat"><b>31</b><span class="mono">AWARDS / HONOURS</span></div>
+        <div class="stat"><b>12</b><span class="mono">PEOPLE, TWO CITIES</span></div>
+      </div>
+    </div>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>STORY</span><i>✳</i><span>ART</span><i>✳</i><span>TECHNOLOGY</span><i>✳</i>
+        <span>STORY</span><i>✳</i><span>ART</span><i>✳</i><span>TECHNOLOGY</span><i>✳</i>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNAL -->
+  <section class="signal" id="signal">
+    <div class="sec-head signal-head">
+      <div class="sec-label mono"><span>004</span> OPEN CHANNEL</div>
+      <h2 class="sec-title">TRANSMIT A<br/><em>SIGNAL</em></h2>
+      <p class="sec-copy">
+        Commissions, collaborations, or a question about how the field is
+        rendered. The channel below is live — type a command, or write to us.
+      </p>
+    </div>
+
+    <div class="terminal" id="terminal">
+      <div class="term-bar mono">
+        <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>SIGNAL://STUDIO — SECURE CHANNEL</span>
+        <span class="term-state" id="termState">CONNECTED</span>
+      </div>
+      <div class="term-body mono" id="termBody" aria-live="polite"></div>
+      <form class="term-form mono" id="termForm" autocomplete="off">
+        <label for="termInput" class="term-prompt">signal@studio:~$</label>
+        <input id="termInput" name="cmd" type="text" spellcheck="false" placeholder="type 'help'" aria-label="Terminal command" />
+        <button type="submit" class="term-send" data-cursor="SEND" aria-label="Send command">↵</button>
+      </form>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-col">
+        <div class="mono cl-label">DIRECT</div>
+        <a class="contact-mail" href="mailto:hello@v6.studio" data-cursor="MAIL">hello@v6.studio</a>
+        <p class="mono contact-note">REPLIES WITHIN 24H — LA / AMSTERDAM</p>
+      </div>
+      <div class="contact-col">
+        <div class="mono cl-label">STUDIOS</div>
+        <p class="contact-addr">1032 Innes Ave, Los Angeles<br/>Papaverweg 34, Amsterdam</p>
+      </div>
+      <div class="contact-col">
+        <div class="mono cl-label">CHANNELS</div>
+        <ul class="socials">
+          <li><a href="https://www.instagram.com" target="_blank" rel="noopener" data-cursor="↗">INSTAGRAM <i>01</i></a></li>
+          <li><a href="https://x.com" target="_blank" rel="noopener" data-cursor="↗">X / TWITTER <i>02</i></a></li>
+          <li><a href="https://vimeo.com" target="_blank" rel="noopener" data-cursor="↗">VIMEO <i>03</i></a></li>
+          <li><a href="https://www.linkedin.com" target="_blank" rel="noopener" data-cursor="↗">LINKEDIN <i>04</i></a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="foot-mark">
+      <svg viewBox="0 0 40 40" width="34" height="34" aria-hidden="true">
+        <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1"/>
+        <path d="M20 6 L33 30 H7 Z" fill="none" stroke="currentColor" stroke-width="1"/>
+        <circle cx="20" cy="20" r="3.2" fill="currentColor"/>
+      </svg>
+    </div>
+    <div class="foot-row mono">
+      <span>© 2026 NEON CIRCUIT — A SPATIAL DESIGN STUDY</span>
+      <span>WEBGL · GSAP · WEB AUDIO</span>
+      <a href="#top" data-cursor="TOP">BACK TO ORIGIN ↑</a>
+    </div>
+  </footer>
+</main>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+/* ==========================================================================
+   Neubrutalist Studio — portfolio additions
+   hero sticker springs, scroll reveals (JS springs), mobile drawer, terminal
+   ========================================================================== */
+
+html { scroll-behavior: smooth; }
+body { overflow-x: hidden; }
+
+/* ---------- hero stickers ------------------------------------------------ */
+/* position, rotation, scale and opacity are driven frame by frame in app.js
+   (spring physics matching the original framer-motion springs), so no CSS
+   transform transition may exist here or it would fight the springs. */
+.sticker {
+  touch-action: none;
+  will-change: transform, opacity;
+  transition: box-shadow .25s ease;
+}
+.sticker:hover { box-shadow: 6px 6px 0 0 #000; }
+.sticker.dragging { cursor: grabbing; z-index: 60; }
+
+/* reveals: initial state is applied inline by app.js right before animating,
+   so the page is fully readable when JavaScript is unavailable. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* ---------- skill cards: whileHover translate(4px,4px), shadow removed --- */
+.skill-card {
+  transition: translate .18s cubic-bezier(.22, 1, .36, 1), box-shadow .18s ease;
+}
+.skill-card:hover {
+  translate: 4px 4px;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+}
+
+/* ---------- contact button: hover scale 1.02 + neon fill ---------------- */
+#talk-btn {
+  transform: translateZ(0);
+  transition: transform .3s cubic-bezier(.22, 1, .36, 1), background-color .3s ease,
+              color .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+#talk-btn:hover {
+  transform: scale(1.02);
+  background-color: #39FF14;
+  color: #000;
+  border-color: #000;
+  box-shadow: 16px 16px 0 0 rgba(57, 255, 20, 1);
+}
+#talk-btn:active { transform: scale(.98); }
+
+/* ---------- mobile drawer (spring-ish slide, damping 20) ---------------- */
+#menu-panel {
+  transform: translateX(100%);
+  transition: transform .42s cubic-bezier(.18, 1.28, .42, 1);
+  visibility: hidden;
+}
+#menu-panel.open {
+  transform: translateX(0);
+  visibility: visible;
+}
+body.menu-open { overflow: hidden; }
+
+/* ---------- contact terminal -------------------------------------------- */
+#talk-modal.show { display: flex; }
+#talk-card {
+  opacity: 0;
+  transform: scale(.8) rotate(-5deg);
+  transition: opacity .25s ease-out, transform .3s cubic-bezier(.22, 1, .36, 1);
+}
+#talk-modal.show #talk-card { opacity: 1; transform: scale(1) rotate(0deg); }
+
+.blinking-cursor::after {
+  content: "_";
+  margin-left: 2px;
+  animation: blink 1.05s steps(2, start) infinite;
+}
+@keyframes blink { to { visibility: hidden; } }
+
+/* ---------- small niceties ---------------------------------------------- */
+::selection { background: hsl(300 100% 50%); color: #fff; }
+a, button { -webkit-tap-highlight-color: transparent; }
+.contact-link { color: inherit; }
+.contact-link:hover { color: hsl(111 100% 54%); }
+
+/* utility fallbacks (classes the source stylesheet did not ship) */
+.mb-10 { margin-bottom: 2.5rem; }
+.z-\[60\] { z-index: 60; }
+.text-white\/70 { color: rgba(255, 255, 255, .7); }
+.hover\:text-secondary:hover { color: hsl(111 100% 54%); }
+@media (min-width: 768px) {
+  .md\:text-stroke-2 { -webkit-text-stroke: 2px currentColor; }
+}
+
+/* ---------- mobile polish (390px and up) -------------------------------- */
+@media (max-width: 767px) {
+  /* stickers shrink and move into the empty space above / below the headline so
+     they never sit on top of the name, the badge or the quote */
+  .sticker {
+    width: 4.75rem;
+    height: 4.75rem;
+    padding: .25rem;
+  }
+  .sticker svg { width: 1.5rem; height: 1.5rem; }
+  .sticker span { font-size: .625rem; margin-top: .125rem; }
+
+  section { scroll-margin-top: 6rem; }
+  #home section { padding-top: 6rem; padding-bottom: 4rem; }
+  #about section, #work section, #contact section { padding-top: 8rem; }
+  #work section { padding-bottom: 5rem; }
+  #home h1 { font-size: 3.25rem; line-height: .92; }
+  /* the outlined second line uses background-clip:text, so give its box room
+     for the glyphs or their bottom is clipped at large sizes */
+  /* the outlined second line paints through background-clip:text, whose paint
+     area is the element box; at 52px the glyphs sit outside it and get cut, so
+     on small screens we fill the word directly instead */
+  #home h1 span {
+    display: inline-block;
+    line-height: 1.25;
+    background: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    -webkit-text-fill-color: #000;
+    color: #000;
+    -webkit-text-stroke-width: 0;
+  }
+  #home h2 { font-size: 1.05rem; letter-spacing: -.01em; }
+  #home .bg-black.text-white { max-width: 100%; }
+
+  .work-num {
+    top: -1.25rem;
+    left: -.35rem;
+    right: auto;
+    font-size: 4.5rem;
+    line-height: 1;
+  }
+  .work-num.work-num-right {
+    left: auto;
+    right: -.35rem;
+  }
+  #work h2 { font-size: 3.1rem; line-height: .95; }
+  #work .text-9xl { font-size: 3.1rem; }
+  #work .space-y-24 > div + div { margin-top: 4rem; }
+  #about h2 { font-size: 3.1rem; }
+  #about .text-xl { font-size: 1.05rem; }
+  #contact h2 { font-size: 2rem; }
+  #talk-btn { font-size: 2.6rem; padding: 2.25rem .5rem; }
+  #menu-panel a { font-size: 2.75rem; }
+  #talk-card .p-8 { padding: 1.25rem; }
+}

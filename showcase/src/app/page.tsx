@@ -12,9 +12,10 @@ import { doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { resolveTemplateUrl } from '@/lib/urlResolver';
 
-const ALL_CATEGORIES = ['All', '⭐ Starred', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services', 'retail', 'startup', 'gaming', 'music', 'events', 'medical'];
+const ALL_CATEGORIES = ['All', '⭐ Starred', 'festival', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services', 'retail', 'startup', 'gaming', 'music', 'events', 'medical'];
 const CATEGORY_LABELS: Record<string, string> = {
   'All': 'All Templates',
+  'festival': 'Festival & Puja',
   'technology': 'Technology',
   'creative': 'Creative',
   'business': 'Business',
@@ -30,6 +31,8 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 const STACK_FILTERS = ['All Stacks', 'HTML/CSS/JS', 'React', 'Next.js', 'Vue'];
 const STRUCTURE_FILTERS = ['All Structures', 'Single-page', 'Multi-page'];
+const COLLECTION_FILTERS = ['All Collections', 'Core Library', 'Festival & Puja', 'Interactive 3D', 'Genre Lab'];
+const SORT_OPTIONS = ['Featured', 'Name A–Z', 'Name Z–A', 'Category', 'Stack', 'Role A–Z'];
 
 type Template = typeof templates[number];
 
@@ -96,6 +99,8 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [activeStack, setActiveStack] = useState('All Stacks');
   const [activeStructure, setActiveStructure] = useState('All Structures');
+  const [activeCollection, setActiveCollection] = useState('All Collections');
+  const [sortBy, setSortBy] = useState('featured');
   const [showStarModal, setShowStarModal] = useState(false);
   const [targetUrl, setTargetUrl] = useState('');
   const [displayCount, setDisplayCount] = useState(24);
@@ -103,7 +108,7 @@ export default function Home() {
   // Reset display count when filters change
   useEffect(() => {
     setDisplayCount(24);
-  }, [query, activeCategory, activeStack, activeStructure]);
+  }, [query, activeCategory, activeStack, activeStructure, activeCollection, sortBy]);
 
   const handleLinkClick = useCallback((url: string) => {
     if (typeof window === 'undefined') return;
@@ -122,27 +127,43 @@ export default function Home() {
 
   const filtered = useMemo<Template[]>(() => {
     const q = query.toLowerCase().trim();
-    return templates.filter((t) => {
+    const list = templates.filter((t) => {
       if (activeCategory === '⭐ Starred') {
         if (!favorites.includes(t.name)) return false;
       } else if (activeCategory !== 'All' && t.category !== activeCategory) {
         return false;
       }
-      
+
+      const tags = t.tags || [];
+      const matchesCollection =
+        activeCollection === 'All Collections' ||
+        (activeCollection === 'Core Library' && tags.includes('core')) ||
+        (activeCollection === 'Festival & Puja' && tags.includes('festival')) ||
+        (activeCollection === 'Interactive 3D' && tags.includes('collection')) ||
+        (activeCollection === 'Genre Lab' && tags.includes('genre-lab'));
       const matchesStack = activeStack === 'All Stacks' || t.stack === activeStack;
       const matchesStructure =
         activeStructure === 'All Structures' ||
-        (activeStructure === 'Single-page' && (t.tags || []).includes('single-page')) ||
-        (activeStructure === 'Multi-page' && (t.tags || []).includes('multi-page'));
+        (activeStructure === 'Single-page' && tags.includes('single-page')) ||
+        (activeStructure === 'Multi-page' && tags.includes('multi-page'));
       const matchesQuery =
         !q ||
         (t.name || '').toLowerCase().includes(q) ||
         (t.role || (t as any).profession || '').toLowerCase().includes(q) ||
         (t.theme || '').toLowerCase().includes(q) ||
-        (t.tags || []).some((tag) => tag.toLowerCase().includes(q));
-      return matchesStack && matchesStructure && matchesQuery;
+        tags.some((tag) => tag.toLowerCase().includes(q));
+      return matchesCollection && matchesStack && matchesStructure && matchesQuery;
     });
-  }, [query, activeCategory, activeStack, activeStructure, favorites]);
+
+    const catOrder = ['festival', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services', 'retail', 'startup', 'gaming', 'music', 'events', 'medical'];
+    const sorted = [...list];
+    if (sortBy === 'Name A–Z') sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    else if (sortBy === 'Name Z–A') sorted.sort((a, b) => (b.name || '').localeCompare(a.name || ''));
+    else if (sortBy === 'Category') sorted.sort((a, b) => (catOrder.indexOf(a.category) + 1 || 99) - (catOrder.indexOf(b.category) + 1 || 99) || (a.name || '').localeCompare(b.name || ''));
+    else if (sortBy === 'Stack') sorted.sort((a, b) => (a.stack || '').localeCompare(b.stack || '') || (a.name || '').localeCompare(b.name || ''));
+    else if (sortBy === 'Role A–Z') sorted.sort((a, b) => (a.role || '').localeCompare(b.role || ''));
+    return sorted;
+  }, [query, activeCategory, activeStack, activeStructure, activeCollection, sortBy, favorites]);
 
   return (
     <div style={{ minHeight: '100vh' }}>
@@ -310,6 +331,17 @@ export default function Home() {
         </div>
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 10 }}>
           <select
+            value={activeCollection}
+            onChange={(e) => setActiveCollection(e.target.value)}
+            style={{
+              padding: '6px 14px', borderRadius: 8, fontSize: 13,
+              border: '1px solid var(--border)', background: 'var(--surface)',
+              color: 'var(--text-secondary)', cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
+            }}
+          >
+            {COLLECTION_FILTERS.map((s) => <option key={s}>{s}</option>)}
+          </select>
+          <select
             value={activeStack}
             onChange={(e) => setActiveStack(e.target.value)}
             style={{
@@ -331,6 +363,17 @@ export default function Home() {
           >
             {STRUCTURE_FILTERS.map((s) => <option key={s}>{s}</option>)}
           </select>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            style={{
+              padding: '6px 14px', borderRadius: 8, fontSize: 13,
+              border: '1px solid var(--accent)', background: 'var(--surface)',
+              color: 'var(--accent)', cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
+            }}
+          >
+            {SORT_OPTIONS.map((s) => <option key={s}>{s}</option>)}
+          </select>
         </div>
       </div>
 
@@ -347,7 +390,7 @@ export default function Home() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', padding: '80px 0', color: 'var(--text-secondary)' }}>
             <p style={{ fontSize: 16 }}>No templates match your search.</p>
             <button
-              onClick={() => { setQuery(''); setActiveCategory('All'); setActiveStack('All Stacks'); setActiveStructure('All Structures'); }}
+              onClick={() => { setQuery(''); setActiveCategory('All'); setActiveStack('All Stacks'); setActiveStructure('All Structures'); setActiveCollection('All Collections'); setSortBy('Featured'); }}
               style={{ marginTop: 16, background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 14, fontFamily: 'inherit' }}
             >
               Clear filters
@@ -361,11 +404,12 @@ export default function Home() {
               gap: 24,
             }}>
               {filtered.slice(0, displayCount).map((t, i) => (
-                <TemplateCard 
-                  key={t.path || t.name} 
-                  template={t} 
+                <TemplateCard
+                  key={t.path || t.name}
+                  template={t}
                   index={i}
-                  onActionClick={handleLinkClick} 
+                  onActionClick={handleLinkClick}
+                  onTagClick={setQuery}
                   isFavorite={favorites.includes(t.name)}
                   toggleFavorite={() => toggleFavorite(t.name, t.path || '')}
                 />
@@ -483,7 +527,7 @@ export default function Home() {
   );
 }
 
-function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFavorite }: { template: Template; index?: number; onActionClick: (url: string) => void; isFavorite: boolean; toggleFavorite: (e: any) => void; }) {
+function TemplateCard({ template, index = 0, onActionClick, onTagClick, isFavorite, toggleFavorite }: { template: Template; index?: number; onActionClick: (url: string) => void; onTagClick: (tag: string) => void; isFavorite: boolean; toggleFavorite: (e: any) => void; }) {
   const [hovered, setHovered] = useState(false);
   const [showIframe, setShowIframe] = useState(false);
 
@@ -502,6 +546,7 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
   const { previewUrl, githubUrl, previewImageSrc, isAvailable, status, statusMessage } = resolveTemplateUrl(template);
 
   const CATEGORY_COLORS: Record<string, string> = {
+    festival: '#f59e0b',
     technology: '#4ade80',
     creative: '#f472b6',
     business: '#facc15',
@@ -613,16 +658,26 @@ function TemplateCard({ template, index = 0, onActionClick, isFavorite, toggleFa
           {template.description || 'A beautifully designed template crafted for professionals.'}
         </p>
 
-        {/* Tags */}
+        {/* Tags — prioritized: structure, collection, mode keywords, then topics */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
-          {(template.tags || []).slice(0, 4).map((tag) => (
-            <span key={tag} style={{
-              padding: '3px 8px', background: 'rgba(255,255,255,0.06)', borderRadius: 6,
-              fontSize: 11, color: 'var(--text-secondary)',
-            }}>
-              {tag}
-            </span>
-          ))}
+          {(() => {
+            const tags = template.tags || [];
+            const priority = tags.filter((t) =>
+              /^(single-page|multi-page|core|festival|collection|garland-|float-|scroll-|reveal-|3d|webgl|glsl|interactive|gsap|threejs)$/.test(t));
+            const rest = tags.filter((t) => !priority.includes(t) && !['html', 'css', 'js'].includes(t));
+            return [...priority, ...rest].slice(0, 5).map((tag) => (
+              <span key={tag} onClick={() => onTagClick(tag)} title={'Filter by ' + tag} style={{
+                padding: '3px 8px', background: 'rgba(255,255,255,0.06)', borderRadius: 6,
+                fontSize: 11, color: 'var(--text-secondary)', cursor: 'pointer',
+                border: '1px solid transparent', transition: 'border-color .15s, color .15s',
+              }}
+                onMouseEnter={(e: any) => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
+                onMouseLeave={(e: any) => { e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
+              >
+                {tag}
+              </span>
+            ));
+          })()}
         </div>
 
         {/* Actions */}

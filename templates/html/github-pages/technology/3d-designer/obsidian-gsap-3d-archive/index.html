@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>OBSIDIAN ARCHIVE — An Archive in Thirteen Scenes</title>
+<meta name="description" content="Obsidian GSAP 3D Archive — a scroll-driven sci-fi archive. A drawing becomes a slab, a slab becomes a world. Thirteen scenes, six recovered artifacts." />
+<meta name="theme-color" content="#e9e3d6" />
+<link rel="preload" href="css/fonts.css" as="style" />
+<link rel="stylesheet" href="css/fonts.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-ready="0">
+
+<!-- ───────────────────────── backdrop ───────────────────────── -->
+<div id="bg" aria-hidden="true"></div>
+<canvas id="world" aria-hidden="true"></canvas>
+<div id="grain" aria-hidden="true">
+  <div class="paper-grid"></div>
+  <div class="grain-noise"></div>
+  <div class="scanline"></div>
+</div>
+<div id="vignette" aria-hidden="true"></div>
+
+<!-- ───────────────────────── preloader ───────────────────────── -->
+<div id="loader" role="status" aria-live="polite">
+  <div class="loader__top">
+    <span class="micro">ORBITAL STANDARD BUREAU</span>
+    <span class="micro">ARCHIVE / 001</span>
+  </div>
+
+  <div class="loader__core">
+    <div class="loader__mark">
+      <span class="loader__mono" aria-hidden="true"><i>M</i><i>O</i><i>N</i><i>O</i><i>L</i><i>I</i><i>T</i><i>H</i></span>
+      <span class="loader__dot" aria-hidden="true"></span>
+    </div>
+    <div class="loader__bar"><span id="loadBar"></span></div>
+    <div class="loader__row">
+      <span class="micro" id="loadStatus">INITIALISING GEOMETRY</span>
+      <span class="micro" id="loadPct">000</span>
+    </div>
+  </div>
+
+  <div class="loader__bottom">
+    <span class="micro">DRAWING&nbsp;&nbsp;→&nbsp;&nbsp;MATTER</span>
+    <span class="micro">1 : 4 : 9</span>
+  </div>
+</div>
+
+<!-- ───────────────────────── HUD ───────────────────────── -->
+<header id="hud">
+  <a class="brand" href="#c01" aria-label="Obsidian GSAP 3D Archive — back to the beginning">
+    <span class="brand__mark" aria-hidden="true"></span>
+    <span class="brand__word">OBSIDIAN ARCHIVE</span>
+    <span class="brand__sep" aria-hidden="true"></span>
+    <span class="brand__sub">ARCHIVE 001</span>
+  </a>
+
+  <div class="hud__right">
+    <span class="micro hud__coord" id="hudCoord">46.2044° N / 6.1432° E</span>
+    <span class="hud__count"><b id="hudNum">01</b><span class="hud__slash">/</span>13</span>
+    <button class="hud__btn" id="colophonBtn" aria-haspopup="dialog" aria-controls="colophon">COLOPHON</button>
+  </div>
+  <div class="hud__progress"><span id="hudProgress"></span></div>
+</header>
+
+<!-- ───────────────────────── chapter rail ───────────────────────── -->
+<nav id="rail" aria-label="Chapter index">
+  <ol id="railList">
+    <li><button data-go="0" aria-label="01 Genesis"><span class="rail__num">01</span><span class="rail__label">GENESIS</span></button></li>
+    <li><button data-go="1" aria-label="02 Wireframe"><span class="rail__num">02</span><span class="rail__label">WIREFRAME</span></button></li>
+    <li><button data-go="2" aria-label="03 Obsidian GSAP 3D Archive"><span class="rail__num">03</span><span class="rail__label">OBSIDIAN ARCHIVE</span></button></li>
+    <li><button data-go="3" aria-label="04 Orbit"><span class="rail__num">04</span><span class="rail__label">ORBIT</span></button></li>
+    <li><button data-go="4" aria-label="05 Artifacts"><span class="rail__num">05</span><span class="rail__label">ARTIFACTS</span></button></li>
+    <li><button data-go="5" aria-label="06 Dust"><span class="rail__num">06</span><span class="rail__label">DUST</span></button></li>
+    <li><button data-go="6" aria-label="07 Signal"><span class="rail__num">07</span><span class="rail__label">SIGNAL</span></button></li>
+    <li><button data-go="7" aria-label="08 Horizon"><span class="rail__num">08</span><span class="rail__label">HORIZON</span></button></li>
+    <li><button data-go="8" aria-label="09 Eclipse"><span class="rail__num">09</span><span class="rail__label">ECLIPSE</span></button></li>
+    <li><button data-go="9" aria-label="10 Relic"><span class="rail__num">10</span><span class="rail__label">RELIC</span></button></li>
+    <li><button data-go="10" aria-label="11 Constellation"><span class="rail__num">11</span><span class="rail__label">CONSTELLATION</span></button></li>
+    <li><button data-go="11" aria-label="12 Transmission"><span class="rail__num">12</span><span class="rail__label">TRANSMISSION</span></button></li>
+    <li><button data-go="12" aria-label="13 Contact"><span class="rail__num">13</span><span class="rail__label">CONTACT</span></button></li>
+  </ol>
+  <div class="rail__track" aria-hidden="true"><span id="railFill"></span></div>
+</nav>
+
+<!-- ───────────────────────── story ───────────────────────── -->
+<main id="story">
+
+  <!-- 01 ─────────────────────────────────────────────── -->
+  <section class="chap chap--hero" id="c01" data-ch="0" data-theme="paper" data-align="left">
+    <div class="chap__inner">
+      <div class="chap__copy" data-copy>
+        <p class="kicker"><span class="kicker__num">01</span><span class="kicker__word">GENESIS</span><span class="kicker__rule" aria-hidden="true"></span></p>
+        <h1 class="title">Before the object,<br /><em>a line.</em></h1>
+        <p class="body">Every monolith begins as graphite on paper — one vertical stroke, then the ratio that refuses to leave the mind. This archive is the drawing's slow insistence.</p>
+        <dl class="meta">
+          <div><dt>ORIGIN</dt><dd>GRAPHITE / VELLUM</dd></div>
+          <div><dt>SITE</dt><dd>46.2044° N — 6.1432° E</dd></div>
+          <div><dt>YEAR</dt><dd>1968 → 2026</dd></div>
+        </dl>
+      </div>
+      <p class="scroll-cue" aria-hidden="true"><span class="scroll-cue__line"></span>SCROLL TO CONSTRUCT</p>
+    </div>
+  </section>
+
+  <!-- 02 ─────────────────────────────────────────────── -->
+  <section class="chap" id="c02" data-ch="1" data-theme="paper" data-align="right">
+    <div class="chap__inner">
+      <div class="chap__copy" data-copy>
+        <p class="kicker"><span class="kicker__num">02</span><span class="kicker__word">WIREFRAME</span><span class="kicker__rule" aria-hidden="true"></span></p>
+        <h2 class="title">The geometry<br /><em>of an idea.</em></h2>
+        <p class="body">Dimension lines never describe the thing; they describe the distance to it. Nine units tall, four wide, one deep. The sketch holds the structure — light has not arrived yet.</p>
+        <dl class="meta">
+          <div><dt>ELEVATION</dt><dd>1 : 1</dd></div>
+          <div><dt>STROKES</dt><dd>12 / 12</dd></div>
+          <div><dt>MATERIAL</dt><dd>NONE</dd></div>
+        </dl>
+      </div>
+      <div class="annot annot--dim" data-annot aria-hidden="true">
+        <span class="annot__tick"></span>
+        <span class="annot__val">9.00</span>
+        <span class="annot__unit">M</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 ─────────────────────────────────────────────── -->
+  <section class="chap" id="c03" data-ch="2" data-theme="night" data-align="left">
+    <div class="chap__inner">
+      <div class="chap__copy" data-copy>
+        <p class="kicker"><span class="kicker__num">03</span><span class="kicker__word">OBSIDIAN ARCHIVE</span><span class="kicker__rule" aria-hidden="true"></span></p>
+        <h2 class="title">Then it casts<br /><em>a shadow.</em></h2>
+        <p class="body">The drawing thickens into matter — a slab of black basalt, four metres by nine, thin enough to read as an edge. The paper disappears. The room becomes night.</p>
+        <dl class="meta">
+          <div><dt>RATIO</dt><dd>1 : 4 : 9</dd></div>
+          <div><dt>MASS</dt><dd>212 t</dd></div>
+          <div><dt>SURFACE</dt><dd>BASALT / POLISHED</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 ─────────────────────────────────────────────── -->
+  <section class="chap" id="c04" data-ch="3" data-theme="night" data-align="right">
+    <div class="chap__inner">
+      <div class="chap__copy" data-copy>
+        <p class="kicker"><span class="kicker__num">04</span><span class="kicker__word">ORBIT</span><span class="kicker__rule" aria-hidden="true"></span></p>
+        <h2 class="title">Something is<br /><em>always moving.</em></h2>
+        <p class="body">A satellite — one red bead — circles the slab every eleven seconds. With each pass the archive records a coordinate, and the object pretends not to notice.</p>
+        <dl class="meta telemetry">
+          <div><dt>PASS</dt><dd id="tmPass">0 0 2 9 1</dd></div>
+          <div><dt>ALTITUDE</dt><dd id="tmAlt">418.6 km</dd></div>
+          <div><dt>VELOCITY</dt><dd id="tmVel">7.66 km/s</dd></div>
+          <div><dt>PERIOD</dt><dd id="tmPer">11.00 s</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 ─────────────────────────────────────────────── -->
+  <section class="chap chap--cards" id="c05" data-ch="4" data-theme="night" data-align="left">
+    <div class="chap__inner">
+      <div class="chap__copy">
+        <p class="kicker"><span class="kicker__num">05</span><span class="kicker__word">ARTIFACTS</span><span class="kicker__rule" aria-hidden="true"></span></p>
+        <h2 class="title">Six objects<br /><em>survived.</em></h2>
+        <p class="body">Recovered within a nine-metre radius of the slab, catalogued and photographed. Each one opens a file — select a card to read the record.</p>
+      </div>
+
+      <div class="artifacts" id="artifactGrid" role="list">
+        <!-- cards injected by app.js from ARTIFACTS data -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 ─────────────────────────────────────────────── -->
+  <section class="chap" id="c06" data-ch="5" data-theme="night" data-align="right">
+    <div class="chap__inner">
+      <div class="chap__copy" data-copy>
+        <p class="kicker"><span class="kicker__num">06</span><span class="kicker__word">DUST</span><span class="kicker__rule" aria-hidden="true"></span></p>
+        <h2 class="title">Dust is the<br /><em>only witness.</em></h2>
+        <p class="body">Four thousand particles, each a third of a micron, drift upward at two centimetres per second. Inside the beam they are visible. Outside it, they are the room.</p>
+        <dl class="meta">
+          <div><dt>PARTICLES</dt><dd>4 000</dd></div>
+          <div><dt>DIAMETER</dt><dd>0.3 µm</dd></div>
+          <div><dt>DRIFT</dt><dd>↑ 0.02 m/s</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 ─────────────────────────────────────────────── -->
+  <section class="chap" id="c07" data-ch="6" data-theme="night" data-align="left">
+    <div class="chap__inner">
+      <div class="chap__copy" data-copy>
+        <p class="kicker"><span class="kicker__num">07</span><span class="kicker__word">SIGNAL</span><span class="kicker__rule" aria-hidden="true"></span></p>
+        <h2 class="title">A frequency<br /><em>at the seam.</em></h2>
+        <p class="body">Along the monolith's edge a red line travels the full height in nine seconds. It is not a reflection. It is the object answering — once per chapter, for no one.</p>
+        <dl class="meta">
+          <div><dt>SIGNAL</dt><dd><span class="led"></span>LIVE</dd></div>
+          <div><dt>FREQ</dt><dd id="tmFreq">1420.405 MHz</dd></div>
+          <div><dt>SWEEP</dt><dd>9.00 s</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 ─────────────────────────────────────────────── -->
+  <section class="chap" id="c08" data-ch="7" data-theme="night" data-align="right">
+    <div class="chap__inner">
+      <div class="chap__copy" data-copy>
+        <p class="kicker"><span class="kicker__num">08</span><span class="kicker__word">HORIZON</span><span class="kicker__rule" aria-hidden="true"></span></p>
+        <h2 class="title">The world<br /><em>it was built for.</em></h2>
+        <p class="body">Step back far enough and the slab becomes a needle on a salt flat — the horizon a straight line drawn by the same hand, in the same graphite, at a much larger scale.</p>
+        <dl class="meta">
+          <div><dt>SUBSTRATE</dt><dd>SALT / 12 km²</dd></div>
+          <div><dt>VISIBILITY</dt><dd>2.4 km</dd></div>
+          <div><dt>WIND</dt><dd>NW 14 km/h</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 ─────────────────────────────────────────────── -->
+  <section class="chap" id="c09" data-ch="8" data-theme="night" data-align="left">
+    <div class="chap__inner">
+      <div class="chap__copy" data-copy>
+        <p class="kicker"><span class="kicker__num">09</span><span class="kicker__word">ECLIPSE</span><span class="kicker__rule" aria-hidden="true"></span></p>
+        <h2 class="title">The object<br /><em>occludes.</em></h2>
+        <p class="body">For forty-seven seconds a second body passes behind the slab and the only light left is the rim — a red circle exactly where the drawing used to be.</p>
+        <dl class="meta">
+          <div><dt>INTERVAL</dt><dd>1 290 d</dd></div>
+          <div><dt>DURATION</dt><dd>47 s</dd></div>
+          <div><dt>CORONA</dt><dd>1.4 R☉</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 ─────────────────────────────────────────────── -->
+  <section class="chap" id="c10" data-ch="9" data-theme="night" data-align="right">
+    <div class="chap__inner">
+      <div class="chap__copy" data-copy>
+        <p class="kicker"><span class="kicker__num">10</span><span class="kicker__word">RELIC</span><span class="kicker__rule" aria-hidden="true"></span></p>
+        <h2 class="title">What remains<br /><em>orbits.</em></h2>
+        <p class="body">Seven shards, machined from the same block, hold formation around the core. They are the mistakes that were kept — every revision the drawing refused to erase.</p>
+        <dl class="meta">
+          <div><dt>FRAGMENTS</dt><dd>7 / 7</dd></div>
+          <div><dt>MASS LOST</dt><dd>0.42 %</dd></div>
+          <div><dt>STATUS</dt><dd>STABLE ORBIT</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 ─────────────────────────────────────────────── -->
+  <section class="chap" id="c11" data-ch="10" data-theme="night" data-align="left">
+    <div class="chap__inner">
+      <div class="chap__copy" data-copy>
+        <p class="kicker"><span class="kicker__num">11</span><span class="kicker__word">CONSTELLATION</span><span class="kicker__rule" aria-hidden="true"></span></p>
+        <h2 class="title">The archive<br /><em>connects itself.</em></h2>
+        <p class="body">Distance becomes relationship. Eighty-four points, sixty lines, one shape that was always there — waiting for someone to join the dots in the right order.</p>
+        <dl class="meta">
+          <div><dt>POINTS</dt><dd>84</dd></div>
+          <div><dt>LINES</dt><dd>60</dd></div>
+          <div><dt>FIGURE</dt><dd>UNNAMED</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 ─────────────────────────────────────────────── -->
+  <section class="chap" id="c12" data-ch="11" data-theme="night" data-align="right">
+    <div class="chap__inner chap__inner--log">
+      <div class="chap__copy" data-copy>
+        <p class="kicker"><span class="kicker__num">12</span><span class="kicker__word">TRANSMISSION</span><span class="kicker__rule" aria-hidden="true"></span></p>
+        <h2 class="title">Received,<br /><em>not understood.</em></h2>
+        <p class="body">The archive's final entry is not an image. It is a log, repeated for eleven years, one line per pass of the red bead.</p>
+      </div>
+      <div class="terminal" id="terminal" aria-label="Transmission log">
+        <div class="terminal__bar"><span class="led"></span><span class="micro">RECEIVER / CH-09</span><span class="micro terminal__time" id="termClock">00:00:00</span></div>
+        <pre id="termBody"></pre>
+        <div class="terminal__hint micro">↑ LOG 1987—1998 · DECRYPTION INCOMPLETE</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 ─────────────────────────────────────────────── -->
+  <section class="chap chap--contact" id="c13" data-ch="12" data-theme="night" data-align="left">
+    <div class="chap__inner">
+      <div class="chap__copy">
+        <p class="kicker"><span class="kicker__num">13</span><span class="kicker__word">CONTACT</span><span class="kicker__rule" aria-hidden="true"></span></p>
+        <h2 class="title">Leave a mark<br /><em>on the drawing.</em></h2>
+        <p class="body">Commissions, collaborations, and long conversations about large black objects. The archive is open.</p>
+
+        <a class="contact__mail" href="mailto:archive@orbitalstandard.studio">
+          <span class="contact__mailtext">archive@orbitalstandard.studio</span>
+          <span class="contact__arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <div class="contact__cols">
+          <div>
+            <p class="micro">ELSEWHERE</p>
+            <ul class="contact__links">
+              <li><a href="#c05" data-go="4">ARTIFACTS</a></li>
+              <li><a href="#c01">TOP OF ARCHIVE</a></li>
+              <li><a href="mailto:archive@orbitalstandard.studio?subject=Press">PRESS KIT</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="micro">BUREAU</p>
+            <p class="contact__addr">Orbital Standard<br />Rue de la Corne 9<br />1204 Genève, CH</p>
+          </div>
+          <div>
+            <p class="micro">STATUS</p>
+            <p class="contact__addr">Open for commissions<br />2026 — Q3<br /><span class="led"></span>Two slots left</p>
+          </div>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <span class="micro">© 2026 ORBITAL STANDARD BUREAU</span>
+        <span class="micro">THIRTEEN SCENES · SIX ARTIFACTS · ONE SLAB</span>
+        <span class="micro">BUILT WITH THREE.JS + GSAP</span>
+      </footer>
+    </div>
+  </section>
+</main>
+
+<!-- ───────────────────────── artifact modal ───────────────────────── -->
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal__scrim" data-close></div>
+  <div class="modal__panel">
+    <button class="modal__close" id="modalClose" aria-label="Close artifact">CLOSE <span aria-hidden="true">✕</span></button>
+    <div class="modal__media">
+      <img id="modalImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" />
+      <span class="modal__idx micro" id="modalIdx">01 / 06</span>
+    </div>
+    <div class="modal__body">
+      <p class="kicker"><span class="kicker__num" id="modalNum">01</span><span class="kicker__word" id="modalKind">ARTIFACT</span></p>
+      <h3 class="modal__title" id="modalTitle">—</h3>
+      <p class="modal__year" id="modalYear">—</p>
+      <p class="modal__desc" id="modalDesc">—</p>
+      <dl class="modal__meta" id="modalMeta"></dl>
+      <div class="modal__nav">
+        <button id="modalPrev" class="modal__arrow" aria-label="Previous artifact">← PREV</button>
+        <button id="modalNext" class="modal__arrow" aria-label="Next artifact">NEXT →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────────────── colophon ───────────────────────── -->
+<div id="colophon" class="colophon" role="dialog" aria-modal="true" aria-labelledby="colophonTitle" aria-hidden="true">
+  <div class="colophon__scrim" data-close-colophon></div>
+  <div class="colophon__panel">
+    <button class="modal__close" id="colophonClose" aria-label="Close colophon">CLOSE <span aria-hidden="true">✕</span></button>
+    <p class="kicker"><span class="kicker__word">COLOPHON</span></p>
+    <h3 class="modal__title" id="colophonTitle">An archive,<br /><em>in thirteen scenes.</em></h3>
+    <div class="colophon__grid">
+      <div>
+        <p class="micro">CONCEPT &amp; DIRECTION</p>
+        <p>Orbital Standard Bureau</p>
+      </div>
+      <div>
+        <p class="micro">GEOMETRY &amp; SHADERS</p>
+        <p>Three.js — wireframe dissolve, particle dust, fog</p>
+      </div>
+      <div>
+        <p class="micro">MOTION</p>
+        <p>GSAP ScrollTrigger, scrubbed against a single timeline</p>
+      </div>
+      <div>
+        <p class="micro">TYPE</p>
+        <p>Instrument Serif · Space Grotesk · JetBrains Mono</p>
+      </div>
+      <div>
+        <p class="micro">PHOTOGRAPHY</p>
+        <p>Unsplash, under the Unsplash License</p>
+      </div>
+      <div>
+        <p class="micro">NOTE</p>
+        <p>A study in the space between drawing and matter. No real institute, no real slab.</p>
+      </div>
+    </div>
+    <p class="colophon__foot micro">OBSIDIAN ARCHIVE PROJECT — 2026 — BUILT TO BE SCROLLED, NOT SKIPPED</p>
+  </div>
+</div>
+
+<script src="vendor/three.min.js"></script>
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="js/world.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

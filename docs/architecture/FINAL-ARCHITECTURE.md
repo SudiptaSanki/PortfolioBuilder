@@ -184,7 +184,7 @@ Maintaining a community catalog must never require asking contributors for:
      "source": {
        "type": "github",
        "path": "templates/technology/full-stack/modern-dark",
-       "repository": "https://github.com/alice/modern-dark-portfolio",
+       "repository": "https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/templates/technology/full-stack/modern-dark",
        "branch": "main"
      },
      "deployment": {
@@ -195,7 +195,7 @@ Maintaining a community catalog must never require asking contributors for:
      },
      "contributor": {
        "name": "Alice Developer",
-       "github": "alice"
+       "github": "SudiptaSanki"
      },
      "license": "MIT"
    }

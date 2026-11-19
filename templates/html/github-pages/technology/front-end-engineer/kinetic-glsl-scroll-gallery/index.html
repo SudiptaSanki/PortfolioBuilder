@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kinetic Shader Studio — Creative Developer</title>
+<meta name="description" content="Kinetic WebGL portfolio study — custom GLSL image distortion, scroll-velocity colour shift and a horizontal GSAP gallery. Fan-made demo built with Three.js and GSAP.">
+<meta name="theme-color" content="#0a0a0a">
+<meta property="og:title" content="VELOCITY LANE® — Creative Developer">
+<meta property="og:description" content="Kinetic WebGL portfolio study — custom GLSL image distortion and a scroll-driven horizontal gallery.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ WEBGL LAYER ============ -->
+<canvas id="gl" class="gl" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ============ LOADER ============ -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__row loader__row--top">
+    <span>VELOCITY LANE<sup>®</sup></span>
+    <span>PORTFOLIO — 2026</span>
+  </div>
+  <div class="loader__mid">
+    <div class="loader__count"><span id="loadNum">00</span><i>%</i></div>
+    <div class="loader__bar"><span id="loadBar"></span></div>
+  </div>
+  <div class="loader__row loader__row--bot">
+    <span>LOADING WEBGL ASSETS</span>
+    <span>STOCKHOLM, SE</span>
+  </div>
+</div>
+
+<!-- ============ CURSOR ============ -->
+<div class="cursor" id="cursor" aria-hidden="true">
+  <span class="cursor__ring"></span>
+  <span class="cursor__label">VIEW</span>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="nav" id="nav">
+  <a class="nav__brand" href="#top" data-cursor="link">
+    <span class="nav__dot"></span>
+    <span>VELOCITY LANE<sup>®</sup></span>
+  </a>
+  <nav class="nav__links" aria-label="Primary">
+    <a href="#work" data-cursor="link">WORK</a>
+    <a href="#about" data-cursor="link">ABOUT</a>
+    <a href="#contact" data-cursor="link">CONTACT</a>
+  </nav>
+  <div class="nav__status">
+    <span class="nav__avail"><i></i>AVAILABLE Q1 2026</span>
+    <span class="nav__clock" id="clock">STK 00:00</span>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="hero">
+    <div class="hero__media" id="heroMedia" data-cursor="view"></div>
+    <div class="hero__veil" aria-hidden="true"></div>
+
+    <div class="hero__inner">
+      <div class="hero__eyebrow" data-reveal>
+        <span>(01)</span>
+        <span>CREATIVE DEVELOPER &amp; MOTION ENGINEER</span>
+        <span>EST. 2015</span>
+      </div>
+
+      <h1 class="hero__title">
+        <span class="hero__line" data-split>VELOCITY</span>
+        <span class="hero__line hero__line--indent" data-split>GALLERY</span>
+      </h1>
+
+      <div class="hero__foot">
+        <p class="hero__lede">
+          I build interfaces where type, motion and code behave as one material —
+          real-time WebGL, custom shaders, and scroll that feels like physics.
+        </p>
+        <div class="hero__scroll" aria-hidden="true">
+          <span>SCROLL TO EXPLORE</span>
+          <i class="hero__scrollline"><b></b></i>
+        </div>
+        <div class="hero__coords">
+          <span>59.3293° N</span>
+          <span>18.0686° E</span>
+          <span>STOCKHOLM, SE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__inner" id="marquee">
+      <span>SHADERS</span><i>✳</i><span>MOTION</span><i>✳</i><span>SPATIAL WEB</span><i>✳</i><span>GLSL</span><i>✳</i><span>KINETIC TYPE</span><i>✳</i><span>THREE.JS</span><i>✳</i>
+      <span>SHADERS</span><i>✳</i><span>MOTION</span><i>✳</i><span>SPATIAL WEB</span><i>✳</i><span>GLSL</span><i>✳</i><span>KINETIC TYPE</span><i>✳</i><span>THREE.JS</span><i>✳</i>
+    </div>
+  </div>
+
+  <!-- ============ WORK INTRO ============ -->
+  <section class="intro" id="work-intro">
+    <div class="intro__row" data-reveal>
+      <span class="label">(02) — SELECTED WORK</span>
+      <span class="label">2019 — 2026</span>
+    </div>
+    <h2 class="intro__title">
+      <span data-split>Six studies in</span>
+      <span data-split class="intro__em">light, liquid &amp; type.</span>
+    </h2>
+    <div class="intro__foot">
+      <p class="intro__copy">
+        Each project is an experiment pushed until it becomes a system: a shader
+        that survives production, a motion language that survives a redesign.
+        Built with Three.js, raw GLSL and a stubborn respect for 60fps.
+      </p>
+      <span class="label intro__hint">DRAG / SCROLL HORIZONTALLY →</span>
+    </div>
+  </section>
+
+  <!-- ============ GALLERY ============ -->
+  <section class="work" id="work">
+    <div class="work__track" id="track"><!-- panels injected --></div>
+
+    <div class="work__hud">
+      <div class="work__counter">
+        <span id="idxCur">01</span>
+        <span class="work__slash">/</span>
+        <span id="idxTot">06</span>
+      </div>
+      <div class="work__hint"><span>SCROLL TO ADVANCE</span><i></i></div>
+      <div class="work__progress"><span id="progressBar"></span></div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="about" id="about">
+    <div class="about__row" data-reveal>
+      <span class="label">(03) — ABOUT</span>
+      <span class="label">STOCKHOLM / REMOTE</span>
+    </div>
+
+    <p class="statement" id="statement">
+      I'm a creative developer working between design and engineering — building
+      the shaders, systems and motion that make a screen feel physical. Ten years
+      of shipping for studios, brands and the occasional 4am experiment.
+    </p>
+
+    <div class="about__grid">
+      <div class="about__col">
+        <span class="label">PROFILE</span>
+        <p>
+          I started with Flash and a cracked copy of After Effects, moved to
+          JavaScript the day it could draw pixels, and never left. Today my work
+          is mostly real-time: WebGL scenes, GPU image pipelines, scroll systems
+          that stay smooth on a five-year-old phone.
+        </p>
+        <p>
+          I care about the seam where art direction meets performance. A shader
+          is a design decision; a frame budget is an editorial one.
+        </p>
+      </div>
+      <div class="about__col">
+        <span class="label">SERVICES</span>
+        <ul class="about__list">
+          <li>Creative development</li>
+          <li>WebGL / GLSL shaders</li>
+          <li>Motion systems &amp; scroll direction</li>
+          <li>Interactive prototypes</li>
+          <li>Performance engineering</li>
+        </ul>
+      </div>
+      <div class="about__col">
+        <span class="label">TOOLKIT</span>
+        <ul class="about__list about__list--mono">
+          <li>THREE.JS</li>
+          <li>GLSL / SHADER</li>
+          <li>GSAP + SCROLLTRIGGER</li>
+          <li>TYPESCRIPT</li>
+          <li>REACT / NEXT</li>
+          <li>BLENDER / HOUDINI</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="xp">
+      <div class="xp__head" data-reveal>
+        <span class="label">EXPERIENCE</span>
+        <span class="label">2017 — NOW</span>
+      </div>
+
+      <a class="xp__row" href="#contact" data-cursor="link">
+        <span class="xp__year">2023 — NOW</span>
+        <span class="xp__role">Independent practice</span>
+        <span class="xp__place">Creative Developer — Stockholm</span>
+        <span class="xp__arrow">↗</span>
+      </a>
+      <a class="xp__row" href="#contact" data-cursor="link">
+        <span class="xp__year">2021 — 2023</span>
+        <span class="xp__role">Studio NORD</span>
+        <span class="xp__place">Senior Creative Developer</span>
+        <span class="xp__arrow">↗</span>
+      </a>
+      <a class="xp__row" href="#contact" data-cursor="link">
+        <span class="xp__year">2019 — 2021</span>
+        <span class="xp__role">Aether Labs</span>
+        <span class="xp__place">Interactive Developer</span>
+        <span class="xp__arrow">↗</span>
+      </a>
+      <a class="xp__row" href="#contact" data-cursor="link">
+        <span class="xp__year">2017 — 2019</span>
+        <span class="xp__role">Freelance</span>
+        <span class="xp__place">Front-end / WebGL</span>
+        <span class="xp__arrow">↗</span>
+      </a>
+    </div>
+
+    <div class="awards">
+      <div class="awards__col">
+        <span class="label">RECOGNITION</span>
+        <ul class="about__list">
+          <li>Awwwards — Site of the Day <em>×4</em></li>
+          <li>FWA — Site of the Day <em>×3</em></li>
+          <li>CSSDA — Website of the Year, nominee</li>
+        </ul>
+      </div>
+      <div class="awards__col">
+        <span class="label">SPEAKING</span>
+        <ul class="about__list">
+          <li>Frontend Stockholm — “Shaders as a design tool”</li>
+          <li>Awwwards Conference — WebGL workshop</li>
+          <li>Creative Coding Meetup — monthly host</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <footer class="contact" id="contact">
+    <div class="contact__top" data-reveal>
+      <span class="label">(04) — CONTACT</span>
+      <span class="label">OPEN FOR SELECT PROJECTS — Q1 2026</span>
+    </div>
+
+    <a class="contact__mail" id="mailLink" href="mailto:hello@juleslambert.dev" data-cursor="mail">
+      <span class="contact__mask"><span class="contact__mailtext">LET'S BUILD</span></span>
+      <i>↗</i>
+    </a>
+
+    <div class="contact__grid">
+      <div class="contact__block">
+        <span class="label">EMAIL</span>
+        <a href="mailto:hello@juleslambert.dev" data-cursor="link">hello@juleslambert.dev</a>
+      </div>
+      <div class="contact__block">
+        <span class="label">SOCIAL</span>
+        <div class="contact__socials">
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener" data-cursor="link">INSTAGRAM ↗</a>
+          <a href="https://x.com/" target="_blank" rel="noopener" data-cursor="link">X ↗</a>
+          <a href="https://github.com/" target="_blank" rel="noopener" data-cursor="link">GITHUB ↗</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener" data-cursor="link">LINKEDIN ↗</a>
+        </div>
+      </div>
+      <div class="contact__block">
+        <span class="label">LOCAL TIME</span>
+        <span class="contact__clock" id="clock2">STOCKHOLM 00:00</span>
+      </div>
+      <div class="contact__block">
+        <span class="label">CREDITS</span>
+        <span class="contact__note">Fan-made study — Three.js, GSAP &amp; GLSL.<br></span>
+      </div>
+    </div>
+
+    <div class="contact__bottom">
+      <span>© 2026 — ALL RIGHTS RESERVED</span>
+      <span>BUILT WITH THREE.JS + GSAP</span>
+      <button class="contact__up" id="toTop" data-cursor="link">BACK TO TOP ↑</button>
+    </div>
+  </footer>
+
+</main>
+
+<!-- ============ CASE STUDY ============ -->
+<div class="case" id="case" role="dialog" aria-modal="true" aria-labelledby="caseTitle" aria-hidden="true">
+  <div class="case__bar">
+    <span class="case__barlabel">CASE STUDY</span>
+    <button class="case__close" id="caseClose" data-cursor="link" aria-label="Close case study">CLOSE <i>✕</i></button>
+  </div>
+
+  <div class="case__scroll" id="caseScroll">
+    <div class="case__head">
+      <span class="case__index" id="caseIndex">01</span>
+      <h2 class="case__title" id="caseTitle">Chroma Field</h2>
+      <div class="case__tags" id="caseTags"></div>
+    </div>
+
+    <div class="case__hero">
+      <img id="caseImg" alt="" decoding="async">
+    </div>
+
+    <div class="case__body">
+      <div class="case__col case__col--wide">
+        <span class="label">OVERVIEW</span>
+        <p id="caseText"></p>
+      </div>
+      <div class="case__col">
+        <span class="label">DETAILS</span>
+        <dl class="case__dl">
+          <dt>CLIENT</dt><dd id="caseClient"></dd>
+          <dt>YEAR</dt><dd id="caseYear"></dd>
+          <dt>ROLE</dt><dd id="caseRole"></dd>
+        </dl>
+      </div>
+      <div class="case__col">
+        <span class="label">CREDITS</span>
+        <p class="case__credit" id="caseCredit"></p>
+      </div>
+    </div>
+
+    <button class="case__next" id="caseNext" data-cursor="link">
+      <span class="case__nextlabel">NEXT PROJECT</span>
+      <span class="case__nexttitle" id="caseNextTitle">Aether Drift</span>
+      <i>→</i>
+    </button>
+
+    <div class="case__foot">
+      <span>VELOCITY LANE® — CASE STUDY</span>
+      <span id="caseCount">01 / 06</span>
+    </div>
+  </div>
+</div>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/three.min.js"></script>
+<script src="js/shaders.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

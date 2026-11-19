@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Interactive Scrapbook Desk Studio — Product Designer</title>
+<meta name="description" content="Interactive Scrapbook Desk Studio, product designer in Cape Town. Software should feel natural. Drag the cutouts around." />
+<meta name="theme-color" content="#171717" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%23dc4a31'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='38' text-anchor='middle' fill='%23f6ebdc'%3EJ%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Gochi+Hand&family=Caveat:wght@500;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ══════════════ svg sprite ══════════════ -->
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="rough-ink" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018 0.026" numOctaves="3" seed="7" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.6" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <filter id="rough-chalk" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="3" result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <filter id="soft-scatter" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n" />
+      <feColorMatrix in="n" type="saturate" values="0" result="g" />
+      <feComponentTransfer in="g" result="a"><feFuncA type="table" tableValues="0 0.16" /></feComponentTransfer>
+      <feComposite in="SourceGraphic" in2="a" operator="in" />
+    </filter>
+    <symbol id="m-eye" viewBox="0 0 100 100">
+      <path d="M6 52c11-17 25-25 44-25s33 8 44 25c-11 17-25 25-44 25S17 69 6 52z" />
+      <circle cx="50" cy="52" r="14" />
+      <circle cx="50" cy="52" r="4.5" fill="currentColor" stroke="none" />
+      <path d="M50 32v-9M28 36l-5-8M72 36l5-8M50 72v9" />
+    </symbol>
+    <symbol id="m-cat" viewBox="0 0 100 100">
+      <path d="M27 48 23 20 41 31M73 48 77 20 59 31" />
+      <path d="M27 48c0-13 10-19 23-19s23 6 23 19c0 18-10 26-23 26S27 66 27 48z" />
+      <circle cx="42" cy="46" r="2.6" fill="currentColor" stroke="none" />
+      <circle cx="58" cy="46" r="2.6" fill="currentColor" stroke="none" />
+      <path d="M47 54v4M53 54v4M47 58h6" />
+      <path d="M37 66c4 20 5 28 5 28M63 66c-3 20-4 28-4 28M30 72c-6 6-8 10-10 16" />
+      <path d="M40 38c3-3 7-3 10 0M60 38c-3-3-7-3-10 0" />
+    </symbol>
+    <symbol id="m-bird" viewBox="0 0 100 100">
+      <path d="M30 58c6-15 17-24 30-24 10 0 16 5 16 12 0 10-10 16-24 16H36c-4 0-6-1-6-4z" />
+      <circle cx="66" cy="30" r="9" />
+      <path d="M74 30l10 3-10 4" />
+      <circle cx="64" cy="28" r="1.6" fill="currentColor" stroke="none" />
+      <path d="M30 58c-9-3-16-1-21 6 7 3 14 3 20 0" />
+      <path d="M42 62v16M56 62v16M42 78h-7M56 78h7" />
+      <path d="M50 46c4 5 10 7 16 7" opacity=".7" />
+    </symbol>
+    <symbol id="m-flower" viewBox="0 0 100 100">
+      <path d="M49 95c-2-22 0-30 2-44" />
+      <path d="M50 66c-13-3-19-11-20-19M51 74c12-4 18-12 19-20" />
+      <g><ellipse cx="34" cy="36" rx="11" ry="4.5" /><path d="M34 36 24 22M34 36l2-16M34 36l10-12" /></g>
+      <g><ellipse cx="58" cy="28" rx="10" ry="4" /><path d="M58 28 50 15M58 28l4-14M58 28l10-11" /></g>
+      <g><ellipse cx="70" cy="47" rx="8" ry="3.4" /><path d="M70 47 66 36M70 47l6-11M70 47l9-7" /></g>
+      <path d="M28 92c8 3 34 3 44 0" />
+    </symbol>
+    <symbol id="m-computer" viewBox="0 0 100 100">
+      <path d="M22 76h56l-7 9H29z" />
+      <path d="M30 30h40v42H30z" />
+      <path d="M30 26c0-3 2-5 5-5h30c3 0 5 2 5 5" />
+      <circle cx="44" cy="50" r="2.4" fill="currentColor" stroke="none" />
+      <circle cx="56" cy="50" r="2.4" fill="currentColor" stroke="none" />
+      <path d="M44 58c3 3 9 3 12 0" />
+      <path d="M38 85h6M56 85h4" />
+    </symbol>
+    <symbol id="m-box" viewBox="0 0 100 100">
+      <path d="M26 40 34 82h32l8-42z" />
+      <path d="M26 40h48" />
+      <path d="M50 40c-2-10-8-16-14-16s-8 6-4 12" />
+      <path d="M34 55c5 4 27 4 32 0" />
+      <circle cx="43" cy="66" r="2" fill="currentColor" stroke="none" />
+      <circle cx="57" cy="66" r="2" fill="currentColor" stroke="none" />
+      <path d="M46 73c3 2 5 2 8 0" />
+    </symbol>
+    <symbol id="m-dice" viewBox="0 0 100 100">
+      <path d="M50 10 88 38 72 86 28 86 12 38z" />
+      <path d="M50 10 50 50M12 38 50 50M88 38 50 50M28 86 50 50M72 86 50 50" />
+      <path d="M31 30l7 3M62 24l6 5M74 60l-6 5M24 62l7 3" />
+    </symbol>
+    <symbol id="m-hand" viewBox="0 0 100 100">
+      <path d="M40 86c-9-6-13-16-13-26V42c0-4 6-4 6 0v12" />
+      <path d="M33 54V32c0-4 6-4 6 0v18M39 50V26c0-4 6-4 6 0v22M45 50V30c0-4 6-4 6 0v22" />
+      <path d="M51 52V38c0-4 6-4 6 0v24c0 12-3 18-9 24" />
+      <path d="M57 62c6-4 12-4 14 2s-2 12-10 16" />
+    </symbol>
+    <symbol id="m-leaf" viewBox="0 0 100 100">
+      <path d="M20 80c0-34 22-56 58-58 2 36-20 58-52 58z" />
+      <path d="M24 76c14-14 28-28 48-44" />
+      <path d="M36 64c-4-10-4-16 0-22M50 50c-2-10 0-16 4-20" />
+    </symbol>
+    <symbol id="m-mushroom" viewBox="0 0 100 100">
+      <path d="M14 52c0-20 16-34 36-34s36 14 36 34c0 4-3 7-7 7H21c-4 0-7-3-7-7z" />
+      <path d="M42 59v22c0 6 4 9 8 9s8-3 8-9V59" />
+      <path d="M34 40c4-6 10-9 16-9M56 34c5 1 9 4 12 8" stroke-dasharray="3 6" />
+      <path d="M62 70c8 2 14 0 18-6M22 74c-6 2-10 6-12 12" />
+    </symbol>
+    <symbol id="m-owl" viewBox="0 0 100 100">
+      <path d="M28 44c0-14 10-22 22-22s22 8 22 22c0 18-9 30-22 30S28 62 28 44z" />
+      <path d="M28 30l-4-12 12 6M72 30l4-12-12 6" />
+      <circle cx="40" cy="42" r="7" /><circle cx="60" cy="42" r="7" />
+      <circle cx="40" cy="42" r="2.4" fill="currentColor" stroke="none" />
+      <circle cx="60" cy="42" r="2.4" fill="currentColor" stroke="none" />
+      <path d="M50 50l-5 8h10z" />
+      <path d="M40 74v10M60 74v10M40 84h-8M60 84h8" />
+    </symbol>
+    <symbol id="m-spark" viewBox="0 0 100 100">
+      <path d="M50 12c2 18 8 24 26 26-18 2-24 8-26 26-2-18-8-24-26-26 18-2 24-8 26-26z" />
+      <path d="M76 66c1 8 3 10 11 11-8 1-10 3-11 11-1-8-3-10-11-11 8-1 10-3 11-11z" />
+      <path d="M22 70c1 6 2 7 8 8-6 1-7 2-8 8-1-6-2-7-8-8 6-1 7-2 8-8z" />
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24">
+      <path d="M4 12h15M13 6l6 6-6 6" />
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24">
+      <path d="M6 6l12 12M18 6L6 18" />
+    </symbol>
+    <symbol id="i-grip" viewBox="0 0 24 24">
+      <circle cx="9" cy="7" r="1.4" /><circle cx="15" cy="7" r="1.4" />
+      <circle cx="9" cy="12" r="1.4" /><circle cx="15" cy="12" r="1.4" />
+      <circle cx="9" cy="17" r="1.4" /><circle cx="15" cy="17" r="1.4" />
+    </symbol>
+    <symbol id="i-smile" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.4" /><path d="M8.6 13.6c1 1.7 2.2 2.4 3.4 2.4s2.4-.7 3.4-2.4" />
+      <circle cx="9.2" cy="10" r="1" fill="currentColor" stroke="none" /><circle cx="14.8" cy="10" r="1" fill="currentColor" stroke="none" />
+    </symbol>
+    <symbol id="i-hand-grab" viewBox="0 0 24 24">
+      <path d="M9.5 20c-2.4-1.6-3.5-4.3-3.5-6.8V9.6c0-1.1 1.6-1.1 1.6 0v3.1" />
+      <path d="M7.6 12.4V7.4c0-1.1 1.6-1.1 1.6 0v4.3M9.2 11.6V5.8c0-1.1 1.6-1.1 1.6 0v5.4M10.8 11.6V6.9c0-1.1 1.6-1.1 1.6 0v5.3" />
+      <path d="M12.4 12.2V8.6c0-1.1 1.6-1.1 1.6 0v6c0 3-1 4.6-2.8 5.4" />
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ══════════════ patterned tile rails ══════════════ -->
+<div class="rails" aria-hidden="true">
+  <div class="rail rail--l" data-rail></div>
+  <div class="rail rail--r" data-rail></div>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" aria-hidden="true"><i></i></div>
+
+<!-- ══════════════ nav ══════════════ -->
+<nav class="nav" id="nav" aria-label="Main">
+  <button class="nav__smile" data-open="connect" aria-label="Say hello">
+    <svg viewBox="0 0 24 24"><use href="#i-smile" /></svg>
+  </button>
+  <div class="nav__links">
+    <button class="nav__link" data-open="about">about</button>
+    <button class="nav__link" data-open="work">Work</button>
+    <button class="nav__link" data-open="connect">Connect</button>
+  </div>
+</nav>
+
+<main>
+  <!-- ══════════════ hero ══════════════ -->
+  <section class="hero" id="home">
+    <div class="chalk" data-chalk aria-hidden="true">
+      <svg class="chalk__d d-fish" viewBox="0 0 100 100" style="--x:3%;--y:52%;--s:120px;--r:-8deg"><use href="#m-eye" /></svg>
+      <svg class="chalk__d d-cat" viewBox="0 0 100 100" style="--x:88%;--y:78%;--s:150px;--r:6deg"><use href="#m-cat" /></svg>
+      <svg class="chalk__d d-flower" viewBox="0 0 100 100" style="--x:82%;--y:40%;--s:110px;--r:10deg"><use href="#m-flower" /></svg>
+      <svg class="chalk__d d-box" viewBox="0 0 100 100" style="--x:6%;--y:74%;--s:110px;--r:-12deg"><use href="#m-box" /></svg>
+      <svg class="chalk__d d-spark" viewBox="0 0 100 100" style="--x:12%;--y:24%;--s:64px;--r:0deg"><use href="#m-spark" /></svg>
+      <svg class="chalk__d d-hand" viewBox="0 0 100 100" style="--x:91%;--y:16%;--s:90px;--r:14deg"><use href="#m-hand" /></svg>
+    </div>
+
+    <div class="sheet hero__sheet" data-tilt>
+      <div class="tearwrap tearwrap--top"><svg class="tear" viewBox="0 0 1200 26" preserveAspectRatio="none" aria-hidden="true"><path d="M0,26 L0.0,16.4 L8.0,25.0 L20.0,6.7 L28.0,10.8 L34.0,23.9 L40.0,17.5 L52.0,6.9 L66.0,14.4 L80.0,17.2 L88.0,17.6 L106.0,7.9 L112.0,18.4 L134.0,21.5 L160.0,14.3 L172.0,10.6 L190.0,25.0 L198.0,18.3 L224.0,14.4 L232.0,21.3 L250.0,12.8 L276.0,17.6 L284.0,24.9 L292.0,7.2 L318.0,11.7 L336.0,6.5 L346.0,18.2 L358.0,22.9 L380.0,24.3 L390.0,15.0 L400.0,22.4 L414.0,20.1 L436.0,25.0 L448.0,24.2 L458.0,13.8 L476.0,18.9 L482.0,15.1 L504.0,14.0 L530.0,19.1 L542.0,18.4 L550.0,6.6 L568.0,19.5 L590.0,11.1 L608.0,18.4 L634.0,16.5 L652.0,20.8 L662.0,22.0 L680.0,8.9 L686.0,25.0 L694.0,22.1 L704.0,16.4 L722.0,18.7 L734.0,22.1 L746.0,10.0 L752.0,25.8 L778.0,11.2 L796.0,14.9 L814.0,25.1 L826.0,8.0 L844.0,10.1 L850.0,15.6 L858.0,25.0 L870.0,20.3 L888.0,7.7 L910.0,15.3 L918.0,21.3 L928.0,17.8 L938.0,18.2 L964.0,19.1 L974.0,6.4 L982.0,16.5 L1004.0,25.0 L1010.0,12.5 L1028.0,11.2 L1038.0,7.2 L1064.0,19.2 L1086.0,22.5 L1096.0,16.6 L1102.0,23.5 L1108.0,22.4 L1116.0,20.2 L1142.0,25.0 L1154.0,10.4 L1180.0,17.2 L1188.0,14.9 L1200.0,19.9 L1200.0,16.1 L1200,26 Z" /></svg></div>
+
+      <div class="hero__inner">
+        <div class="hero__copy">
+          <p class="hero__me">
+            <span class="signature">Jamie</span>
+            <svg class="hero__star" viewBox="0 0 100 100" aria-hidden="true"><use href="#m-spark" /></svg>
+            <span class="hero__role">Product Designer</span>
+          </p>
+          <h1 class="hero__title">
+            Software should<br />
+            feel <em>natural</em>
+          </h1>
+          <p class="hero__where">Cape Town <span aria-hidden="true">•</span> GMT +2:00</p>
+          <p class="hero__aside">
+            <span class="scribble">ten years of turning messy problems into things people can actually use.</span>
+          </p>
+        </div>
+
+        <div class="hero__art">
+          <svg class="ink" viewBox="0 0 600 520" fill="none" aria-hidden="true">
+            <defs>
+              <g id="leafclump">
+                <path d="M0 0C-2-32-12-54-28-72" />
+                <path d="M0 0C4-36 14-60 30-80" />
+                <path d="M0 0C0-28-1-48 2-66" />
+                <ellipse cx="-36" cy="-80" rx="22" ry="10" transform="rotate(-38 -36 -80)" />
+                <ellipse cx="-12" cy="-102" rx="21" ry="9" transform="rotate(-16 -12 -102)" />
+                <ellipse cx="20" cy="-108" rx="22" ry="10" transform="rotate(-56 20 -108)" />
+                <ellipse cx="40" cy="-86" rx="18" ry="9" transform="rotate(-24 40 -86)" />
+                <ellipse cx="6" cy="-72" rx="17" ry="8" transform="rotate(18 6 -72)" />
+                <ellipse cx="-20" cy="-56" rx="15" ry="7" transform="rotate(-30 -20 -56)" />
+              </g>
+            </defs>
+            <g filter="url(#rough-ink)" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <!-- artboard selection marks -->
+              <rect x="44" y="48" width="12" height="12" rx="1.5" />
+              <rect x="392" y="48" width="12" height="12" rx="1.5" />
+              <rect x="44" y="456" width="12" height="12" rx="1.5" />
+              <rect x="392" y="456" width="12" height="12" rx="1.5" />
+              <path d="M44 54h-18M404 54h18M50 456v18M398 456v18" stroke-dasharray="3 5" opacity=".5" />
+
+              <!-- window -->
+              <path d="M58 88c0-11 9-20 20-20h304c11 0 20 9 20 20v350c0 11-9 20-20 20H78c-11 0-20-9-20-20z" />
+              <path d="M58 126h344" />
+              <text x="150" y="105" class="ink__label" font-size="13" letter-spacing="4">UNTITLED</text>
+              <circle cx="344" cy="98" r="4" />
+              <circle cx="364" cy="98" r="4" />
+              <rect x="378" y="92" width="13" height="11" rx="2" />
+
+              <!-- floating chip -->
+              <rect x="96" y="146" width="104" height="28" rx="14" stroke-dasharray="5 6" />
+              <path d="M111 160h56M199 160l10-5v10z" />
+              <path d="M236 190l4 30 8-9 9 3z" />
+              <path d="M248 208l12 4" opacity=".7" />
+
+              <!-- sheet being designed -->
+              <g transform="rotate(-8 128 344)">
+                <rect x="94" y="306" width="66" height="82" rx="4" />
+                <path d="M106 326h42M106 340h34M106 354h42M106 368h26" opacity=".8" />
+              </g>
+
+              <!-- figure -->
+              <circle cx="236" cy="296" r="28" />
+              <path d="M213 282c4-13 13-19 23-19s18 5 22 17c-7-6-14-8-23-8s-15 3-22 10z" />
+              <circle cx="227" cy="294" r="1.9" fill="currentColor" stroke="none" />
+              <circle cx="245" cy="294" r="1.9" fill="currentColor" stroke="none" />
+              <path d="M228 305c4 4 12 4 16 0" />
+              <path d="M228 322v12M244 322v12" />
+              <path d="M207 336c8-3 18-5 29-5s21 2 29 5l6 72h-70z" />
+              <path d="M207 344c-13 8-20 22-22 40" />
+              <path d="M185 384c-4 6-6 12-6 16" />
+              <circle cx="180" cy="404" r="7" />
+              <path d="M264 340c9-10 16-25 19-41" />
+              <circle cx="288" cy="292" r="8" />
+              <path d="M280 288c-4-4-6-9-6-13M292 286c4-4 6-9 6-14M289 300c2 4 4 6 8 8" />
+              <path d="M222 408v30M250 408v30" />
+              <path d="M210 438c8 2 18 2 26 0M242 438c8 2 18 2 26 0" />
+              <path d="M236 300v-4" />
+
+              <!-- foliage -->
+              <use href="#leafclump" transform="translate(104,462) scale(.98)" />
+              <use href="#leafclump" transform="translate(158,466) scale(.82)" />
+              <use href="#leafclump" transform="translate(316,462) scale(1.02)" />
+              <use href="#leafclump" transform="translate(372,456) scale(.78)" />
+              <path d="M286 462c-2-16-6-26-12-34M296 462c2-14 6-22 12-28M90 464c-1-12-3-20-7-26" opacity=".85" />
+
+              <!-- cow on the right -->
+              <g>
+                <path d="M424 332h88c10 0 16 7 16 17v40h-104z" />
+                <path d="M528 348c0-9 7-16 16-16h13c9 0 16 7 16 16v16c0 9-7 16-16 16h-13c-9 0-16-7-16-16z" />
+                <path d="M536 332c-6-6-8-12-7-18M566 332c6-6 8-12 7-18" />
+                <path d="M528 350c-10-4-14-10-14-16M576 352c8-4 12-10 12-16" />
+                <circle cx="546" cy="352" r="2" fill="currentColor" stroke="none" />
+                <path d="M552 364h14M552 360h14" opacity=".75" />
+                <path d="M436 389v22M462 389v22M492 389v22M516 389v22" />
+                <path d="M430 411h12M456 411h12M486 411h12M510 411h12" />
+                <path d="M424 340c-10 0-16 8-16 18 0 8 4 14 8 18" />
+                <ellipse cx="458" cy="356" rx="16" ry="10" opacity=".55" />
+                <ellipse cx="492" cy="344" rx="9" ry="6" opacity=".45" />
+              </g>
+
+              <!-- cat perched on the top frame -->
+              <g>
+                <path d="M374 46c0-9 7-15 16-15s16 6 16 15c0 8-3 12-3 12h-26s-3-4-3-12z" />
+                <path d="M374 38l-6-13 13 7M406 38l6-13-13 7" />
+                <circle cx="383" cy="45" r="1.7" fill="currentColor" stroke="none" />
+                <circle cx="397" cy="45" r="1.7" fill="currentColor" stroke="none" />
+                <path d="M388 51h4" />
+                <path d="M372 58c-6 4-8 10-8 16M408 58c6 4 8 10 8 16" />
+                <path d="M376 58c0 8 2 12 2 12M404 58c0 8-2 12-2 12" />
+              </g>
+              <!-- birds on the window top -->
+              <g>
+                <path d="M104 76c-7-9-4-19 5-20 7-1 12 4 12 10 0 6-5 9-11 9z" />
+                <path d="M108 77l-2 10M100 77l-3 10M116 63c5-4 10-4 14-1" />
+                <path d="M150 76c-7-9-4-19 5-20 7-1 12 4 12 10 0 6-5 9-11 9z" />
+                <path d="M154 77l-2 10M146 77l-3 10M162 63c5-4 10-4 14-1" />
+              </g>
+
+              <!-- ground -->
+              <path d="M30 470c60-8 120-10 180-8s130 4 190 0 110-6 150 0" />
+              <path d="M64 480c30 8 70 10 108 6M250 486c34 6 74 6 108 0M392 482c30 4 60 2 84-4" opacity=".7" />
+
+              <!-- sparkles -->
+              <path d="M420 158c3 8 6 11 14 13-8 2-11 5-14 13-3-8-6-11-14-13 8-2 11-5 14-13z" />
+              <path d="M556 250c2 5 4 7 9 8-5 1-7 3-9 8-2-5-4-7-9-8 5-1 7-3 9-8z" />
+              <path d="M40 300c2 5 4 7 9 8-5 1-7 3-9 8-2-5-4-7-9-8 5-1 7-3 9-8z" />
+            </g>
+          </svg>
+        </div>
+      </div>
+
+
+      <div class="hero__foot">
+        <span class="hand">scroll — 3 things I strongly believe in</span>
+        <span class="hero__foot-line"></span>
+        <span class="mono">v.2026</span>
+      </div>
+      <div class="tearwrap tearwrap--bot"><svg class="tear" viewBox="0 0 1200 26" preserveAspectRatio="none" aria-hidden="true"><path d="M0,0 L1200,0 L1200,9.9 L1188,12.8 L1154,8.1 L1116,10.9 L1064,11.5 L1038,13.9 L1010,14.2 L1004,9 L974,10.4 L938,7.6 L918,12.4 L888,14.6 L858,10 L826,12.2 L814,8.4 L778,13.6 L752,11.8 L722,8.9 L704,7.2 L662,13 L634,9.6 L608,11.2 L590,7.8 L568,13.1 L550,9.4 L530,12.6 L504,7.4 L482,12.9 L458,8.6 L436,13.4 L400,9.2 L380,12.1 L346,10.4 L318,8.2 L292,13.8 L284,9.1 L250,12.3 L232,8.7 L198,13.2 L172,9.8 L160,12.6 L134,8.4 L112,13.5 L88,10.2 L66,13.9 L40,9.6 L20,14.1 L0,12.4 Z" /></svg></div>
+    </div>
+
+    <div class="hero__side hand" aria-hidden="true">yes, the whole page is a desk</div>
+  </section>
+
+  <!-- ══════════════ beliefs ══════════════ -->
+  <section class="beliefs" id="beliefs">
+    <div class="chalk" data-chalk aria-hidden="true">
+      <svg class="chalk__d" viewBox="0 0 100 100" style="--x:78%;--y:18%;--s:130px;--r:-6deg"><use href="#m-owl" /></svg>
+      <svg class="chalk__d" viewBox="0 0 100 100" style="--x:10%;--y:64%;--s:140px;--r:8deg"><use href="#m-bird" /></svg>
+      <svg class="chalk__d" viewBox="0 0 100 100" style="--x:88%;--y:70%;--s:100px;--r:0deg"><use href="#m-leaf" /></svg>
+    </div>
+
+    <p class="eyebrow hand">3 things I strongly believe in</p>
+
+    <div class="scraps" data-scraps>
+      <div class="scrap scrap--lined" data-scrap="1" data-drift="-40">
+        <span class="scrap__tape" aria-hidden="true"></span>
+        <p class="scrap__hand">tirelessly<br />pursue<br />clarity.</p>
+        <span class="scrap__scribble">(question the brief, then the brief again)</span>
+      </div>
+
+      <div class="scrap scrap--grid scrap--hero" data-scrap="2" data-drift="0">
+        <p class="scrap__serif">Software<br />should<br />empower.</p>
+        <span class="scrap__tiny mono">// the user does the real work</span>
+      </div>
+
+      <div class="scrap scrap--kraft" data-scrap="3" data-drift="46">
+        <span class="scrap__clip" aria-hidden="true"></span>
+        <p class="scrap__italic">Design for<br />moments</p>
+        <span class="scrap__scribble">not screens</span>
+      </div>
+    </div>
+
+    <p class="beliefs__foot hand">Everything you do, do it with care.</p>
+  </section>
+
+  <!-- ══════════════ cutting board ══════════════ -->
+  <section class="boardsec" id="board">
+    <header class="boardsec__head">
+      <div>
+        <p class="eyebrow hand">the cutting board</p>
+        <h2 class="boardsec__title">Pieces of the last few years,<br /><em>cut out and left on the desk.</em></h2>
+      </div>
+      <p class="boardsec__note hand">grab one. move it. throw it.<br />double-tap to read the story.</p>
+    </header>
+
+    <div class="boardwrap">
+      <div class="board" id="boardArea">
+        <div class="board__grid" aria-hidden="true"></div>
+        <div class="board__nums mono" aria-hidden="true">
+          <span>01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span><span>08</span>
+        </div>
+
+        <!-- cards -->
+        <article class="card" data-project="bash" tabindex="0" data-x="2" data-y="3" data-rot="-3.5" style="--w:31%">
+          <div class="card__frame">
+            <div class="ui ui--freight">
+              <div class="ui__head">
+                <span class="ui__pill ui__pill--soft">assessment</span>
+                <span class="ui__dots"><i></i><i></i><i></i></span>
+              </div>
+              <div class="ui__route">
+                <span>Buenos Aires</span><b>→</b><span>Shanghai</span>
+              </div>
+              <div class="ui__meta"><span>Proposed <b>$308/MT</b></span><span>Market <b>$305/MT</b></span></div>
+              <div class="ui__row">
+                <span class="ui__badge">MEDIUM</span>
+                <div class="ui__lines"><i style="width:74%"></i><i style="width:48%"></i></div>
+              </div>
+              <div class="ui__avatars">
+                <img src="./assets/photos/img_be9c29b29330.webp" alt="" loading="lazy" />
+                <img src="./assets/photos/img_0a1dd7228f2d.webp" alt="" loading="lazy" />
+                <img src="./assets/photos/img_00dcc994a43e.webp" alt="" loading="lazy" />
+                <span class="ui__more">+5</span>
+              </div>
+            </div>
+          </div>
+          <span class="card__tag mono">bash · freight desk</span>
+        </article>
+
+        <article class="card" data-project="bash-pay" tabindex="0" data-x="35" data-y="2" data-rot="2.5" style="--w:26%">
+          <div class="card__frame">
+            <div class="ui ui--pay">
+              <p class="ui__brand">bash<span>pay</span></p>
+              <p class="ui__tiny">Total due</p>
+              <p class="ui__money">R6,699.86</p>
+              <p class="ui__wallet"><span class="ui__apple">◍</span> Pay</p>
+              <div class="ui__banks">
+                <span>Absa</span><span>Capitec</span><span>FNB</span><span>Investec</span><span>Nedbank</span><span>Standard Bank</span>
+              </div>
+              <p class="ui__legal">1.5% cashback on your order</p>
+            </div>
+          </div>
+          <span class="card__tag mono">bash · checkout</span>
+        </article>
+
+        <article class="card" data-project="pulse" tabindex="0" data-x="63.5" data-y="4" data-rot="3" style="--w:25%">
+          <div class="card__frame card__frame--dark">
+            <div class="ui ui--stream">
+              <div class="ui__streamtop"><b>Jamie's Hero 10</b><span class="ui__gps">GPS <i>Good</i></span></div>
+              <p class="ui__tiny ui__tiny--dim">◉ Connected · 78% Battery</p>
+              <div class="ui__action"><span class="ui__live">● LIVE</span> Start live stream <b>›</b></div>
+              <div class="ui__action"><span class="ui__live ui__live--warm">● LIVE</span> Stream from your phone <b>›</b></div>
+            </div>
+          </div>
+          <span class="card__tag mono">pulse · live</span>
+        </article>
+
+        <article class="card" data-project="speaking" tabindex="0" data-x="2" data-y="30" data-rot="-2" style="--w:30%">
+          <div class="card__frame">
+            <div class="ui ui--speaking">
+              <p class="ui__who">WHO'S<br />SPEAKING?</p>
+              <div class="ui__faces">
+                <img src="./assets/photos/img_0a1dd7228f2d.webp" alt="Speaker portrait" loading="lazy" />
+                <img src="./assets/photos/img_8f129e1688ce.webp" alt="Speaker portrait" loading="lazy" />
+                <img src="./assets/photos/img_cad84cf45f1d.webp" alt="Speaker portrait" loading="lazy" />
+              </div>
+              <p class="ui__tiny ui__tiny--dim">Find out who your favourite speakers are talking to.</p>
+              <img class="ui__crowd" src="./assets/photos/img_178a50c2df87.webp" alt="Conference audience" loading="lazy" />
+            </div>
+          </div>
+          <span class="card__tag mono">who's speaking</span>
+        </article>
+
+        <article class="card" data-project="heygo" tabindex="0" data-x="34" data-y="29" data-rot="-1.5" style="--w:27%">
+          <div class="card__frame card__frame--photo">
+            <img class="ui__photo" src="./assets/photos/img_21bda4d32df4.webp" alt="Mountain ridgeline above clouds" loading="lazy" />
+            <div class="ui__overlay">
+              <span class="ui__live">● 12:04</span>
+              <b>E-bike along the Sierra Cortina ridge</b>
+              <span class="ui__tiny ui__tiny--dim">2.1 km · 324 m climbed</span>
+              <span class="ui__join">Join tour</span>
+            </div>
+          </div>
+          <span class="card__tag mono">heygo · tour</span>
+        </article>
+
+        <article class="card" data-project="ditakah" tabindex="0" data-x="63.5" data-y="29" data-rot="2" style="--w:28%">
+          <div class="card__frame">
+            <div class="ui ui--shop">
+              <div class="ui__shoprow">
+                <span class="ui__thumb"><img src="./assets/photos/img_7eec264c27ff.webp" alt="Red running shoe" loading="lazy" /></span>
+                <div>
+                  <p class="ui__tiny ui__tiny--dim">adidas Originals Men's Forum 84</p>
+                  <p class="ui__tiny">UK 7 · Green</p>
+                </div>
+                <b class="ui__price">R2,309</b>
+              </div>
+              <div class="ui__total"><span>Total due</span><b>R2,500.00</b></div>
+              <div class="ui__success"><span class="ui__check">✓</span> Payment successful</div>
+            </div>
+          </div>
+          <span class="card__tag mono">bash · payments</span>
+        </article>
+
+        <article class="card card--note" data-project="note-clarity" tabindex="0" data-x="2" data-y="63" data-rot="-6" style="--w:17%">
+          <div class="note note--lined">
+            <span class="note__punch" aria-hidden="true"></span>
+            <p class="hand">tirelessly<br />pursue<br />clarity.</p>
+          </div>
+        </article>
+
+        <article class="card card--note" data-project="note-moments" tabindex="0" data-x="82" data-y="63" data-rot="5" style="--w:15%">
+          <div class="note note--kraft">
+            <p class="note__serif">Design for<br />moments</p>
+            <span class="mono note__tag">not screens</span>
+          </div>
+        </article>
+
+        <article class="card" data-project="drift" tabindex="0" data-x="59" data-y="60" data-rot="-3" style="--w:20%">
+          <div class="card__frame card__frame--dark">
+            <div class="ui ui--podcast">
+              <p class="ui__tiny ui__tiny--dim">recording</p>
+              <p class="ui__time mono">12:28:23</p>
+              <div class="ui__wave" aria-hidden="true">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <div class="ui__actions"><span class="ui__rec">● 12:22:32</span><span class="ui__round">⏸</span></div>
+            </div>
+          </div>
+          <span class="card__tag mono">drift · voice notes</span>
+        </article>
+
+        <article class="card" data-project="team" tabindex="0" data-x="22" data-y="57" data-rot="1.5" style="--w:24%">
+          <div class="card__frame">
+            <div class="ui ui--team">
+              <div class="ui__teamhead"><span>the kitchen table</span><span class="ui__pill ui__pill--soft">weekly</span></div>
+              <div class="ui__cols">
+                <div><b>in flight</b><i style="width:80%"></i><i style="width:60%"></i></div>
+                <div><b>review</b><i style="width:70%"></i><i style="width:45%"></i></div>
+                <div><b>shipped</b><i style="width:88%"></i><i style="width:54%"></i></div>
+              </div>
+            </div>
+          </div>
+          <span class="card__tag mono">team · rituals</span>
+        </article>
+
+        <!-- draggable mask over a peeking bio card -->
+        <div class="bio" id="bio">
+          <div class="bio__card">
+            <div class="bio__photo">
+              <img src="./assets/photos/img_0a1dd7228f2d.webp" alt="Jamie, product designer, smiling in a white tee" loading="lazy" />
+              <span class="bio__sig signature">Jamie</span>
+            </div>
+            <div class="bio__meta">
+              <p class="mono">hello, I'm Jamie</p>
+              <p class="hand">product designer, Cape Town. I make heavy software feel light.</p>
+            </div>
+            <div class="bio__mask" id="bioMask" role="button" tabindex="0" aria-label="Drag the mask away to reveal the photo">
+              <span class="bio__masklabel hand">MASK — drag me off</span>
+              <svg class="bio__grip" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-grip" /></svg>
+              <i class="bio__corner bio__corner--tl"></i><i class="bio__corner bio__corner--tr"></i>
+              <i class="bio__corner bio__corner--bl"></i><i class="bio__corner bio__corner--br"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="boardtools">
+        <button class="pill pill--dragme" id="dragPill" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-hand-grab" /></svg>
+          <span>DRAG ME</span>
+        </button>
+        <button class="pill pill--reset" id="resetBoard" type="button">
+          <span>RESET BOARD</span>
+        </button>
+        <p class="boardtools__hint hand">click a card for the full story · arrow keys work too</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ work journey ══════════════ -->
+  <section class="journey" id="work">
+    <div class="chalk" data-chalk aria-hidden="true">
+      <svg class="chalk__d" viewBox="0 0 100 100" style="--x:6%;--y:20%;--s:120px;--r:-10deg"><use href="#m-computer" /></svg>
+      <svg class="chalk__d" viewBox="0 0 100 100" style="--x:86%;--y:56%;--s:130px;--r:6deg"><use href="#m-cat" /></svg>
+      <svg class="chalk__d" viewBox="0 0 100 100" style="--x:12%;--y:80%;--s:90px;--r:12deg"><use href="#m-spark" /></svg>
+    </div>
+
+    <header class="journey__head">
+      <p class="eyebrow hand">places I've been, things I've learnt</p>
+      <h2 class="journey__title">A short, honest <em>travel log</em></h2>
+    </header>
+
+    <div class="trips">
+      <article class="trip trip--tag" data-project="bash" tabindex="0">
+        <div class="tag">
+          <span class="tag__string" aria-hidden="true"></span>
+          <span class="tag__hole" aria-hidden="true"></span>
+          <p class="tag__icons" aria-hidden="true">☻ ⌾ ✳ ⌗</p>
+          <h3 class="tag__name">Bash</h3>
+          <p class="tag__desc">South Africa's largest omni-channel fashion and lifestyle shopping platform.</p>
+          <span class="tag__barcode" aria-hidden="true"></span>
+        </div>
+        <div class="trip__meta">
+          <p class="mono">2022 — 2024</p>
+          <ul class="hand">
+            <li>Lead product designer</li>
+            <li>Design system, checkout</li>
+            <li>Two squads, one roadmap</li>
+          </ul>
+          <p class="trip__learn hand">learn how to ship.<br />break things, then fix them properly.</p>
+          <button class="trip__open mono" data-project="bash">open case study →</button>
+        </div>
+      </article>
+
+      <article class="trip trip--strip" data-project="pulse" tabindex="0">
+        <div class="strip">
+          <span class="strip__left">✦</span>
+          <p class="strip__name">Pulse</p>
+          <span class="strip__right">✦</span>
+        </div>
+        <div class="trip__meta">
+          <p class="mono">2021 — 2022</p>
+          <ul class="hand">
+            <li>Streaming platform</li>
+            <li>Product design</li>
+            <li>Human friendly</li>
+          </ul>
+          <p class="trip__learn hand">learn how design sits in tune<br />with the athlete's point of view.</p>
+          <button class="trip__open mono" data-project="pulse">open case study →</button>
+        </div>
+      </article>
+
+      <article class="trip trip--ticket" data-project="heygo" tabindex="0">
+        <div class="ticket">
+          <div class="ticket__main">
+            <p class="ticket__blurb hand">Visit interesting places around the world through the eyes of a professional tour guide. Discover wonders and learn more from the comfort of your home.</p>
+            <p class="ticket__admit mono">ADMIT 1</p>
+            <p class="ticket__sub hand">your ticket to see the world</p>
+            <p class="ticket__name">HEYGO</p>
+            <p class="ticket__year mono">2020</p>
+          </div>
+          <div class="ticket__stub">
+            <span class="ticket__vertical mono">Row M · Seat H5</span>
+            <span class="ticket__code" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="trip__meta">
+          <p class="mono">2019 — 2021</p>
+          <ul class="hand">
+            <li>Streaming UI</li>
+            <li>Streams creator</li>
+          </ul>
+          <p class="trip__learn hand">learn that 'design' is a powerful<br />alignment tool.</p>
+          <button class="trip__open mono" data-project="heygo">open case study →</button>
+        </div>
+      </article>
+
+      <article class="trip trip--retro" data-project="ditakah" tabindex="0">
+        <div class="retro">
+          <div class="retro__screen">
+            <p class="retro__text hand">Ditakah — helping businesses thrive in the digital landscape.</p>
+            <span class="retro__dot"></span>
+          </div>
+          <div class="retro__body">
+            <span class="retro__vent" aria-hidden="true"></span>
+            <span class="retro__led"></span>
+          </div>
+        </div>
+        <div class="trip__meta">
+          <p class="mono">2018 — 2020</p>
+          <ul class="hand">
+            <li>Freelance</li>
+            <li>Brand, web, product</li>
+            <li>Small clients, big lessons</li>
+          </ul>
+          <p class="trip__learn hand">learn how to sell the work,<br />then how to make it good.</p>
+          <button class="trip__open mono" data-project="ditakah">open case study →</button>
+        </div>
+      </article>
+    </div>
+
+    <div class="quests">
+      <h3 class="quests__title">Side Quests</h3>
+      <div class="quests__sheet">
+        <div class="quests__spiral" aria-hidden="true"></div>
+        <article class="quest" data-project="drift" tabindex="0">
+          <div>
+            <p class="quest__name">Drift</p>
+            <p class="quest__role mono">design &amp; code</p>
+            <p class="quest__copy hand">Personal library of things I found online and made on a Sunday.</p>
+          </div>
+          <img src="./assets/photos/img_47ba0277781c.webp" alt="Team working on laptops" loading="lazy" />
+        </article>
+        <article class="quest" data-project="tf2018" tabindex="0">
+          <div>
+            <p class="quest__name">TF2018</p>
+            <p class="quest__role mono">branding &amp; web</p>
+            <p class="quest__copy hand">A brand for a 3D printing studio. Pixel-based NFT, obviously.</p>
+          </div>
+          <img src="./assets/photos/img_c5249f4df085.webp" alt="Laptop with code on a desk" loading="lazy" />
+        </article>
+        <article class="quest" data-project="speaking" tabindex="0">
+          <div>
+            <p class="quest__name">Who's Speaking</p>
+            <p class="quest__role mono">designer &amp; front-end</p>
+            <p class="quest__copy hand">Follow speakers and see where they're talking next.</p>
+          </div>
+          <img src="./assets/photos/img_178a50c2df87.webp" alt="Conference audience" loading="lazy" />
+        </article>
+        <article class="quest" data-project="tripletime" tabindex="0">
+          <div>
+            <p class="quest__name">Triple Time</p>
+            <p class="quest__role mono">product design</p>
+            <p class="quest__copy hand">A way to find and book a trusted medical tube-taker for your little ones.</p>
+          </div>
+          <img src="./assets/photos/img_3f88f10405ff.webp" alt="Traveller on a mountain trail" loading="lazy" />
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ what I look for ══════════════ -->
+  <section class="look" id="look">
+    <div class="chalk" data-chalk aria-hidden="true">
+      <svg class="chalk__d" viewBox="0 0 100 100" style="--x:8%;--y:26%;--s:120px;--r:4deg"><use href="#m-flower" /></svg>
+      <svg class="chalk__d" viewBox="0 0 100 100" style="--x:84%;--y:70%;--s:120px;--r:-4deg"><use href="#m-bird" /></svg>
+      <svg class="chalk__d" viewBox="0 0 100 100" style="--x:76%;--y:14%;--s:80px;--r:8deg"><use href="#m-eye" /></svg>
+    </div>
+
+    <div class="lookcard" id="lookCard">
+      <div class="lookcard__left">
+        <h2 class="lookcard__title">What I look for</h2>
+        <p class="lookcard__intro hand">tick what matters to you. the drawing finishes itself.</p>
+        <ul class="checks" id="checks">
+          <li>
+            <button class="check" type="button" data-check="1" aria-pressed="false">
+              <span class="check__box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 13l4 4 10-11" /></svg></span>
+              <span class="check__label">Impactful work</span>
+            </button>
+          </li>
+          <li>
+            <button class="check" type="button" data-check="2" aria-pressed="false">
+              <span class="check__box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 13l4 4 10-11" /></svg></span>
+              <span class="check__label">Meaningful work</span>
+            </button>
+          </li>
+          <li>
+            <button class="check" type="button" data-check="3" aria-pressed="false">
+              <span class="check__box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 13l4 4 10-11" /></svg></span>
+              <span class="check__label">Diverse team of talented folks</span>
+            </button>
+          </li>
+        </ul>
+        <div class="lookcard__cta">
+          <button class="cta" id="chatBtn" type="button">let's chat!</button>
+          <p class="lookcard__count mono" id="checkCount">0 / 3</p>
+        </div>
+      </div>
+
+      <div class="lookcard__right">
+        <div class="drawbox">
+          <svg class="frame-ink" viewBox="0 0 340 340" preserveAspectRatio="none" aria-hidden="true"><path d="M14 26c64-9 128-13 196-9 42 2 84 6 116 12M330 30c4 62 3 132-1 200-2 34-4 62-6 82M322 316c-74 9-152 11-232 6-26-2-50-4-72-7M16 314c-5-70-6-146-2-218 1-24 2-44 3-58" /></svg>
+        <svg class="draw" id="drawing" viewBox="0 0 300 330" aria-hidden="true">
+          <g fill="none" stroke="#D8442C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <g class="dr" data-stage="1">
+              <path d="M96 268h108l-10 24H106z" />
+              <path d="M90 264h120" />
+              <path d="M150 262V150" />
+              <path d="M150 218c-19-3-29-13-31-26" />
+              <path d="M150 198c17-4 25-15 27-28" />
+            </g>
+            <g class="dr" data-stage="2">
+              <path d="M136 150c-7-15-3-28 8-33 5-2 9 0 12 4 3-4 7-6 12-4 11 5 15 18 8 33z" />
+              <path d="M128 130c-9-6-11-15-6-21 5-6 14-6 20 0" />
+              <path d="M172 130c9-6 11-15 6-21-5-6-14-6-20 0" />
+              <path d="M142 148c4 5 12 5 16 0" />
+            </g>
+            <g class="dr" data-stage="3">
+              <path d="M58 88c10 0 18-6 20-16 2 10 10 16 20 16-10 0-18 6-20 16-2-10-10-16-20-16z" />
+              <path d="M232 60c8 0 14-5 16-13 2 8 8 13 16 13-8 0-14 5-16 13-2-8-8-13-16-13z" />
+              <path d="M246 198c7 0 12-4 14-11 1 7 7 11 14 11-7 0-13 4-14 11-2-7-7-11-14-11z" />
+              <path d="M74 216c5 0 9-3 10-8 1 5 5 8 10 8-5 0-9 3-10 8-1-5-5-8-10-8z" />
+              <path d="M196 190c5-3 11-3 15 1 4 4 3 10-1 12-5 2-11 0-13-5z" />
+              <path d="M210 200c4 1 9 0 12-3M200 183c-4-1-9 0-12 3" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        <p class="lookcard__stamp hand" id="stamp">nothing ticked yet —<br />the page is still blank</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ footer ══════════════ -->
+  <footer class="footer">
+    <div class="chalk" data-chalk aria-hidden="true">
+      <svg class="chalk__d" viewBox="0 0 100 100" style="--x:20%;--y:60%;--s:110px;--r:-6deg"><use href="#m-computer" /></svg>
+      <svg class="chalk__d" viewBox="0 0 100 100" style="--x:80%;--y:40%;--s:100px;--r:8deg"><use href="#m-owl" /></svg>
+    </div>
+
+    <p class="footer__lyric hand">
+      <span>♪</span> Almost heaven, West Virginia <span>—</span> Blue Ridge Mountains, Shenandoah River <span>♪</span>
+    </p>
+
+    <div class="footer__mid">
+      <p class="footer__cta">Still reading? <button class="linkish hand" data-open="connect">say hello</button>.</p>
+      <p class="footer__where mono">Cape Town · GMT +2:00 · © 2026</p>
+    </div>
+
+    <p class="signature footer__sig">Jamie</p>
+
+    <div class="footer__base">
+      <span class="mono">cut &amp; glued by hand</span>
+      <button class="footer__top hand" id="toTop" type="button">back to the desk ↑</button>
+      <span class="mono">no templates were harmed</span>
+    </div>
+  </footer>
+</main>
+
+<!-- ══════════════ modal ══════════════ -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalTitle">
+  <div class="modal__scrim" data-close></div>
+  <div class="modal__panel" role="document">
+    <button class="modal__close" data-close aria-label="Close">
+      <svg viewBox="0 0 24 24"><use href="#i-close" /></svg>
+    </button>
+    <div class="modal__body" id="modalBody"></div>
+  </div>
+</div>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#04141d" />
+  <meta name="color-scheme" content="dark light" />
+  <meta
+    name="description"
+    content="Deep-Ocean Studio — a 3D ocean portfolio. Scroll from the sky at +1000 m down to the seabed at −7000 m, past ships, fish and hydrothermal vents."
+  />
+  <title>Deep-Ocean Studio — Ocean Portfolio</title>
+
+  <!--
+    The import map makes this folder run as-is on any static HTTP server
+    (python -m http.server, Netlify, GitHub Pages) without an
+    `npm install`. Vite ignores it and resolves the same bare specifiers from
+    node_modules when you do run `npm install && npm run dev`.
+  -->
+
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2304141d'/%3E%3Cpath d='M4 19c4 0 4-4 8-4s4 4 8 4 4-4 8-4v6c-4 0-4 4-8 4s-4-4-8-4-4 4-8 4z' fill='%2358e0c8'/%3E%3C/svg%3E" />
+  <!-- all libraries bundled locally - no CDN dependencies --><script type="module" crossorigin src="./assets/index-Bb-RfDzP.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-7kiWlF56.css">
+</head>
+<body>
+  <!-- ===================================================== 3D canvas ===== -->
+  <canvas id="scene" class="scene" aria-hidden="true"></canvas>
+  <div class="scene-fallback" aria-hidden="true"></div>
+
+  <!-- =================================================== loading veil ==== -->
+  <div class="loader" id="loader" role="status" aria-live="polite" aria-label="Loading the ocean">
+    <div class="loader__inner">
+      <div class="loader__glyph" aria-hidden="true"><i></i><i></i><i></i></div>
+      <p class="loader__title">Loading coordinates</p>
+      <p class="loader__depth"><span id="loader-depth">+1000</span><span class="loader__unit">m</span></p>
+      <div class="loader__bar"><div class="loader__bar-fill" id="loader-bar"></div></div>
+      <p class="loader__note" id="loader-note">Sounding the water column…</p>
+    </div>
+  </div>
+
+  <!-- ========================================================== HUD ===== -->
+  <!-- top safe zone: content scrolling under the fixed HUD is blurred and
+       faded out here, so nothing ever collides with the brand pill -->
+  <div class="hud-veil" aria-hidden="true"></div>
+
+  <header class="hud hud--top">
+    <a class="brand" href="#sky" data-scroll-to="sky" aria-label="Back to the surface">
+      <span class="brand__mark" data-bind="brand.mark">PS</span>
+      <span class="brand__text">
+        <span class="brand__name" data-bind="brand.name">DEEP OCEAN STUDIO</span>
+        <span class="brand__role" data-bind="brand.role">Independent 3D &amp; interaction practice</span>
+      </span>
+    </a>
+
+    <div class="hud__controls">
+      <button
+        type="button"
+        id="sound-toggle"
+        class="pill pill--ghost"
+        aria-pressed="false"
+        title="Toggle the ocean soundscape"
+      >
+        <span class="pill__icon" aria-hidden="true">
+          <svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <path d="M3 7.5h2.5L9.5 4v12L5.5 12.5H3z" />
+            <path class="pill__waves" d="M12.5 7a4 4 0 0 1 0 6M15 4.8a7.3 7.3 0 0 1 0 10.4" />
+          </svg>
+        </span>
+        <span class="pill__label" id="sound-label">Unmute</span>
+      </button>
+
+      <div class="focus" role="group" aria-label="Camera vessel focus">
+        <button type="button" class="focus__btn is-active" data-mode="overview" aria-pressed="true">Overview</button>
+        <button type="button" class="focus__btn" data-mode="follow" aria-pressed="false">Follow Ship</button>
+        <button type="button" class="focus__btn" data-mode="free" aria-pressed="false">Free Look</button>
+      </div>
+
+      <a class="pill pill--accent" id="contact-button" href="#abyss" data-scroll-to="abyss">
+        Contact
+        <span class="pill__arrow" aria-hidden="true">↘</span>
+      </a>
+    </div>
+
+    <p class="focus-status" id="focus-status" aria-live="polite"></p>
+  </header>
+
+  <!-- ==================================================== depth ruler ==== -->
+  <aside class="ruler" id="depth-ruler" aria-label="Depth ruler — jump to a station">
+    <div class="ruler__head">
+      <span class="ruler__value" id="depth-value">+1000</span><span class="ruler__unit">m</span>
+    </div>
+    <div class="ruler__track" id="ruler-track">
+      <div class="ruler__rail" aria-hidden="true"></div>
+      <div class="ruler__fill" id="ruler-fill" aria-hidden="true"></div>
+      <div class="ruler__marker" id="ruler-marker" aria-hidden="true"><span></span></div>
+      <!-- ticks are injected from the section list in src/config/portfolio.js -->
+    </div>
+    <p class="ruler__zone" id="depth-zone">Sky / Surface</p>
+  </aside>
+
+  <!-- ======================================================= content ===== -->
+  <main id="content" class="content">
+
+    <!-- +1000 m · sky ------------------------------------------------- -->
+    <section class="section section--sky" id="sky" data-depth="1000" data-theme="light">
+      <div class="section__inner section__inner--hero">
+        <p class="eyebrow" data-reveal>
+          <span class="eyebrow__depth">+1000 m</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span class="eyebrow__zone">Sky · Troposphere</span>
+        </p>
+
+        <h1 class="display" data-reveal>
+          <span data-bind="hero.lineOne">Interfaces for</span>
+          <span class="display__em" data-bind="hero.lineTwo">the parts of the web</span>
+          <span data-bind="hero.lineThree">nobody has drawn yet.</span>
+        </h1>
+
+        <p class="lede" data-reveal data-bind="hero.lede">
+          Deep-Ocean Studio is a one-person practice for real-time 3D, motion and
+          front-end craft — building sites, products and instruments that hold
+          their shape at pressure.
+        </p>
+
+        <div class="hero__meta" data-reveal>
+          <span data-bind="hero.availability">Booking projects for Q1 2027</span>
+          <span class="dot" aria-hidden="true"></span>
+          <span data-bind="hero.location">Lisbon · working remotely</span>
+        </div>
+
+        <a class="scroll-cue" href="#surface" data-scroll-to="surface" data-reveal>
+          <span class="scroll-cue__line" aria-hidden="true"></span>
+          <span>Scroll to explore — 8000 metres of it</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 0 m · sea surface --------------------------------------------- -->
+    <section class="section section--surface" id="surface" data-depth="0" data-theme="light">
+      <div class="section__inner">
+        <p class="eyebrow" data-reveal>
+          <span class="eyebrow__depth">0 m</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span class="eyebrow__zone">Sea level · Fleet</span>
+        </p>
+
+        <h2 class="headline" data-reveal data-bind="about.title">Between sky and seabed</h2>
+
+        <div class="prose" data-reveal>
+          <p data-bind="about.bodyOne">
+            I work where design meets the render loop: shaders, cameras, physics
+            and type on the same canvas. Most of it never ships as a “3D site” —
+            it ships as a product that finally feels like it has a body.
+          </p>
+          <p data-bind="about.bodyTwo">
+            Twelve years of front-end, six of real-time graphics, one rule:
+            motion has to explain something. If it doesn’t, it comes out.
+          </p>
+        </div>
+
+        <ul class="values" data-reveal>
+          <li class="value" data-value-index="0">
+            <span class="value__num" aria-hidden="true">01</span>
+            <h3 class="value__title" data-bind="values.0.title">Reduce to the essential</h3>
+            <p class="value__body" data-bind="values.0.body">One idea per screen, one reason per movement.</p>
+          </li>
+          <li class="value" data-value-index="1">
+            <span class="value__num" aria-hidden="true">02</span>
+            <h3 class="value__title" data-bind="values.1.title">Performance is design</h3>
+            <p class="value__body" data-bind="values.1.body">Sixty frames on a four-year-old laptop, or it isn’t finished.</p>
+          </li>
+          <li class="value" data-value-index="2">
+            <span class="value__num" aria-hidden="true">03</span>
+            <h3 class="value__title" data-bind="values.2.title">Build it, then keep it</h3>
+            <p class="value__body" data-bind="values.2.body">Handover with docs, budgets and a scene you can actually maintain.</p>
+          </li>
+        </ul>
+
+        <!-- live telemetry, filled every frame from the ship simulation -->
+        <aside class="telemetry" data-reveal aria-label="Live vessel telemetry">
+          <div class="telemetry__head">
+            <span class="telemetry__dot" aria-hidden="true"></span>
+            <span>Live vessel telemetry</span>
+            <span class="telemetry__count" id="tel-count">5 vessels</span>
+          </div>
+          <dl class="telemetry__grid">
+            <div><dt>Nearest vessel</dt><dd id="tel-vessel">MV Meridian Express</dd></div>
+            <div><dt>Range</dt><dd><span id="tel-range">—</span> m</dd></div>
+            <div><dt>Speed</dt><dd><span id="tel-speed">—</span> kn</dd></div>
+            <div><dt>Bearing</dt><dd><span id="tel-bearing">—</span>°</dd></div>
+            <div><dt>Camera depth</dt><dd><span id="tel-depth">—</span> m</dd></div>
+            <div><dt>Sea state</dt><dd id="tel-sea">Moderate · 1.2 m swell</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <!-- −200 m · sunlit ---------------------------------------------- -->
+    <section class="section section--sunlit" id="sunlit" data-depth="-200" data-theme="light">
+      <div class="section__inner">
+        <p class="eyebrow" data-reveal>
+          <span class="eyebrow__depth">−200 m</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span class="eyebrow__zone">Epipelagic · Sunlit</span>
+        </p>
+
+        <article class="project" data-reveal>
+          <div class="project__index" aria-hidden="true">01</div>
+          <div class="project__body">
+            <p class="project__kicker" data-bind="projects.0.kicker">Featured project</p>
+            <h2 class="project__title" data-bind="projects.0.title">Trench Atlas</h2>
+            <p class="project__meta">
+              <span data-bind="projects.0.year">2026</span>
+              <span class="dot" aria-hidden="true"></span>
+              <span data-bind="projects.0.role">Creative direction · WebGL · Front-end</span>
+            </p>
+            <p class="project__summary" data-bind="projects.0.summary">
+              A real-time seabed explorer for a marine research institute: 40 years
+              of sonar into a single navigable trench, streamed in tiles and lit by
+              the same depth curve this page uses.
+            </p>
+            <ul class="chips">
+              <li class="chip" data-bind="projects.0.stack.0">Three.js</li>
+              <li class="chip" data-bind="projects.0.stack.1">WebGL2</li>
+              <li class="chip" data-bind="projects.0.stack.2">TypeScript</li>
+              <li class="chip" data-bind="projects.0.stack.3">D3</li>
+            </ul>
+            <a class="project__link" data-bind-href="projects.0.url" href="#" target="_blank" rel="noopener noreferrer">
+              <span data-bind="projects.0.cta">View the case study</span>
+              <span class="project__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- −1000 m · twilight -------------------------------------------- -->
+    <section class="section section--twilight" id="twilight" data-depth="-1000" data-theme="deep">
+      <div class="section__inner">
+        <p class="eyebrow" data-reveal>
+          <span class="eyebrow__depth">−1000 m</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span class="eyebrow__zone">Mesopelagic · Twilight</span>
+        </p>
+
+        <article class="project project--compact" data-reveal>
+          <div class="project__index" aria-hidden="true">02</div>
+          <div class="project__body">
+            <p class="project__kicker" data-bind="projects.1.kicker">Featured project</p>
+            <h2 class="project__title" data-bind="projects.1.title">Tidewater</h2>
+            <p class="project__meta">
+              <span data-bind="projects.1.year">2025</span>
+              <span class="dot" aria-hidden="true"></span>
+              <span data-bind="projects.1.role">Concept · Sound design · Front-end</span>
+            </p>
+            <p class="project__summary" data-bind="projects.1.summary">
+              An eight-hour generative broadcast for a coastal radio station. Six
+              wave trains, one tide table, zero audio assets — every swell and bell
+              is synthesised in the browser from noise and a weather feed.
+            </p>
+            <ul class="chips">
+              <li class="chip" data-bind="projects.1.stack.0">Web Audio</li>
+              <li class="chip" data-bind="projects.1.stack.1">GLSL</li>
+              <li class="chip" data-bind="projects.1.stack.2">Svelte</li>
+            </ul>
+            <a class="project__link" data-bind-href="projects.1.url" href="#" target="_blank" rel="noopener noreferrer">
+              <span data-bind="projects.1.cta">Listen &amp; read</span>
+              <span class="project__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <div class="capabilities" data-reveal>
+          <h3 class="subhead">What I do</h3>
+          <ul class="capabilities__list">
+            <li class="capability">
+              <span class="capability__name" data-bind="capabilities.0.name">Real-time 3D</span>
+              <span class="capability__detail" data-bind="capabilities.0.detail">WebGL / WebGPU scene architecture, custom shaders, procedural everything.</span>
+            </li>
+            <li class="capability">
+              <span class="capability__name" data-bind="capabilities.1.name">Interaction &amp; motion</span>
+              <span class="capability__detail" data-bind="capabilities.1.detail">Scroll systems, camera rigs, transitions that keep their footing.</span>
+            </li>
+            <li class="capability">
+              <span class="capability__name" data-bind="capabilities.2.name">Creative direction</span>
+              <span class="capability__detail" data-bind="capabilities.2.detail">Concept, storyboard, art direction and the pitch that gets it funded.</span>
+            </li>
+            <li class="capability">
+              <span class="capability__name" data-bind="capabilities.3.name">Front-end engineering</span>
+              <span class="capability__detail" data-bind="capabilities.3.detail">Production builds with performance budgets and accessibility built in.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- −3500 m · midnight -------------------------------------------- -->
+    <section class="section section--midnight" id="midnight" data-depth="-3500" data-theme="deep">
+      <div class="section__inner">
+        <p class="eyebrow" data-reveal>
+          <span class="eyebrow__depth">−3500 m</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span class="eyebrow__zone">Bathypelagic · Midnight</span>
+        </p>
+
+        <article class="project project--compact" data-reveal>
+          <div class="project__index" aria-hidden="true">03</div>
+          <div class="project__body">
+            <p class="project__kicker" data-bind="projects.2.kicker">Featured project</p>
+            <h2 class="project__title" data-bind="projects.2.title">Deep Field</h2>
+            <p class="project__meta">
+              <span data-bind="projects.2.year">2024</span>
+              <span class="dot" aria-hidden="true"></span>
+              <span data-bind="projects.2.role">Design system · Component library</span>
+            </p>
+            <p class="project__summary" data-bind="projects.2.summary">
+              A visual language and WebGL component library for an oceanographic
+              SaaS: depth-coded charts, pressure-tested colour, and a scene layer
+              that any product team can drop into a React app.
+            </p>
+            <ul class="chips">
+              <li class="chip" data-bind="projects.2.stack.0">React</li>
+              <li class="chip" data-bind="projects.2.stack.1">three.js</li>
+              <li class="chip" data-bind="projects.2.stack.2">Storybook</li>
+            </ul>
+            <a class="project__link" data-bind-href="projects.2.url" href="#" target="_blank" rel="noopener noreferrer">
+              <span data-bind="projects.2.cta">Open the docs</span>
+              <span class="project__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <div class="architecture" data-reveal>
+          <h3 class="subhead">How this page is built</h3>
+          <ol class="architecture__list">
+            <li class="arch">
+              <span class="arch__num" aria-hidden="true">i</span>
+              <h4 class="arch__title" data-bind="architecture.0.title">One scene graph, six stations</h4>
+              <p class="arch__body" data-bind="architecture.0.body">
+                Sky, ocean, fleet and trench are four modules sharing one contract:
+                sea level at y = 0, the sky at y = 180, the seabed at y = −420.
+              </p>
+            </li>
+            <li class="arch">
+              <span class="arch__num" aria-hidden="true">ii</span>
+              <h4 class="arch__title" data-bind="architecture.1.title">Depth drives everything</h4>
+              <p class="arch__body" data-bind="architecture.1.body">
+                Fog, ambient light, water colour, particle density and the sound
+                mix all read from one environment curve sampled at the camera.
+              </p>
+            </li>
+            <li class="arch">
+              <span class="arch__num" aria-hidden="true">iii</span>
+              <h4 class="arch__title" data-bind="architecture.2.title">Audio is synthesised, not sampled</h4>
+              <p class="arch__body" data-bind="architecture.2.body">
+                Every wave, engine rumble and sonar sweep is generated live with the
+                Web Audio API, then muffled by the same depth the visuals use.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- −7000 m · abyss ----------------------------------------------- -->
+    <section class="section section--abyss" id="abyss" data-depth="-7000" data-theme="deep">
+      <div class="section__inner section__inner--contact">
+        <p class="eyebrow" data-reveal>
+          <span class="eyebrow__depth">−7000 m</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span class="eyebrow__zone">Abyssopelagic · Seabed</span>
+        </p>
+
+        <h2 class="display display--contact" data-reveal data-bind="contact.title">Let’s go down together.</h2>
+
+        <p class="lede lede--contact" data-reveal data-bind="contact.body">
+          New projects, collaborations and long conversations about shaders are
+          all welcome. I answer within two days, usually from a desk with too many
+          monitors.
+        </p>
+
+        <a class="mailto" data-reveal data-bind-href="contact.emailHref" href="mailto:hello@example.com">
+          <span class="mailto__label">Write to me</span>
+          <span class="mailto__value" data-bind="contact.email">hello@example.com</span>
+        </a>
+
+        <ul class="links" data-reveal id="contact-links">
+          <!-- injected from config.contact.links -->
+        </ul>
+
+        <footer class="footer" data-reveal>
+          <p class="footer__credit" data-bind="footer.credit">
+            Built with three.js, GSAP and Lenis. No textures, no video — every
+            pixel is procedural.
+          </p>
+          <p class="footer__meta">
+            <span data-bind="brand.name">DEEP OCEAN STUDIO</span>
+            <span class="dot" aria-hidden="true"></span>
+            <span id="footer-year">2026</span>
+            <span class="dot" aria-hidden="true"></span>
+            <button type="button" class="footer__top" data-scroll-to="sky">Back to the surface ↑</button>
+          </p>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

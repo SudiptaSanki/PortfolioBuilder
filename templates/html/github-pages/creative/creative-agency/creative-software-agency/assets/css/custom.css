@@ -1,0 +1,199 @@
+/* ==========================================================================
+   Creative Software Agency — site-specific additions
+   Built on top of the vendored component stylesheet (site.css).
+   Everything here is either a rebrand (hand-lettered wordmarks, watermarks)
+   or the small amount of styling my own animation layer needs.
+   ========================================================================== */
+
+/* --- Wordmarks -----------------------------------------------------------
+   The original lettering was an SVG mask; this build draws the same shapes
+   with the blackletter display face instead, so no original artwork or name
+   is carried over. */
+
+.site-navigation__wordmark {
+  --asset-logo-word: none;
+  -webkit-mask: none;
+  mask: none;
+  background: none;
+  width: auto;
+  height: auto;
+  font-family: var(--font-hog-eyebrow);
+  font-size: 1.3rem;
+  line-height: 1;
+  letter-spacing: 0.005em;
+  white-space: nowrap;
+  translate: 0 0.08em;
+}
+
+.site-navigation__tab.active .site-navigation__wordmark,
+.site-navigation__tab:hover .site-navigation__wordmark {
+  color: var(--nav-tab-ink);
+}
+
+.site-footer__wordmark {
+  aspect-ratio: auto;
+  width: auto;
+}
+
+.site-footer__wordmark > span {
+  -webkit-mask: none;
+  mask: none;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: var(--font-hog-eyebrow);
+  line-height: 0.82;
+  letter-spacing: -0.01em;
+}
+
+.site-footer__wordmark .wordmark-top {
+  font-size: clamp(0.8rem, 0.66rem + 0.35vw, 1rem);
+  letter-spacing: 0.04em;
+  padding-left: 0.35em;
+}
+
+.site-footer__wordmark .wordmark-bottom {
+  font-size: clamp(3rem, 2.2rem + 4.4vw, 5.6rem);
+  text-transform: lowercase;
+}
+
+.site-footer__wordmark .wordmark-top {
+  font-size: clamp(0.85rem, 0.7rem + 0.5vw, 1.15rem);
+}
+
+/* --- Watermarks (the oversized ghost lettering behind dark sections) ----- */
+
+.watermark--g,
+.watermark--giants {
+  -webkit-mask: none;
+  mask: none;
+  background: none;
+}
+
+.watermark--g {
+  aspect-ratio: auto;
+  display: grid;
+  place-items: center;
+}
+
+.watermark--g .watermark-glyph {
+  font-family: var(--font-hog-eyebrow);
+  font-size: 30vw;
+  line-height: 0.74;
+  color: var(--watermark-tint, color-mix(in oklab, var(--ochre) 5%, transparent));
+  translate: 4vw 0;
+}
+
+.watermark--giants {
+  aspect-ratio: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  overflow: clip;
+}
+
+.watermark--giants .watermark-glyph {
+  font-family: var(--font-hog-eyebrow);
+  font-size: 26cqi;
+  line-height: 0.78;
+  letter-spacing: -0.02em;
+  color: var(--watermark-tint, color-mix(in oklab, var(--ochre) 5%, transparent));
+  white-space: nowrap;
+}
+
+/* --- Work cards: the bespoke pointer ------------------------------------ */
+
+.work-card {
+  cursor: url("../img/cursor-hand.svg") 14 4, pointer;
+}
+
+.work-card-art__shot img {
+  /* keeps the mock screenshots crisp when they are scaled into the frames */
+  image-rendering: auto;
+}
+
+/* --- Reveal layer --------------------------------------------------------
+   Elements start hidden only when the animation layer is running, so the
+   page stays readable with scripting off. */
+
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(1.15rem);
+}
+
+html.js .reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+html.no-motion .reveal {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* --- Hero parallax ------------------------------------------------------- */
+
+.home-hero__walker,
+.home-hero__boulder {
+  will-change: transform;
+}
+
+/* --- Marquee-free utility bits ------------------------------------------ */
+
+.section-anchor {
+  scroll-margin-top: 5rem;
+}
+
+/* Mobile nav panel (the built page is a one-pager, so the menu simply
+   lists the same anchors) */
+.nav-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: none;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 5.5rem 1.5rem 2rem;
+  background: var(--moss-deep);
+  color: var(--paper);
+}
+
+.nav-panel[data-open="true"] {
+  display: flex;
+}
+
+.nav-panel a {
+  font-family: var(--font-hog-impact);
+  font-size: clamp(1.75rem, 8vw, 2.5rem);
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--paper);
+  padding: 0.55rem 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--paper) 22%, transparent);
+}
+
+.nav-panel .nav-panel__close {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+  color: var(--moss-deep);
+  font-size: 1.1rem;
+  border: 0;
+  cursor: pointer;
+}
+
+body.nav-open {
+  overflow: hidden;
+}
+
+@media (min-width: 40rem) {
+  .nav-panel {
+    display: none !important;
+  }
+}

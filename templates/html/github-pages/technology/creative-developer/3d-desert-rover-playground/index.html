@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5" />
+<title>3D Desert Rover Playground — Interactive Portfolio</title>
+<meta name="description" content="A drivable 3D portfolio across a wide desert island. Six projects, oasis ponds, and a toy car with opinions. Built with Three.js and GSAP." />
+<meta name="theme-color" content="#e99673" />
+<meta property="og:title" content="DUNE ROVER® — Playground" />
+<meta property="og:description" content="A drivable 3D portfolio. Drive the island, knock things over, read the work." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c2674a'/%3E%3Cpath d='M14 46V18h6l12 16V18h6v28h-6L20 30v16z' fill='%23fff4e6'/%3E%3Ccircle cx='47' cy='43' r='4' fill='%23f4d488'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/fonts.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-loading="1">
+
+<canvas id="gl" aria-label="An interactive 3D island. Drive the toy car with WASD or the arrow keys."></canvas>
+<div id="grain" aria-hidden="true"></div>
+<div id="vignette" aria-hidden="true"></div>
+
+<!-- ───────────────────────── HUD ───────────────────────── -->
+<header id="hud-top">
+  <div class="brand">
+    <span class="brand__mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32"><path d="M5 27V5h4.4l9.2 13.4V5h4.4v22h-4.4L9.4 13.6V27z" fill="currentColor"/><circle cx="26.5" cy="23" r="3" fill="#f4d488"/></svg>
+    </span>
+    <div class="brand__text">
+      <span class="brand__name">DUNE ROVER<sup>®</sup></span>
+      <span class="brand__sub">CREATIVE DEVELOPER — 3D &amp; INTERACTION</span>
+    </div>
+  </div>
+
+  <div class="top-right">
+    <div id="zoneTag" class="zone-tag"><i></i><span id="zoneTagText">INTRO</span></div>
+    <button id="soundBtn" class="chip" type="button" aria-pressed="true" title="Toggle sound (M)">
+      <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span id="soundLabel">SOUND ON</span>
+    </button>
+  </div>
+</header>
+
+<!-- controls, bottom left -->
+<aside id="hud-controls" class="panel">
+  <div class="panel__label">CONTROLS: WASD / ARROWS</div>
+  <div class="keys" aria-hidden="true">
+    <div class="keyrow">
+      <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+      <span class="or">/</span>
+      <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd>
+    </div>
+  </div>
+  <div class="hint">
+    <span class="hint__desktop">SCROLL: TOUR · DRAG: ORBIT<br />CLICK GROUND: DRIVE · <kbd>R</kbd> RESET</span>
+    <span class="hint__touch">SWIPE ↑↓ FOR THE TOUR · TAP A ZONE TO DRIVE THERE</span>
+  </div>
+</aside>
+
+<!-- speed + minimap, bottom right -->
+<aside id="hud-meta">
+  <div class="minimap">
+    <canvas id="minimap" width="168" height="168" aria-hidden="true"></canvas>
+    <span class="minimap__n">N</span>
+  </div>
+  <div class="speedo">
+    <div class="speedo__num"><span id="kmh">0</span><i>KM/H</i></div>
+    <div class="speedo__bar"><i id="speedFill"></i></div>
+  </div>
+</aside>
+
+<!-- zones + quick actions -->
+<div id="dock">
+  <div id="dockactions" class="dock-actions" aria-label="Quick actions">
+    <button id="tourBtn" class="act act--tour" type="button" aria-pressed="false"><i aria-hidden="true"></i><span>AUTO TOUR</span></button>
+    <button id="projBtn" class="act" type="button">PROJECTS LIST</button>
+    <button id="contactBtn" class="act" type="button">CONTACT</button>
+  </div>
+  <nav id="zonebar" aria-label="Quick jump between zones">
+    <button class="pill" type="button" data-zone="intro"><span>01</span>INTRO</button>
+    <button class="pill" type="button" data-zone="projects"><span>02</span>PROJECTS</button>
+    <button class="pill" type="button" data-zone="playground"><span>03</span>PLAYGROUND</button>
+    <button class="pill" type="button" data-zone="about"><span>04</span>ABOUT</button>
+    <button class="pill" type="button" data-zone="contact"><span>05</span>CONTACT</button>
+  </nav>
+</div>
+
+<!-- touch dpad -->
+<div id="dpad" aria-label="Directional pad">
+  <button class="dpad__btn dpad__btn--up" data-dir="up" aria-label="Accelerate"><svg viewBox="0 0 24 24"><path d="M12 5l7 9H5z" fill="currentColor"/></svg></button>
+  <button class="dpad__btn dpad__btn--left" data-dir="left" aria-label="Steer left"><svg viewBox="0 0 24 24"><path d="M5 12l9-7v14z" fill="currentColor"/></svg></button>
+  <button class="dpad__btn dpad__btn--down" data-dir="down" aria-label="Reverse"><svg viewBox="0 0 24 24"><path d="M12 19l-7-9h14z" fill="currentColor"/></svg></button>
+  <button class="dpad__btn dpad__btn--right" data-dir="right" aria-label="Steer right"><svg viewBox="0 0 24 24"><path d="M19 12l-9 7V5z" fill="currentColor"/></svg></button>
+  <span class="dpad__hub" aria-hidden="true">N</span>
+</div>
+
+<div id="toast" role="status" aria-live="polite"><span id="toastText"></span></div>
+<div id="nearHint" aria-hidden="true"><kbd>CLICK</kbd><span>OPEN CASE STUDY</span></div>
+
+<!-- ───────────────────────── case-study drawer ───────────────────────── -->
+<div id="scrim" aria-hidden="true"></div>
+<aside id="drawer" role="dialog" aria-modal="true" aria-label="Case study" aria-hidden="true">
+  <div id="drawerScroll" tabindex="0"></div>
+  <button id="drawerClose" type="button" aria-label="Close case study">
+    <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+    <span>CLOSE</span>
+  </button>
+</aside>
+
+<!-- ───────────────────────── loader / intro ───────────────────────── -->
+<div id="loader" role="status" aria-live="polite">
+  <div class="loader__top">
+    <span>DUNE ROVER® — PLAYGROUND</span>
+    <span>DESERT / 001</span>
+  </div>
+  <div class="loader__mid">
+    <div class="loader__kicker">A DRIVABLE PORTFOLIO — 2026</div>
+    <h1 class="loader__title"><span>Play</span><em>ground</em></h1>
+    <p class="loader__copy">Six projects, an oasis or two, and a toy car with opinions.<br />Drive it. Find the water. Read the work.</p>
+  </div>
+  <div class="loader__bottom">
+    <div class="loader__bar"><i id="loadFill"></i></div>
+    <div class="loader__row">
+      <span id="loadStatus">WARMING THE ENGINE</span>
+      <span id="loadPct">000</span>
+    </div>
+    <div class="loader__keys">SCROLL OR SWIPE TO TOUR · WASD / ARROWS TO DRIVE · TAP A ZONE TO DRIVE THERE</div>
+  </div>
+</div>
+
+<script src="vendor/three.min.js"></script>
+<script src="vendor/gsap.min.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/car.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

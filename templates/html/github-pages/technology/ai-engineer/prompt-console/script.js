@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     contact: `
       <div class="terminal-line">// CONTACT GATEWAY //</div>
       <div class="terminal-line">EMAIL: k.vance@prompt-systems.io</div>
-      <div class="terminal-line">GITHUB: github.com/kaelen-vance</div>
+      <div class="terminal-line">GITHUB: github.com/SudiptaSanki/PortfolioBuilder</div>
       <div class="terminal-line">SECURE_SIGNAL: +1 (503) 555-0182</div>
     `,
     help: `
