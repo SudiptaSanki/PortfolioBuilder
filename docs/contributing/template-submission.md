@@ -14,25 +14,23 @@ This guide details the complete process for building, documenting, deploying, an
 
 ## 2. Directory Structure
 
-Create your template directory inside `templates/`:
+Create your template directory inside `templates/` following the canonical 6-level layout (`templates/<rendering>/<stack>/<category>/<role>/<slug>/`):
 
 ```
 templates/
-└── <framework>/
-    └── <provider>/
-        └── <genre>/
-            └── <role>/
-                └── <theme-name>/
-                    ├── index.html        # Entrypoint (or App.vue / page.tsx)
-                    ├── css/
-                    │   └── style.css
-                    ├── js/
-                    │   └── main.js
+└── <rendering>/          # static | ssr | edge
+    └── <stack>/          # html | react | vue | nextjs
+        └── <category>/   # from registry/roles.json (18 categories)
+            └── <role>/   # registered role slug in registry/roles.json
+                └── <slug>/
+                    ├── index.html        # Entrypoint
+                    ├── style.css
+                    ├── app.js
                     ├── README.md         # Template documentation
                     └── template.json     # REQUIRED: Canonical metadata
 ```
 
-*(Note: Contributed standalone dynamic templates can also use `templates/<theme-name>/` directly with appropriate `source.path` configured in `template.json`).*
+> Hosting provider (`github-pages`, `cloudflare-pages`, `vercel`, `netlify`, external) is **never** part of the folder path — it lives only inside `template.json → deployment`.
 
 ---
 
@@ -45,9 +43,10 @@ Every template must contain a `template.json` file in its root directory:
   "$schema": "https://portfoliobuilders.dev/schemas/template-v1.json",
   "id": "quantum-dev-portfolio",
   "name": "Quantum Developer Portfolio",
-  "category": "technology",
+  "category": "technical",
   "role": "Quantum Computing Engineer",
-  "subcategory": "quantum-engineer",
+  "roleSlug": "quantum-engineer",
+  "subCategory": "security-infra",
   "framework": "html",
   "stack": "HTML/CSS/JS",
   "theme": "Dark Quantum Qubit Neon",
@@ -57,32 +56,30 @@ Every template must contain a `template.json` file in its root directory:
     "quantum",
     "developer",
     "dark",
-    "multi-page",
+    "single-page",
     "html",
     "css",
     "js",
-    "technology"
+    "technical"
   ],
   "description": "High-contrast dark developer portfolio featuring interactive particle physics background and project research archives.",
   "source": {
-    "path": "templates/html/github-pages/technology/quantum-engineer/quantum-dev",
+    "path": "templates/static/html/technical/quantum-engineer/quantum-dev-portfolio",
     "entry": "index.html"
   },
   "deployment": {
     "provider": "github-pages",
     "type": "shared-static",
     "shard": "github-pages-01",
+    "managedBy": "core",
     "status": "active",
     "baseUrl": "https://sudiptasanki.github.io/PortfolioBuilder",
-    "path": "technology/quantum-engineer/quantum-dev",
-    "liveUrl": "https://sudiptasanki.github.io/PortfolioBuilder/technology/quantum-engineer/quantum-dev/index.html"
-  },
-  "preview": {
-    "image": "https://raw.githubusercontent.com/Alex-DevDrift/Assets/main/portfoliobuilders/images/img_quantum_dev.webp"
+    "path": "technical/quantum-engineer/quantum-dev-portfolio",
+    "liveUrl": "https://sudiptasanki.github.io/PortfolioBuilder/technical/quantum-engineer/quantum-dev-portfolio/index.html"
   },
   "contributor": {
-    "name": "Jane Doe",
-    "github": "janedoe"
+    "name": "Community Contributor",
+    "github": "github-handle"
   }
 }
 ```
@@ -91,12 +88,13 @@ Every template must contain a `template.json` file in its root directory:
 
 | Field | Type | Description |
 | :--- | :--- | :--- |
-| `id` | `string` | Unique, lowercase alphanumeric with hyphens (e.g. `quantum-dev-portfolio`). |
-| `name` | `string` | Clean human-readable display title. |
-| `category` | `string` | Must be one of: `technology`, `creative`, `business`, `academic`, `health-wellness`, `services`, `retail`, `startup`, `gaming`, `music`, `events`, `medical`. |
-| `role` | `string` | Target profession (e.g. `Frontend Developer`, `Architect`). |
-| `framework` | `string` | Must be one of: `html`, `react`, `vue`, `nextjs`, `astro`, `svelte`, `vanilla`. |
-| `rendering` | `string` | Must be one of: `static`, `spa`, `ssr`, `edge`. |
+| `id` | `string` | Unique lowercase slug matching the folder name (e.g. `quantum-dev-portfolio`). |
+| `name` | `string` | Clean Type + Role display title (no third-party brand or person names). |
+| `category` | `string` | Must match `registry/roles.json` (`technical`, `engineering`, `research`, `educator`, `medical`, `wellness-sports`, `agriculture`, `transport-aviation`, `construction-trades`, `creative`, `business`, `law-public`, `music`, `retail`, `services`, `startup`, `gaming`, `festival`). |
+| `role` | `string` | Human-readable profession title. |
+| `roleSlug` | `string` | Canonical `<role>` folder slug registered in `registry/roles.json`. |
+| `framework` | `string` | `html`, `react`, `vue`, `nextjs`, `astro`, `svelte`, or `vanilla`. |
+| `rendering` | `string` | `static`, `ssr`, or `edge` (`spa` frameworks are built into `static` with `appType: "spa"`). |
 | `deployment.type` | `string` | `shared-static`, `contributor-hosted`, `managed-runtime`, `edge-runtime`, or `external`. |
 | `deployment.provider` | `string` | `github-pages`, `cloudflare-pages`, `vercel`, `netlify`, `custom`, or `external`. |
 | `deployment.status` | `string` | `active`, `pending`, `broken`, `deprecated`, or `migrated`. Default is `active`. |

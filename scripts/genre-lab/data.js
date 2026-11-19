@@ -7,7 +7,7 @@
 
 const GENRES = [
   // ---- TECHNOLOGY · engineers ----
-  { slug: 'software-engineer', name: 'Software Engineer', hue: 217, cat: 'technology', role: 'Software Engineer',
+  { slug: 'software-engineer', name: 'Software Engineer', hue: 217, cat: 'technical', role: 'Software Engineer',
     tag: 'I build systems that stay boring at 3 a.m. — and that is the compliment.',
     skills: ['System design', 'TypeScript', 'APIs at scale', 'Databases', 'Testing culture', 'Code review'],
     projects: [
@@ -17,7 +17,7 @@ const GENRES = [
       ['Schema Doctor', 'Migration linter that killed our 3 a.m. pages.'],
       ['Atlas UI', 'Internal console for 200 microservices.'],
       ['GreenDeploy', 'Progressive delivery gates with instant rollback.']] },
-  { slug: 'civil-engineer', name: 'Civil Engineer', hue: 28, cat: 'technology', role: 'Civil Engineer',
+  { slug: 'civil-engineer', name: 'Civil Engineer', hue: 28, cat: 'engineering', role: 'Civil Engineer',
     tag: 'Bridges, drainage, and the paperwork that keeps cities standing.',
     skills: ['Structural analysis', 'AutoCAD & Civil 3D', 'Site inspection', 'Soil reports', 'Load modeling', 'Codes & permits'],
     projects: [
@@ -27,7 +27,7 @@ const GENRES = [
       ['Campus Loop Road', 'A complete street rebuild with permeable paving.'],
       ['Depot Retrofit', 'Seismic strengthening of a 1930s rail depot.'],
       ['Canal Footbridges', 'Three pedestrian spans, one visual language.']] },
-  { slug: 'mechanical-engineer', name: 'Mechanical Engineer', hue: 199, cat: 'technology', role: 'Mechanical Engineer',
+  { slug: 'mechanical-engineer', name: 'Mechanical Engineer', hue: 199, cat: 'engineering', role: 'Mechanical Engineer',
     tag: 'Tolerances, thermal paths, and things that spin without complaining.',
     skills: ['CAD (SolidWorks)', 'FEA simulation', 'DFM', 'Thermal design', 'Prototyping', 'Tolerance stack-up'],
     projects: [
@@ -37,7 +37,7 @@ const GENRES = [
       ['Foldable Frame', 'Flat-packing chassis for a field-deployed lab.'],
       ['Valve Block', 'Manifold redesign cutting assembly time in half.'],
       ['Bearing Study', 'A failure analysis that changed our supplier spec.']] },
-  { slug: 'electrical-engineer', name: 'Electrical Engineer', hue: 52, cat: 'technology', role: 'Electrical Engineer',
+  { slug: 'electrical-engineer', name: 'Electrical Engineer', hue: 52, cat: 'engineering', role: 'Electrical Engineer',
     tag: 'From schematic to certified board — with the EMI nightmares in between.',
     skills: ['PCB design', 'Embedded C', 'Power electronics', 'Signal integrity', 'EMC testing', 'Firmware bring-up'],
     projects: [
@@ -47,7 +47,7 @@ const GENRES = [
       ['EMC Rescue', 'A board that failed chambers until we moved one capacitor.'],
       ['Power Tree Audit', 'Rail analysis that saved 400 mW of standby draw.'],
       ['Bench Automator', 'Scripted instrument control for overnight tests.']] },
-  { slug: 'robotics-engineer', name: 'Robotics Engineer', hue: 158, cat: 'technology', role: 'Robotics Engineer',
+  { slug: 'robotics-engineer', name: 'Robotics Engineer', hue: 158, cat: 'engineering', role: 'Robotics Engineer',
     tag: 'Kinematics, control loops, and robots that apologize before they bump.',
     skills: ['ROS 2', 'Motion planning', 'SLAM', 'Control theory', 'Computer vision', 'Actuator tuning'],
     projects: [
@@ -57,7 +57,7 @@ const GENRES = [
       ['Gait Lab', 'Quadruped footing on gravel and wet tile.'],
       ['Pick Cell', 'Bin picking at 97 % success with depth sensing.'],
       ['Safety Stack', 'ISO 13849 wiring for a shared-floor cell.']] },
-  { slug: 'data-scientist', name: 'Data Scientist', hue: 262, cat: 'technology', role: 'Data Scientist',
+  { slug: 'data-scientist', name: 'Data Scientist', hue: 262, cat: 'technical', role: 'Data Scientist',
     tag: 'Questions in, defensible numbers out — with the caveats still attached.',
     skills: ['Python & pandas', 'Experiment design', 'Causal inference', 'SQL at scale', 'Visualization', 'Storytelling'],
     projects: [
@@ -67,7 +67,7 @@ const GENRES = [
       ['Fraud Rings', 'Graph clustering that surfaced 340 linked accounts.'],
       ['Survey Repair', 'Weighting that fixed a 12-point selection bias.'],
       ['Exec Dashboard', 'One screen, seven metrics, zero vanity.']] },
-  { slug: 'game-developer', name: 'Game Developer', hue: 322, cat: 'technology', role: 'Game Developer',
+  { slug: 'game-developer', name: 'Game Developer', hue: 322, cat: 'gaming', role: 'Game Developer',
     tag: 'Game feel first: 16 milliseconds to make a jump feel like a jump.',
     skills: ['Unity / Godot', 'C# & GDScript', 'Shader graph', 'Level design', 'Game feel', 'Profiling'],
     projects: [
@@ -77,7 +77,7 @@ const GENRES = [
       ['NPC Moods', 'A utility-AI pack for believable shopkeepers.'],
       ['Pixel Rig', 'A 2D animation pipeline for a two-person team.'],
       ['Speedrun Mode', 'Replays and ghost data that doubled retention.']] },
-  { slug: 'cybersecurity-analyst', name: 'Cybersecurity Analyst', hue: 0, cat: 'technology', role: 'Cybersecurity Analyst',
+  { slug: 'cybersecurity-analyst', name: 'Cybersecurity Analyst', hue: 0, cat: 'technical', role: 'Cybersecurity Analyst',
     tag: 'I read the logs so you do not have to — and I write down what they said.',
     skills: ['Threat hunting', 'SIEM tuning', 'Incident response', 'Phishing defense', 'Zero trust', 'Red-team basics'],
     projects: [
@@ -87,7 +87,7 @@ const GENRES = [
       ['Lateral Move', 'How an attacker walked — and the three doors we closed.'],
       ['Vendor Risk', 'One questionnaire that vendors actually finish.'],
       [' tabletop Purple', 'Six findings, two patched the same week.']] },
-  { slug: 'web-developer', name: 'Web Developer', hue: 24, cat: 'technology', role: 'Web Developer',
+  { slug: 'web-developer', name: 'Web Developer', hue: 24, cat: 'technical', role: 'Web Developer',
     tag: 'Fast, accessible, and honest about the budget — every kilobyte earns its place.',
     skills: ['Semantic HTML', 'Modern CSS', 'Accessibility', 'Core Web Vitals', 'Edge rendering', 'Design systems'],
     projects: [
@@ -97,7 +97,7 @@ const GENRES = [
       ['Edge Search', 'Typo-tolerant search at the CDN edge.'],
       ['Docs Refresh', 'A docs theme devs actually read.'],
       ['Form Wizard', 'A 14-step form people finish.']] },
-  { slug: 'ml-engineer', name: 'ML Engineer', hue: 190, cat: 'technology', role: 'ML Engineer',
+  { slug: 'ml-engineer', name: 'ML Engineer', hue: 190, cat: 'technical', role: 'ML Engineer',
     tag: 'Models are easy; the pipeline that keeps them honest is the job.',
     skills: ['PyTorch', 'MLOps', 'Feature stores', 'Model evaluation', 'Serving & latency', 'Data contracts'],
     projects: [
@@ -109,7 +109,7 @@ const GENRES = [
       ['Vision QC', 'A camera line catching defects humans missed.']] },
 
   // ---- ACADEMIC ----
-  { slug: 'school-teacher', name: 'School Teacher', hue: 145, cat: 'academic', role: 'School Teacher',
+  { slug: 'school-teacher', name: 'School Teacher', hue: 145, cat: 'educator', role: 'School Teacher',
     tag: 'Twelve years of turning "I can\'t" into "show me another one".',
     skills: ['Curriculum design', 'Differentiation', 'Classroom culture', 'Assessment', 'Parent partnership', 'Ed-tech'],
     projects: [
@@ -119,7 +119,7 @@ const GENRES = [
       ['Family Nights', 'Termly evenings that turned parents into allies.'],
       ['Exit Tickets', 'Two-minute checks that reshaped tomorrow\'s lesson.'],
       ['Peer Tutors', 'Older students coaching younger ones, both growing.']] },
-  { slug: 'university-professor', name: 'University Professor', hue: 222, cat: 'academic', role: 'University Professor',
+  { slug: 'university-professor', name: 'University Professor', hue: 222, cat: 'educator', role: 'University Professor',
     tag: 'Research with rigor, teaching with joy — and office hours with real coffee.',
     skills: ['Grant writing', 'Peer review', 'Lecturing', 'Mentoring', 'Lab management', 'Publication strategy'],
     projects: [
@@ -129,7 +129,7 @@ const GENRES = [
       ['Open Dataset', 'Ten years of field data, freely shared.'],
       ['Mentorship Ring', 'A peer-mentoring network across three cohorts.'],
       ['Conference Keynote', 'Twenty minutes on failure that got a standing ovation.']] },
-  { slug: 'chemist', name: 'Chemist', hue: 132, cat: 'academic', role: 'Chemist',
+  { slug: 'chemist', name: 'Chemist', hue: 132, cat: 'research', role: 'Chemist',
     tag: 'Clean spectra, honest yields, and a lab notebook you could replay a decade later.',
     skills: ['Synthesis planning', 'HPLC & NMR', 'Method validation', 'Lab safety', 'Patience', 'Documentation'],
     projects: [
@@ -139,7 +139,7 @@ const GENRES = [
       ['Method Transfer', 'One HPLC method, three sites, identical results.'],
       ['Teaching Lab', 'An undergrad experiment that never fails — by design.'],
       ['Solvent Audit', 'A lab-wide swap that halved chlorinated waste.']] },
-  { slug: 'physicist', name: 'Physicist', hue: 205, cat: 'academic', role: 'Physicist',
+  { slug: 'physicist', name: 'Physicist', hue: 205, cat: 'research', role: 'Physicist',
     tag: 'Simple models first, then the correction terms, then the wonder.',
     skills: ['Mathematical modeling', 'Lab instrumentation', 'Simulation', 'Data fitting', 'Error analysis', 'Science writing'],
     projects: [
@@ -149,7 +149,7 @@ const GENRES = [
       ['Noise Hunt', 'Finding a vibration source everyone blamed on ghosts.'],
       ['Paper Club', 'A reading group that turned into three collaborations.'],
       ['Calibration Rig', 'A reference setup two other labs adopted.']] },
-  { slug: 'biologist', name: 'Biologist', hue: 95, cat: 'academic', role: 'Biologist',
+  { slug: 'biologist', name: 'Biologist', hue: 95, cat: 'research', role: 'Biologist',
     tag: 'Field notes, microscope hours, and statistics that respect the organism.',
     skills: ['Field survey', 'Microscopy', 'PCR & assays', 'Statistical ecology', 'Species ID', 'Grant reporting'],
     projects: [
@@ -159,7 +159,7 @@ const GENRES = [
       ['Citizen Atlas', '1,200 volunteer observations quality-checked.'],
       ['Water Watch', 'A river monitoring network run by students.'],
       ['Herbarium Digitized', '4,000 specimens scanned and searchable.']] },
-  { slug: 'astronomer', name: 'Astronomer', hue: 258, cat: 'academic', role: 'Astronomer',
+  { slug: 'astronomer', name: 'Astronomer', hue: 258, cat: 'research', role: 'Astronomer',
     tag: 'Long nights, cold domes, and the best signal-to-noise stories anywhere.',
     skills: ['Photometry', 'Telescope ops', 'Data reduction', 'Orbital mechanics', 'Outreach', 'Python pipelines'],
     projects: [
@@ -169,7 +169,7 @@ const GENRES = [
       ['Astro Photo Atlas', 'A year of deep-sky images from a Bortle 6 yard.'],
       ['Dome Automation', 'A roof, a weather station, and zero 2 a.m. drives.'],
       ['Star Party Kit', 'An outreach rig ten schools borrowed.']] },
-  { slug: 'mathematician', name: 'Mathematician', hue: 240, cat: 'academic', role: 'Mathematician',
+  { slug: 'mathematician', name: 'Mathematician', hue: 240, cat: 'research', role: 'Mathematician',
     tag: 'Proofs that fit on a postcard, taught so the class wants the next page.',
     skills: ['Proof writing', 'Combinatorics', 'Numerical methods', 'LaTeX', 'Mentoring', 'Problem design'],
     projects: [
@@ -179,7 +179,7 @@ const GENRES = [
       ['Visual Proofs', 'An animation series with a million views.'],
       ['Crypto Seminar', 'An applied reading group with local banks.'],
       ['Homework Engine', 'Problem sets that adapt without feeling adaptive.']] },
-  { slug: 'historian', name: 'Historian', hue: 30, cat: 'academic', role: 'Historian',
+  { slug: 'historian', name: 'Historian', hue: 30, cat: 'research', role: 'Historian',
     tag: 'Archives, footnotes, and the stories the index cards almost lost.',
     skills: ['Archival research', 'Oral history', 'Source criticism', 'Academic writing', 'Mapping', 'Public history'],
     projects: [

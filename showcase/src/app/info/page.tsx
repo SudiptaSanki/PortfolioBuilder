@@ -50,9 +50,9 @@ export default function InfoPage() {
 
     templates.forEach((t: Template) => {
       const parts = t.path.split('/');
-      const stack = parts[1] || 'unknown';
-      const platform = parts[2] || 'unknown';
-      const genre = parts[3] || 'unknown';
+      const stack = (t as any).framework || (parts[0] === 'templates' ? parts[2] : parts[1]) || 'unknown';
+      const platform = (t as any).deployment?.provider || (t as any).platform || 'unknown';
+      const genre = t.category || parts[3] || 'unknown';
 
       // Genre breakdown
       if (!genreMap[genre]) genreMap[genre] = {};

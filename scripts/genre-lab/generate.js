@@ -1,7 +1,7 @@
 /**
  * genre-lab/generate.js
  * Composes 40 professions × 5 design variants = 200 Genre Lab templates:
- *   templates/html/github-pages/<category>/<role-slug>/<genre-slug>-<scheme>/
+ *   templates/static/html/<category>/<role-slug>/<genre-slug>-<scheme>/
  * Each ships: index.html, style.css, app.js (vanilla, zero deps),
  * run.bat (per-folder shortcut, unique port), README.md (mermaid), template.json,
  * and a static preview SVG into assets-outbox/genre-previews/svg/.
@@ -16,14 +16,14 @@ const { runBat: sharedRunBat } = require('../runbat-template');
 const { appJs } = require('./appjs');
 
 const repoRoot = path.resolve(__dirname, '..', '..');
-const T = path.join(repoRoot, 'templates', 'html', 'github-pages');
+const T = path.join(repoRoot, 'templates', 'static', 'html');
 const OUTBOX = path.join(repoRoot, 'assets-outbox', 'genre-previews', 'svg');
 const ASSETS_CDN = 'https://raw.githubusercontent.com/Alex-DevDrift/Assets/refs/heads/main/portfoliobuilders/images';
 const BASE_PORT = 8830;
 
 // vendored GSAP sources (from the Interactive Collection builds)
 const VENDOR_SRC = {
-  'gsap.min.js': path.join(T, 'technology/creative-developer/3d-desert-rover-playground/vendor/gsap.min.js'),
+  'gsap.min.js': path.join(T, 'technical/creative-developer/3d-desert-rover-playground/vendor/gsap.min.js'),
   'ScrollTrigger.min.js': path.join(T, 'creative/interaction-designer/3d-spatial-zen-garden/vendor/ScrollTrigger.min.js')
 };
 
@@ -155,7 +155,7 @@ Or simply double-click \`run.bat\` in this folder — it serves this exact folde
 Standalone without Python:
 
 \`\`\`bash
-cd templates/html/github-pages/${meta.deployment.path}
+cd templates/static/html/${meta.deployment.path}
 python -m http.server ${meta.port}
 \`\`\`
 
@@ -163,7 +163,7 @@ python -m http.server ${meta.port}
 
 | Option | How |
 |---|---|
-| **This repo (auto)** | Keep under \`templates/html/github-pages/...\` — push to \`main\` deploys to GitHub Pages automatically |
+| **This repo (auto)** | Keep under \`templates/static/html/...\` — push to \`main\` deploys to GitHub Pages automatically |
 | **Netlify / Cloudflare** | Drag-and-drop this folder — zero build step |
 | **Vercel** | Static import, framework preset: Other |
 | **Own repo** | Copy folder → push → enable Pages |
@@ -258,14 +258,14 @@ ${bodyHTML(cfg)}
       const meta = {
         $schema: 'https://portfoliobuilders.dev/schemas/template-v1.json',
         id, name: cfg.theme,
-        category: g.cat, role: g.role, subcategory: g.slug,
-        framework: 'html', stack: 'HTML/CSS/JS + GSAP/ScrollTrigger (vendored)',
+        category: g.cat, role: g.role, roleSlug: g.slug, subcategory: g.slug,
+        framework: 'html', stack: 'HTML/CSS/JS', libraries: ['gsap', 'scrolltrigger'],
         theme: cfg.theme, language: ['html', 'css', 'javascript'], rendering: 'static',
-        tags: ['genre-lab', 'interactive', 'single-page', 'gsap', 'scrolltrigger', `hero-${cfg.hero}`, `works-${cfg.work}`, `cursor-${cfg.cursor}`, `scheme-${scheme}`, g.slug, 'html', 'css', 'js'],
+        tags: ['genre-lab', 'interactive', 'single-page', 'gsap', 'scrolltrigger', `hero-${cfg.hero}`, `works-${cfg.work}`, `cursor-${cfg.cursor}`, `scheme-${scheme}`, g.slug, g.cat, 'html', 'css', 'js'],
         description: `${g.role} portfolio (${cfg.theme} variant): ${cfg.hero} hero, ${cfg.work} work grid, ${cfg.cursor} cursor — from the Genre Lab permutation engine.`,
-        source: { path: `templates/html/github-pages/${deployPath}`, entry: 'index.html' },
+        source: { path: `templates/static/html/${deployPath}`, entry: 'index.html' },
         deployment: {
-          provider: 'github-pages', type: 'shared-static', shard: 'github-pages-01',
+          provider: 'github-pages', type: 'shared-static', shard: 'github-pages-01', managedBy: 'core',
           baseUrl: 'https://sudiptasanki.github.io/PortfolioBuilder', path: deployPath,
           liveUrl: `https://sudiptasanki.github.io/PortfolioBuilder/${deployPath}/index.html`, status: 'active'
         },

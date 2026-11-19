@@ -4,7 +4,9 @@ on:
   push:
     branches: [main]
     paths:
-      - 'templates/html/github-pages/**'
+      - 'templates/static/html/**'
+      - 'deployments/redirects.json'
+      - 'scripts/generate-redirects.js'
   workflow_dispatch:
 
 permissions:
@@ -26,13 +28,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Stage Pages Artifact & Redirects
+        run: node scripts/generate-redirects.js _site
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: templates/html/github-pages
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment

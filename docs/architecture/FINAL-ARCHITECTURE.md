@@ -170,21 +170,22 @@ Maintaining a community catalog must never require asking contributors for:
 - GitHub account secrets
 
 ### 6.2 The Contributor Workflow
-1. **Develop:** Contributor forks `Portfolio-Builder` and builds a template in `templates/<category>/<role>/<template-id>/`.
+1. **Develop:** Contributor forks `PortfolioBuilder` and builds a template in `templates/<rendering>/<stack>/<category>/<role>/<slug>/`.
 2. **Deploy Independently:** Contributor deploys the template to their own hosting account (e.g., `alice.vercel.app`, `bob.pages.dev`, `portfolio.alice.dev`).
 3. **Declare Contract:** Contributor fills in `template.json`:
    ```json
    {
      "id": "fullstack-modern-dark",
      "name": "Modern Dark Portfolio",
-     "category": "Technology",
+     "category": "technical",
      "role": "Full Stack Developer",
-     "framework": "Next.js",
-     "renderingType": "managed-runtime",
+     "roleSlug": "full-stack-developer",
+     "framework": "nextjs",
+     "rendering": "ssr",
      "source": {
        "type": "github",
-       "path": "templates/technology/full-stack/modern-dark",
-       "repository": "https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/templates/technology/full-stack/modern-dark",
+       "path": "templates/ssr/nextjs/technical/full-stack-developer/modern-dark",
+       "repository": "https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/templates/ssr/nextjs/technical/full-stack-developer/modern-dark",
        "branch": "main"
      },
      "deployment": {
@@ -277,7 +278,9 @@ In open source, community deployments may inevitably break, expire, or be delete
 
 ## 9. Comprehensive Validation Results (10/10 Passed)
 
-The Phase 3 architecture validation test suite (`scripts/test-phase3-validation.js`) was executed to certify all architectural constraints:
+The Phase 3+ architecture validation test suite (`scripts/test-phase3-validation.js`) verifies routing, sharding, role taxonomy, and layout contracts (11/11 passing), paired with automated GitHub Pages redirect stub generation (`deployments/redirects.json` + `scripts/generate-redirects.js`) whenever templates consolidate across categories.
+
+*(See `registry/roles.json` for all 18 canonical categories and 369+ registered profession roles, and `templates/<rendering>/<stack>/<category>/<role>/<slug>/` for the folder layout.)*
 
 ```
 === Running Phase 3 Architecture & Sharding Validation Suite ===

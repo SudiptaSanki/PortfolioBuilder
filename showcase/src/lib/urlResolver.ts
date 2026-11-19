@@ -58,18 +58,19 @@ export function resolveTemplateUrl(template: any): ResolvedTemplateUrls {
   let previewUrl = deployment.liveUrl || '';
 
   if (!previewUrl) {
-    if (cleanPath.includes('/github-pages/')) {
-      const relPath = cleanPath.split('/github-pages/')[1];
+    if (cleanPath.includes('/static/html/')) {
+      const relPath = cleanPath.split('/static/html/')[1];
       baseUrl = baseUrl || 'https://sudiptasanki.github.io/PortfolioBuilder';
       previewUrl = `${baseUrl}/${relPath}/index.html`;
       provider = 'github-pages';
-    } else if (cleanPath.includes('/netlify/')) {
-      const relPath = cleanPath.split('/netlify/')[1];
+    } else if (cleanPath.includes('/static/react/') || cleanPath.includes('/static/vue/')) {
+      const marker = cleanPath.includes('/static/react/') ? '/static/react/' : '/static/vue/';
+      const relPath = cleanPath.split(marker)[1];
       baseUrl = baseUrl || 'https://portfolio4builders.netlify.app';
       previewUrl = `${baseUrl}/${relPath}/index.html`;
       provider = 'netlify';
-    } else if (cleanPath.includes('/vercel/')) {
-      const relPath = cleanPath.split('/vercel/')[1];
+    } else if (cleanPath.includes('/static/nextjs/')) {
+      const relPath = cleanPath.split('/static/nextjs/')[1];
       baseUrl = baseUrl || 'https://portfolio4builders.vercel.app';
       previewUrl = `${baseUrl}/${relPath}`;
       provider = 'vercel';
@@ -79,9 +80,12 @@ export function resolveTemplateUrl(template: any): ResolvedTemplateUrls {
     }
   }
 
-  // 4. GitHub canonical source repository link
+  // 4. GitHub canonical source repository link (points straight to exact project subfolder)
   const codePath = cleanPath.replace(/\/(dist|out)$/, '');
-  const githubUrl = `https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${codePath}`;
+  const externalRepo = template.source?.repository;
+  const githubUrl = externalRepo
+    ? externalRepo
+    : `https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${codePath}`;
 
   // 5. Preview image resolution
   let previewImageSrc = '/images/placeholder.webp';

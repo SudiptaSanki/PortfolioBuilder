@@ -1,7 +1,7 @@
 /**
  * festival/generate.js
  * Emits the Festival template family (Indian batch + worldwide batch):
- *   templates/html/github-pages/festival/<role>/<theme-slug>/
+ *   templates/static/html/festival/<role>/<theme-slug>/
  *
  * Each template gets a distinct festive MODE:
  *   garland : toran | lights | bunting | lanterns | sakura | pine | papel | vine
@@ -32,11 +32,11 @@ const {
 
 const repoRoot = path.resolve(__dirname, '..', '..');
 const VENDOR_SRC = {
-  'gsap.min.js': path.join(T(), 'technology/creative-developer/dune-rover/vendor/gsap.min.js'),
-  'ScrollTrigger.min.js': path.join(T(), 'creative/interaction-designer/zen-haven/vendor/ScrollTrigger.min.js')
+  'gsap.min.js': path.join(T(), 'technical/creative-developer/3d-desert-rover-playground/vendor/gsap.min.js'),
+  'ScrollTrigger.min.js': path.join(T(), 'creative/interaction-designer/3d-spatial-zen-garden/vendor/ScrollTrigger.min.js')
 };
-function T() { return path.join(repoRoot, 'templates', 'html', 'github-pages'); }
-const templatesRoot = path.join(repoRoot, 'templates', 'html', 'github-pages', 'festival');
+function T() { return path.join(repoRoot, 'templates', 'static', 'html'); }
+const templatesRoot = path.join(repoRoot, 'templates', 'static', 'html', 'festival');
 const outboxRoot = path.join(repoRoot, 'assets-outbox', 'festival-previews');
 const ASSETS_CDN = 'https://raw.githubusercontent.com/Alex-DevDrift/Assets/refs/heads/main/portfoliobuilders/images';
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -807,7 +807,7 @@ function emitTemplate({ dir, id, themeSlug, themeName, roleSlug, roleDisplay, pa
     tags: ['festival', 'multi-page', `garland-${mode.garland}`, `float-${mode.float}`, `scroll-${mode.scroll}`, `reveal-${mode.reveal}`, familyKey, 'html', 'css', 'js'],
     description: t.description,
     source: {
-      path: `templates/html/github-pages/festival/${roleSlug}/${themeSlug}`,
+      path: `templates/static/html/festival/${roleSlug}/${themeSlug}`,
       entry: 'index.html'
     },
     deployment: {

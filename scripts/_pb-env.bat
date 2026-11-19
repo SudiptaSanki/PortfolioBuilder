@@ -9,7 +9,7 @@ rem ============================================================
 
 set "PB_PORT=8741"
 set "PB_ROOT=%~dp0.."
-set "PB_SERVE_DIR=%PB_ROOT%\templates\html\github-pages"
+set "PB_SERVE_DIR=%PB_ROOT%\templates\static\html"
 set "PB_HUB=%PB_ROOT%\preview-hub.html"
 
 rem --- detect a working Python (skips the Microsoft Store stub) ---

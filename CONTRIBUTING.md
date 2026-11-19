@@ -9,18 +9,19 @@ Our architecture is **provider-independent**: templates can be hosted on GitHub 
 ## ⚡ Quick Contributor Workflow
 
 1. **Fork and clone** the repository.
-2. **Create your template folder** under `templates/<framework>/<provider>/<genre>/<role>/<theme-name>/` (or `templates/<theme-name>/`).
-3. **Add your source code** (Ensure all HTML/CSS/JS assets use relative paths).
-4. **Create `template.json`** inside your template folder (never manually edit the central catalog!).
-5. **Run automated validation locally**:
+2. **Check `registry/roles.json`** to ensure your role slug and category match the canonical 18-category taxonomy (`technical`, `engineering`, `research`, `educator`, `medical`, `wellness-sports`, `agriculture`, `transport-aviation`, `construction-trades`, `creative`, `business`, `law-public`, `music`, `retail`, `services`, `startup`, `gaming`, `festival`).
+3. **Create your template folder** under `templates/<rendering>/<stack>/<category>/<role>/<slug>/` (e.g. `templates/static/html/medical/cardiologist/heart-care-clinic/`).
+4. **Use neutral Type + Role naming** (no third-party studio/brand names or personal names) and **strictly relative asset paths** (`./style.css`).
+5. **Create `template.json`** inside your template folder (never manually edit `showcase/src/data/templates.json`).
+6. **Run automated validation locally**:
    ```bash
    npm run validate
    ```
-6. **Compile the catalog**:
+7. **Compile the catalog**:
    ```bash
    npm run catalog:generate
    ```
-7. **Submit a Pull Request** — GitHub Actions CI will automatically validate your template.
+8. **Submit a Pull Request** — GitHub Actions CI automatically checks schema, 6-level layout, `registry/roles.json`, tests, and Showcase build.
 
 ---
 

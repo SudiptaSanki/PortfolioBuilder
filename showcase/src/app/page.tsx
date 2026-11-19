@@ -12,22 +12,31 @@ import { doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { resolveTemplateUrl } from '@/lib/urlResolver';
 
-const ALL_CATEGORIES = ['All', '⭐ Starred', 'festival', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services', 'retail', 'startup', 'gaming', 'music', 'events', 'medical'];
+const ALL_CATEGORIES = [
+  'All', '⭐ Starred', 'festival', 'technical', 'engineering', 'research', 'educator',
+  'medical', 'wellness-sports', 'agriculture', 'transport-aviation', 'construction-trades',
+  'creative', 'business', 'law-public', 'music', 'retail', 'services', 'startup', 'gaming'
+];
 const CATEGORY_LABELS: Record<string, string> = {
   'All': 'All Templates',
-  'festival': 'Festival & Puja',
-  'technology': 'Technology',
-  'creative': 'Creative',
-  'business': 'Business',
-  'academic': 'Academic',
-  'health-wellness': 'Health & Wellness',
-  'services': 'Services',
+  'festival': 'Festival & Cultural',
+  'technical': 'Technical & Software',
+  'engineering': 'Engineering',
+  'research': 'Science & Research',
+  'educator': 'Educators & Training',
+  'medical': 'Medical & Healthcare',
+  'wellness-sports': 'Wellness & Sports',
+  'agriculture': 'Agriculture & Farming',
+  'transport-aviation': 'Aviation, Rail & Maritime',
+  'construction-trades': 'Construction & Trades',
+  'creative': 'Creative & Design',
+  'business': 'Business & Finance',
+  'law-public': 'Law & Public Service',
+  'music': 'Music & Audio',
   'retail': 'Retail & Shops',
+  'services': 'Services & Hospitality',
   'startup': 'Startups & Students',
-  'gaming': 'Gaming',
-  'music': 'Music',
-  'events': 'Events',
-  'medical': 'Medical',
+  'gaming': 'Gaming & Esports',
 };
 const STACK_FILTERS = ['All Stacks', 'HTML/CSS/JS', 'React', 'Next.js', 'Vue'];
 const STRUCTURE_FILTERS = ['All Structures', 'Single-page', 'Multi-page'];
@@ -100,7 +109,7 @@ export default function Home() {
   const [activeStack, setActiveStack] = useState('All Stacks');
   const [activeStructure, setActiveStructure] = useState('All Structures');
   const [activeCollection, setActiveCollection] = useState('All Collections');
-  const [sortBy, setSortBy] = useState('featured');
+  const [sortBy, setSortBy] = useState('Featured');
   const [showStarModal, setShowStarModal] = useState(false);
   const [targetUrl, setTargetUrl] = useState('');
   const [displayCount, setDisplayCount] = useState(24);
@@ -146,16 +155,20 @@ export default function Home() {
         activeStructure === 'All Structures' ||
         (activeStructure === 'Single-page' && tags.includes('single-page')) ||
         (activeStructure === 'Multi-page' && tags.includes('multi-page'));
+      const aliases = ((t as any).aliases || []) as string[];
       const matchesQuery =
         !q ||
         (t.name || '').toLowerCase().includes(q) ||
         (t.role || (t as any).profession || '').toLowerCase().includes(q) ||
+        ((t as any).roleSlug || '').toLowerCase().includes(q) ||
+        ((t as any).subCategory || '').toLowerCase().includes(q) ||
         (t.theme || '').toLowerCase().includes(q) ||
+        aliases.some((a) => a.toLowerCase().includes(q)) ||
         tags.some((tag) => tag.toLowerCase().includes(q));
       return matchesCollection && matchesStack && matchesStructure && matchesQuery;
     });
 
-    const catOrder = ['festival', 'technology', 'creative', 'business', 'academic', 'health-wellness', 'services', 'retail', 'startup', 'gaming', 'music', 'events', 'medical'];
+    const catOrder = ['festival', 'technical', 'engineering', 'research', 'educator', 'medical', 'wellness-sports', 'agriculture', 'transport-aviation', 'construction-trades', 'creative', 'business', 'law-public', 'music', 'retail', 'services', 'startup', 'gaming'];
     const sorted = [...list];
     if (sortBy === 'Name A–Z') sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
     else if (sortBy === 'Name Z–A') sorted.sort((a, b) => (b.name || '').localeCompare(a.name || ''));
@@ -547,12 +560,23 @@ function TemplateCard({ template, index = 0, onActionClick, onTagClick, isFavori
 
   const CATEGORY_COLORS: Record<string, string> = {
     festival: '#f59e0b',
-    technology: '#4ade80',
+    technical: '#4ade80',
+    engineering: '#38bdf8',
+    research: '#60a5fa',
+    educator: '#818cf8',
+    medical: '#f87171',
+    'wellness-sports': '#fb923c',
+    agriculture: '#84cc16',
+    'transport-aviation': '#22d3ee',
+    'construction-trades': '#d97706',
     creative: '#f472b6',
     business: '#facc15',
-    academic: '#60a5fa',
-    'health-wellness': '#fb923c',
+    'law-public': '#94a3b8',
+    music: '#c084fc',
+    retail: '#fb7185',
     services: '#a78bfa',
+    startup: '#2dd4bf',
+    gaming: '#e879f9',
   };
 
   return (
@@ -663,7 +687,7 @@ function TemplateCard({ template, index = 0, onActionClick, onTagClick, isFavori
           {(() => {
             const tags = template.tags || [];
             const priority = tags.filter((t) =>
-              /^(single-page|multi-page|core|festival|collection|garland-|float-|scroll-|reveal-|3d|webgl|glsl|interactive|gsap|threejs)$/.test(t));
+              /^(single-page|multi-page|core|festival|collection|genre-lab|garland-|float-|scroll-|reveal-|3d|webgl|glsl|interactive|gsap|threejs)$/.test(t));
             const rest = tags.filter((t) => !priority.includes(t) && !['html', 'css', 'js'].includes(t));
             return [...priority, ...rest].slice(0, 5).map((tag) => (
               <span key={tag} onClick={() => onTagClick(tag)} title={'Filter by ' + tag} style={{

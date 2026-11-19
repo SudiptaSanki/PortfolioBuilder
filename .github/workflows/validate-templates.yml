@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   validate:
-    name: Validate Template Metadata & Schema
+    name: Validate Schema, Layout, Tests & Showcase Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -23,9 +23,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: showcase/package-lock.json
 
-      - name: Validate Templates
+      - name: Validate Templates & Canonical Layout
         run: node scripts/validate-templates.js
+
+      - name: Run Architecture & Shard Tests
+        run: node scripts/test-phase3-validation.js
 
       - name: Test Catalog Compilation
         run: node scripts/generate-catalog.js
+
+      - name: Install Showcase Dependencies
+        run: npm --prefix showcase ci
+
+      - name: Build Showcase
+        run: npm --prefix showcase run build

@@ -46,8 +46,8 @@ function resolveTemplateUrl(template) {
   let previewUrl = deployment.liveUrl || '';
 
   if (!previewUrl) {
-    if (cleanPath.includes('/github-pages/')) {
-      const relPath = cleanPath.split('/github-pages/')[1];
+    if (cleanPath.includes('/static/html/')) {
+      const relPath = cleanPath.split('/static/html/')[1];
       baseUrl = baseUrl || 'https://sudiptasanki.github.io/PortfolioBuilder';
       previewUrl = `${baseUrl}/${relPath}/index.html`;
       provider = 'github-pages';
@@ -190,7 +190,7 @@ console.log('Test 7: Broken Contributor Live URL Resilience');
 const brokenTemplate = {
   id: 'expired-demo-dev',
   framework: 'html',
-  path: 'templates/html/github-pages/technology/web3/expired-demo',
+  path: 'templates/static/html/technical/web3/expired-demo',
   deployment: {
     provider: 'custom',
     type: 'contributor-hosted',
@@ -241,8 +241,8 @@ console.log('  [PASS] Migration shifts deployment target while preserving templa
 
 // 9. Multiple Templates under One Shared Host Test
 console.log('Test 9: Multiple Templates Under One Host');
-const t1 = resolveTemplateUrl({ path: 'templates/html/github-pages/tech/dev1', deployment: { provider: 'github-pages', liveUrl: 'https://sudiptasanki.github.io/PortfolioBuilder/tech/dev1/index.html' } });
-const t2 = resolveTemplateUrl({ path: 'templates/html/github-pages/tech/dev2', deployment: { provider: 'github-pages', liveUrl: 'https://sudiptasanki.github.io/PortfolioBuilder/tech/dev2/index.html' } });
+const t1 = resolveTemplateUrl({ path: 'templates/static/html/technical/dev1', deployment: { provider: 'github-pages', liveUrl: 'https://sudiptasanki.github.io/PortfolioBuilder/technical/dev1/index.html' } });
+const t2 = resolveTemplateUrl({ path: 'templates/static/html/technical/dev2', deployment: { provider: 'github-pages', liveUrl: 'https://sudiptasanki.github.io/PortfolioBuilder/technical/dev2/index.html' } });
 assert.notStrictEqual(t1.previewUrl, t2.previewUrl);
 assert.ok(t1.previewUrl.startsWith('https://sudiptasanki.github.io/PortfolioBuilder'));
 assert.ok(t2.previewUrl.startsWith('https://sudiptasanki.github.io/PortfolioBuilder'));
@@ -256,4 +256,15 @@ assert.ok(Array.isArray(shardsData.shards), 'shards array must be present');
 assert.ok(shardsData.shards.length >= 4, 'Must have at least 4 shards registered');
 console.log(`  [PASS] Shard registry verified with ${shardsData.shards.length} registered infrastructure shards`);
 
-console.log('\n=== ALL 10 ARCHITECTURAL VALIDATION TESTS PASSED SUCCESSFULLY! ===');
+// 11. Canonical Role Registry & 6-Level Layout Verification
+console.log('Test 11: Canonical Role Registry & 6-Level Layout');
+const rolesPath = path.join(repoRoot, 'registry', 'roles.json');
+assert.ok(fs.existsSync(rolesPath), 'registry/roles.json must exist');
+const rolesData = JSON.parse(fs.readFileSync(rolesPath, 'utf8'));
+assert.strictEqual(Object.keys(rolesData.categories).length, 18, 'Must define 18 canonical categories');
+assert.ok(rolesData.roles['loco-pilot'] && rolesData.roles['loco-pilot'].aliases.includes('train driver'), 'Must register real-world aliases');
+const redirectsPath = path.join(repoRoot, 'deployments', 'redirects.json');
+assert.ok(fs.existsSync(redirectsPath), 'deployments/redirects.json must exist');
+console.log(`  [PASS] Role registry (${Object.keys(rolesData.roles).length} roles, 18 categories) & redirects verified`);
+
+console.log('\n=== ALL 11 ARCHITECTURAL VALIDATION TESTS PASSED SUCCESSFULLY! ===');

@@ -46,18 +46,23 @@ const INDIA_FAMILIES = [
 ];
 
 const CATEGORIES = [
-  ['technology', 'Technology & Engineering'],
-  ['creative', 'Creative & Arts'],
-  ['business', 'Business, Finance & Legal'],
-  ['academic', 'Academic & Research'],
-  ['health-wellness', 'Health & Wellness'],
-  ['services', 'Services & Hospitality'],
-  ['retail', 'Retail & E-Commerce'],
-  ['startup', 'Startups & Students'],
-  ['gaming', 'Gaming & Esports'],
+  ['technical', 'Technical & Software'],
+  ['engineering', 'Engineering'],
+  ['research', 'Science & Research'],
+  ['educator', 'Educators & Training'],
+  ['medical', 'Medical & Healthcare'],
+  ['wellness-sports', 'Wellness & Sports'],
+  ['agriculture', 'Agriculture & Farming'],
+  ['transport-aviation', 'Aviation, Rail & Maritime'],
+  ['construction-trades', 'Construction & Trades'],
+  ['creative', 'Creative & Design'],
+  ['business', 'Business & Finance'],
+  ['law-public', 'Law & Public Service'],
   ['music', 'Music & Audio'],
-  ['events', 'Events & Entertainment'],
-  ['medical', 'Medical']
+  ['retail', 'Retail & Shops'],
+  ['services', 'Services & Hospitality'],
+  ['startup', 'Startups & Students'],
+  ['gaming', 'Gaming & Esports']
 ];
 
 function cardHTML(t) {
@@ -72,7 +77,7 @@ function cardHTML(t) {
     if (/^(garland-|float-|scroll-|reveal-)/.test(tag)) chips.push(tag);
   }
 
-  const search = esc([t.name, t.role, t.theme, t.category, (t.tags || []).join(' ')].join(' ').toLowerCase());
+  const search = esc([t.name, t.role, t.theme, t.category, t.subCategory || '', (t.aliases || []).join(' '), (t.tags || []).join(' ')].join(' ').toLowerCase());
 
   return `      <a class="card" data-search="${search}" href="${esc(url)}" target="_blank" rel="noopener">
         <span class="dot ${esc(t.category)}"></span>
