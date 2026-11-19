@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1d3524" />
+  <meta name="color-scheme" content="light dark" />
+  <meta
+    name="description"
+    content="Verdant Ridge Sanctuary — a boutique nature hotel and 3D portfolio. Scroll from the summit overlook to the valley horizon, past meadows, a 34-metre waterfall and the river sanctuary."
+  />
+  <title>Verdant Ridge Sanctuary — Nature Portfolio</title>
+
+  <!--
+    The import map lets this folder run as-is on any static HTTP server
+    (python -m http.server, CodeSandbox, Netlify, GitHub Pages) with no
+    `npm install`. Vite ignores it and resolves the same bare specifiers from
+    node_modules when you run `npm install && npm run dev`.
+  -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://esm.sh/three@0.187.0",
+      "gsap": "https://esm.sh/gsap@3.13.0",
+      "gsap/ScrollTrigger": "https://esm.sh/gsap@3.13.0/ScrollTrigger",
+      "lenis": "https://esm.sh/lenis@1.3.27"
+    }
+  }
+  </script>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231d3524'/%3E%3Cpath d='M4 25c5-3 7-9 12-16 2 6 5 9 12 16z' fill='%238fc06a'/%3E%3Cpath d='M16 9v16' stroke='%23f3f7ec' stroke-width='1.4'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="./src/styles/main.css" />
+</head>
+<body data-grade="bright">
+  <!-- ===================================================== 3D canvas ===== -->
+  <canvas id="scene" class="scene" aria-hidden="true"></canvas>
+  <div class="scene-fallback" aria-hidden="true"></div>
+
+  <!-- =================================================== loading veil ==== -->
+  <div class="loader" id="loader" role="status" aria-live="polite" aria-label="Opening the valley">
+    <div class="loader__inner">
+      <div class="loader__glyph" aria-hidden="true"><i></i><i></i><i></i></div>
+      <p class="loader__title">Opening the valley</p>
+      <p class="loader__alt"><span id="loader-elevation">1,142</span><span class="loader__unit">m</span></p>
+      <div class="loader__bar"><div class="loader__bar-fill" id="loader-bar"></div></div>
+      <p class="loader__note" id="loader-note">Reading the ridge line…</p>
+    </div>
+  </div>
+
+  <!-- ========================================================== HUD ===== -->
+  <!-- top safe zone: copy scrolling under the fixed HUD is blurred and faded
+       here, so a section heading can never collide with the brand pill -->
+  <div class="hud-veil" aria-hidden="true"></div>
+
+  <header class="hud hud--top">
+    <a class="brand" href="#summit" data-scroll-to="summit" aria-label="Back to the summit overlook">
+      <span class="brand__mark" data-bind="brand.mark">VR</span>
+      <span class="brand__text">
+        <span class="brand__name" data-bind="brand.name">VERDANT RIDGE</span>
+        <span class="brand__role" data-bind="brand.role">Boutique nature sanctuary · 3D portfolio</span>
+      </span>
+    </a>
+
+    <div class="hud__controls">
+      <button
+        type="button"
+        id="sound-toggle"
+        class="pill pill--ghost"
+        aria-pressed="false"
+        title="Toggle the valley soundscape"
+      >
+        <span class="pill__icon" aria-hidden="true">
+          <svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <path d="M3 7.5h2.5L9.5 4v12L5.5 12.5H3z" />
+            <path class="pill__waves" d="M12.5 7a4 4 0 0 1 0 6M15 4.8a7.3 7.3 0 0 1 0 10.4" />
+          </svg>
+        </span>
+        <span class="pill__label" id="sound-label">Sound</span>
+      </button>
+
+      <button
+        type="button"
+        id="follow-toggle"
+        class="pill pill--ghost"
+        aria-pressed="false"
+        title="Track a deer, fox or hare across the meadow"
+      >
+        <span class="pill__icon" aria-hidden="true">
+          <svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 15c0-2.6 1.9-4.3 4.4-4.8M13.6 6.4c-1.4.3-2.5 1.2-3 2.3" />
+            <path d="M12.3 3.4c1.4 0 2.6 1.1 2.6 2.5S13.7 8.4 12.3 8.4 9.7 7.3 9.7 5.9s1.2-2.5 2.6-2.5z" />
+            <path d="M2.6 17c1.2-1.6 3.4-2.4 6-2.4 2.7 0 4.9.8 6.2 2.4" />
+          </svg>
+        </span>
+        <span class="pill__label" id="follow-label">Follow wildlife</span>
+      </button>
+
+      <a class="pill pill--accent" id="book-button" href="#horizon" data-scroll-to="horizon">
+        Book a stay
+        <span class="pill__arrow" aria-hidden="true">↘</span>
+      </a>
+    </div>
+
+    <p class="follow-status" id="follow-status" aria-live="polite">
+      <span class="follow-status__text" id="follow-status-text"></span>
+      <button type="button" class="follow-status__stop" id="follow-stop">Stop following</button>
+    </p>
+  </header>
+
+  <!-- ==================================================== zone jump rail == -->
+  <aside class="rail" id="zone-rail" aria-label="Zone jump rail — jump to a landscape">
+    <div class="rail__head">
+      <span class="rail__value" id="rail-elevation">1,142</span><span class="rail__unit">m</span>
+      <span class="rail__caption">elevation</span>
+    </div>
+    <div class="rail__track" id="rail-track">
+      <div class="rail__rail" aria-hidden="true"></div>
+      <div class="rail__fill" id="rail-fill" aria-hidden="true"></div>
+      <div class="rail__marker" id="rail-marker" aria-hidden="true"><span></span></div>
+      <!-- ticks are injected from portfolio.zones in src/main.js -->
+    </div>
+    <p class="rail__zone" id="rail-zone">01 · Summit Overlook</p>
+  </aside>
+
+  <!-- ======================================================= content ===== -->
+  <main id="content" class="content">
+
+    <!-- 01 · summit ---------------------------------------------------- -->
+    <section class="section section--summit" id="summit" data-zone="01">
+      <div class="section__inner section__inner--hero">
+        <p class="eyebrow" data-reveal>
+          <span class="eyebrow__num">01</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span data-bind="hero.elevationLabel">Summit station</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span class="eyebrow__value" data-bind="hero.elevationValue">1,142 m</span>
+        </p>
+
+        <h1 class="display" data-reveal>
+          <span data-bind="hero.lineOne">Six landscapes,</span>
+          <span class="display__em" data-bind="hero.lineTwo">one green valley,</span>
+          <span data-bind="hero.lineThree">and room to breathe.</span>
+        </h1>
+
+        <p class="lede" data-reveal data-bind="hero.lede">
+          Verdant Ridge is a nine-suite sanctuary at the head of a glacial valley.
+        </p>
+
+        <div class="hero__meta" data-reveal>
+          <span data-bind="hero.availability">Autumn 2027 · nine suites</span>
+          <span data-bind="hero.location">Verdant Ridge</span>
+        </div>
+
+        <a class="scroll-cue" href="#meadow" data-scroll-to="meadow" data-reveal>
+          <span class="scroll-cue__line" aria-hidden="true"></span>
+          <span>Walk down into the meadow — 1,100 metres of it</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 02 · meadow ---------------------------------------------------- -->
+    <section class="section section--meadow" id="meadow" data-zone="02">
+      <div class="section__inner">
+        <p class="eyebrow" data-reveal>
+          <span class="eyebrow__num">02</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span data-bind="zones.1.label">Emerald Meadow</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span class="eyebrow__value" data-bind="zones.1.elevation">486 m</span>
+        </p>
+
+        <h2 class="headline" data-reveal data-bind="welcome.title">The meadow floor is the front door</h2>
+
+        <div class="prose" data-reveal>
+          <p data-bind="welcome.bodyOne">
+            There is a gatehouse, but nobody uses it.
+          </p>
+          <p data-bind="welcome.bodyTwo">
+            The architecture is deliberately quiet.
+          </p>
+        </div>
+
+        <ul class="values" data-reveal>
+          <li class="value">
+            <span class="value__num" aria-hidden="true">01</span>
+            <h3 class="value__title" data-bind="values.0.title">Leave the valley louder</h3>
+            <p class="value__body" data-bind="values.0.body">No piped music outdoors.</p>
+          </li>
+          <li class="value">
+            <span class="value__num" aria-hidden="true">02</span>
+            <h3 class="value__title" data-bind="values.1.title">Build with what falls</h3>
+            <p class="value__body" data-bind="values.1.body">Larch from the ridge.</p>
+          </li>
+          <li class="value">
+            <span class="value__num" aria-hidden="true">03</span>
+            <h3 class="value__title" data-bind="values.2.title">Eighteen guests, nine suites</h3>
+            <p class="value__body" data-bind="values.2.body">The path stays a path.</p>
+          </li>
+        </ul>
+
+        <!-- live telemetry, filled every frame from the valley simulation -->
+        <aside class="telemetry" data-reveal aria-label="Live valley telemetry">
+          <div class="telemetry__head">
+            <span class="telemetry__dot" aria-hidden="true"></span>
+            <span data-bind="welcome.note">Live from the valley floor</span>
+            <span class="telemetry__count" id="tel-count">8 animals</span>
+          </div>
+          <dl class="telemetry__grid">
+            <div><dt>Elevation</dt><dd><span id="tel-elevation">—</span> m</dd></div>
+            <div><dt>Waterfall distance</dt><dd><span id="tel-waterfall">—</span> m</dd></div>
+            <div><dt>Nearest wildlife</dt><dd id="tel-wildlife">—</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 03 · falls ----------------------------------------------------- -->
+    <section class="section section--falls" id="falls" data-zone="03">
+      <div class="section__inner">
+        <p class="eyebrow" data-reveal>
+          <span class="eyebrow__num">03</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span data-bind="zones.2.label">Cascading Falls</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span class="eyebrow__value" data-bind="zones.2.elevation">312 m</span>
+        </p>
+
+        <article class="suite" data-reveal>
+          <div class="suite__index" aria-hidden="true">01</div>
+          <div class="suite__body">
+            <p class="suite__kicker" data-bind="suites.0.kicker">Signature suite · 03</p>
+            <h2 class="suite__title" data-bind="suites.0.title">Falls Pavilion</h2>
+            <p class="suite__meta">
+              <span data-bind="suites.0.role">Two guests · 72 m²</span>
+              <span class="dot" aria-hidden="true"></span>
+              <span data-bind="suites.0.year">2026</span>
+            </p>
+            <p class="suite__summary" data-bind="suites.0.summary">
+              A glass pavilion set eleven metres from the plunge pool.
+            </p>
+            <ul class="chips">
+              <li class="chip" data-bind="suites.0.stack.0">34 m curtain view</li>
+              <li class="chip" data-bind="suites.0.stack.1">Wood-fired bath</li>
+              <li class="chip" data-bind="suites.0.stack.2">Private terrace</li>
+              <li class="chip" data-bind="suites.0.stack.3">Sleeps 2</li>
+            </ul>
+            <a class="suite__link" data-bind-href="suites.0.url" href="#">
+              <span data-bind="suites.0.cta">Walk through the pavilion</span>
+              <span class="suite__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <dl class="stats" data-reveal aria-label="The waterfall in numbers">
+          <div class="stat"><dt>Curtain height</dt><dd>34<span>m</span></dd></div>
+          <div class="stat"><dt>Lip width</dt><dd>22<span>m</span></dd></div>
+          <div class="stat"><dt>Pool depth</dt><dd>3.4<span>m</span></dd></div>
+          <div class="stat"><dt>River to the ridge</dt><dd>1.1<span>km</span></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- 04 · river ----------------------------------------------------- -->
+    <section class="section section--river" id="river" data-zone="04">
+      <div class="section__inner">
+        <p class="eyebrow" data-reveal>
+          <span class="eyebrow__num">04</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span data-bind="zones.3.label">River Sanctuary</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span class="eyebrow__value" data-bind="zones.3.elevation">204 m</span>
+        </p>
+
+        <article class="suite suite--compact" data-reveal>
+          <div class="suite__index" aria-hidden="true">07</div>
+          <div class="suite__body">
+            <p class="suite__kicker" data-bind="suites.1.kicker">Signature suite · 07</p>
+            <h2 class="suite__title" data-bind="suites.1.title">River House</h2>
+            <p class="suite__meta">
+              <span data-bind="suites.1.role">Two guests · 64 m²</span>
+              <span class="dot" aria-hidden="true"></span>
+              <span data-bind="suites.1.year">2025</span>
+            </p>
+            <p class="suite__summary" data-bind="suites.1.summary">
+              The old keeper’s house, rebuilt around its own stone chimney.
+            </p>
+            <ul class="chips">
+              <li class="chip" data-bind="suites.1.stack.0">Koi shallows</li>
+              <li class="chip" data-bind="suites.1.stack.1">River deck</li>
+              <li class="chip" data-bind="suites.1.stack.2">Stone hearth</li>
+              <li class="chip" data-bind="suites.1.stack.3">Sleeps 2</li>
+            </ul>
+            <a class="suite__link" data-bind-href="suites.1.url" href="#">
+              <span data-bind="suites.1.cta">See the river rooms</span>
+              <span class="suite__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <div class="rituals" data-reveal>
+          <h3 class="subhead">At the water</h3>
+          <ul class="rituals__list">
+            <li class="ritual">
+              <span class="ritual__name" data-bind="experiences.1.name">Plunge and return</span>
+              <span class="ritual__detail" data-bind="experiences.1.detail">The pool under the falls holds 11 °C all year.</span>
+            </li>
+            <li class="ritual">
+              <span class="ritual__name" data-bind="experiences.2.name">Koi hour</span>
+              <span class="ritual__detail" data-bind="experiences.2.detail">Feeding the river koi from the lower deck.</span>
+            </li>
+            <li class="ritual">
+              <span class="ritual__name" data-bind="experiences.0.name">Dawn with the deer</span>
+              <span class="ritual__detail" data-bind="experiences.0.detail">A guide, a thermos and ninety quiet minutes.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 · ridge ----------------------------------------------------- -->
+    <section class="section section--ridge" id="ridge" data-zone="05">
+      <div class="section__inner">
+        <p class="eyebrow" data-reveal>
+          <span class="eyebrow__num">05</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span data-bind="zones.4.label">Pine Ridge</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span class="eyebrow__value" data-bind="zones.4.elevation">688 m</span>
+        </p>
+
+        <article class="suite suite--compact" data-reveal>
+          <div class="suite__index" aria-hidden="true">09</div>
+          <div class="suite__body">
+            <p class="suite__kicker" data-bind="suites.2.kicker">Signature suite · 09</p>
+            <h2 class="suite__title" data-bind="suites.2.title">Ridge Cabin</h2>
+            <p class="suite__meta">
+              <span data-bind="suites.2.role">Two guests · 48 m²</span>
+              <span class="dot" aria-hidden="true"></span>
+              <span data-bind="suites.2.year">2024</span>
+            </p>
+            <p class="suite__summary" data-bind="suites.2.summary">
+              Nine hundred metres up the pine ridge, a single room in the canopy.
+            </p>
+            <ul class="chips">
+              <li class="chip" data-bind="suites.2.stack.0">Canopy deck</li>
+              <li class="chip" data-bind="suites.2.stack.1">Wood stove</li>
+              <li class="chip" data-bind="suites.2.stack.2">No Wi-Fi by design</li>
+              <li class="chip" data-bind="suites.2.stack.3">Sleeps 2</li>
+            </ul>
+            <a class="suite__link" data-bind-href="suites.2.url" href="#">
+              <span data-bind="suites.2.cta">Climb to the cabin</span>
+              <span class="suite__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <div class="craft" data-reveal>
+          <h3 class="subhead">How the valley is built</h3>
+          <ol class="craft__list">
+            <li class="craft__item">
+              <div class="craft__lead">
+                <span class="craft__num" aria-hidden="true">i</span>
+                <h4 class="craft__title" data-bind="craft.0.title">One valley, six stations</h4>
+              </div>
+              <p class="craft__body" data-bind="craft.0.body">Sky, hills, water and wildlife share one height field.</p>
+            </li>
+            <li class="craft__item">
+              <div class="craft__lead">
+                <span class="craft__num" aria-hidden="true">ii</span>
+                <h4 class="craft__title" data-bind="craft.1.title">Weather you can hear</h4>
+              </div>
+              <p class="craft__body" data-bind="craft.1.body">Fog, sun, spray and the sound mix follow the camera.</p>
+            </li>
+            <li class="craft__item">
+              <div class="craft__lead">
+                <span class="craft__num" aria-hidden="true">iii</span>
+                <h4 class="craft__title" data-bind="craft.2.title">Nothing sampled, nothing downloaded</h4>
+              </div>
+              <p class="craft__body" data-bind="craft.2.body">Terrain, trees, deer and birdsong are generated live.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · horizon --------------------------------------------------- -->
+    <section class="section section--horizon" id="horizon" data-zone="06">
+      <div class="section__inner section__inner--contact">
+        <p class="eyebrow" data-reveal>
+          <span class="eyebrow__num">06</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span data-bind="zones.5.label">Valley Horizon</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span class="eyebrow__value" data-bind="zones.5.elevation">1,046 m</span>
+        </p>
+
+        <h2 class="display display--contact" data-reveal data-bind="contact.title">Come down to the valley floor.</h2>
+
+        <p class="lede lede--contact" data-reveal data-bind="contact.body">
+          Nine suites, two seasons a year, and a waiting list that is shorter than it sounds.
+        </p>
+
+        <a class="mailto" data-reveal data-bind-href="contact.emailHref" href="mailto:hello@example.com">
+          <span class="mailto__label">Write to the gatehouse</span>
+          <span class="mailto__value" data-bind="contact.email">hello@example.com</span>
+        </a>
+
+        <ul class="links" data-reveal id="contact-links">
+          <!-- injected from config.contact.links -->
+        </ul>
+
+        <footer class="footer" data-reveal>
+          <p class="footer__credit" data-bind="footer.credit">
+            Built with three.js, GSAP and Lenis. No textures, no video.
+          </p>
+          <p class="footer__meta">
+            <span data-bind="brand.fullName">Verdant Ridge Sanctuary</span>
+            <span class="dot" aria-hidden="true"></span>
+            <span id="footer-year">2026</span>
+            <span class="dot" aria-hidden="true"></span>
+            <button type="button" class="footer__top" data-scroll-to="summit">Back to the summit ↑</button>
+          </p>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

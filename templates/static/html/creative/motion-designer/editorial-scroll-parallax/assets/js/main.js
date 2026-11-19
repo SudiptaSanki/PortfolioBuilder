@@ -138,7 +138,7 @@
 
   /* menu ---------------------------------------------------- */
   var MENU = [
-    { label: 'Email Me', meta: 'Say hello', href: 'mailto:tonyzhao1947@gmail.com' }
+    { label: 'Email Me', meta: 'Say hello', href: 'mailto:hello@example.com' }
   ].concat(PROJECTS.filter(function (p) { return p.id !== 'google'; }).map(function (p) {
     return { label: p.menu, meta: p.sub, goto: p.id };
   })).concat([
@@ -650,7 +650,7 @@
           '<p class="mono-label">Sample r\u00e9sum\u00e9 written for this study \u2014 dates are illustrative.</p>' +
         '</div>' +
         '<dl class="m-meta">' +
-          '<div><dt>Contact</dt><dd><a href="mailto:tonyzhao1947@gmail.com">tonyzhao1947@gmail.com</a></dd></div>' +
+          '<div><dt>Contact</dt><dd><a href="mailto:hello@example.com">hello@example.com</a></dd></div>' +
           '<div><dt>Education</dt><dd>MFA, Rhode Island School of Design</dd></div>' +
           '<div><dt>Recognition</dt><dd>Awwwards Honorable Mention, 2025</dd></div>' +
           '<div><dt>Focus</dt><dd>Identity, Motion, 3D, Product</dd></div>' +

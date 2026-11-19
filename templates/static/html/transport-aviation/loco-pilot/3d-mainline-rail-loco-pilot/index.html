@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#070b11" />
+  <meta name="color-scheme" content="dark" />
+  <meta
+    name="description"
+    content="A 3D rail portfolio: ride a mainline electric from the origin yard cab, across a steel truss viaduct at golden hour, through a mountain tunnel, to a night terminal arrival."
+  />
+  <title>IRONLINE DIVISION — Loco Pilot Portfolio</title>
+
+  <!--
+    Zero-build module resolution. The page below runs as-is on any static host
+    (python -m http.server, CodeSandbox, Netlify, GitHub Pages) with no npm
+    install. Vite ignores this map and resolves the same bare specifiers from
+    node_modules when you run `npm install && npm run dev`.
+  -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://esm.sh/three@0.187.0",
+      "gsap": "https://esm.sh/gsap@3.13.0",
+      "gsap/ScrollTrigger": "https://esm.sh/gsap@3.13.0/ScrollTrigger",
+      "lenis": "https://esm.sh/lenis@1.3.27"
+    }
+  }
+  </script>
+
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070b11'/%3E%3Cpath d='M9 6v16M23 6v16M9 22l3 5M23 22l-3 5M14 10h4M14 14h4M14 18h4' stroke='%23f0b05a' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E"
+  />
+  <link rel="stylesheet" href="./src/styles/main.css" />
+</head>
+<body>
+  <!-- ============================================================ 3D scene === -->
+  <canvas id="scene" class="scene" aria-hidden="true"></canvas>
+  <div class="scene-scrim" aria-hidden="true"></div>
+
+  <!-- =========================================================== preloader === -->
+  <div class="loader" id="loader" role="status" aria-live="polite" aria-label="Preparing the line">
+    <div class="loader__inner">
+      <div class="loader__brand">
+        <span class="loader__mark" data-bind="brand.mark">ID</span>
+        <span class="loader__name" data-bind="brand.name">IRONLINE DIVISION</span>
+      </div>
+      <p class="loader__stage" id="loader-stage">Coupling the locomotive…</p>
+      <div class="loader__bar"><span class="loader__fill" id="loader-fill"></span></div>
+      <p class="loader__note">Procedural rail corridor · WebGL &amp; Web Audio</p>
+    </div>
+  </div>
+
+  <a class="skip-link" href="#station-01">Skip to the portfolio</a>
+
+  <!-- =============================================================== topbar === -->
+  <div class="hud-veil hud-veil--top" aria-hidden="true"></div>
+  <header class="topbar" id="topbar">
+    <div class="brand">
+      <span class="brand__mark" data-bind="brand.mark" aria-hidden="true">ID</span>
+      <span class="brand__text">
+        <span class="brand__name brand__name--full" data-bind="brand.name">IRONLINE DIVISION</span>
+        <span class="brand__name brand__name--short" data-bind="brand.shortName">IRONLINE</span>
+        <span class="brand__tag" data-bind="brand.tagline">Senior Loco Pilot · Mainline &amp; High-Speed Rail Portfolio</span>
+      </span>
+    </div>
+
+    <div class="controls">
+      <button
+        type="button"
+        class="btn btn--sound"
+        id="sound-toggle"
+        aria-pressed="false"
+        aria-label="Toggle cab and track audio"
+      >
+        <span class="btn__icon eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="btn__label" id="sound-label">Sound Off</span>
+      </button>
+
+      <button type="button" class="btn btn--horn" id="horn" aria-label="Sound the horn">
+        <span class="btn__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 10v4h3l5 4V6l-5 4H4z" />
+            <path d="M16 8.5a5 5 0 0 1 0 7" />
+            <path d="M19 6a9 9 0 0 1 0 12" />
+          </svg>
+        </span>
+        <span class="btn__label">Horn</span>
+      </button>
+
+      <a class="btn btn--cta" id="dispatch" href="mailto:hello@example.com">
+        <span class="btn__label">Dispatch</span>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h13M13 6l6 6-6 6" />
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- ======================================================= station content === -->
+  <main class="route-content" id="portfolio">
+    <noscript>
+      <section class="station">
+        <div class="station__card">
+          <p class="station__kicker">JavaScript required</p>
+          <h2 class="station__title">This portfolio is a WebGL journey.</h2>
+          <p class="station__body">Enable JavaScript to ride the line — the written portfolio is otherwise identical.</p>
+        </div>
+      </section>
+    </noscript>
+  </main>
+
+  <!-- tail of the line: 60vh of scroll that carries the train from the terminal
+       station to the buffer stop, so the journey ends on a stop, not a jolt -->
+  <div class="scene-tail" aria-hidden="true"></div>
+
+  <!-- =========================================================== route rail === -->
+  <aside class="route" id="route" aria-label="Route progress">
+    <div class="route__telemetry">
+      <div class="tele">
+        <span class="tele__label">Speed</span>
+        <span class="tele__value tele__value--speed"><b id="speed-value">0</b><i>km/h</i></span>
+      </div>
+      <div class="tele">
+        <span class="tele__label">Signal</span>
+        <span class="tele__value tele__value--signal">
+          <i class="lamp" id="signal-lamp" aria-hidden="true"></i>
+          <b id="signal-label">Clear</b>
+        </span>
+        <span class="tele__detail" id="signal-detail">Green</span>
+      </div>
+      <div class="tele">
+        <span class="tele__label">Time of day</span>
+        <span class="tele__value"><b id="clock-value">05:40</b></span>
+        <span class="tele__detail" id="grade-value">Dawn</span>
+      </div>
+    </div>
+
+    <div class="route__rail">
+      <div class="rail__track" aria-hidden="true"><span class="rail__fill" id="rail-fill"></span></div>
+      <ul class="rail__list" id="rail-list"></ul>
+    </div>
+
+    <p class="route__pct" aria-hidden="true"><b id="pct-value">06</b><span>%</span></p>
+  </aside>
+
+  <!-- ======================================================== mobile HUD === -->
+  <div class="bottom" id="bottom-hud">
+    <div class="bottom__row">
+      <div class="btele"><span>Speed</span><b id="m-speed">0</b><i>km/h</i></div>
+      <div class="btele"><span>Signal</span><b id="m-signal">Clear</b></div>
+      <div class="btele"><span>Time</span><b id="m-clock">05:40</b></div>
+    </div>
+    <div class="bottom__bar" aria-hidden="true"><span id="m-fill"></span></div>
+  </div>
+  <div class="hud-veil hud-veil--bottom" aria-hidden="true"></div>
+
+  <!-- ======================================================= sound prompt === -->
+  <div class="prompt" id="sound-prompt" hidden>
+    <div class="prompt__backdrop" id="prompt-backdrop"></div>
+    <div
+      class="prompt__card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="prompt-title"
+      aria-describedby="prompt-body"
+    >
+      <div class="prompt__glyph" aria-hidden="true">
+        <span class="prompt__ring"></span>
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 10v4h3l4.5 3.5v-11L6 10H3z" />
+          <path d="M15 8.5a5 5 0 0 1 0 7" />
+          <path d="M18 5.5a9 9 0 0 1 0 13" />
+        </svg>
+      </div>
+      <p class="prompt__eyebrow">Cab &amp; track audio</p>
+      <h2 class="prompt__title" id="prompt-title">Enable Cab &amp; Track Audio?</h2>
+      <p class="prompt__body" id="prompt-body">
+        The soundscape is synthesised live in your browser — traction hum, rail-joint clack,
+        the horn. No files are downloaded. Sound is off unless you turn it on.
+      </p>
+      <div class="prompt__actions">
+        <button type="button" class="btn btn--primary" id="prompt-enable">Enable Sound</button>
+        <button type="button" class="btn btn--ghost" id="prompt-mute">Continue Muted</button>
+      </div>
+      <p class="prompt__hint" id="prompt-hint">Enter to enable · Esc to continue muted</p>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+/* style.css — portfolio layer styling.
+   Calm and professional, matching the yard at dawn: warm paper, dark
+   ink, one accent (copper #b87333 — the PALETTE.copper of the 3D
+   scene). No webfonts, no external assets. */
+
+:root {
+  --ink: #1a1c1e;
+  --ink-soft: #3f4448;
+  --muted: #6f6a5e;
+  --accent: #b87333;
+  --paper: #f7f4ee;
+  --card-bg: rgba(255, 253, 249, 0.95);
+  --hairline: #ddd5c4;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: #d8e2e8;
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ------------------------------------------------------------- stage --- */
+#stage {
+  position: fixed; inset: 0; z-index: 0;
+  cursor: grab;
+  touch-action: pan-y; /* vertical touch scrolls the page; horizontal drags look */
+  user-select: none;
+  -webkit-user-select: none;
+}
+#stage.dragging { cursor: grabbing; }
+#app, #app canvas { width: 100%; height: 100%; display: block; }
+
+/* ------------------------------------------------------------ header --- */
+#site-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 12px 22px;
+  background: rgba(255, 253, 249, 0.88);
+  border-bottom: 1px solid var(--hairline);
+}
+.brand { display: flex; align-items: baseline; gap: 12px; text-decoration: none; color: var(--ink); min-width: 0; }
+.brand-name { font-weight: 650; font-size: 16px; letter-spacing: 0.01em; white-space: nowrap; }
+.brand-role { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.site-nav { display: flex; gap: 20px; flex: none; }
+.site-nav a { color: var(--ink-soft); text-decoration: none; font-size: 13.5px; font-weight: 550; }
+.site-nav a:hover { color: var(--accent); }
+
+#progress {
+  position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: transparent;
+}
+#progress-bar {
+  height: 100%; background: var(--accent);
+  transform: scaleX(0); transform-origin: left center;
+}
+
+/* ----------------------------------------------------------- journey --- */
+/* main lets pointer events fall through to the fixed stage beneath;
+   the document content re-enables them for itself. */
+main { pointer-events: none; }
+#content, #fallback { pointer-events: auto; }
+#journey { height: 760vh; pointer-events: none; position: relative; z-index: 1; }
+
+/* ------------------------------------------------------------- cards --- */
+#cards { position: fixed; inset: 0; z-index: 20; pointer-events: none; }
+.card {
+  position: absolute; left: 28px; bottom: 28px;
+  width: min(400px, calc(100vw - 56px));
+  background: var(--card-bg);
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  padding: 20px 22px 18px;
+  box-shadow: 0 10px 32px rgba(26, 28, 30, 0.12);
+  opacity: 0; visibility: hidden;
+  pointer-events: none;
+}
+.card.active { pointer-events: auto; }
+.kicker {
+  margin: 0 0 7px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--accent);
+}
+.card h3 { margin: 0 0 8px; font-size: 20px; line-height: 1.25; font-weight: 650; }
+.card-body { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
+
+/* ------------------------------------------------------------- hints --- */
+#hints {
+  position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+  z-index: 30; display: flex; gap: 8px; pointer-events: none;
+}
+.hint {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  color: var(--ink-soft); background: rgba(255, 253, 249, 0.9);
+  border: 1px solid var(--hairline); border-radius: 999px; padding: 6px 12px;
+  transition: opacity 0.5s ease, visibility 0.5s;
+  white-space: nowrap;
+}
+.hint.done, .hint.suppressed { opacity: 0; visibility: hidden; }
+
+/* -------------------------------------------------------- info panel --- */
+#info-panel {
+  position: fixed; right: 24px; top: 50%; z-index: 40;
+  width: min(330px, calc(100vw - 48px));
+  background: var(--card-bg);
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  padding: 20px 22px 16px;
+  box-shadow: 0 14px 40px rgba(26, 28, 30, 0.16);
+  transform: translate(14px, -50%);
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+}
+#info-panel.open { transform: translate(0, -50%); opacity: 1; visibility: visible; }
+#info-panel .kicker { margin-bottom: 5px; }
+#info-name { margin: 0 28px 10px 0; font-size: 17.5px; line-height: 1.3; font-weight: 650; }
+#info-lines { margin: 0; padding-left: 17px; font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
+#info-lines li { margin-bottom: 5px; }
+#info-close {
+  position: absolute; top: 10px; right: 10px;
+  width: 30px; height: 30px; border: 0; border-radius: 6px;
+  background: transparent; color: var(--muted);
+  font-size: 17px; line-height: 1; cursor: pointer;
+}
+#info-close:hover { background: #f1ead9; color: var(--ink); }
+
+/* ----------------------------------------------------------- content --- */
+#content {
+  position: relative; z-index: 10;
+  background: var(--paper);
+  border-top: 1px solid var(--hairline);
+}
+.doc-section {
+  max-width: 880px; margin: 0 auto;
+  padding: 76px 24px 8px;
+  scroll-margin-top: 70px;
+}
+.doc-section:last-child { padding-bottom: 84px; }
+.section-head { border-bottom: 2px solid var(--ink); padding-bottom: 14px; margin-bottom: 30px; }
+.section-head .kicker { margin-bottom: 6px; }
+.section-head h2 { margin: 0; font-size: 29px; font-weight: 680; letter-spacing: -0.01em; }
+.prose { font-size: 16.5px; line-height: 1.65; color: var(--ink-soft); max-width: 68ch; }
+
+.job, .project { padding: 22px 0; border-bottom: 1px solid var(--hairline); }
+.job:first-of-type, .project:first-of-type { padding-top: 4px; }
+.job h3, .project h3 { margin: 0 0 4px; font-size: 18.5px; font-weight: 650; }
+.job-org, .project-meta {
+  margin: 0 0 12px; font-family: var(--mono); font-size: 12px;
+  letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase;
+}
+.job-points { margin: 0; padding-left: 18px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.job-points li { margin-bottom: 6px; max-width: 68ch; }
+.project .prose { font-size: 15.5px; }
+.station-link { display: inline-block; margin-top: 10px; font-size: 14.5px; font-weight: 600; text-decoration: none; }
+.station-link:hover { text-decoration: underline; }
+.tags { display: flex; flex-wrap: wrap; gap: 7px; list-style: none; margin: 14px 0 0; padding: 0; }
+.tags li {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em;
+  border: 1px solid var(--hairline); border-radius: 999px; padding: 4px 10px;
+  color: var(--ink-soft); background: #fffdf9;
+}
+.skills-strip { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.skills-strip li {
+  font-size: 13.5px; font-weight: 550; color: var(--ink);
+  background: #fffdf9; border: 1px solid var(--hairline);
+  border-radius: 8px; padding: 8px 13px;
+}
+.contact-mail { font-size: 21px; font-weight: 650; text-decoration: none; }
+.contact-mail:hover { text-decoration: underline; }
+.site-foot { margin-top: 54px; padding-top: 20px; border-top: 1px solid var(--hairline); }
+.socials { margin: 0 0 8px; font-size: 14px; }
+.socials a { color: var(--ink-soft); text-decoration: none; font-weight: 550; }
+.socials a:hover { color: var(--accent); }
+.foot-note { margin: 0; font-size: 12.5px; color: var(--muted); }
+
+/* ---------------------------------------------------------- fallback --- */
+#fallback {
+  position: relative; z-index: 10;
+  max-width: 680px; margin: 0 auto; padding: 120px 24px 30px; text-align: left;
+}
+#fallback h2 { font-size: 24px; margin: 0 0 10px; }
+#fallback p { font-size: 16px; line-height: 1.6; color: var(--ink-soft); }
+body.no-webgl #stage, body.no-webgl #cards, body.no-webgl #hints { display: none; }
+body.no-webgl #journey { height: 0; }
+body.context-lost #fallback {
+  position: fixed; left: 16px; right: 16px; bottom: 16px; top: auto;
+  padding: 18px 20px; background: var(--card-bg);
+  border: 1px solid var(--hairline); border-radius: 10px; z-index: 60;
+}
+
+/* ------------------------------------------------------------ mobile --- */
+@media (max-width: 640px) {
+  #site-header { padding: 10px 14px; }
+  .brand-role { display: none; }
+  .site-nav { gap: 13px; }
+  .site-nav a { font-size: 12.5px; }
+  .card { left: 12px; right: 12px; bottom: 12px; width: auto; padding: 16px 18px 14px; }
+  .card h3 { font-size: 18px; }
+  .card-body { font-size: 13.5px; }
+  #hints { bottom: auto; top: 64px; flex-wrap: wrap; justify-content: center; width: calc(100vw - 24px); }
+  .hint { font-size: 10px; padding: 5px 9px; }
+  #info-panel {
+    left: 12px; right: 12px; bottom: 12px; top: auto; width: auto;
+    transform: translateY(14px);
+  }
+  #info-panel.open { transform: translateY(0); }
+  /* the panel is a bottom sheet on mobile — the caption card steps
+     aside while it is open so the two never overlap */
+  body.panel-open #cards { display: none; }
+  .doc-section { padding: 56px 18px 4px; }
+  .section-head h2 { font-size: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hint, #info-panel { transition: none; }
+}

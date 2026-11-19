@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#05080d" />
+  <meta name="color-scheme" content="dark" />
+  <meta
+    name="description"
+    content="Silicon & Systems Lab — a computer engineering and AI hardware portfolio. One ATX workstation in six spatial zones: board, silicon die, liquid loop, tensor core and the exploded system."
+  />
+  <title>Silicon &amp; Systems Lab — Computer Engineering &amp; AI Hardware</title>
+
+  <!--
+    The import map makes this folder run as-is on any static HTTP server
+    (python -m http.server, CodeSandbox, Netlify, GitHub Pages) without an
+    `npm install`. Vite ignores it and resolves the same bare specifiers from
+    node_modules when you do run `npm install && npm run dev`.
+  -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://esm.sh/three@0.187.0",
+      "gsap": "https://esm.sh/gsap@3.13.0",
+      "gsap/ScrollTrigger": "https://esm.sh/gsap@3.13.0/ScrollTrigger",
+      "lenis": "https://esm.sh/lenis@1.3.27"
+    }
+  }
+  </script>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305080d'/%3E%3Crect x='9' y='9' width='14' height='14' rx='2' fill='none' stroke='%2356e0ef' stroke-width='1.6'/%3E%3Crect x='13' y='13' width='6' height='6' rx='1' fill='%2356e0ef'/%3E%3Cpath d='M12 4v5M16 4v5M20 4v5M12 23v5M16 23v5M20 23v5M4 12h5M4 16h5M4 20h5M23 12h5M23 16h5M23 20h5' stroke='%2356e0ef' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="./src/styles/main.css" />
+</head>
+<body>
+  <!-- ===================================================== 3D canvas ===== -->
+  <canvas id="scene" class="scene" aria-hidden="true"></canvas>
+  <div class="scene-fallback" aria-hidden="true"></div>
+
+  <!-- =================================================== loading veil ==== -->
+  <div class="loader" id="loader" role="status" aria-live="polite" aria-label="Loading the workstation">
+    <div class="loader__inner">
+      <div class="loader__glyph" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <p class="loader__title">Bringing up the rig</p>
+      <p class="loader__zone"><span id="loader-zone">01</span><span class="loader__zone-sep">/</span><span id="loader-zone-name">Rig overview</span></p>
+      <div class="loader__bar"><div class="loader__bar-fill" id="loader-bar"></div></div>
+      <p class="loader__note" id="loader-note">Reading board topology…</p>
+    </div>
+  </div>
+
+  <!-- ========================================================== HUD ===== -->
+  <!-- Top safe band: whatever scrolls up behind the fixed HUD is blurred and
+       faded out here, so no heading ever collides with the brand pill. -->
+  <div class="hud-veil" aria-hidden="true"></div>
+  <!-- Matching band under the live telemetry strip. -->
+  <div class="hud-veil hud-veil--bottom" aria-hidden="true"></div>
+
+  <header class="hud hud--top">
+    <a class="brand" href="#overview" data-scroll-to="overview" aria-label="Silicon and Systems Lab — back to the rig overview">
+      <span class="brand__mark" aria-hidden="true" data-bind="brand.mark">S&amp;S</span>
+      <span class="brand__text">
+        <span class="brand__name" data-bind="brand.name">SILICON &amp; SYSTEMS</span>
+        <span class="brand__role" data-bind="brand.role">Computer engineering · AI hardware</span>
+      </span>
+    </a>
+
+    <div class="hud__controls">
+      <div class="seg" role="group" aria-label="AI workload">
+        <span class="seg__label" aria-hidden="true">AI load</span>
+        <button type="button" class="seg__btn is-active" data-workload="normal" aria-pressed="true" aria-label="AI workload: normal">
+          <span class="seg__full">Normal</span><span class="seg__short" aria-hidden="true">NRM</span>
+        </button>
+        <button type="button" class="seg__btn" data-workload="surge" aria-pressed="false" aria-label="AI workload: AI surge">
+          <span class="seg__full">AI Surge</span><span class="seg__short" aria-hidden="true">AI</span>
+        </button>
+      </div>
+
+      <div class="seg" role="group" aria-label="Explode view">
+        <span class="seg__label" aria-hidden="true">View</span>
+        <button type="button" class="seg__btn is-active" data-explode="auto" aria-pressed="true" aria-label="Explode view: automatic per zone">
+          <span class="seg__full">Auto</span><span class="seg__short" aria-hidden="true">AUTO</span>
+        </button>
+        <button type="button" class="seg__btn" data-explode="exploded" aria-pressed="false" aria-label="Explode view: fully exploded">
+          <span class="seg__full">Exploded</span><span class="seg__short" aria-hidden="true">XPL</span>
+        </button>
+      </div>
+
+      <button type="button" id="audio-toggle" class="pill pill--ghost" aria-pressed="false" title="Toggle hardware audio">
+        <span class="pill__icon" aria-hidden="true">
+          <svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <path d="M3 7.5h2.5L9.5 4v12L5.5 12.5H3z" />
+            <path class="pill__waves" d="M12.5 7a4 4 0 0 1 0 6M15 4.8a7.3 7.3 0 0 1 0 10.4" />
+            <path class="pill__slash" d="M13 7l5 6M18 7l-5 6" />
+          </svg>
+        </span>
+        <span class="pill__label" id="audio-label">Sound off</span>
+      </button>
+
+      <a class="pill pill--accent" id="contact-button" href="#architecture" data-scroll-to="architecture">
+        <span class="pill__label">Contact</span>
+        <span class="pill__arrow" aria-hidden="true">↘</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ==================================================== zone jump rail == -->
+  <nav class="rail" id="zone-rail" aria-label="Zone jump rail — six stations">
+    <div class="rail__head">
+      <span class="rail__zone" id="rail-zone">01</span>
+      <span class="rail__total">/ 06</span>
+    </div>
+    <div class="rail__track" id="rail-track">
+      <div class="rail__line" aria-hidden="true"></div>
+      <div class="rail__fill" id="rail-fill" aria-hidden="true"></div>
+      <!-- ticks are injected from portfolio.sections in src/config/portfolio.js -->
+      <div class="rail__ticks" id="rail-ticks"></div>
+    </div>
+  </nav>
+
+  <!-- ======================================================== telemetry == -->
+  <aside class="telemetry" id="telemetry" aria-label="Live hardware telemetry">
+    <div class="telemetry__status">
+      <span class="telemetry__dot" aria-hidden="true"></span>
+      <span class="telemetry__title" data-bind="telemetry.title">Live telemetry</span>
+      <span class="telemetry__mode" id="tel-mode">Normal</span>
+    </div>
+    <dl class="telemetry__grid">
+      <div class="telemetry__cell">
+        <dt>Core temp</dt>
+        <dd><span id="tel-temp">62</span><span class="telemetry__unit">°C</span></dd>
+      </div>
+      <div class="telemetry__cell">
+        <dt>Fan speed</dt>
+        <dd><span id="tel-rpm">1,580</span><span class="telemetry__unit">rpm</span></dd>
+      </div>
+      <div class="telemetry__cell">
+        <dt>AI load</dt>
+        <dd><span id="tel-ai">28</span><span class="telemetry__unit">%</span></dd>
+      </div>
+      <div class="telemetry__cell">
+        <dt>Explode</dt>
+        <dd><span id="tel-explode">0</span><span class="telemetry__unit">%</span></dd>
+      </div>
+    </dl>
+  </aside>
+
+  <!-- ======================================================== content ===== -->
+  <main id="content" class="content">
+
+    <!-- 01 · rig overview ---------------------------------------------- -->
+    <section class="section section--hero" id="overview" aria-labelledby="overview-title">
+      <div class="section__inner section__inner--hero">
+        <p class="eyebrow" data-reveal>
+          <span class="eyebrow__index">01</span>
+          <span class="eyebrow__sep" aria-hidden="true">/</span>
+          <span class="eyebrow__zone" data-bind="sections.0.name">Rig Overview</span>
+          <span class="eyebrow__spec" data-bind="sections.0.spec">Full ATX workstation</span>
+        </p>
+
+        <h1 class="display" id="overview-title" data-reveal>
+          <span data-bind="hero.lineOne">Computer engineering,</span>
+          <span class="display__em" data-bind="hero.lineTwo">from logic gate</span>
+          <span data-bind="hero.lineThree">to thermal loop.</span>
+        </h1>
+
+        <p class="lede" data-reveal data-bind="hero.lede">
+          Silicon &amp; Systems Lab designs AI accelerators and the systems that
+          keep them honest — RTL and verification, board bring-up, thermal
+          control, and the firmware that reports what the silicon is doing.
+        </p>
+
+        <div class="hero__meta" data-reveal>
+          <span class="hero__status"><i aria-hidden="true"></i><span data-bind="hero.availability">Open for architecture &amp; bring-up work</span></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span data-bind="hero.focus">Accelerators · SoC · thermal systems</span>
+        </div>
+
+        <a class="scroll-cue" href="#motherboard" data-scroll-to="motherboard" data-reveal>
+          <span class="scroll-cue__line" aria-hidden="true"></span>
+          <span>Scroll to open the case</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 02 · motherboard & bus ----------------------------------------- -->
+    <section class="section" id="motherboard" aria-labelledby="motherboard-title">
+      <div class="section__inner">
+        <div class="card card--copy" data-reveal>
+          <p class="eyebrow">
+            <span class="eyebrow__index">02</span>
+            <span class="eyebrow__sep" aria-hidden="true">/</span>
+            <span class="eyebrow__zone" data-bind="sections.1.name">Motherboard &amp; Bus</span>
+            <span class="eyebrow__spec" data-bind="sections.1.spec">DDR5 · PCIe 5.0 · M.2 Gen5</span>
+          </p>
+
+          <h2 class="headline" id="motherboard-title" data-bind="about.title">The bus is the contract</h2>
+
+          <div class="prose">
+            <p data-bind="about.bodyOne">
+              A motherboard is not a picture of a computer, it is a schedule:
+              every device on the board is arguing for a slice of the same memory
+              bus, and the board is the arbitration you can photograph.
+            </p>
+            <p data-bind="about.bodyTwo">
+              I design across those boundaries — RTL, rails, firmware and the
+              thermal log that tells you what actually happened.
+            </p>
+          </div>
+        </div>
+
+        <div class="card card--spec" data-reveal aria-label="Board specification">
+          <div class="spec">
+            <div class="spec__row"><dt>Memory</dt><dd>128 GB DDR5-6400<span class="spec__note">4 × 32 GB, dual rank</span></dd></div>
+            <div class="spec__row"><dt>Fabric</dt><dd>PCIe 5.0 ×16<span class="spec__note">CPU-attached, 128 GB/s</span></dd></div>
+            <div class="spec__row"><dt>Storage</dt><dd>2 × M.2 Gen5<span class="spec__note">14 GB/s sequential</span></dd></div>
+            <div class="spec__row"><dt>Power stage</dt><dd>18 + 2 phases<span class="spec__note">90 A DrMOS, 8-layer PCB</span></dd></div>
+          </div>
+        </div>
+
+        <ul class="capabilities" data-reveal>
+          <li class="capability">
+            <span class="capability__name" data-bind="capabilities.0.name">RTL &amp; verification</span>
+            <span class="capability__detail" data-bind="capabilities.0.detail">SystemVerilog and Chisel microarchitecture, UVM testbenches, formal coverage.</span>
+          </li>
+          <li class="capability">
+            <span class="capability__name" data-bind="capabilities.1.name">SoC &amp; board bring-up</span>
+            <span class="capability__detail" data-bind="capabilities.1.detail">Power sequencing, clocking, DDR training, PCIe enumeration.</span>
+          </li>
+          <li class="capability">
+            <span class="capability__name" data-bind="capabilities.2.name">Accelerator architecture</span>
+            <span class="capability__detail" data-bind="capabilities.2.detail">Systolic arrays, memory hierarchies, inference scheduling.</span>
+          </li>
+          <li class="capability">
+            <span class="capability__name" data-bind="capabilities.3.name">Thermal &amp; power control</span>
+            <span class="capability__detail" data-bind="capabilities.3.detail">Loop control, fan curves and telemetry firmware.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 03 · cpu & silicon die ----------------------------------------- -->
+    <section class="section" id="cpu" aria-labelledby="cpu-title">
+      <div class="section__inner">
+        <div class="card card--copy" data-reveal>
+          <p class="eyebrow">
+            <span class="eyebrow__index">03</span>
+            <span class="eyebrow__sep" aria-hidden="true">/</span>
+            <span class="eyebrow__zone" data-bind="sections.2.name">CPU &amp; Silicon Die</span>
+            <span class="eyebrow__spec" data-bind="sections.2.spec">16 cores · 96 MB L3 · 3 nm</span>
+          </p>
+
+          <h2 class="headline" id="cpu-title">A die is a budget of heat and time</h2>
+
+          <div class="prose">
+            <p>
+              Close the distance and the cooler goes transparent: eight cores
+              under a soldered heat spreader, a 96 MB L3 slice around them, and a
+              memory controller that decides whether the array is ever fed.
+            </p>
+            <p>
+              Thermal density, not clock speed, is what ends an inference run. The
+              interesting engineering is in the last two millimetres of silicon
+              and the first two centimetres of copper.
+            </p>
+          </div>
+        </div>
+
+        <div class="card card--spec" data-reveal aria-label="Processor specification">
+          <div class="spec">
+            <div class="spec__row"><dt>Process</dt><dd>3 nm GAA<span class="spec__note">16 cores · 32 threads</span></dd></div>
+            <div class="spec__row"><dt>Cache</dt><dd>96 MB L3<span class="spec__note">32 MB per CCD</span></dd></div>
+            <div class="spec__row"><dt>Clock</dt><dd>5.4 GHz boost<span class="spec__note">142 W package power</span></dd></div>
+            <div class="spec__row"><dt>Package</dt><dd>LGA 1718<span class="spec__note">soldered IHS, direct-die option</span></dd></div>
+          </div>
+        </div>
+
+        <article class="project" data-reveal>
+          <div class="project__head">
+            <span class="project__index" aria-hidden="true">01</span>
+            <p class="project__kicker" data-bind="projects.0.kicker">Featured project</p>
+          </div>
+          <h3 class="project__title" data-bind="projects.0.title">Tessera NPU</h3>
+          <p class="project__meta">
+            <span data-bind="projects.0.year">2026</span>
+            <span class="dot" aria-hidden="true"></span>
+            <span data-bind="projects.0.role">Microarchitecture · RTL · verification</span>
+          </p>
+          <p class="project__summary" data-bind="projects.0.summary">
+            A 16-tile inference accelerator for edge robotics.
+          </p>
+          <ul class="chips">
+            <li class="chip" data-bind="projects.0.stack.0">SystemVerilog</li>
+            <li class="chip" data-bind="projects.0.stack.1">UVM</li>
+            <li class="chip" data-bind="projects.0.stack.2">Chisel</li>
+            <li class="chip" data-bind="projects.0.stack.3">5 nm</li>
+          </ul>
+          <a class="project__link" data-bind-href="projects.0.url" href="#" target="_blank" rel="noopener noreferrer">
+            <span data-bind="projects.0.cta">Read the architecture note</span>
+            <span class="project__arrow" aria-hidden="true">→</span>
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <!-- 04 · liquid cooling loop --------------------------------------- -->
+    <section class="section" id="cooling" aria-labelledby="cooling-title">
+      <div class="section__inner">
+        <div class="card card--copy" data-reveal>
+          <p class="eyebrow">
+            <span class="eyebrow__index">04</span>
+            <span class="eyebrow__sep" aria-hidden="true">/</span>
+            <span class="eyebrow__zone" data-bind="sections.3.name">Liquid Cooling Loop</span>
+            <span class="eyebrow__spec" data-bind="sections.3.spec">360 mm radiator · 2.4 L/min</span>
+          </p>
+
+          <h2 class="headline" id="cooling-title">Heat is the schedule</h2>
+
+          <div class="prose">
+            <p>
+              A 360 mm radiator, a pump reservoir and two metres of tubing are a
+              latency budget written in coolant. Every litre per minute buys
+              headroom the scheduler can spend later.
+            </p>
+            <p>
+              Watch the loop under AI surge: the flow rate climbs, the coolant
+              warms, and the fan curve follows a second behind it — the same
+              control law a rack of accelerators runs at 400 Hz.
+            </p>
+          </div>
+        </div>
+
+        <div class="card card--spec" data-reveal aria-label="Cooling loop specification">
+          <div class="spec">
+            <div class="spec__row"><dt>Radiator</dt><dd>360 × 120 × 28 mm<span class="spec__note">3 × 120 mm, 2,200 rpm</span></dd></div>
+            <div class="spec__row"><dt>Pump</dt><dd>4,400 rpm<span class="spec__note">D5 PWM, 1.1 L reservoir</span></dd></div>
+            <div class="spec__row"><dt>Flow</dt><dd>2.4 L/min<span class="spec__note">0.42 bar pressure drop</span></dd></div>
+            <div class="spec__row"><dt>Coolant</dt><dd>Propylene glycol<span class="spec__note">30% mix, 0.9 L fill</span></dd></div>
+          </div>
+        </div>
+
+        <article class="project" data-reveal>
+          <div class="project__head">
+            <span class="project__index" aria-hidden="true">02</span>
+            <p class="project__kicker" data-bind="projects.1.kicker">Featured project</p>
+          </div>
+          <h3 class="project__title" data-bind="projects.1.title">Coldplate</h3>
+          <p class="project__meta">
+            <span data-bind="projects.1.year">2025</span>
+            <span class="dot" aria-hidden="true"></span>
+            <span data-bind="projects.1.role">Firmware · control · telemetry</span>
+          </p>
+          <p class="project__summary" data-bind="projects.1.summary">
+            Thermal control firmware for a liquid-cooled rack of accelerators.
+          </p>
+          <ul class="chips">
+            <li class="chip" data-bind="projects.1.stack.0">C</li>
+            <li class="chip" data-bind="projects.1.stack.1">FreeRTOS</li>
+            <li class="chip" data-bind="projects.1.stack.2">PID</li>
+            <li class="chip" data-bind="projects.1.stack.3">Modbus</li>
+          </ul>
+          <a class="project__link" data-bind-href="projects.1.url" href="#" target="_blank" rel="noopener noreferrer">
+            <span data-bind="projects.1.cta">See the control loop</span>
+            <span class="project__arrow" aria-hidden="true">→</span>
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <!-- 05 · gpu & ai tensor core -------------------------------------- -->
+    <section class="section" id="gpu" aria-labelledby="gpu-title">
+      <div class="section__inner">
+        <div class="card card--copy" data-reveal>
+          <p class="eyebrow">
+            <span class="eyebrow__index">05</span>
+            <span class="eyebrow__sep" aria-hidden="true">/</span>
+            <span class="eyebrow__zone" data-bind="sections.4.name">GPU &amp; AI Tensor Core</span>
+            <span class="eyebrow__spec" data-bind="sections.4.spec">Triple fan · 24 GB GDDR7</span>
+          </p>
+
+          <h2 class="headline" id="gpu-title">Inference has a floor, and it is bandwidth</h2>
+
+          <div class="prose">
+            <p>
+              Weights arrive from the host over PCIe, land in 24 GB of GDDR7, and
+              move through a tensor matrix that is faster than the memory feeding
+              it. Press AI Surge and watch the packets crowd the link.
+            </p>
+            <p>
+              Tensor cores are the glamorous part. The floor is the memory
+              hierarchy around them — which is why every accelerator I design
+              starts with the smallest buffer that still keeps the array busy.
+            </p>
+          </div>
+        </div>
+
+        <div class="card card--spec" data-reveal aria-label="Accelerator specification">
+          <div class="spec">
+            <div class="spec__row"><dt>Tensor cores</dt><dd>4th generation<span class="spec__note">INT8 and FP8 pipelines</span></dd></div>
+            <div class="spec__row"><dt>Throughput</dt><dd>1,320 TOPS<span class="spec__note">INT8, sparse</span></dd></div>
+            <div class="spec__row"><dt>Memory</dt><dd>24 GB GDDR7<span class="spec__note">384-bit, 28 Gbps</span></dd></div>
+            <div class="spec__row"><dt>Bandwidth</dt><dd>1.8 TB/s<span class="spec__note">1,340 GB/s effective</span></dd></div>
+          </div>
+        </div>
+
+        <article class="project" data-reveal>
+          <div class="project__head">
+            <span class="project__index" aria-hidden="true">03</span>
+            <p class="project__kicker" data-bind="projects.2.kicker">Featured project</p>
+          </div>
+          <h3 class="project__title" data-bind="projects.2.title">Bitstream</h3>
+          <p class="project__meta">
+            <span data-bind="projects.2.year">2024</span>
+            <span class="dot" aria-hidden="true"></span>
+            <span data-bind="projects.2.role">FPGA · quantisation · deployment</span>
+          </p>
+          <p class="project__summary" data-bind="projects.2.summary">
+            An INT8 inference pipeline on a mid-range FPGA for a warehouse robotics team.
+          </p>
+          <ul class="chips">
+            <li class="chip" data-bind="projects.2.stack.0">Verilog</li>
+            <li class="chip" data-bind="projects.2.stack.1">INT8</li>
+            <li class="chip" data-bind="projects.2.stack.2">Xilinx</li>
+            <li class="chip" data-bind="projects.2.stack.3">Vitis</li>
+          </ul>
+          <a class="project__link" data-bind-href="projects.2.url" href="#" target="_blank" rel="noopener noreferrer">
+            <span data-bind="projects.2.cta">Open the case study</span>
+            <span class="project__arrow" aria-hidden="true">→</span>
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <!-- 06 · system architecture --------------------------------------- -->
+    <section class="section section--contact" id="architecture" aria-labelledby="architecture-title">
+      <div class="section__inner">
+        <div class="card card--copy" data-reveal>
+          <p class="eyebrow">
+            <span class="eyebrow__index">06</span>
+            <span class="eyebrow__sep" aria-hidden="true">/</span>
+            <span class="eyebrow__zone" data-bind="sections.5.name">System Architecture</span>
+            <span class="eyebrow__spec" data-bind="sections.5.spec">Exploded view · portfolio &amp; contact</span>
+          </p>
+
+          <h2 class="headline" id="architecture-title">Take it apart; it still has to run</h2>
+
+          <div class="prose">
+            <p>
+              The last zone pulls the workstation apart. Radiator, cooler, memory,
+              GPU and chassis separate along their assembly axes — the same
+              exploded drawing an engineer would pin to the wall, except this one
+              reports its own temperature.
+            </p>
+          </div>
+        </div>
+
+        <ol class="architecture" data-reveal>
+          <li class="arch">
+            <span class="arch__num" aria-hidden="true">i</span>
+            <div>
+              <h3 class="arch__title" data-bind="architecture.0.title">One rig, six zones</h3>
+              <p class="arch__body" data-bind="architecture.0.body">A single ATX workstation is the whole world.</p>
+            </div>
+          </li>
+          <li class="arch">
+            <span class="arch__num" aria-hidden="true">ii</span>
+            <div>
+              <h3 class="arch__title" data-bind="architecture.1.title">One state, every surface</h3>
+              <p class="arch__body" data-bind="architecture.1.body">The AI workload and the explode amount are single numbers.</p>
+            </div>
+          </li>
+          <li class="arch">
+            <span class="arch__num" aria-hidden="true">iii</span>
+            <div>
+              <h3 class="arch__title" data-bind="architecture.2.title">Exploded is a dimension</h3>
+              <p class="arch__body" data-bind="architecture.2.body">Every part carries an assembly axis.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="card card--contact" data-reveal>
+          <div class="contact">
+            <h3 class="contact__title" data-bind="contact.title">Send me a block diagram.</h3>
+            <p class="contact__body" data-bind="contact.body">
+              Architecture reviews, bring-up help, or a system that has to be built twice.
+            </p>
+            <a class="mailto" data-bind-href="contact.emailHref" href="mailto:hello@example.com">
+              <span class="mailto__label">Write to me</span>
+              <span class="mailto__value" data-bind="contact.email">hello@example.com</span>
+            </a>
+            <ul class="links" id="contact-links">
+              <!-- injected from config.contact.links -->
+            </ul>
+          </div>
+
+          <footer class="footer">
+            <p class="footer__credit" data-bind="footer.credit">
+              Built with three.js, GSAP and Lenis. No textures, no video.
+            </p>
+            <p class="footer__meta">
+              <span data-bind="brand.name">SILICON &amp; SYSTEMS</span>
+              <span class="dot" aria-hidden="true"></span>
+              <span id="footer-year">2026</span>
+              <span class="dot" aria-hidden="true"></span>
+              <button type="button" class="footer__top" data-scroll-to="overview">Back to the rig ↑</button>
+            </p>
+          </footer>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

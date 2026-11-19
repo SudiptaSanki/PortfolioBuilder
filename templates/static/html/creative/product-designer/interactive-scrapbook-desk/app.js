@@ -362,7 +362,7 @@
       '<h2 class="m-title" id="modalTitle">Let&rsquo;s chat!</h2>' +
       '<p class="m-sub">I read everything, and answer most of it.</p>' +
       '<p class="m-p">Tell me what you are building, what is broken, or what you cannot stop thinking about. I like problems that sound boring until you open them.</p>' +
-      '<a class="m-mail" href="mailto:hello@jamie.design?subject=Hello%20Jamie">hello@jamie.design</a>' +
+      '<a class="m-mail" href="mailto:hello@example.com?subject=Hello%20Jamie">hello@example.com</a>' +
       '<div class="m-row"><button class="m-btn" id="copyMail" type="button">copy email</button>' +
       '<button class="m-btn m-btn--ghost" data-project="about">more about me</button></div>' +
       '<div class="m-tags" style="margin-top:26px"><span class="m-tag">Cape Town · GMT+2</span><span class="m-tag">open to freelance</span><span class="m-tag">replies in a day or two</span></div>'
@@ -389,7 +389,7 @@
     }
     const copyEl = e.target.closest("#copyMail");
     if (copyEl) {
-      const txt = "hello@jamie.design";
+      const txt = "hello@example.com";
       if (navigator.clipboard) navigator.clipboard.writeText(txt).catch(() => {});
       copyEl.textContent = "copied ✓";
       return;

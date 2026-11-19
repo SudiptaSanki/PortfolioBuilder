@@ -664,7 +664,7 @@
 
       var subject = 'Project enquiry — ' + name;
       var body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + (msg || '(no brief yet)');
-      var href = 'mailto:hello@theovarin.design?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      var href = 'mailto:hello@example.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
       note.textContent = 'Opening your mail app — the brief is pre-filled.';
       note.classList.remove('is-error'); note.classList.add('is-ok');
       window.location.href = href;

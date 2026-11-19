@@ -265,7 +265,7 @@
       return 'NEON CIRCUIT — a spatial design study.\n14 years · 220 systems · 12 people · Los Angeles / Amsterdam.\nWe build places, not pages.';
     },
     contact: function () {
-      return 'MAIL    hello@v6.studio\nPHONE   +1 (310) 555-0162\nSOCIAL  instagram / x / vimeo / linkedin (below)';
+      return 'MAIL    hello@example.com\nPHONE   +1 (310) 555-0162\nSOCIAL  instagram / x / vimeo / linkedin (below)';
     },
     open: function (arg) {
       var c = CASES.filter(function (x) { return x.id === (arg || '').toLowerCase().split('-')[0]; })[0];

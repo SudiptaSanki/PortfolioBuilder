@@ -1,0 +1,1664 @@
+/* ==========================================================================
+   AXON COMPUTE & OPS — main.css
+   --------------------------------------------------------------------------
+   Layers, bottom to top
+     0   canvas (the procedural AI campus)
+     1   scene scrim + vignette
+     30  station content
+     40  HUD veils (top / bottom legibility gradients)
+     45  station rail + mobile telemetry
+     50  topbar
+     200 preloader
+     300 sound prompt
+
+   Everything is sized from five custom properties so the desktop (1440×900)
+   and mobile (390×844 / 360×780) layouts stay in the same rhythm:
+     --pad-x    left gutter for content
+     --rail-w   width of the right-hand station rail
+     --topbar-h collapsed height of the top bar
+     --glass    shared panel fill
+     --line     shared hairline
+   The station card and the station rail never share a horizontal band: the
+   card is left-anchored, the rail is fixed to the right edge.
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ tokens */
+:root {
+  --ink: #04090c;
+  --ink-2: #071116;
+  --cream: #eaf4f7;
+  --cream-dim: #c2d3d9;
+  --body: rgba(234, 244, 247, 0.78);
+  --muted: #8ca3ab;
+  --muted-2: rgba(234, 244, 247, 0.46);
+  --cyan: #5fe3ff;
+  --cyan-deep: #1f8fa8;
+  --amber: #ffc078;
+  --amber-deep: #c98a3f;
+  --green: #57e0a1;
+  --red: #ff6b5a;
+  --line: rgba(234, 244, 247, 0.15);
+  --line-soft: rgba(234, 244, 247, 0.08);
+  --glass: rgba(5, 12, 16, 0.64);
+  --glass-strong: rgba(5, 12, 16, 0.9);
+
+  --sans: "Inter", "Liberation Sans", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Liberation Serif", Georgia, "Times New Roman", serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Liberation Mono", "Roboto Mono", Menlo, Consolas, monospace;
+
+  --pad-x: clamp(20px, 6vw, 92px);
+  --rail-w: 190px;
+  --topbar-h: 74px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ------------------------------------------------------------------- reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ink);
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+html.is-locked,
+html.is-locked body {
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+p,
+dl,
+dd,
+ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: rgba(95, 227, 255, 0.26);
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ------------------------------------------------------------- utilities -- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ------------------------------------------------------------- 3D canvas -- */
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+}
+
+.scene-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(115% 85% at 6% 52%, rgba(2, 7, 10, 0.6) 0%, rgba(2, 7, 10, 0.26) 38%, rgba(2, 7, 10, 0) 68%),
+    radial-gradient(140% 120% at 50% 50%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.42) 100%);
+}
+
+.hud-veil {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.hud-veil--top {
+  top: 0;
+  height: 132px;
+  background: linear-gradient(
+    180deg,
+    rgba(3, 7, 10, 0.92) 0%,
+    rgba(3, 7, 10, 0.6) 42%,
+    rgba(3, 7, 10, 0) 100%
+  );
+}
+
+.hud-veil--bottom {
+  bottom: 0;
+  height: 0;
+  display: none;
+}
+
+/* The station rail and its telemetry sit on the right edge, where the campus
+   runs from a bright attention core to the lit edge of the Earth. A soft
+   gradient under them keeps the ticks and numbers legible without a heavy
+   panel (the panel itself is only half the protection). */
+.hud-veil--right {
+  top: 0;
+  bottom: 0;
+  left: auto;
+  right: 0;
+  width: min(300px, 26vw);
+  height: auto;
+  display: none;
+  background: linear-gradient(
+    90deg,
+    rgba(2, 7, 10, 0) 0%,
+    rgba(2, 7, 10, 0.34) 52%,
+    rgba(2, 7, 10, 0.58) 100%
+  );
+}
+
+/* ------------------------------------------------------------------ topbar */
+@keyframes hud-drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-9px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hud-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px clamp(16px, 3.2vw, 44px);
+  pointer-events: none;
+  animation: hud-drop-in 0.6s var(--ease) 0.1s both;
+}
+
+.topbar > * {
+  pointer-events: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brand__mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(95, 227, 255, 0.45);
+  background: rgba(4, 11, 15, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 10px 30px -18px rgba(0, 0, 0, 0.9);
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  backdrop-filter: blur(10px);
+}
+
+.brand__text {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.brand__name--short {
+  display: none;
+}
+
+.brand__name {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--cream);
+  white-space: nowrap;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
+}
+
+.brand .brand__name--short {
+  display: none;
+}
+
+.brand__tag {
+  display: block;
+  margin-top: 4px;
+  max-width: none;
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  white-space: nowrap;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.85);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+/* ------------------------------------------------------------------ pill -- */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--glass);
+  color: var(--cream);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.25s var(--ease), border-color 0.25s var(--ease),
+    color 0.25s var(--ease), transform 0.2s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.btn:hover {
+  border-color: rgba(95, 227, 255, 0.55);
+  background: rgba(8, 22, 28, 0.82);
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.btn--sound[aria-pressed="true"] {
+  border-color: rgba(95, 227, 255, 0.5);
+  color: #ddf9ff;
+  background: rgba(6, 26, 31, 0.72);
+  box-shadow: 0 0 0 1px rgba(95, 227, 255, 0.08), 0 12px 30px -22px rgba(95, 227, 255, 0.9);
+}
+
+.btn--forward .btn__icon {
+  color: var(--cyan);
+}
+
+.btn--forward.is-firing {
+  border-color: rgba(95, 227, 255, 0.7);
+  color: #f2fdff;
+  animation: forward-fire 0.9s var(--ease);
+}
+
+@keyframes forward-fire {
+  0% { box-shadow: 0 0 0 0 rgba(95, 227, 255, 0.45); }
+  45% { box-shadow: 0 0 0 6px rgba(95, 227, 255, 0.12); }
+  100% { box-shadow: 0 0 0 0 rgba(95, 227, 255, 0); }
+}
+
+.btn--canary .btn__icon {
+  color: var(--amber);
+}
+
+.btn--canary[aria-pressed="true"] {
+  border-color: rgba(255, 192, 120, 0.55);
+  color: #fff4e6;
+  background: rgba(38, 24, 10, 0.72);
+  box-shadow: 0 0 0 1px rgba(255, 192, 120, 0.1), 0 12px 30px -22px rgba(255, 192, 120, 0.9);
+}
+
+.btn--canary[aria-pressed="false"] {
+  color: var(--cream-dim);
+}
+
+.btn--canary[aria-pressed="false"] .btn__icon {
+  color: var(--amber);
+  opacity: 0.72;
+}
+
+.btn--cta {
+  border-color: transparent;
+  background: linear-gradient(180deg, #ffe0b8, var(--amber-deep));
+  color: #1a1206;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  box-shadow: 0 14px 34px -20px rgba(255, 192, 120, 0.9);
+}
+
+.btn--cta:hover {
+  background: linear-gradient(180deg, #fff0d8, #d99a4d);
+  border-color: transparent;
+}
+
+.btn--primary {
+  border-color: transparent;
+  background: linear-gradient(180deg, #9beeff, var(--cyan-deep));
+  color: #032027;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  box-shadow: 0 16px 38px -22px rgba(95, 227, 255, 0.95);
+}
+
+.btn--primary:hover {
+  background: linear-gradient(180deg, #c4f5ff, #27a3bd);
+  border-color: transparent;
+}
+
+.btn--ghost {
+  background: rgba(6, 14, 18, 0.55);
+  color: var(--cream-dim);
+}
+
+/* equaliser bars inside the sound pill */
+.eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 13px;
+  width: 14px;
+}
+
+.eq i {
+  display: block;
+  width: 2px;
+  height: 4px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.55;
+  transition: height 0.25s var(--ease), opacity 0.25s var(--ease);
+}
+
+.eq i:nth-child(2) { height: 8px; }
+.eq i:nth-child(3) { height: 6px; }
+.eq i:nth-child(4) { height: 3px; }
+
+.btn--sound[aria-pressed="true"] .eq i {
+  opacity: 1;
+  animation: eq 1.05s ease-in-out infinite alternate;
+}
+
+.btn--sound[aria-pressed="true"] .eq i:nth-child(2) { animation-delay: 0.14s; }
+.btn--sound[aria-pressed="true"] .eq i:nth-child(3) { animation-delay: 0.28s; }
+.btn--sound[aria-pressed="true"] .eq i:nth-child(4) { animation-delay: 0.42s; }
+
+@keyframes eq {
+  from { height: 3px; }
+  to { height: 13px; }
+}
+
+/* ---------------------------------------------------------- station content */
+.route-content {
+  position: relative;
+  z-index: 30;
+}
+
+/* Empty runway after the last station: the extra scroll distance is what lets
+   the camera reach the full observation deck (0.96 → 1.00) after the copy has
+   been read. No background, so the 3D scene shows through. */
+.scene-tail {
+  height: 55vh;
+  pointer-events: none;
+}
+
+.station {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 118px clamp(24px, 5vw, 64px) 92px var(--pad-x);
+}
+
+.station__card {
+  position: relative;
+  width: min(590px, 100%);
+  padding: clamp(22px, 2.4vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background:
+    linear-gradient(155deg, rgba(8, 19, 24, 0.86) 0%, rgba(4, 11, 15, 0.7) 58%, rgba(3, 9, 12, 0.84) 100%);
+  box-shadow:
+    0 40px 90px -50px rgba(0, 0, 0, 0.95),
+    0 2px 0 rgba(255, 255, 255, 0.03) inset;
+  backdrop-filter: blur(18px) saturate(1.15);
+  overflow: hidden;
+}
+
+.station__card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan) 0%, rgba(255, 192, 120, 0.55) 42%, rgba(255, 192, 120, 0) 78%);
+  opacity: 0.95;
+}
+
+.station__kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.station__no {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 20px;
+  padding: 0 5px;
+  border: 1px solid rgba(95, 227, 255, 0.42);
+  border-radius: 4px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--cyan);
+}
+
+.station__title {
+  margin-top: 16px;
+  font-family: var(--serif);
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.014em;
+  color: #f6fdff;
+  text-wrap: balance;
+}
+
+.station__lede {
+  margin-top: 13px;
+  font-family: var(--serif);
+  font-size: clamp(15px, 1.25vw, 17px);
+  line-height: 1.48;
+  font-style: italic;
+  color: var(--cream-dim);
+}
+
+.station__body {
+  margin-top: 13px;
+  max-width: 56ch;
+  font-size: 14.5px;
+  line-height: 1.62;
+  color: var(--body);
+}
+
+.station__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(122px, 1fr));
+  gap: 12px 16px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.fact dt {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.fact dd {
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--cream);
+}
+
+.station__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 18px;
+}
+
+.station__tags li {
+  padding: 5px 9px;
+  border: 1px solid rgba(234, 244, 247, 0.14);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(234, 244, 247, 0.62);
+}
+
+/* final station-only contact block */
+.contact {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.contact h3 {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: #f6fdff;
+}
+
+.contact p {
+  margin-top: 8px;
+  max-width: 46ch;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--body);
+}
+
+.contact__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.contact__actions .btn {
+  height: 36px;
+}
+
+.station__sign {
+  margin-top: 16px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+/* -------------------------------------------------------------- station rail */
+.route {
+  position: fixed;
+  right: clamp(16px, 2.6vw, 44px);
+  top: 50%;
+  z-index: 45;
+  transform: translateY(-50%);
+  width: var(--rail-w);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+  animation: hud-fade-in 0.7s var(--ease) 0.28s both;
+}
+
+.route > * {
+  pointer-events: auto;
+}
+
+.route__telemetry {
+  display: grid;
+  gap: 7px;
+  padding: 12px 13px 11px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(4, 11, 15, 0.8);
+  backdrop-filter: blur(18px) saturate(1.2);
+  box-shadow: 0 26px 60px -40px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.tele {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tele__label {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.tele__value {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  font-family: var(--mono);
+  color: var(--cream);
+}
+
+.tele__value b {
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  font-variant-numeric: tabular-nums;
+}
+
+.tele__value--hero b {
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.tele__value i {
+  font-style: normal;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.tele__value .lamp {
+  align-self: center;
+  margin-left: 2px;
+}
+
+/* the health row keeps its lamp on the number's baseline */
+.tele:last-child .tele__value {
+  align-items: baseline;
+}
+
+.lamp {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  color: var(--green);
+  box-shadow: 0 0 0 3px rgba(87, 224, 161, 0.12), 0 0 12px currentColor;
+  transition: background 0.35s var(--ease), box-shadow 0.35s var(--ease), color 0.35s var(--ease);
+}
+
+.lamp[data-tone="amber"] {
+  background: var(--amber);
+  color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(255, 192, 120, 0.12), 0 0 12px currentColor;
+}
+
+.route__rail {
+  position: relative;
+}
+
+/* A soft glass strip behind the ticks: over bright hall light the station
+   labels would otherwise sit on raw scene colour. */
+.route__rail::before {
+  content: "";
+  position: absolute;
+  inset: -6px -10px -6px -8px;
+  z-index: -1;
+  border-radius: 14px;
+  background: rgba(3, 9, 12, 0.76);
+  border: 1px solid rgba(234, 244, 247, 0.1);
+  box-shadow: 0 18px 40px -26px rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(14px) saturate(1.1);
+}
+
+.rail__track {
+  position: absolute;
+  left: 7px;
+  top: 9px;
+  bottom: 9px;
+  width: 2px;
+  border-radius: 2px;
+  background: rgba(234, 244, 247, 0.16);
+  overflow: hidden;
+}
+
+.rail__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(180deg, var(--cyan) 0%, rgba(95, 227, 255, 0.3) 100%);
+  transition: height 0.12s linear;
+}
+
+.rail__list {
+  position: relative;
+  display: grid;
+  gap: 0;
+}
+
+.rail__btn {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 8px 7px 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: rgba(234, 244, 247, 0.69);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  line-height: 1.25;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: left;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9), 0 0 12px rgba(2, 7, 10, 0.9);
+  cursor: pointer;
+  transition: color 0.22s var(--ease), background 0.22s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rail__btn:hover {
+  color: var(--cream);
+  background: rgba(6, 14, 18, 0.45);
+}
+
+.rail__dot {
+  justify-self: center;
+  width: 9px;
+  height: 9px;
+  border: 1px solid rgba(234, 244, 247, 0.38);
+  border-radius: 50%;
+  background: #040c10;
+  transition: background 0.3s var(--ease), border-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.rail__no {
+  display: none;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.rail__btn[aria-current="true"] {
+  color: var(--cream);
+}
+
+.rail__btn[aria-current="true"] .rail__dot {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(95, 227, 255, 0.16), 0 0 14px rgba(95, 227, 255, 0.65);
+  transform: scale(1.06);
+}
+
+.rail__btn[aria-current="true"] .rail__no {
+  color: var(--cyan);
+}
+
+.route__pct {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 2px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--muted-2);
+}
+
+.route__pct b {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cream-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------- mobile bottom -- */
+.bottom {
+  display: none;
+  position: fixed;
+  left: 10px;
+  right: 10px;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  z-index: 45;
+  padding: 10px 12px 9px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--glass-strong);
+  backdrop-filter: blur(16px) saturate(1.1);
+  box-shadow: 0 22px 50px -30px rgba(0, 0, 0, 0.95);
+}
+
+.bottom__row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.btele {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 3px;
+  min-width: 0;
+}
+
+.btele span {
+  flex: 0 0 100%;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.btele b {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cream);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btele i {
+  flex: none;
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.bottom__bar {
+  position: relative;
+  height: 2px;
+  margin-top: 9px;
+  border-radius: 2px;
+  background: rgba(234, 244, 247, 0.14);
+  overflow: hidden;
+}
+
+.bottom__bar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6%;
+  background: linear-gradient(90deg, var(--cyan), #d4f8ff);
+  border-radius: 2px;
+  transition: width 0.12s linear;
+}
+
+/* ------------------------------------------------------------ skip link -- */
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 400;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--cyan);
+  color: #032027;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 0.2s var(--ease);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------- preloader */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(70% 60% at 50% 42%, #0a171d 0%, #050e13 55%, #03090c 100%);
+  transition: opacity 0.7s var(--ease), visibility 0.7s var(--ease);
+}
+
+.loader.is-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader__inner {
+  width: min(330px, 100%);
+  text-align: center;
+}
+
+.loader__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.loader__mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(95, 227, 255, 0.5);
+  border-radius: 9px;
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.loader__name {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  color: var(--cream);
+}
+
+.loader__stage {
+  margin-top: 26px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.loader__bar {
+  position: relative;
+  height: 2px;
+  margin-top: 12px;
+  border-radius: 2px;
+  background: rgba(234, 244, 247, 0.12);
+  overflow: hidden;
+}
+
+.loader__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4%;
+  background: linear-gradient(90deg, var(--cyan-deep), #d6f9ff);
+  transition: width 0.3s var(--ease);
+}
+
+.loader__note {
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(234, 244, 247, 0.28);
+}
+
+/* ----------------------------------------------------------- sound prompt */
+.prompt {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.prompt[hidden] {
+  display: none;
+}
+
+.prompt__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 7, 9, 0.3);
+  backdrop-filter: blur(4px) saturate(1.08);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.prompt__card {
+  position: relative;
+  width: min(436px, 100%);
+  padding: 28px 26px 22px;
+  border: 1px solid rgba(234, 244, 247, 0.18);
+  border-radius: 22px;
+  background:
+    linear-gradient(160deg, rgba(12, 27, 33, 0.95) 0%, rgba(5, 14, 18, 0.93) 60%, rgba(4, 11, 15, 0.96) 100%);
+  box-shadow:
+    0 50px 120px -50px rgba(0, 0, 0, 1),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+    0 1px 0 rgba(255, 255, 255, 0.07) inset;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(12px) scale(0.985);
+  transition: opacity 0.42s var(--ease), transform 0.42s var(--ease);
+}
+
+.prompt.is-open .prompt__backdrop {
+  opacity: 1;
+}
+
+.prompt.is-open .prompt__card {
+  opacity: 1;
+  transform: none;
+}
+
+.prompt__glyph {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border: 1px solid rgba(95, 227, 255, 0.4);
+  border-radius: 50%;
+  color: var(--cyan);
+  background: rgba(95, 227, 255, 0.07);
+}
+
+.prompt__ring {
+  position: absolute;
+  inset: -7px;
+  border: 1px solid rgba(95, 227, 255, 0.18);
+  border-radius: 50%;
+  animation: pulse-ring 3.4s var(--ease) infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.94); opacity: 0.85; }
+  60% { transform: scale(1.04); opacity: 0.25; }
+  100% { transform: scale(0.94); opacity: 0.85; }
+}
+
+.prompt__eyebrow {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.prompt__title {
+  margin-top: 9px;
+  font-family: var(--serif);
+  font-size: clamp(23px, 2.4vw, 28px);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: #f6fdff;
+  text-wrap: balance;
+}
+
+.prompt__body {
+  margin: 11px auto 0;
+  max-width: 40ch;
+  font-size: 13px;
+  line-height: 1.58;
+  color: var(--body);
+}
+
+.prompt__actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.prompt__actions .btn {
+  flex: 1 1 0;
+  height: 42px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.prompt__hint {
+  margin-top: 13px;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(234, 244, 247, 0.34);
+}
+
+/* --------------------------------------------------------- tight desktops -- */
+@media (max-width: 1180px) {
+  :root {
+    --rail-w: 166px;
+    --pad-x: clamp(20px, 4.5vw, 60px);
+  }
+
+  .station__card {
+    width: min(530px, 100%);
+  }
+
+  .rail__btn {
+    font-size: 9px;
+    letter-spacing: 0.07em;
+  }
+
+  .btn {
+    padding: 0 12px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+}
+
+/* Short viewports (768–860 px tall laptops): compress the card so the whole
+   station, including the contact block, still clears the HUD, and shorten the
+   rail so five telemetry rows plus six ticks stay centred. */
+@media (max-height: 840px) and (min-width: 861px) {
+  .station {
+    padding-top: 96px;
+    padding-bottom: 64px;
+  }
+
+  .station__card {
+    padding: 22px 26px;
+  }
+
+  .station__title {
+    font-size: clamp(25px, 2.5vw, 33px);
+    margin-top: 12px;
+  }
+
+  .station__lede {
+    margin-top: 10px;
+    font-size: 15px;
+  }
+
+  .station__body {
+    margin-top: 10px;
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+
+  .station__facts {
+    margin-top: 14px;
+    padding-top: 12px;
+    gap: 10px 14px;
+  }
+
+  .station__tags {
+    margin-top: 12px;
+  }
+
+  .contact {
+    margin-top: 14px;
+    padding-top: 14px;
+  }
+
+  .contact h3 {
+    font-size: 18px;
+  }
+
+  .contact p {
+    font-size: 12.5px;
+  }
+
+  .station__sign {
+    margin-top: 12px;
+  }
+
+  .route {
+    gap: 9px;
+  }
+
+  .route__telemetry {
+    padding: 10px 12px;
+    gap: 5px;
+  }
+
+  .tele__value--hero b {
+    font-size: 24px;
+  }
+
+  .tele__value b {
+    font-size: 13.5px;
+  }
+
+  .rail__btn {
+    padding: 5px 8px 5px 0;
+  }
+}
+
+@media (min-width: 861px) {
+  .hud-veil--right {
+    display: block;
+  }
+}
+
+/* ---------------------------------------------------------------- tablet -- */
+@media (max-width: 860px) {
+  :root {
+    --rail-w: 42px;
+  }
+
+  .route {
+    right: 3px;
+    width: var(--rail-w);
+    gap: 0;
+  }
+
+  .route__telemetry,
+  .route__pct {
+    display: none;
+  }
+
+  .route__rail {
+    padding: 6px 0;
+  }
+
+  .rail__track {
+    left: 6px;
+    top: 12px;
+    bottom: 12px;
+  }
+
+  .rail__btn {
+    grid-template-columns: 13px 1fr;
+    gap: 7px;
+    padding: 9px 0;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+
+  .rail__dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .rail__no {
+    display: block;
+  }
+
+  .rail__name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .station {
+    align-items: center;
+    padding: 96px 66px 138px 14px;
+  }
+
+  .station__card {
+    width: 100%;
+    padding: 20px 18px;
+    border-radius: 16px;
+  }
+
+  .station__title {
+    font-size: clamp(25px, 6.4vw, 32px);
+  }
+
+  .station__lede {
+    font-size: 14.5px;
+  }
+
+  .station__body {
+    font-size: 13.5px;
+    line-height: 1.58;
+  }
+
+  .station__facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 12px;
+    margin-top: 16px;
+    padding-top: 14px;
+  }
+
+  .station__tags {
+    margin-top: 14px;
+  }
+
+  .hud-veil--bottom {
+    display: block;
+    height: 190px;
+    bottom: 0;
+    background: linear-gradient(0deg, rgba(3, 8, 11, 0.92) 0%, rgba(3, 8, 11, 0.5) 55%, rgba(3, 8, 11, 0) 100%);
+  }
+
+  .bottom {
+    display: block;
+  }
+
+  .hud-veil--top {
+    height: 116px;
+  }
+}
+
+/* ----------------------------------------------------------------- mobile -- */
+@media (max-width: 720px) {
+  .topbar {
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+  }
+
+  .brand {
+    gap: 8px;
+  }
+
+  .brand__mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 11px;
+  }
+
+  .brand__name {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+  }
+
+  .brand__name--full {
+    display: none;
+  }
+
+  .brand .brand__name--short {
+    display: block;
+  }
+
+  .brand__tag {
+    display: none;
+  }
+
+  /* the tag chips are the first thing to go on a phone: the facts above them
+     already carry the numbers, and this keeps the tallest card above the
+     bottom telemetry bar */
+  .station__tags {
+    display: none;
+  }
+
+  .station__sign {
+    display: none;
+  }
+
+  .contact__actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .contact__actions .btn {
+    width: 100%;
+    height: 38px;
+    padding: 0 10px;
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+  }
+
+  .controls {
+    gap: 6px;
+  }
+
+  .btn {
+    height: 34px;
+    padding: 0 11px;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+  }
+
+  /* three icon-only pills keep the top bar inside 390 px without shrinking the
+     brand. Each keeps its accessible name and pressed state. */
+  .btn--forward,
+  .btn--canary,
+  .btn--cta {
+    width: 34px;
+    padding: 0;
+  }
+
+  .btn--forward .btn__label,
+  .btn--canary .btn__label,
+  .btn--cta .btn__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .btn--sound {
+    padding: 0 10px;
+  }
+
+  .prompt {
+    padding: 16px;
+  }
+
+  .prompt__card {
+    padding: 24px 20px 18px;
+    border-radius: 18px;
+  }
+
+  .prompt__actions {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .prompt__actions .btn {
+    flex: none;
+    width: 100%;
+    height: 44px;
+    font-size: 10.5px;
+  }
+
+  .prompt__hint {
+    display: none;
+  }
+
+  .prompt__body {
+    font-size: 12.5px;
+  }
+}
+
+@media (max-width: 420px) {
+  /* Extra runway after the last station: the anchor for the contact card can
+     then sit high enough that the card clears the bottom telemetry bar even on
+     a 780 px-tall phone. */
+  .scene-tail {
+    height: 66vh;
+  }
+
+  .station {
+    padding: 88px 62px 128px 13px;
+  }
+
+  .station__card {
+    padding: 15px 14px;
+  }
+
+  .station__title {
+    margin-top: 12px;
+    font-size: 22px;
+  }
+
+  .station__lede {
+    margin-top: 11px;
+    font-size: 13.8px;
+  }
+
+  .station__body {
+    margin-top: 11px;
+    font-size: 12.4px;
+    line-height: 1.52;
+  }
+
+  .station__facts {
+    gap: 8px 10px;
+    margin-top: 14px;
+    padding-top: 12px;
+  }
+
+  .fact dd {
+    font-size: 12px;
+  }
+
+  .contact {
+    margin-top: 14px;
+    padding-top: 13px;
+  }
+
+  .contact h3 {
+    font-size: 17px;
+  }
+
+  .contact p {
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .contact__actions {
+    margin-top: 11px;
+  }
+
+  .contact__actions .btn {
+    height: 34px;
+  }
+}
+
+/* 360 px-class phones: drop the contact paragraph (the body copy already
+   explains the practice) and tighten the bottom bar so the tallest card — the
+   edge contact station — still clears the telemetry. */
+@media (max-width: 380px) {
+  .contact p {
+    display: none;
+  }
+
+  .contact__actions {
+    gap: 6px;
+  }
+
+  .contact__actions .btn {
+    height: 32px;
+  }
+
+  .bottom {
+    padding: 8px 10px 7px;
+  }
+
+  .bottom__bar {
+    margin-top: 7px;
+  }
+}
+
+/* ---------------------------------------------------- reduced motion mode -- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .prompt__ring {
+    display: none;
+  }
+
+  .btn--sound[aria-pressed="true"] .eq i {
+    animation: none;
+    height: 9px;
+  }
+}
+
+/* JS-side reduced-motion hook (same intent, works when the media query is
+   emulated after load) */
+html.is-reduced .prompt__ring {
+  display: none;
+}
+
+html.is-reduced .btn--sound[aria-pressed="true"] .eq i {
+  animation: none;
+  height: 9px;
+}
+
+/* Fallback for browsers without backdrop-filter: raise the panel opacity so
+   the copy keeps its contrast against the 3D scene. */
+@supports not ((backdrop-filter: blur(4px)) or (-webkit-backdrop-filter: blur(4px))) {
+  .station__card,
+  .route__telemetry,
+  .bottom,
+  .btn {
+    background: rgba(3, 10, 13, 0.95);
+  }
+}

@@ -574,7 +574,7 @@
       name,
       email
     ].join('\n');
-    const href = 'mailto:info@ateliernorte.studio'
+    const href = 'mailto:hello@example.com'
       + '?subject=' + encodeURIComponent('New project inquiry — ' + (name || 'website'))
       + '&body=' + encodeURIComponent(body);
     window.location.href = href;

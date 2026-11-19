@@ -874,8 +874,8 @@
       <p class="pane__lead">Briefs, collaborations, or a note about a bug you found while driving around this island — all welcome.</p>
       <div class="contact-list">
         <div class="contact-row">
-          <div><div class="contact-row__k">EMAIL</div><div class="contact-row__v">hello@dunerover.io</div></div>
-          <button class="copy-btn" type="button" data-copy="hello@dunerover.io">COPY</button>
+          <div><div class="contact-row__k">EMAIL</div><div class="contact-row__v">hello@example.com</div></div>
+          <button class="copy-btn" type="button" data-copy="hello@example.com">COPY</button>
         </div>
         <div class="contact-row">
           <div><div class="contact-row__k">INSTAGRAM</div><div class="contact-row__v">@dunerover</div></div>

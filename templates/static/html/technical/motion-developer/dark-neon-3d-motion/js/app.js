@@ -851,7 +851,7 @@
   if (mailLink) {
     mailLink.addEventListener('click', function (e) {
       e.preventDefault();
-      const addr = 'hey@maxvoltz.studio';
+      const addr = 'hello@example.com';
       const restore = function () {
         mailLink.textContent = addr;
       };

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#05100f" />
+  <meta name="color-scheme" content="dark" />
+  <meta
+    name="description"
+    content="A 3D hydro portfolio: walk the crest of a 552 m arch-gravity dam, down the spillway, through the penstocks and the Francis turbine cutaway, to the 500 kV switchyard and a night panorama of the valley grid."
+  />
+  <title>CANYON HYDRO WORKS — Hydro &amp; Clean-Energy Portfolio</title>
+
+  <!--
+    Zero-build module resolution. The page below runs as-is on any static host
+    (python -m http.server, CodeSandbox, Netlify, GitHub Pages) with no npm
+    install. Vite ignores this map and resolves the same bare specifiers from
+    node_modules when you run `npm install && npm run dev`.
+  -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://esm.sh/three@0.187.0",
+      "gsap": "https://esm.sh/gsap@3.13.0",
+      "gsap/ScrollTrigger": "https://esm.sh/gsap@3.13.0/ScrollTrigger",
+      "lenis": "https://esm.sh/lenis@1.3.27"
+    }
+  }
+  </script>
+
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305100f'/%3E%3Cpath d='M5 21c4-3 7 3 11 0s7 3 11 0' stroke='%236fe3d2' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Cpath d='M8 12h16M11 12v5M16 12v5M21 12v5' stroke='%23e8b568' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"
+  />
+  <link rel="stylesheet" href="./src/styles/main.css" />
+</head>
+<body>
+  <h1 class="sr-only">CANYON HYDRO WORKS — Principal Hydro &amp; Clean-Energy Systems Portfolio</h1>
+
+  <!-- ============================================================ 3D scene === -->
+  <canvas id="scene" class="scene" aria-hidden="true"></canvas>
+  <div class="scene-scrim" aria-hidden="true"></div>
+
+  <!-- =========================================================== preloader === -->
+  <div class="loader" id="loader" role="status" aria-live="polite" aria-label="Preparing the dam site">
+    <div class="loader__inner">
+      <div class="loader__brand">
+        <span class="loader__mark" data-bind="brand.mark">CH</span>
+        <span class="loader__name" data-bind="brand.name">CANYON HYDRO WORKS</span>
+      </div>
+      <p class="loader__stage" id="loader-stage">Filling the reservoir…</p>
+      <div class="loader__bar"><span class="loader__fill" id="loader-fill"></span></div>
+      <p class="loader__note">Procedural dam site · WebGL &amp; Web Audio</p>
+    </div>
+  </div>
+
+  <a class="skip-link" href="#station-01">Skip to the portfolio</a>
+
+  <!-- =============================================================== topbar === -->
+  <div class="hud-veil hud-veil--top" aria-hidden="true"></div>
+  <header class="topbar" id="topbar">
+    <div class="brand">
+      <span class="brand__mark" data-bind="brand.mark" aria-hidden="true">CH</span>
+      <span class="brand__text">
+        <span class="brand__name brand__name--full" data-bind="brand.name">CANYON HYDRO WORKS</span>
+        <span class="brand__name brand__name--short" data-bind="brand.shortName">CANYON HYDRO</span>
+        <span class="brand__tag" data-bind="brand.tagline">Principal Hydro &amp; Clean-Energy Systems Portfolio</span>
+      </span>
+    </div>
+
+    <div class="controls">
+      <button
+        type="button"
+        class="btn btn--sound"
+        id="sound-toggle"
+        aria-pressed="false"
+        aria-label="Toggle dam and turbine audio"
+      >
+        <span class="btn__icon eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="btn__label" id="sound-label">Sound Off</span>
+      </button>
+
+      <button
+        type="button"
+        class="btn btn--spillway"
+        id="spillway-toggle"
+        aria-pressed="true"
+        aria-label="Toggle the spillway radial gates"
+        title="Open the radial gates fully, or throttle them to 25 %"
+      >
+        <span class="btn__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18M6 6v6a6 6 0 0 0 12 0V6" />
+            <path d="M3 21c2-1.6 3.5 1.6 5.5 0S12 19.4 14 21s3.5-1.6 5.5 0" />
+          </svg>
+        </span>
+        <span class="btn__label" id="spillway-label">Spillway 100%</span>
+      </button>
+
+      <button
+        type="button"
+        class="btn btn--cutaway"
+        id="cutaway-toggle"
+        aria-pressed="true"
+        aria-label="Toggle the turbine and generator cutaway"
+        title="Section the Francis runner and generator"
+      >
+        <span class="btn__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="7.5" />
+            <path d="M12 4.5v15M4.5 12h4M15.5 12h4M12 12l4.2-4.2M12 12l-4.2 4.2" />
+          </svg>
+        </span>
+        <span class="btn__label" id="cutaway-label">Cutaway On</span>
+      </button>
+
+      <a class="btn btn--cta" id="contact-link" href="mailto:hello@example.com">
+        <span class="btn__label">Contact</span>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h13M13 6l6 6-6 6" />
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- ======================================================= station content === -->
+  <main class="route-content" id="portfolio">
+    <noscript>
+      <section class="station">
+        <div class="station__card">
+          <p class="station__kicker">JavaScript required</p>
+          <h2 class="station__title">This portfolio is a WebGL walk through a dam.</h2>
+          <p class="station__body">Enable JavaScript to walk the site — the written portfolio is otherwise identical.</p>
+        </div>
+      </section>
+    </noscript>
+  </main>
+
+  <!-- Runway after the last station: the extra scroll distance carries the
+       camera from the night copy to the full panorama (0.96 → 1.00). -->
+  <div class="scene-tail" aria-hidden="true"></div>
+
+  <!-- ============================================================ station rail === -->
+  <aside class="route" id="route" aria-label="Hydro station rail">
+    <div class="route__telemetry">
+      <div class="tele">
+        <span class="tele__label">Head</span>
+        <span class="tele__value tele__value--hero"><b id="head-value">141</b><i>m</i></span>
+      </div>
+      <div class="tele">
+        <span class="tele__label">Flow</span>
+        <span class="tele__value"><b id="flow-value">1,592</b><i>m³/s</i></span>
+      </div>
+      <div class="tele">
+        <span class="tele__label">Output</span>
+        <span class="tele__value"><b id="output-value">645</b><i>MW</i></span>
+      </div>
+      <div class="tele">
+        <span class="tele__label">Grid</span>
+        <span class="tele__value"><b id="grid-value">500</b><i>kV</i></span>
+        <span class="tele__detail"><span class="lamp" id="grid-lamp" aria-hidden="true"></span><span id="time-value">Golden hour</span></span>
+      </div>
+    </div>
+
+    <div class="route__rail">
+      <div class="rail__track" aria-hidden="true"><span class="rail__fill" id="rail-fill"></span></div>
+      <ul class="rail__list" id="rail-list"></ul>
+    </div>
+
+    <p class="route__pct" aria-hidden="true"><b id="pct-value">08</b><span>%</span></p>
+  </aside>
+
+  <!-- ============================================== mobile bottom telemetry === -->
+  <div class="bottom" id="bottom-hud">
+    <div class="bottom__row">
+      <div class="btele"><span>Head</span><b id="m-head">141</b><i>m</i></div>
+      <div class="btele"><span>Flow</span><b id="m-flow">1,592</b><i>m³/s</i></div>
+      <div class="btele"><span>Output</span><b id="m-output">645</b><i>MW</i></div>
+      <div class="btele"><span>Time</span><b id="m-time">Golden</b></div>
+    </div>
+    <div class="bottom__bar" aria-hidden="true"><span id="m-fill"></span></div>
+  </div>
+  <div class="hud-veil hud-veil--bottom" aria-hidden="true"></div>
+
+  <!-- ======================================================= sound prompt === -->
+  <div class="prompt" id="sound-prompt" hidden>
+    <div class="prompt__backdrop" id="prompt-backdrop"></div>
+    <div
+      class="prompt__card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="prompt-title"
+      aria-describedby="prompt-body"
+    >
+      <div class="prompt__glyph" aria-hidden="true">
+        <span class="prompt__ring"></span>
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 10v4h3l4.5 3.5v-11L6 10H3z" />
+          <path d="M15 8.5a5 5 0 0 1 0 7" />
+          <path d="M18 5.5a9 9 0 0 1 0 13" />
+        </svg>
+      </div>
+      <p class="prompt__eyebrow">Dam &amp; turbine audio</p>
+      <h2 class="prompt__title" id="prompt-title">Enable Dam &amp; Turbine Audio?</h2>
+      <p class="prompt__body" id="prompt-body">
+        The soundscape is synthesised live in your browser — reservoir wind, spillway whitewater,
+        the penstock rush, turbine hum and transformer buzz. No files are downloaded. Sound is off
+        unless you turn it on.
+      </p>
+      <div class="prompt__actions">
+        <button type="button" class="btn btn--primary" id="prompt-enable">Enable Sound</button>
+        <button type="button" class="btn btn--ghost" id="prompt-mute">Continue Muted</button>
+      </div>
+      <p class="prompt__hint" id="prompt-hint">Enter to enable · Esc to continue muted</p>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

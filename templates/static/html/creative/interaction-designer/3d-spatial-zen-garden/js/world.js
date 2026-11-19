@@ -876,7 +876,7 @@ const World = (() => {
       ctx.fillText('PEOPLE.', 60, 508);
       ctx.fillStyle = 'rgba(217,160,106,0.95)';
       ctx.font = '400 25px "Space Mono", monospace';
-      ctx.fillText('HELLO@TOMA-SATO.STUDIO', 64, 592);
+      ctx.fillText('hello@example.com', 64, 592);
       ctx.fillStyle = 'rgba(236,231,219,0.5)';
       ctx.font = '400 21px "Space Mono", monospace';
       ctx.fillText('CLICK THIS SLAB TO OPEN THE CONTACT DRAWER', 64, 690);

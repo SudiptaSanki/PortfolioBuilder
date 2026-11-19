@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#e9edf0">
+<meta name="color-scheme" content="light">
+<meta name="description" content="An interactive 3D server room tour and cloud/AI infrastructure portfolio: walk a bright 16-rack AI hall, click any rack to inspect its hardware, power and cooling.">
+<title>Station 03 — Interactive Server Room Tour · AI &amp; Cloud Infrastructure</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314171a'/%3E%3Crect x='8' y='6' width='16' height='5' rx='1' fill='%235aa9ff'/%3E%3Crect x='8' y='13' width='16' height='5' rx='1' fill='%23e9edf0'/%3E%3Crect x='8' y='20' width='16' height='5' rx='1' fill='%23e0b866'/%3E%3C/svg%3E">
+<style>
+  /* ---------------------------------------------------------------- base -- */
+  :root {
+    --ink: #0e1114;
+    --panel: rgba(15, 18, 22, 0.90);
+    --panel-solid: #12161a;
+    --panel-2: rgba(24, 29, 34, 0.82);
+    --text: #f3f6f8;
+    --muted: #a9b3bc;
+    --line: rgba(255, 255, 255, 0.14);
+    --line-soft: rgba(255, 255, 255, 0.08);
+    --accent: #5aa9ff;
+    --accent-deep: #1d6fd1;
+    --gold: #e0b866;
+    --ok: #3fd68d;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #e9edf0; overflow: hidden; }
+  body {
+    font-family: var(--sans);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  #app, #app canvas { width: 100%; height: 100%; display: block; }
+  #app { position: fixed; inset: 0; }
+  button { font: inherit; color: inherit; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ------------------------------------------------------------ brand -- */
+  .brand {
+    position: fixed; top: 22px; left: 26px; z-index: 40;
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px 10px 10px;
+    border-radius: 14px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    box-shadow: 0 14px 38px rgba(8, 12, 16, 0.28);
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  }
+  .brand__mark {
+    width: 36px; height: 36px; flex: none; border-radius: 9px;
+    display: grid; place-items: center;
+    background: linear-gradient(155deg, #2f8cf5, #12508f);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38), 0 2px 8px rgba(0, 0, 0, 0.35);
+    font: 700 11px/1 var(--mono); letter-spacing: 0.06em;
+  }
+  .brand__mark span { transform: translateY(0.5px); }
+  .brand__text { min-width: 0; }
+  .brand__eyebrow {
+    margin: 0 0 3px;
+    font: 500 9.5px/1.2 var(--mono);
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+    white-space: nowrap;
+  }
+  .brand__name {
+    margin: 0; font: 600 13.5px/1.15 var(--sans);
+    letter-spacing: -0.005em; white-space: nowrap;
+  }
+  .brand__name em { font-style: normal; color: var(--muted); font-weight: 500; }
+  .audio-toggle {
+    flex: none; width: 30px; height: 30px; margin-left: 2px;
+    display: none; place-items: center;
+    border-radius: 8px; border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.06); cursor: pointer;
+  }
+  .audio-toggle[data-show="true"] { display: grid; }
+  .audio-toggle:hover { background: rgba(255, 255, 255, 0.13); }
+  .audio-toggle svg { width: 15px; height: 15px; }
+
+  /* ------------------------------------------------------------- rail -- */
+  .rail {
+    position: fixed; right: 22px; top: 50%; transform: translateY(-50%);
+    z-index: 38; width: 212px;
+    display: flex; flex-direction: column; gap: 3px;
+    padding: 10px; border-radius: 16px;
+    background: var(--panel); border: 1px solid var(--line);
+    box-shadow: 0 16px 40px rgba(8, 12, 16, 0.26);
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    transition: opacity 220ms ease, transform 220ms ease;
+  }
+  .rail__label {
+    font: 500 9px/1 var(--mono); letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); padding: 4px 8px 8px;
+  }
+  .rail__stop {
+    display: grid; grid-template-columns: 26px 1fr; align-items: center; gap: 8px;
+    padding: 7px 9px; border: 0; border-radius: 9px;
+    background: transparent; text-align: left; cursor: pointer;
+    color: var(--muted); border-left: 2px solid transparent;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+  }
+  .rail__stop:hover { background: rgba(255, 255, 255, 0.07); color: var(--text); }
+  .rail__stop[aria-current="step"] {
+    background: rgba(90, 169, 255, 0.13);
+    border-left-color: var(--accent);
+    color: var(--text);
+  }
+  .rail__n { font: 600 10px/1 var(--mono); letter-spacing: 0.04em; opacity: 0.85; }
+  .rail__t { font: 500 11.5px/1.2 var(--sans); letter-spacing: -0.005em; }
+  .rail__hint {
+    margin: 6px 4px 2px; padding-top: 9px; border-top: 1px solid var(--line-soft);
+    font: 400 9.5px/1.4 var(--mono); letter-spacing: 0.04em; color: var(--muted);
+  }
+  .rail__hint b { color: var(--accent); font-weight: 500; }
+
+  /* ------------------------------------------------------- stop panel -- */
+  .stop {
+    position: fixed; left: 26px; bottom: 26px; z-index: 36;
+    width: 376px; max-height: calc(100vh - 190px);
+    padding: 16px 18px 15px;
+    border-radius: 16px; overflow: auto;
+    background: var(--panel); border: 1px solid var(--line);
+    box-shadow: 0 18px 44px rgba(8, 12, 16, 0.3);
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.2) transparent;
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+  .stop__head {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin-bottom: 9px;
+  }
+  .stop__kicker {
+    font: 500 9.5px/1 var(--mono); letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .stop__n { font: 500 9.5px/1 var(--mono); letter-spacing: 0.1em; color: var(--muted); }
+  .stop__title {
+    margin: 0 0 3px; font: 600 21px/1.13 var(--sans); letter-spacing: -0.018em;
+  }
+  .stop__tag {
+    margin: 0 0 10px; font: 500 10.5px/1.35 var(--mono);
+    letter-spacing: 0.02em; color: var(--gold);
+  }
+  .stop__body {
+    margin: 0 0 12px; font: 400 12.5px/1.55 var(--sans); color: #dbe3e9;
+  }
+  .stop__body strong { color: #fff; font-weight: 600; }
+  .stop__facts {
+    list-style: none; margin: 0; padding: 10px 0 0;
+    border-top: 1px solid var(--line-soft);
+    display: grid; gap: 6px;
+  }
+  .stop__facts li {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    font: 400 10.5px/1.3 var(--mono); letter-spacing: 0.02em; color: var(--muted);
+  }
+  .stop__facts b { color: var(--text); font-weight: 500; text-align: right; }
+  .stop__timeline { margin: 12px 0 0; padding: 12px 0 0; border-top: 1px solid var(--line-soft); display: grid; gap: 11px; }
+  .stop__job { display: grid; gap: 2px; }
+  .stop__job-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+  .stop__job-title { font: 600 12px/1.3 var(--sans); }
+  .stop__job-period { font: 400 9.5px/1 var(--mono); color: var(--muted); letter-spacing: 0.04em; white-space: nowrap; }
+  .stop__job-detail { font: 400 11px/1.45 var(--sans); color: #c2ccd4; }
+  .stop__contact { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .stop__hint {
+    margin: 11px 0 0; font: 400 9.5px/1.4 var(--mono); letter-spacing: 0.03em;
+    color: var(--muted);
+  }
+  .stop__hint b { color: var(--accent); font-weight: 500; }
+
+  /* ----------------------------------------------------------- buttons -- */
+  .btn {
+    appearance: none; border: 1px solid var(--line); border-radius: 10px;
+    padding: 9px 13px; cursor: pointer;
+    font: 600 11.5px/1 var(--sans); letter-spacing: 0.01em;
+    display: inline-flex; align-items: center; gap: 7px;
+    transition: background 150ms ease, border-color 150ms ease, transform 120ms ease;
+    white-space: nowrap;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn--primary {
+    background: linear-gradient(180deg, #2f8cf5, #1c66c4);
+    border-color: rgba(255, 255, 255, 0.22); color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 6px 16px rgba(20, 80, 160, 0.35);
+  }
+  .btn--primary:hover { background: linear-gradient(180deg, #3d97ff, #2272d4); }
+  .btn--ghost { background: rgba(255, 255, 255, 0.07); color: var(--text); }
+  .btn--ghost:hover { background: rgba(255, 255, 255, 0.13); }
+  .btn kbd {
+    font: 500 9px/1 var(--mono); padding: 3px 5px; border-radius: 4px;
+    background: rgba(0, 0, 0, 0.22); border: 1px solid rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.85); text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  /* ---------------------------------------------------------- audiobar -- */
+  .soundbar {
+    position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%);
+    z-index: 44; width: max-content; max-width: min(94vw, 632px);
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 12px 11px 14px; border-radius: 14px;
+    background: var(--panel); border: 1px solid var(--line);
+    box-shadow: 0 18px 46px rgba(8, 12, 16, 0.36);
+    backdrop-filter: blur(18px) saturate(1.25);
+    -webkit-backdrop-filter: blur(18px) saturate(1.25);
+    animation: bar-in 520ms cubic-bezier(0.16, 0.9, 0.3, 1) both;
+  }
+  .soundbar[hidden] { display: none; }
+  @keyframes bar-in {
+    from { opacity: 0; transform: translate(-50%, 14px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+  }
+  .soundbar__meter {
+    flex: none; width: 34px; height: 34px; border-radius: 9px;
+    display: flex; align-items: flex-end; justify-content: center; gap: 2.5px;
+    padding: 7px 6px; background: rgba(90, 169, 255, 0.14);
+    border: 1px solid rgba(90, 169, 255, 0.28);
+  }
+  .soundbar__meter i {
+    width: 2.5px; border-radius: 2px; background: var(--accent);
+    height: 30%; opacity: 0.75;
+    animation: meter 1.9s ease-in-out infinite;
+  }
+  .soundbar__meter i:nth-child(2) { height: 62%; animation-delay: -0.45s; }
+  .soundbar__meter i:nth-child(3) { height: 88%; animation-delay: -0.9s; }
+  .soundbar__meter i:nth-child(4) { height: 46%; animation-delay: -1.35s; }
+  .soundbar__meter i:nth-child(5) { height: 70%; animation-delay: -0.2s; }
+  .soundbar[data-state="running"] .soundbar__meter i { opacity: 1; }
+  .soundbar[data-state="running"] .soundbar__meter { background: rgba(63, 214, 141, 0.14); border-color: rgba(63, 214, 141, 0.34); }
+  .soundbar[data-state="running"] .soundbar__meter i { background: var(--ok); }
+  @keyframes meter {
+    0%, 100% { transform: scaleY(0.55); }
+    40% { transform: scaleY(1); }
+    70% { transform: scaleY(0.72); }
+  }
+  .soundbar__copy { min-width: 0; margin-right: 2px; }
+  .soundbar__actions { display: flex; align-items: center; gap: 8px; }
+  .soundbar__title {
+    margin: 0; font: 600 12px/1.2 var(--sans); letter-spacing: 0.01em; white-space: nowrap;
+  }
+  .soundbar__sub {
+    margin: 3px 0 0; font: 400 9.5px/1.2 var(--mono); letter-spacing: 0.04em;
+    color: var(--muted); white-space: nowrap;
+  }
+  .soundbar__x {
+    flex: none; width: 26px; height: 26px; margin-left: -2px;
+    border: 0; border-radius: 7px; background: transparent; cursor: pointer;
+    color: var(--muted); font: 400 16px/1 var(--sans);
+  }
+  .soundbar__x:hover { background: rgba(255, 255, 255, 0.1); color: var(--text); }
+
+  /* ----------------------------------------------------------- tournav -- */
+  .tournav {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+    z-index: 42; display: flex; align-items: center; gap: 6px;
+    padding: 7px 8px; border-radius: 14px;
+    background: var(--panel); border: 1px solid var(--line);
+    box-shadow: 0 14px 36px rgba(8, 12, 16, 0.3);
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  }
+  .tournav__btn {
+    border: 1px solid transparent; border-radius: 9px;
+    background: rgba(255, 255, 255, 0.07); color: var(--text);
+    padding: 9px 12px; cursor: pointer;
+    font: 600 11px/1 var(--sans); letter-spacing: 0.01em;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: background 150ms ease;
+  }
+  .tournav__btn:hover { background: rgba(255, 255, 255, 0.14); }
+  .tournav__btn:disabled { opacity: 0.38; cursor: default; }
+  .tournav__btn:disabled:hover { background: rgba(255, 255, 255, 0.07); }
+  .tournav__count {
+    padding: 0 9px; font: 500 10px/1 var(--mono); letter-spacing: 0.11em; color: var(--muted);
+    display: flex; align-items: baseline; gap: 5px;
+  }
+  .tournav__count b { color: var(--text); font-weight: 600; font-size: 12px; }
+
+  /* -------------------------------------------------------- inspector -- */
+  .inspector {
+    position: fixed; right: 20px; top: 20px; bottom: 20px; z-index: 50;
+    width: 388px; display: flex; flex-direction: column;
+    border-radius: 18px; overflow: hidden;
+    background: rgba(13, 16, 20, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 30px 70px rgba(6, 9, 12, 0.5);
+    backdrop-filter: blur(22px) saturate(1.2);
+    -webkit-backdrop-filter: blur(22px) saturate(1.2);
+    animation: insp-in 320ms cubic-bezier(0.16, 0.9, 0.3, 1) both;
+  }
+  .inspector[hidden] { display: none; }
+  @keyframes insp-in {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .insp__body { overflow: auto; padding: 18px 20px 22px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.2) transparent; }
+  .insp__top { display: flex; align-items: center; justify-content: space-between; }
+  .insp__eyebrow {
+    margin: 0; font: 500 9px/1 var(--mono); letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+    display: flex; align-items: center; gap: 7px;
+  }
+  .insp__live {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--ok);
+    box-shadow: 0 0 0 3px rgba(63, 214, 141, 0.16);
+    animation: live 2.4s ease-in-out infinite;
+  }
+  @keyframes live { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+  .insp__x {
+    width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.05); color: var(--muted);
+    cursor: pointer; font: 400 15px/1 var(--sans);
+  }
+  .insp__x:hover { background: rgba(255, 255, 255, 0.12); color: var(--text); }
+  .insp__id {
+    margin: 14px 0 4px; font: 600 24px/1.1 var(--sans); letter-spacing: -0.02em;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+  }
+  .insp__id span.code { font-family: var(--mono); color: var(--accent); letter-spacing: -0.02em; }
+  .insp__id span.sep { color: var(--muted); opacity: 0.6; font-weight: 400; }
+  .insp__id span.role { font-size: 16px; font-weight: 500; color: #e6edf3; letter-spacing: -0.01em; }
+  .insp__kind { margin: 0 0 12px; font: 400 11px/1.35 var(--mono); letter-spacing: 0.03em; color: var(--muted); }
+  .insp__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+  .insp__tag {
+    font: 500 9.5px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 6px 8px; border-radius: 6px;
+    background: rgba(90, 169, 255, 0.1); border: 1px solid rgba(90, 169, 255, 0.25);
+    color: #bcd9ff;
+  }
+  .insp__h {
+    margin: 0 0 7px; font: 600 9.5px/1 var(--mono); letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .insp__p { margin: 0 0 18px; font: 400 12.5px/1.6 var(--sans); color: #d6dfe6; }
+  .specs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+  .spec {
+    padding: 10px 11px 9px; border-radius: 10px;
+    background: rgba(255, 255, 255, 0.045); border: 1px solid var(--line-soft);
+  }
+  .spec span {
+    display: block; font: 500 8.5px/1 var(--mono); letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+  }
+  .spec b {
+    font: 600 19px/1 var(--sans); letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  }
+  .spec i { font: 500 9.5px/1 var(--mono); font-style: normal; color: var(--muted); margin-left: 4px; }
+  .spec.is-live b { color: var(--ok); }
+  .insp__bar {
+    margin-top: 7px; height: 3px; border-radius: 3px; background: rgba(255, 255, 255, 0.09); overflow: hidden;
+  }
+  .insp__bar i { display: block; height: 100%; width: 0%; border-radius: 3px; background: linear-gradient(90deg, #2f8cf5, #3fd68d); transition: width 600ms ease; }
+  .insp__foot {
+    margin-top: auto; padding: 14px 20px 18px; border-top: 1px solid var(--line-soft);
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  .insp__hint { font: 400 9.5px/1.3 var(--mono); letter-spacing: 0.04em; color: var(--muted); }
+
+  /* ---------------------------------------------------------- body modes -- */
+  body.is-inspecting .rail { opacity: 0; pointer-events: none; transform: translateY(-50%) translateX(10px); }
+
+  /* ------------------------------------------------------------ mobile -- */
+  @media (max-width: 899px) {
+    .brand { top: 10px; left: 10px; right: 10px; padding: 8px 10px; gap: 10px; border-radius: 12px; }
+    .brand__mark { width: 30px; height: 30px; font-size: 9.5px; }
+    .brand__eyebrow { font-size: 8.5px; letter-spacing: 0.14em; }
+    .brand__name { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .brand__name em { display: none; }
+    .brand__text { flex: 1; overflow: hidden; }
+
+    .rail {
+      left: 10px; right: 10px; width: auto; top: 60px; transform: none;
+      flex-direction: row; gap: 4px; padding: 5px; border-radius: 11px;
+    }
+    .rail__label, .rail__hint { display: none; }
+    .rail__stop {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+      padding: 6px 2px; border-left: 0; border-bottom: 2px solid transparent; border-radius: 7px;
+    }
+    .rail__stop[aria-current="step"] { border-bottom-color: var(--accent); background: rgba(90, 169, 255, 0.14); }
+    .rail__n { font-size: 9.5px; }
+    .rail__t { display: none; }
+
+    .soundbar {
+      left: 10px; right: 10px; top: 102px; bottom: auto; transform: none;
+      width: auto; max-width: none; flex-wrap: wrap; gap: 8px;
+      padding: 10px; border-radius: 12px;
+      animation: none;
+    }
+    .soundbar__meter { width: 28px; height: 28px; padding: 6px 5px; border-radius: 7px; }
+    .soundbar__copy { flex: 1 1 120px; min-width: 0; }
+    .soundbar__title { font-size: 11px; }
+    .soundbar__sub { font-size: 9px; }
+    .soundbar__copy p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .soundbar__x { position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; margin: 0; }
+    .soundbar__copy { padding-right: 26px; }
+    .soundbar__actions { flex: 1 1 100%; }
+    .soundbar__actions .btn { flex: 1; justify-content: center; padding: 9px 8px; font-size: 10.5px; }
+    .soundbar .btn kbd { display: none; }
+
+    .stop {
+      left: 10px; right: 10px; bottom: 74px; width: auto;
+      max-height: 36vh; padding: 13px 14px;
+      border-radius: 14px;
+    }
+    .stop__title { font-size: 17px; }
+    .stop__body { font-size: 11.5px; line-height: 1.5; margin-bottom: 9px; }
+    .stop__facts { padding-top: 8px; gap: 4px; }
+    .stop__facts li { font-size: 9.5px; }
+    .stop__hint { display: none; }
+
+    .tournav { bottom: 12px; padding: 6px; gap: 4px; }
+    .tournav__btn { padding: 9px 11px; font-size: 10.5px; }
+    .tournav__count { padding: 0 6px; font-size: 9px; }
+    .tournav__count b { font-size: 11px; }
+
+    .inspector {
+      left: 0; right: 0; top: auto; bottom: 0; width: auto;
+      height: auto; max-height: min(78vh, 660px);
+      padding-bottom: env(safe-area-inset-bottom);
+      border-radius: 18px 18px 0 0;
+      animation: sheet-in 300ms cubic-bezier(0.16, 0.9, 0.3, 1) both;
+    }
+    @keyframes sheet-in {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .insp__id { font-size: 20px; margin-top: 12px; }
+    .insp__id span.role { font-size: 14px; }
+    .insp__body { padding: 16px 16px 8px; }
+    .insp__p { font-size: 12px; line-height: 1.55; }
+    .insp__foot { padding: 12px 16px 16px; }
+    .insp__hint { display: none; }
+    body.is-inspecting .stop,
+    body.is-inspecting .tournav,
+    body.is-inspecting .soundbar,
+    body.is-inspecting .rail { opacity: 0; pointer-events: none; }
+    body.is-inspecting .soundbar[hidden] { display: none; }
+    .stop, .tournav { transition: opacity 180ms ease; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three.module.js"
+  }
+}
+</script>
+</head>
+<body>
+<h1 class="sr-only">Station 03 — an interactive 3D server room tour and cloud/AI infrastructure portfolio</h1>
+
+<div id="app"></div>
+
+<header class="brand" aria-label="Portfolio identity">
+  <div class="brand__mark" aria-hidden="true"><span>S3</span></div>
+  <div class="brand__text">
+    <p class="brand__eyebrow" id="brand-hall">Station 03 · AI &amp; Cloud Hall</p>
+    <p class="brand__name"><span id="brand-name">Cloud & AI Infrastructure</span> <em>· <span id="brand-role">Principal Cloud &amp; AI Infrastructure</span></em></p>
+  </div>
+  <button class="audio-toggle" id="audio-toggle" type="button" data-show="false" aria-label="Enable server room audio">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M4 9h3l4-4v14l-4-4H4z"></path><path d="M16 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 6a8.5 8.5 0 0 1 0 12"></path>
+    </svg>
+  </button>
+</header>
+
+<nav class="rail" id="tour-rail" aria-label="Server room tour stops"></nav>
+
+<section class="stop" id="stop-panel" aria-live="polite" aria-label="Tour stop"></section>
+
+<div class="soundbar" id="sound-bar" role="region" aria-label="Server room audio prompt">
+  <div class="soundbar__meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="soundbar__copy">
+    <p class="soundbar__title">Server Room Audio</p>
+    <p class="soundbar__sub">Fans, coolant &amp; relay clicks</p>
+  </div>
+  <div class="soundbar__actions">
+    <button class="btn btn--primary" id="audio-on" type="button">Power On Audio <kbd>Enter</kbd></button>
+    <button class="btn btn--ghost" id="audio-mute" type="button">Stay Muted <kbd>Esc</kbd></button>
+  </div>
+  <button class="soundbar__x" id="audio-close" type="button" aria-label="Dismiss audio prompt">×</button>
+</div>
+
+<div class="tournav" id="tour-nav" role="group" aria-label="Tour navigation">
+  <button class="tournav__btn" id="prev-stop" type="button">← <span>Prev</span></button>
+  <span class="tournav__count"><b id="nav-n">01</b><span>/ 06</span></span>
+  <button class="tournav__btn" id="next-stop" type="button"><span>Next</span> →</button>
+</div>
+
+<aside class="inspector" id="inspector" role="dialog" aria-modal="false" aria-labelledby="insp-title" hidden>
+  <div class="insp__body">
+    <div class="insp__top">
+      <p class="insp__eyebrow"><span class="insp__live" aria-hidden="true"></span>Machine Inspector · Live</p>
+      <button class="insp__x" id="insp-close" type="button" aria-label="Close inspector">×</button>
+    </div>
+    <h2 class="insp__id" id="insp-title">
+      <span class="code" id="insp-code">A04</span><span class="sep" aria-hidden="true">·</span><span class="role" id="insp-role">DGX H100 AI Training</span>
+    </h2>
+    <p class="insp__kind" id="insp-kind"></p>
+    <div class="insp__tags" id="insp-tags"></div>
+    <h3 class="insp__h">How we handle this hardware</h3>
+    <p class="insp__p" id="insp-handle"></p>
+    <h3 class="insp__h">Live specs</h3>
+    <div class="specs">
+      <div class="spec"><span>Power draw</span><b id="spec-power">–</b><i>kW</i></div>
+      <div class="spec"><span>Coolant</span><b id="spec-coolant">–</b><i>°C</i></div>
+      <div class="spec"><span>Compute load</span><b id="spec-load">–</b><i>%</i><div class="insp__bar"><i id="spec-load-bar"></i></div></div>
+      <div class="spec"><span>Uptime</span><b id="spec-uptime">–</b><i>%</i></div>
+    </div>
+  </div>
+  <div class="insp__foot">
+    <button class="btn btn--primary" id="insp-return" type="button">Return to Tour</button>
+    <span class="insp__hint">Esc to close</span>
+  </div>
+</aside>
+
+<noscript>
+  <p style="position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#14171a;color:#fff;padding:12px 16px;border-radius:8px;font:13px system-ui">This 3D tour needs JavaScript enabled.</p>
+</noscript>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

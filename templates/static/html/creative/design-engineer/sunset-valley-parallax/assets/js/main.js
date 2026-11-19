@@ -269,7 +269,7 @@
             <li>Accessibility as a build requirement, not a retrofit.</li>
           </ul>
         </div>
-        <p class="case__foot">Full CV with dates and references on request — <a href="mailto:hello@mirasolis.design" style="color:var(--cream);border-bottom:1px solid rgba(230,222,200,0.3)">hello@mirasolis.design</a></p>
+        <p class="case__foot">Full CV with dates and references on request — <a href="mailto:hello@example.com" style="color:var(--cream);border-bottom:1px solid rgba(230,222,200,0.3)">hello@example.com</a></p>
       `
     }
   };
@@ -288,7 +288,7 @@
       ${meta ? `<dl class="case__meta">${meta}</dl>` : ''}
       ${c.body || ''}
       ${c.soon ? `<p class="case__soon">This one is being written up — ask me about it and I'll talk your ear off.</p>` : ''}
-      ${c.soon ? `<p class="case__foot">In the meantime: <a href="mailto:hello@mirasolis.design" style="color:var(--cream);border-bottom:1px solid rgba(230,222,200,0.3)">email me</a> and I'll send the short version.</p>` : ''}
+      ${c.soon ? `<p class="case__foot">In the meantime: <a href="mailto:hello@example.com" style="color:var(--cream);border-bottom:1px solid rgba(230,222,200,0.3)">email me</a> and I'll send the short version.</p>` : ''}
     `;
   }
 
