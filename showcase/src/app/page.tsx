@@ -89,9 +89,179 @@ function getLuminance(hex: string): number {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
+/**
+ * Sequential Live Preview Queue (concurrency = 1)
+ * Loads visible template iframes strictly one-by-one as the user scrolls,
+ * paces requests with a short cooldown, and caps active mounted iframes & WebGL contexts.
+ */
+class LivePreviewQueue {
+  private queue: string[] = [];
+  private activeLoadingId: string | null = null;
+  private mountedIds: string[] = [];
+  private loadedIds = new Set<string>();
+  private heavy3dMap = new Map<string, boolean>();
+  private visibleIds = new Set<string>();
+  private listeners = new Map<string, () => void>();
+  private safetyTimer: ReturnType<typeof setTimeout> | null = null;
+  private pacingTimer: ReturnType<typeof setTimeout> | null = null;
+
+  private readonly MAX_MOUNTED = 12;
+  private readonly MAX_HEAVY_3D = 6;
+  private readonly STEP_DELAY_MS = 280;
+  private readonly LOAD_TIMEOUT_MS = 5000;
+
+  subscribe(id: string, fn: () => void): () => void {
+    this.listeners.set(id, fn);
+    return () => {
+      this.listeners.delete(id);
+      this.setVisible(id, false, false);
+    };
+  }
+
+  private notify(id: string) {
+    const fn = this.listeners.get(id);
+    if (fn) fn();
+  }
+
+  private notifyAll() {
+    this.listeners.forEach((fn) => fn());
+  }
+
+  getState(id: string): { mounted: boolean; loaded: boolean; loading: boolean; queued: boolean } {
+    return {
+      mounted: this.mountedIds.includes(id) || this.activeLoadingId === id,
+      loaded: this.loadedIds.has(id),
+      loading: this.activeLoadingId === id,
+      queued: this.queue.includes(id),
+    };
+  }
+
+  setVisible(id: string, visible: boolean, is3d = false, priority = false) {
+    this.heavy3dMap.set(id, is3d);
+    if (visible) {
+      this.visibleIds.add(id);
+      if (this.activeLoadingId === id || this.mountedIds.includes(id)) {
+        // Touch recency if already mounted
+        if (this.mountedIds.includes(id)) {
+          this.mountedIds = [...this.mountedIds.filter((x) => x !== id), id];
+        }
+        return;
+      }
+      if (!this.queue.includes(id)) {
+        if (priority) this.queue.unshift(id);
+        else this.queue.push(id);
+      } else if (priority) {
+        this.queue = [id, ...this.queue.filter((x) => x !== id)];
+      }
+      this.notify(id);
+      this.pump();
+    } else {
+      this.visibleIds.delete(id);
+      const wasQueued = this.queue.includes(id);
+      if (wasQueued) {
+        this.queue = this.queue.filter((x) => x !== id);
+        this.notify(id);
+      }
+    }
+  }
+
+  prioritize(id: string, is3d = false) {
+    this.setVisible(id, true, is3d, true);
+  }
+
+  private evictIfNeeded(incomingId: string) {
+    const incomingIs3d = Boolean(this.heavy3dMap.get(incomingId));
+
+    // Enforce 3D/WebGL context ceiling first
+    if (incomingIs3d) {
+      let current3d = this.mountedIds.filter((x) => this.heavy3dMap.get(x));
+      while (current3d.length >= this.MAX_HEAVY_3D) {
+        const victim = current3d.find((x) => !this.visibleIds.has(x)) || current3d[0];
+        if (!victim) break;
+        this.removeMounted(victim);
+        current3d = this.mountedIds.filter((x) => this.heavy3dMap.get(x));
+      }
+    }
+
+    // Enforce total mounted iframe ceiling
+    while (this.mountedIds.length >= this.MAX_MOUNTED) {
+      const victim = this.mountedIds.find((x) => !this.visibleIds.has(x)) || this.mountedIds[0];
+      if (!victim) break;
+      this.removeMounted(victim);
+    }
+  }
+
+  private removeMounted(id: string) {
+    this.mountedIds = this.mountedIds.filter((x) => x !== id);
+    this.loadedIds.delete(id);
+    this.notify(id);
+  }
+
+  private pump() {
+    if (this.activeLoadingId || this.pacingTimer) return;
+    // Prune invisible items at head of queue
+    while (this.queue.length > 0 && !this.visibleIds.has(this.queue[0])) {
+      const skipped = this.queue.shift()!;
+      this.notify(skipped);
+    }
+    if (this.queue.length === 0) return;
+
+    const nextId = this.queue.shift()!;
+    this.evictIfNeeded(nextId);
+    this.activeLoadingId = nextId;
+    if (!this.mountedIds.includes(nextId)) {
+      this.mountedIds.push(nextId);
+    }
+    this.notify(nextId);
+
+    this.safetyTimer = setTimeout(() => {
+      this.finishCurrent(nextId, false);
+    }, this.LOAD_TIMEOUT_MS);
+  }
+
+  markLoaded(id: string) {
+    if (this.activeLoadingId === id) {
+      this.finishCurrent(id, true);
+    } else if (this.mountedIds.includes(id)) {
+      this.loadedIds.add(id);
+      this.notify(id);
+    }
+  }
+
+  private finishCurrent(id: string, cleanLoad: boolean) {
+    if (this.activeLoadingId !== id) return;
+    if (this.safetyTimer) {
+      clearTimeout(this.safetyTimer);
+      this.safetyTimer = null;
+    }
+    this.loadedIds.add(id);
+    this.activeLoadingId = null;
+    this.notify(id);
+
+    this.pacingTimer = setTimeout(() => {
+      this.pacingTimer = null;
+      this.pump();
+    }, cleanLoad ? this.STEP_DELAY_MS : 120);
+  }
+
+  resetAll() {
+    if (this.safetyTimer) clearTimeout(this.safetyTimer);
+    if (this.pacingTimer) clearTimeout(this.pacingTimer);
+    this.safetyTimer = null;
+    this.pacingTimer = null;
+    this.queue = [];
+    this.activeLoadingId = null;
+    this.mountedIds = [];
+    this.loadedIds.clear();
+    this.visibleIds.clear();
+    this.notifyAll();
+  }
+}
+
+const previewQueue = new LivePreviewQueue();
+
 export default function Home() {
   const { user, login, logout } = useAuth();
-
   const [favorites, setFavorites] = useState<string[]>([]);
 
   useEffect(() => {
@@ -148,14 +318,13 @@ export default function Home() {
   const [sortBy, setSortBy] = useState('Featured');
   const [displayCount, setDisplayCount] = useState(24);
 
-  // Reset role filter cleanly whenever category changes
   useEffect(() => {
     setActiveRole('All Roles');
   }, [activeCategory]);
 
-  // Reset display count when filters change
   useEffect(() => {
     setDisplayCount(24);
+    previewQueue.resetAll();
   }, [query, activeCategory, activeRole, activeStyle, activeStack, activeStructure, activeCollection, sortBy]);
 
   const openExternalUrl = useCallback((url: string) => {
@@ -407,7 +576,6 @@ export default function Home() {
 
       {/* Filters */}
       <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px 16px', display: 'flex', flexDirection: 'column', gap: 14 }}>
-        {/* Categories */}
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           {visibleCategories.map((cat) => (
             <motion.button
@@ -428,7 +596,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Design Type Pills + Secondary Selectors */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
             {STYLE_FILTERS.map((sf) => (
@@ -512,9 +679,9 @@ export default function Home() {
       </div>
 
       {/* Results count */}
-      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>
-          Showing {filtered.length} of {templates.length} templates &bull; Hover any card for a live preview, click to open site
+      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
+        <span style={{ color: 'var(--text-secondary)', fontSize: 13, fontVariantNumeric: 'tabular-nums' }}>
+          Showing {filtered.length} of {templates.length} templates &bull; Visible screens stream live one-by-one as you scroll &bull; Click any card to open
         </span>
         {(query || activeCategory !== 'All' || activeRole !== 'All Roles' || activeStyle !== 'all' || activeCollection !== 'All Collections' || activeStack !== 'All Stacks' || activeStructure !== 'All Structures') && (
           <button
@@ -558,7 +725,6 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Infinite Scroll Sentinel */}
             {displayCount < filtered.length && (
               <div
                 style={{ textAlign: 'center', padding: '40px 0' }}
@@ -614,12 +780,44 @@ function TemplateCard({
   isFavorite: boolean;
   toggleFavorite: (e: any) => void;
 }) {
+  const cardId = template.id || template.path || template.name;
+  const tags = template.tags || [];
+  const is3d = tags.includes('3d-webgl');
+
   const previewRef = useRef<HTMLDivElement | null>(null);
   const [hovered, setHovered] = useState(false);
-  const [showIframe, setShowIframe] = useState(false);
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-  const [frameScale, setFrameScale] = useState(0.27);
+  const [frameScale, setFrameScale] = useState(0.28);
+  const [, setTick] = useState(0);
 
+  const { previewUrl, displayUrlPath, githubUrl, isAvailable, status, statusMessage } = resolveTemplateUrl(template);
+  const targetLink = isAvailable ? previewUrl : githubUrl;
+
+  // Subscribe to sequential 1-by-1 preview queue
+  useEffect(() => {
+    return previewQueue.subscribe(cardId, () => setTick((t) => t + 1));
+  }, [cardId]);
+
+  // Observe card viewport intersection to load visible small screens lazily one by one
+  useEffect(() => {
+    if (!isAvailable) return;
+    const el = previewRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const isIn = entries[0]?.isIntersecting ?? false;
+        previewQueue.setVisible(cardId, isIn, is3d);
+      },
+      { rootMargin: '160px 0px', threshold: 0.05 }
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      previewQueue.setVisible(cardId, false, is3d);
+    };
+  }, [cardId, is3d, isAvailable]);
+
+  // Responsive 1280x720 desktop-to-card scaling
   useEffect(() => {
     const el = previewRef.current;
     if (!el || typeof ResizeObserver === 'undefined') return;
@@ -633,21 +831,7 @@ function TemplateCard({
     return () => ro.disconnect();
   }, []);
 
-  useEffect(() => {
-    let timer: any;
-    if (hovered) {
-      timer = setTimeout(() => {
-        setShowIframe(true);
-      }, 320);
-    } else {
-      setShowIframe(false);
-      setIframeLoaded(false);
-    }
-    return () => clearTimeout(timer);
-  }, [hovered]);
-
-  const { previewUrl, displayUrlPath, githubUrl, isAvailable, status, statusMessage } = resolveTemplateUrl(template);
-  const targetLink = isAvailable ? previewUrl : githubUrl;
+  const qState = previewQueue.getState(cardId);
 
   const palette = (template as any).palette || {
     bg: '#131318',
@@ -658,22 +842,17 @@ function TemplateCard({
   const mutedFg = isLight ? 'rgba(24,24,27,0.68)' : 'rgba(244,244,245,0.68)';
   const subtleSurface = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.07)';
   const subtleBorder = isLight ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
-  const tags = template.tags || [];
   const headline = (template as any).headline || template.name;
-
-  const capabilityBadges: string[] = [];
-  if (tags.includes('3d-webgl')) capabilityBadges.push('3D WebGL');
-  if (tags.includes('photo-editorial')) capabilityBadges.push('Photo UI');
-  if (tags.includes('canvas-interactive')) capabilityBadges.push('Canvas');
-  if (tags.includes('web-audio')) capabilityBadges.push('Web Audio');
-  if (tags.includes('gsap-motion') && capabilityBadges.length < 3) capabilityBadges.push('GSAP');
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.22, delay: (index % 24) * 0.015 }}
-      onMouseEnter={() => setHovered(true)}
+      onMouseEnter={() => {
+        setHovered(true);
+        if (isAvailable) previewQueue.prioritize(cardId, is3d);
+      }}
       onMouseLeave={() => setHovered(false)}
       onClick={() => onOpenUrl(targetLink)}
       role="link"
@@ -687,7 +866,7 @@ function TemplateCard({
       style={{
         background: 'var(--surface)',
         border: '1px solid',
-        borderColor: hovered ? 'rgba(108,122,247,0.55)' : 'var(--border)',
+        borderColor: hovered ? 'rgba(108,122,247,0.65)' : 'var(--border)',
         borderRadius: 14,
         overflow: 'hidden',
         transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
@@ -697,7 +876,52 @@ function TemplateCard({
         position: 'relative',
       }}
     >
-      {/* Generated Website Face Card + Scaled Live Hover Iframe */}
+      {/* Top Miniature Browser Chrome */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '7px 11px',
+          background: 'rgba(255,255,255,0.03)',
+          borderBottom: '1px solid var(--border)',
+          gap: 8,
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5, minWidth: 0, flex: 1 }}>
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#ef4444', opacity: 0.8, flexShrink: 0 }} />
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#f59e0b', opacity: 0.8, flexShrink: 0 }} />
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', opacity: 0.8, flexShrink: 0 }} />
+          <span
+            style={{
+              marginLeft: 6,
+              fontSize: 10,
+              fontFamily: 'monospace',
+              color: 'var(--text-secondary)',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {displayUrlPath}
+          </span>
+        </div>
+        <span
+          style={{
+            background: CATEGORY_COLORS[template.category] || '#888',
+            color: '#000',
+            padding: '2px 8px',
+            borderRadius: 100,
+            fontSize: 10,
+            fontWeight: 700,
+            flexShrink: 0,
+          }}
+        >
+          {template.stack}
+        </span>
+      </div>
+
+      {/* Live 16:9 Small Screen Viewport */}
       <div
         ref={previewRef}
         style={{
@@ -709,192 +933,113 @@ function TemplateCard({
           borderBottom: '1px solid var(--border)',
         }}
       >
-        {/* Generated Real Website Miniature Preview (Zero Dummy Images) */}
+        {/* Clean Loading / Queued Fallback Underneath Until Sequential Iframe Loads */}
         <div
           style={{
             position: 'absolute',
             inset: 0,
+            padding: '14px 16px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            background: `radial-gradient(circle at 85% 15%, ${palette.accent}24, transparent 58%), ${palette.bg}`,
+            background: `radial-gradient(circle at 82% 18%, ${palette.accent}24, transparent 58%), ${palette.bg}`,
           }}
         >
-          {/* Mini Browser Chrome */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '7px 10px',
-              background: subtleSurface,
-              borderBottom: `1px solid ${subtleBorder}`,
-              gap: 8,
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 5, minWidth: 0, flex: 1 }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#ef4444', opacity: 0.75, flexShrink: 0 }} />
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#f59e0b', opacity: 0.75, flexShrink: 0 }} />
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', opacity: 0.75, flexShrink: 0 }} />
-              <span
-                style={{
-                  marginLeft: 6,
-                  fontSize: 10,
-                  fontFamily: 'monospace',
-                  color: mutedFg,
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {displayUrlPath}
-              </span>
-            </div>
+          <div>
             <span
               style={{
-                background: CATEGORY_COLORS[template.category] || palette.accent,
-                color: '#000',
-                padding: '1px 7px',
-                borderRadius: 100,
                 fontSize: 9.5,
                 fontWeight: 700,
-                flexShrink: 0,
+                textTransform: 'uppercase',
+                letterSpacing: '0.07em',
+                color: palette.accent,
+                display: 'block',
+                marginBottom: 5,
               }}
             >
-              {template.stack}
+              {template.role || template.category}
             </span>
+            <div
+              style={{
+                fontSize: 14,
+                fontWeight: 700,
+                lineHeight: 1.25,
+                color: palette.fg,
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                maxWidth: '92%',
+              }}
+            >
+              {headline}
+            </div>
           </div>
 
-          {/* Miniature Hero + Section Composition */}
-          <div style={{ padding: '12px 14px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
-                <span
-                  style={{
-                    fontSize: 9.5,
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.07em',
-                    color: palette.accent,
-                  }}
-                >
-                  {template.role || template.category}
-                </span>
-                {tags.includes('multi-page') && (
-                  <span style={{ fontSize: 9, color: mutedFg, border: `1px solid ${subtleBorder}`, borderRadius: 4, padding: '0 4px' }}>
-                    Multi-page
-                  </span>
-                )}
-              </div>
-              <div
-                style={{
-                  fontSize: 14,
-                  fontWeight: 700,
-                  lineHeight: 1.25,
-                  letterSpacing: '-0.02em',
-                  color: palette.fg,
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                  maxWidth: '92%',
-                }}
-              >
-                {headline}
-              </div>
-            </div>
+          <div style={{ display: 'flex', gap: 8, opacity: 0.7 }}>
+            <div style={{ flex: 2, height: 42, borderRadius: 6, background: subtleSurface, border: `1px solid ${subtleBorder}` }} />
+            <div style={{ flex: 1, height: 42, borderRadius: 6, background: subtleSurface, border: `1px solid ${subtleBorder}` }} />
+          </div>
 
-            {/* Bottom Miniature Section Bar + Hover Cue */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginTop: 8 }}>
-              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                {capabilityBadges.slice(0, 3).map((cap) => (
-                  <span
-                    key={cap}
-                    style={{
-                      fontSize: 9.5,
-                      padding: '2px 6px',
-                      borderRadius: 4,
-                      background: subtleSurface,
-                      border: `1px solid ${subtleBorder}`,
-                      color: mutedFg,
-                      fontWeight: 500,
-                    }}
-                  >
-                    {cap}
-                  </span>
-                ))}
-              </div>
-              <span
-                style={{
-                  fontSize: 10,
-                  color: hovered ? palette.accent : mutedFg,
-                  fontWeight: 600,
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {hovered ? 'Loading live…' : 'Hover preview'}
-              </span>
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontSize: 10, color: mutedFg }}>
+              {qState.loading ? 'Streaming live preview…' : qState.queued ? 'Queued to load preview…' : isAvailable ? 'Scroll into view to stream' : 'Offline preview'}
+            </span>
+            <span style={{ fontSize: 10, color: palette.accent, fontWeight: 600 }}>1280×720</span>
           </div>
         </div>
 
-        {/* Scaled Desktop Live Preview Iframe on Hover */}
-        {showIframe && isAvailable && (
-          <div
+        {/* Sequential Live Rendered Website inside Small Screen */}
+        {qState.mounted && isAvailable && (
+          <iframe
+            src={previewUrl}
+            title={template.name}
+            onLoad={() => previewQueue.markLoaded(cardId)}
+            sandbox="allow-scripts allow-same-origin"
             style={{
               position: 'absolute',
-              inset: 0,
-              zIndex: 4,
-              background: palette.bg,
-              opacity: iframeLoaded ? 1 : 0,
-              transition: 'opacity 0.25s ease',
+              top: 0,
+              left: 0,
+              width: 1280,
+              height: 720,
+              border: 'none',
               pointerEvents: 'none',
+              transform: `scale(${frameScale})`,
+              transformOrigin: 'top left',
+              background: '#fff',
+              opacity: qState.loaded ? 1 : 0,
+              transition: 'opacity 0.35s ease',
+              zIndex: 3,
             }}
-          >
-            <iframe
-              src={previewUrl}
-              title={template.name}
-              onLoad={() => setIframeLoaded(true)}
-              sandbox="allow-scripts allow-same-origin"
-              style={{
-                width: 1280,
-                height: 720,
-                border: 'none',
-                pointerEvents: 'none',
-                transform: `scale(${frameScale})`,
-                transformOrigin: 'top left',
-                background: '#fff',
-              }}
-            />
-          </div>
+          />
         )}
 
-        {/* Live Status Pill when hovering */}
-        {showIframe && isAvailable && (
+        {/* Hover Pill */}
+        {hovered && isAvailable && (
           <div
             style={{
               position: 'absolute',
               bottom: 8,
               right: 8,
               zIndex: 8,
-              background: 'rgba(10,10,14,0.84)',
+              background: 'rgba(10,10,14,0.88)',
               color: '#fff',
-              padding: '3px 8px',
+              padding: '4px 10px',
               borderRadius: 6,
-              fontSize: 10,
+              fontSize: 10.5,
               fontWeight: 600,
               backdropFilter: 'blur(6px)',
-              border: '1px solid rgba(255,255,255,0.16)',
+              border: '1px solid rgba(255,255,255,0.2)',
               pointerEvents: 'none',
             }}
           >
-            {iframeLoaded ? 'Live Preview · Click to Open ↗' : 'Loading Live Site…'}
+            Click to Open Live Site ↗
           </div>
         )}
 
         {status !== 'active' && (
           <div style={{
-            position: 'absolute', top: 34, left: 10,
+            position: 'absolute', top: 10, left: 10,
             background: status === 'broken' ? '#ef4444' : '#f59e0b',
             color: '#fff', padding: '2px 7px', borderRadius: 6, fontSize: 10, fontWeight: 600,
             zIndex: 10, textTransform: 'uppercase', letterSpacing: '0.5px',
@@ -902,34 +1047,42 @@ function TemplateCard({
             {status}
           </div>
         )}
-
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleFavorite(e);
-          }}
-          aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-          style={{
-            position: 'absolute', top: 34, right: 10, zIndex: 10,
-            background: 'rgba(0,0,0,0.48)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '50%',
-            width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer', backdropFilter: 'blur(4px)',
-          }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill={isFavorite ? '#facc15' : 'none'} stroke={isFavorite ? '#facc15' : 'white'} strokeWidth="2">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-          </svg>
-        </button>
       </div>
 
       {/* Card Body */}
       <div style={{ padding: 20 }}>
-        <div style={{ marginBottom: 10 }}>
-          <h3 style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.3px', marginBottom: 4 }}>{template.name}</h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 13 }}>
-            {template.role || (template as any).profession} &bull; {template.theme || 'Editorial Theme'}
-          </p>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10, marginBottom: 10 }}>
+          <div style={{ minWidth: 0 }}>
+            <h3 style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.3px', marginBottom: 4 }}>{template.name}</h3>
+            <p style={{ color: 'var(--text-secondary)', fontSize: 13 }}>
+              {template.role || (template as any).profession} &bull; {template.theme || 'Editorial Theme'}
+            </p>
+          </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleFavorite(e);
+            }}
+            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+            style={{
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid var(--border)',
+              borderRadius: '50%',
+              width: 32,
+              height: 32,
+              flexShrink: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill={isFavorite ? '#facc15' : 'none'} stroke={isFavorite ? '#facc15' : 'var(--text-secondary)'} strokeWidth="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+          </button>
         </div>
+
         <p style={{
           color: 'var(--text-secondary)',
           fontSize: 13,
