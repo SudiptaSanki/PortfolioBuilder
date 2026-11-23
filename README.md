@@ -1,6 +1,5 @@
 # Portfolio Builder — Open Source Template Gallery
 
-
 A growing, open-source collection of **257 professionally designed portfolio templates** for every industry, profession, and tech stack. Our goal is to reach **1000+ templates** with the help of contributors from around the world.
 
 ---
@@ -416,3 +415,7 @@ Special thanks to the open-source communities powering our designs:
 - **[Google Fonts](https://fonts.google.com/)** for typography.
 - **[Iconify](https://iconify.design/)** & **[Heroicons](https://heroicons.com/)** for icons.
 - **[Next.js](https://nextjs.org/)** & **[Vercel](https://vercel.com/)** for powering the live showcase platform.
+
+<!-- autobot:start -->
+<!-- s:28efe7a4 t:2026-11-21T23:47:14.832Z a:bug triage b:6491 -->
+<!-- autobot:end -->
