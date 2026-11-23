@@ -3,12 +3,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import templates from '@/data/templates.json';
-import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from 'framer-motion';
+import { motion } from 'framer-motion';
 import HeroSection from '@/components/ui/glassmorphism-trust-hero';
 import { useAuth } from '@/context/AuthContext';
-import { doc, setDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { resolveTemplateUrl } from '@/lib/urlResolver';
 
@@ -38,8 +37,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   'startup': 'Startups & Students',
   'gaming': 'Gaming & Esports',
 };
-const STACK_FILTERS = ['All Stacks', 'HTML/CSS/JS', 'React', 'Next.js', 'Vue'];
-const STRUCTURE_FILTERS = ['All Structures', 'Single-page', 'Multi-page'];
 const COLLECTION_FILTERS = ['All Collections', 'Core Library', 'Festival & Puja', 'Interactive 3D', 'Genre Lab'];
 const COLLECTION_TAG_MAP: Record<string, string> = {
   'Core Library': 'core',
@@ -47,37 +44,75 @@ const COLLECTION_TAG_MAP: Record<string, string> = {
   'Interactive 3D': 'collection',
   'Genre Lab': 'genre-lab',
 };
+const STYLE_FILTERS: Array<{ label: string; tag: string }> = [
+  { label: 'All Designs', tag: 'all' },
+  { label: '3D & WebGL', tag: '3d-webgl' },
+  { label: 'Photo Editorial', tag: 'photo-editorial' },
+  { label: 'Canvas Interactive', tag: 'canvas-interactive' },
+  { label: 'GSAP Motion', tag: 'gsap-motion' },
+  { label: 'Web Audio', tag: 'web-audio' },
+];
+const STACK_FILTERS = ['All Stacks', 'HTML/CSS/JS', 'React', 'Next.js', 'Vue'];
+const STRUCTURE_FILTERS = ['All Structures', 'Single-page', 'Multi-page'];
 const SORT_OPTIONS = ['Featured', 'Name A–Z', 'Name Z–A', 'Category', 'Stack', 'Role A–Z'];
+
+const CATEGORY_COLORS: Record<string, string> = {
+  festival: '#f59e0b',
+  technical: '#4ade80',
+  engineering: '#38bdf8',
+  research: '#60a5fa',
+  educator: '#818cf8',
+  medical: '#f87171',
+  'wellness-sports': '#fb923c',
+  agriculture: '#84cc16',
+  'transport-aviation': '#22d3ee',
+  'construction-trades': '#d97706',
+  creative: '#f472b6',
+  business: '#facc15',
+  'law-public': '#94a3b8',
+  music: '#c084fc',
+  retail: '#fb7185',
+  services: '#a78bfa',
+  startup: '#2dd4bf',
+  gaming: '#e879f9',
+};
 
 type Template = typeof templates[number];
 
+function getLuminance(hex: string): number {
+  const m = (hex || '').trim().match(/^#([0-9a-f]{6})$/i);
+  if (!m) return 0.1;
+  const n = m[1];
+  const r = parseInt(n.slice(0, 2), 16) / 255;
+  const g = parseInt(n.slice(2, 4), 16) / 255;
+  const b = parseInt(n.slice(4, 6), 16) / 255;
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
 export default function Home() {
   const { user, login, logout } = useAuth();
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
 
   const [favorites, setFavorites] = useState<string[]>([]);
-  
+
   useEffect(() => {
     const local = localStorage.getItem('foliohub_favorites');
     let localFavs: string[] = [];
     if (local) {
-      try { localFavs = JSON.parse(local); setFavorites(localFavs); } catch(e) {}
+      try { localFavs = JSON.parse(local); setFavorites(localFavs); } catch (e) {}
     }
     if (user) {
       import('firebase/firestore').then(({ collection, getDocs, doc, setDoc }) => {
         getDocs(collection(db, 'users', user.uid, 'favorites')).then(snap => {
-           const firestoreFavs = snap.docs.map(d => d.id);
-           const merged = Array.from(new Set([...localFavs, ...firestoreFavs]));
-           setFavorites(merged);
-           localStorage.setItem('foliohub_favorites', JSON.stringify(merged));
-           
-           // Sync local to firestore
-           localFavs.forEach(fav => {
-             if (!firestoreFavs.includes(fav)) {
-               setDoc(doc(db, 'users', user.uid, 'favorites', fav), { timestamp: new Date().toISOString() });
-             }
-           });
+          const firestoreFavs = snap.docs.map(d => d.id);
+          const merged = Array.from(new Set([...localFavs, ...firestoreFavs]));
+          setFavorites(merged);
+          localStorage.setItem('foliohub_favorites', JSON.stringify(merged));
+
+          localFavs.forEach(fav => {
+            if (!firestoreFavs.includes(fav)) {
+              setDoc(doc(db, 'users', user.uid, 'favorites', fav), { timestamp: new Date().toISOString() });
+            }
+          });
         });
       });
     }
@@ -88,7 +123,7 @@ export default function Home() {
       const isFav = prev.includes(templateName);
       const newFavs = isFav ? prev.filter(f => f !== templateName) : [...prev, templateName];
       localStorage.setItem('foliohub_favorites', JSON.stringify(newFavs));
-      
+
       if (user) {
         import('firebase/firestore').then(({ doc, setDoc, deleteDoc }) => {
           const docRef = doc(db, 'users', user.uid, 'favorites', templateName);
@@ -103,41 +138,29 @@ export default function Home() {
     });
   }, [user]);
 
-  function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
-    const { currentTarget, clientX, clientY } = e;
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
-
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  const [activeRole, setActiveRole] = useState('All Roles');
+  const [activeStyle, setActiveStyle] = useState('all');
   const [activeStack, setActiveStack] = useState('All Stacks');
   const [activeStructure, setActiveStructure] = useState('All Structures');
   const [activeCollection, setActiveCollection] = useState('All Collections');
   const [sortBy, setSortBy] = useState('Featured');
-  const [showStarModal, setShowStarModal] = useState(false);
-  const [targetUrl, setTargetUrl] = useState('');
   const [displayCount, setDisplayCount] = useState(24);
+
+  // Reset role filter cleanly whenever category changes
+  useEffect(() => {
+    setActiveRole('All Roles');
+  }, [activeCategory]);
 
   // Reset display count when filters change
   useEffect(() => {
     setDisplayCount(24);
-  }, [query, activeCategory, activeStack, activeStructure, activeCollection, sortBy]);
+  }, [query, activeCategory, activeRole, activeStyle, activeStack, activeStructure, activeCollection, sortBy]);
 
-  const handleLinkClick = useCallback((url: string) => {
-    if (typeof window === 'undefined') return;
-    const hasStarred = sessionStorage.getItem('foliohub_starred_or_dismissed');
-    if (hasStarred) {
-      window.open(url, '_blank');
-    } else {
-      if (Math.random() < 0.4) {
-        setTargetUrl(url);
-        setShowStarModal(true);
-      } else {
-        window.open(url, '_blank');
-      }
-    }
+  const openExternalUrl = useCallback((url: string) => {
+    if (typeof window === 'undefined' || !url) return;
+    window.open(url, '_blank', 'noopener,noreferrer');
   }, []);
 
   const visibleCategories = useMemo(() => {
@@ -157,6 +180,20 @@ export default function Home() {
     });
   }, []);
 
+  const roleOptions = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const t of templates) {
+      if (activeCategory !== 'All' && activeCategory !== '⭐ Starred' && t.category !== activeCategory) {
+        continue;
+      }
+      const r = t.role || (t as any).roleSlug || '';
+      if (r) {
+        counts.set(r, (counts.get(r) || 0) + 1);
+      }
+    }
+    return Array.from(counts.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+  }, [activeCategory]);
+
   const filtered = useMemo<Template[]>(() => {
     const q = query.toLowerCase().trim();
     const list = templates.filter((t) => {
@@ -166,7 +203,15 @@ export default function Home() {
         return false;
       }
 
+      if (activeRole !== 'All Roles' && (t.role || '') !== activeRole) {
+        return false;
+      }
+
       const tags = t.tags || [];
+      if (activeStyle !== 'all' && !tags.includes(activeStyle)) {
+        return false;
+      }
+
       const matchesCollection =
         activeCollection === 'All Collections' ||
         (activeCollection === 'Core Library' && tags.includes('core')) ||
@@ -178,14 +223,20 @@ export default function Home() {
         activeStructure === 'All Structures' ||
         (activeStructure === 'Single-page' && tags.includes('single-page')) ||
         (activeStructure === 'Multi-page' && tags.includes('multi-page'));
+
       const aliases = ((t as any).aliases || []) as string[];
+      const libs = ((t as any).libraries || []) as string[];
       const matchesQuery =
         !q ||
         (t.name || '').toLowerCase().includes(q) ||
         (t.role || (t as any).profession || '').toLowerCase().includes(q) ||
         ((t as any).roleSlug || '').toLowerCase().includes(q) ||
         ((t as any).subCategory || '').toLowerCase().includes(q) ||
+        ((t as any).subCategoryLabel || '').toLowerCase().includes(q) ||
+        ((t as any).headline || '').toLowerCase().includes(q) ||
         (t.theme || '').toLowerCase().includes(q) ||
+        (t.description || '').toLowerCase().includes(q) ||
+        libs.some((l) => l.toLowerCase().includes(q)) ||
         aliases.some((a) => a.toLowerCase().includes(q)) ||
         tags.some((tag) => tag.toLowerCase().includes(q));
       return matchesCollection && matchesStack && matchesStructure && matchesQuery;
@@ -199,7 +250,18 @@ export default function Home() {
     else if (sortBy === 'Stack') sorted.sort((a, b) => (a.stack || '').localeCompare(b.stack || '') || (a.name || '').localeCompare(b.name || ''));
     else if (sortBy === 'Role A–Z') sorted.sort((a, b) => (a.role || '').localeCompare(b.role || ''));
     return sorted;
-  }, [query, activeCategory, activeStack, activeStructure, activeCollection, sortBy, favorites]);
+  }, [query, activeCategory, activeRole, activeStyle, activeStack, activeStructure, activeCollection, sortBy, favorites]);
+
+  const resetAllFilters = useCallback(() => {
+    setQuery('');
+    setActiveCategory('All');
+    setActiveRole('All Roles');
+    setActiveStyle('all');
+    setActiveStack('All Stacks');
+    setActiveStructure('All Structures');
+    setActiveCollection('All Collections');
+    setSortBy('Featured');
+  }, []);
 
   return (
     <div style={{ minHeight: '100vh' }}>
@@ -292,9 +354,8 @@ export default function Home() {
       <HeroSection />
 
       {/* Search Section */}
-      <section style={{ padding: '40px 24px 20px', textAlign: 'center', maxWidth: 800, margin: '0 auto', position: 'relative' }}>
-        {/* Search bar */}
-        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }} style={{ position: 'relative', maxWidth: 560, margin: '0 auto' }}>
+      <section style={{ padding: '40px 24px 20px', textAlign: 'center', maxWidth: 860, margin: '0 auto', position: 'relative' }}>
+        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }} style={{ position: 'relative', maxWidth: 600, margin: '0 auto' }}>
           <svg
             width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2"
             style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
@@ -305,7 +366,7 @@ export default function Home() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by role, theme, or technology..."
+            placeholder="Search by profession, tag, tech (e.g. 3d-webgl, photo-editorial, pilot, doctor)..."
             style={{
               width: '100%', padding: '13px 16px 13px 44px',
               background: 'var(--surface)', border: '1px solid var(--border)',
@@ -319,10 +380,10 @@ export default function Home() {
         {/* Popular Searches */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.4 }} style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 16, flexWrap: 'wrap' }}>
           <span style={{ color: 'var(--text-secondary)', fontSize: 12, alignSelf: 'center' }}>Try searching:</span>
-          {['Developer', 'Minimalist', 'Chef', 'Dark', 'React', 'Monochrome'].map((term) => (
+          {['Developer', '3D WebGL', 'Photo Editorial', 'Medical', 'Pilot', 'Researcher', 'Festival', 'Architect'].map((term) => (
             <motion.button
               key={term}
-              onClick={() => setQuery(term)}
+              onClick={() => setQuery(term === '3D WebGL' ? '3d-webgl' : term === 'Photo Editorial' ? 'photo-editorial' : term)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{
@@ -345,14 +406,15 @@ export default function Home() {
       </section>
 
       {/* Filters */}
-      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px 24px', display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px 16px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+        {/* Categories */}
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           {visibleCategories.map((cat) => (
             <motion.button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
               style={{
                 padding: '6px 14px', borderRadius: 8, fontSize: 13, border: '1px solid',
                 borderColor: activeCategory === cat ? 'var(--accent)' : 'var(--border)',
@@ -365,59 +427,103 @@ export default function Home() {
             </motion.button>
           ))}
         </div>
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: 10 }}>
-          <select
-            value={activeCollection}
-            onChange={(e) => setActiveCollection(e.target.value)}
-            style={{
-              padding: '6px 14px', borderRadius: 8, fontSize: 13,
-              border: '1px solid var(--border)', background: 'var(--surface)',
-              color: 'var(--text-secondary)', cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
-            }}
-          >
-            {visibleCollections.map((s) => <option key={s}>{s}</option>)}
-          </select>
-          <select
-            value={activeStack}
-            onChange={(e) => setActiveStack(e.target.value)}
-            style={{
-              padding: '6px 14px', borderRadius: 8, fontSize: 13,
-              border: '1px solid var(--border)', background: 'var(--surface)',
-              color: 'var(--text-secondary)', cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
-            }}
-          >
-            {STACK_FILTERS.map((s) => <option key={s}>{s}</option>)}
-          </select>
-          <select
-            value={activeStructure}
-            onChange={(e) => setActiveStructure(e.target.value)}
-            style={{
-              padding: '6px 14px', borderRadius: 8, fontSize: 13,
-              border: '1px solid var(--border)', background: 'var(--surface)',
-              color: 'var(--text-secondary)', cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
-            }}
-          >
-            {STRUCTURE_FILTERS.map((s) => <option key={s}>{s}</option>)}
-          </select>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            style={{
-              padding: '6px 14px', borderRadius: 8, fontSize: 13,
-              border: '1px solid var(--accent)', background: 'var(--surface)',
-              color: 'var(--accent)', cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
-            }}
-          >
-            {SORT_OPTIONS.map((s) => <option key={s}>{s}</option>)}
-          </select>
+
+        {/* Design Type Pills + Secondary Selectors */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+            {STYLE_FILTERS.map((sf) => (
+              <button
+                key={sf.tag}
+                onClick={() => setActiveStyle(sf.tag)}
+                style={{
+                  padding: '5px 12px', borderRadius: 100, fontSize: 12, border: '1px solid',
+                  borderColor: activeStyle === sf.tag ? 'var(--accent)' : 'var(--border)',
+                  background: activeStyle === sf.tag ? 'rgba(108,122,247,0.15)' : 'rgba(255,255,255,0.02)',
+                  color: activeStyle === sf.tag ? '#fff' : 'var(--text-secondary)',
+                  cursor: 'pointer', fontFamily: 'inherit', transition: 'all 0.15s',
+                }}
+              >
+                {sf.label}
+              </button>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+            <select
+              value={activeRole}
+              onChange={(e) => setActiveRole(e.target.value)}
+              style={{
+                padding: '6px 12px', borderRadius: 8, fontSize: 13, maxWidth: 220,
+                border: '1px solid var(--border)', background: 'var(--surface)',
+                color: 'var(--text-secondary)', cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
+              }}
+            >
+              <option value="All Roles">All Roles ({roleOptions.length})</option>
+              {roleOptions.map(([r, count]) => (
+                <option key={r} value={r}>{r} ({count})</option>
+              ))}
+            </select>
+            <select
+              value={activeCollection}
+              onChange={(e) => setActiveCollection(e.target.value)}
+              style={{
+                padding: '6px 12px', borderRadius: 8, fontSize: 13,
+                border: '1px solid var(--border)', background: 'var(--surface)',
+                color: 'var(--text-secondary)', cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
+              }}
+            >
+              {visibleCollections.map((s) => <option key={s}>{s}</option>)}
+            </select>
+            <select
+              value={activeStack}
+              onChange={(e) => setActiveStack(e.target.value)}
+              style={{
+                padding: '6px 12px', borderRadius: 8, fontSize: 13,
+                border: '1px solid var(--border)', background: 'var(--surface)',
+                color: 'var(--text-secondary)', cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
+              }}
+            >
+              {STACK_FILTERS.map((s) => <option key={s}>{s}</option>)}
+            </select>
+            <select
+              value={activeStructure}
+              onChange={(e) => setActiveStructure(e.target.value)}
+              style={{
+                padding: '6px 12px', borderRadius: 8, fontSize: 13,
+                border: '1px solid var(--border)', background: 'var(--surface)',
+                color: 'var(--text-secondary)', cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
+              }}
+            >
+              {STRUCTURE_FILTERS.map((s) => <option key={s}>{s}</option>)}
+            </select>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              style={{
+                padding: '6px 12px', borderRadius: 8, fontSize: 13,
+                border: '1px solid var(--accent)', background: 'var(--surface)',
+                color: 'var(--accent)', cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
+              }}
+            >
+              {SORT_OPTIONS.map((s) => <option key={s}>{s}</option>)}
+            </select>
+          </div>
         </div>
       </div>
 
       {/* Results count */}
-      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px 24px' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>
-          {filtered.length} template{filtered.length !== 1 ? 's' : ''} found
+          Showing {filtered.length} of {templates.length} templates &bull; Hover any card for a live preview, click to open site
         </span>
+        {(query || activeCategory !== 'All' || activeRole !== 'All Roles' || activeStyle !== 'all' || activeCollection !== 'All Collections' || activeStack !== 'All Stacks' || activeStructure !== 'All Structures') && (
+          <button
+            onClick={resetAllFilters}
+            style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 13, fontFamily: 'inherit' }}
+          >
+            Reset filters
+          </button>
+        )}
       </div>
 
       {/* Grid */}
@@ -426,7 +532,7 @@ export default function Home() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', padding: '80px 0', color: 'var(--text-secondary)' }}>
             <p style={{ fontSize: 16 }}>No templates match your search.</p>
             <button
-              onClick={() => { setQuery(''); setActiveCategory('All'); setActiveStack('All Stacks'); setActiveStructure('All Structures'); setActiveCollection('All Collections'); setSortBy('Featured'); }}
+              onClick={resetAllFilters}
               style={{ marginTop: 16, background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: 14, fontFamily: 'inherit' }}
             >
               Clear filters
@@ -441,20 +547,20 @@ export default function Home() {
             }}>
               {filtered.slice(0, displayCount).map((t, i) => (
                 <TemplateCard
-                  key={t.path || t.name}
+                  key={t.path || t.id || t.name}
                   template={t}
                   index={i}
-                  onActionClick={handleLinkClick}
-                  onTagClick={setQuery}
+                  onOpenUrl={openExternalUrl}
+                  onTagClick={(tag) => setQuery(tag)}
                   isFavorite={favorites.includes(t.name)}
                   toggleFavorite={() => toggleFavorite(t.name, t.path || '')}
                 />
               ))}
             </div>
-            
+
             {/* Infinite Scroll Sentinel */}
             {displayCount < filtered.length && (
-              <div 
+              <div
                 style={{ textAlign: 'center', padding: '40px 0' }}
                 ref={(node) => {
                   if (!node) return;
@@ -486,210 +592,331 @@ export default function Home() {
           >
             Contribute on GitHub
           </a>
-          {' '}and help us reach 1000+ templates.
+          {' '}and explore {templates.length} deployed portfolio templates.
         </p>
       </footer>
-
-      {/* GitHub Star Prompt Modal */}
-      <AnimatePresence>
-        {showStarModal && (
-          <motion.div 
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            style={{
-              position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)',
-              backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center',
-              justifyContent: 'center', zIndex: 1000, padding: 24,
-            }}
-          >
-            <motion.div 
-              initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }}
-              style={{
-                background: 'var(--surface)', border: '1px solid var(--border)',
-                borderRadius: 16, maxWidth: 480, width: '100%', padding: 32,
-                boxShadow: '0 24px 60px rgba(0,0,0,0.8)', textAlign: 'center',
-              }}
-            >
-              <div style={{
-                width: 56, height: 56, borderRadius: '50%', background: 'rgba(108,122,247,0.1)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px',
-              }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                </svg>
-              </div>
-              <h3 style={{ fontSize: 20, fontWeight: 600, color: '#fff', marginBottom: 12 }}>Support Folio Hub!</h3>
-              <p style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.6, marginBottom: 24 }}>
-                Folio Hub is a completely free, open-source project. If you like these templates, please consider starring our repository on GitHub. It takes just a second and helps the project grow! ⭐
-              </p>
-              <div style={{ display: 'flex', gap: 12 }}>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => {
-                    sessionStorage.setItem('foliohub_starred_or_dismissed', 'true');
-                    setShowStarModal(false);
-                    window.open('https://github.com/SudiptaSanki/PortfolioBuilder', '_blank');
-                    window.open(targetUrl, '_blank');
-                  }}
-                  style={{
-                    flex: 1, padding: '12px', borderRadius: 10, background: 'var(--accent)',
-                    color: '#fff', fontSize: 14, fontWeight: 600, border: 'none', cursor: 'pointer',
-                  }}
-                >
-                  Star on GitHub
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => {
-                    sessionStorage.setItem('foliohub_starred_or_dismissed', 'true');
-                    setShowStarModal(false);
-                    window.open(targetUrl, '_blank');
-                  }}
-                  style={{
-                    flex: 1, padding: '12px', borderRadius: 10, background: 'transparent',
-                    border: '1px solid var(--border)', color: 'var(--text-secondary)',
-                    fontSize: 14, fontWeight: 500, cursor: 'pointer',
-                  }}
-                >
-                  Maybe Later
-                </motion.button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
 
-function TemplateCard({ template, index = 0, onActionClick, onTagClick, isFavorite, toggleFavorite }: { template: Template; index?: number; onActionClick: (url: string) => void; onTagClick: (tag: string) => void; isFavorite: boolean; toggleFavorite: (e: any) => void; }) {
+function TemplateCard({
+  template,
+  index = 0,
+  onOpenUrl,
+  onTagClick,
+  isFavorite,
+  toggleFavorite,
+}: {
+  template: Template;
+  index?: number;
+  onOpenUrl: (url: string) => void;
+  onTagClick: (tag: string) => void;
+  isFavorite: boolean;
+  toggleFavorite: (e: any) => void;
+}) {
+  const previewRef = useRef<HTMLDivElement | null>(null);
   const [hovered, setHovered] = useState(false);
   const [showIframe, setShowIframe] = useState(false);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [frameScale, setFrameScale] = useState(0.27);
+
+  useEffect(() => {
+    const el = previewRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+    const updateScale = () => {
+      const w = el.clientWidth || 340;
+      setFrameScale(w / 1280);
+    };
+    updateScale();
+    const ro = new ResizeObserver(updateScale);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     let timer: any;
     if (hovered) {
       timer = setTimeout(() => {
         setShowIframe(true);
-      }, 450);
+      }, 320);
     } else {
       setShowIframe(false);
+      setIframeLoaded(false);
     }
     return () => clearTimeout(timer);
   }, [hovered]);
 
-  const { previewUrl, githubUrl, previewImageSrc, isAvailable, status, statusMessage } = resolveTemplateUrl(template);
+  const { previewUrl, displayUrlPath, githubUrl, isAvailable, status, statusMessage } = resolveTemplateUrl(template);
+  const targetLink = isAvailable ? previewUrl : githubUrl;
 
-  const CATEGORY_COLORS: Record<string, string> = {
-    festival: '#f59e0b',
-    technical: '#4ade80',
-    engineering: '#38bdf8',
-    research: '#60a5fa',
-    educator: '#818cf8',
-    medical: '#f87171',
-    'wellness-sports': '#fb923c',
-    agriculture: '#84cc16',
-    'transport-aviation': '#22d3ee',
-    'construction-trades': '#d97706',
-    creative: '#f472b6',
-    business: '#facc15',
-    'law-public': '#94a3b8',
-    music: '#c084fc',
-    retail: '#fb7185',
-    services: '#a78bfa',
-    startup: '#2dd4bf',
-    gaming: '#e879f9',
+  const palette = (template as any).palette || {
+    bg: '#131318',
+    fg: '#f4f4f5',
+    accent: CATEGORY_COLORS[template.category] || '#6c7af7',
   };
+  const isLight = getLuminance(palette.bg) > 0.45;
+  const mutedFg = isLight ? 'rgba(24,24,27,0.68)' : 'rgba(244,244,245,0.68)';
+  const subtleSurface = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.07)';
+  const subtleBorder = isLight ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
+  const tags = template.tags || [];
+  const headline = (template as any).headline || template.name;
+
+  const capabilityBadges: string[] = [];
+  if (tags.includes('3d-webgl')) capabilityBadges.push('3D WebGL');
+  if (tags.includes('photo-editorial')) capabilityBadges.push('Photo UI');
+  if (tags.includes('canvas-interactive')) capabilityBadges.push('Canvas');
+  if (tags.includes('web-audio')) capabilityBadges.push('Web Audio');
+  if (tags.includes('gsap-motion') && capabilityBadges.length < 3) capabilityBadges.push('GSAP');
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, delay: (index % 24) * 0.02 }}
+      transition={{ duration: 0.22, delay: (index % 24) * 0.015 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => onOpenUrl(targetLink)}
+      role="link"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onOpenUrl(targetLink);
+        }
+      }}
       style={{
         background: 'var(--surface)',
         border: '1px solid',
-        borderColor: hovered ? 'rgba(108,122,247,0.4)' : 'var(--border)',
+        borderColor: hovered ? 'rgba(108,122,247,0.55)' : 'var(--border)',
         borderRadius: 14,
         overflow: 'hidden',
         transition: 'border-color 0.2s, transform 0.2s, box-shadow 0.2s',
         transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-        boxShadow: hovered ? '0 12px 40px rgba(0,0,0,0.4)' : 'none',
-        cursor: 'default',
-        position: 'relative'
+        boxShadow: hovered ? '0 14px 40px rgba(0,0,0,0.45)' : 'none',
+        cursor: 'pointer',
+        position: 'relative',
       }}
     >
-      {/* Preview Image / Live Iframe */}
-      <div 
-        onClick={(e: any) => { 
-          e.preventDefault(); 
-          if (isAvailable) {
-            onActionClick(previewUrl); 
-          } else {
-            onActionClick(githubUrl);
-          }
-        }} 
-        style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', cursor: 'pointer', background: '#121214' }}
+      {/* Generated Website Face Card + Scaled Live Hover Iframe */}
+      <div
+        ref={previewRef}
+        style={{
+          position: 'relative',
+          aspectRatio: '16/9',
+          overflow: 'hidden',
+          background: palette.bg,
+          color: palette.fg,
+          borderBottom: '1px solid var(--border)',
+        }}
       >
-        {showIframe && isAvailable ? (
-          <iframe
-            src={previewUrl}
-            title={template.name}
+        {/* Generated Real Website Miniature Preview (Zero Dummy Images) */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            background: `radial-gradient(circle at 85% 15%, ${palette.accent}24, transparent 58%), ${palette.bg}`,
+          }}
+        >
+          {/* Mini Browser Chrome */}
+          <div
             style={{
-              width: '100%',
-              height: '100%',
-              border: 'none',
-              pointerEvents: 'none',
-              transform: 'scale(1)',
-              transformOrigin: 'top left',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '7px 10px',
+              background: subtleSurface,
+              borderBottom: `1px solid ${subtleBorder}`,
+              gap: 8,
             }}
-          />
-        ) : (
-          <img
-            src={previewImageSrc}
-            alt={template.name}
-            loading="lazy"
-            decoding="async"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              transition: 'transform 0.4s ease',
-              transform: hovered ? 'scale(1.05)' : 'scale(1)'
-            }}
-          />
-        )}
-        <div style={{
-          position: 'absolute', top: 12, left: 12,
-          background: CATEGORY_COLORS[template.category] || '#888',
-          color: '#000', padding: '3px 10px', borderRadius: 100, fontSize: 11, fontWeight: 600,
-          zIndex: 10,
-        }}>
-          {template.stack}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, minWidth: 0, flex: 1 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#ef4444', opacity: 0.75, flexShrink: 0 }} />
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#f59e0b', opacity: 0.75, flexShrink: 0 }} />
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', opacity: 0.75, flexShrink: 0 }} />
+              <span
+                style={{
+                  marginLeft: 6,
+                  fontSize: 10,
+                  fontFamily: 'monospace',
+                  color: mutedFg,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {displayUrlPath}
+              </span>
+            </div>
+            <span
+              style={{
+                background: CATEGORY_COLORS[template.category] || palette.accent,
+                color: '#000',
+                padding: '1px 7px',
+                borderRadius: 100,
+                fontSize: 9.5,
+                fontWeight: 700,
+                flexShrink: 0,
+              }}
+            >
+              {template.stack}
+            </span>
+          </div>
+
+          {/* Miniature Hero + Section Composition */}
+          <div style={{ padding: '12px 14px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                <span
+                  style={{
+                    fontSize: 9.5,
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.07em',
+                    color: palette.accent,
+                  }}
+                >
+                  {template.role || template.category}
+                </span>
+                {tags.includes('multi-page') && (
+                  <span style={{ fontSize: 9, color: mutedFg, border: `1px solid ${subtleBorder}`, borderRadius: 4, padding: '0 4px' }}>
+                    Multi-page
+                  </span>
+                )}
+              </div>
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  lineHeight: 1.25,
+                  letterSpacing: '-0.02em',
+                  color: palette.fg,
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  maxWidth: '92%',
+                }}
+              >
+                {headline}
+              </div>
+            </div>
+
+            {/* Bottom Miniature Section Bar + Hover Cue */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginTop: 8 }}>
+              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                {capabilityBadges.slice(0, 3).map((cap) => (
+                  <span
+                    key={cap}
+                    style={{
+                      fontSize: 9.5,
+                      padding: '2px 6px',
+                      borderRadius: 4,
+                      background: subtleSurface,
+                      border: `1px solid ${subtleBorder}`,
+                      color: mutedFg,
+                      fontWeight: 500,
+                    }}
+                  >
+                    {cap}
+                  </span>
+                ))}
+              </div>
+              <span
+                style={{
+                  fontSize: 10,
+                  color: hovered ? palette.accent : mutedFg,
+                  fontWeight: 600,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {hovered ? 'Loading live…' : 'Hover preview'}
+              </span>
+            </div>
+          </div>
         </div>
+
+        {/* Scaled Desktop Live Preview Iframe on Hover */}
+        {showIframe && isAvailable && (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 4,
+              background: palette.bg,
+              opacity: iframeLoaded ? 1 : 0,
+              transition: 'opacity 0.25s ease',
+              pointerEvents: 'none',
+            }}
+          >
+            <iframe
+              src={previewUrl}
+              title={template.name}
+              onLoad={() => setIframeLoaded(true)}
+              sandbox="allow-scripts allow-same-origin"
+              style={{
+                width: 1280,
+                height: 720,
+                border: 'none',
+                pointerEvents: 'none',
+                transform: `scale(${frameScale})`,
+                transformOrigin: 'top left',
+                background: '#fff',
+              }}
+            />
+          </div>
+        )}
+
+        {/* Live Status Pill when hovering */}
+        {showIframe && isAvailable && (
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 8,
+              right: 8,
+              zIndex: 8,
+              background: 'rgba(10,10,14,0.84)',
+              color: '#fff',
+              padding: '3px 8px',
+              borderRadius: 6,
+              fontSize: 10,
+              fontWeight: 600,
+              backdropFilter: 'blur(6px)',
+              border: '1px solid rgba(255,255,255,0.16)',
+              pointerEvents: 'none',
+            }}
+          >
+            {iframeLoaded ? 'Live Preview · Click to Open ↗' : 'Loading Live Site…'}
+          </div>
+        )}
+
         {status !== 'active' && (
           <div style={{
-            position: 'absolute', top: 12, right: 52,
+            position: 'absolute', top: 34, left: 10,
             background: status === 'broken' ? '#ef4444' : '#f59e0b',
-            color: '#fff', padding: '3px 8px', borderRadius: 6, fontSize: 10, fontWeight: 600,
-            zIndex: 10, textTransform: 'uppercase', letterSpacing: '0.5px'
+            color: '#fff', padding: '2px 7px', borderRadius: 6, fontSize: 10, fontWeight: 600,
+            zIndex: 10, textTransform: 'uppercase', letterSpacing: '0.5px',
           }}>
             {status}
           </div>
         )}
+
         <button
-          onClick={(e) => { e.stopPropagation(); toggleFavorite(e); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleFavorite(e);
+          }}
+          aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
           style={{
-            position: 'absolute', top: 12, right: 12, zIndex: 10,
-            background: 'rgba(0,0,0,0.5)', border: 'none', borderRadius: '50%',
-            width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer', backdropFilter: 'blur(4px)'
+            position: 'absolute', top: 34, right: 10, zIndex: 10,
+            background: 'rgba(0,0,0,0.48)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '50%',
+            width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', backdropFilter: 'blur(4px)',
           }}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill={isFavorite ? "#facc15" : "none"} stroke={isFavorite ? "#facc15" : "white"} strokeWidth="2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill={isFavorite ? '#facc15' : 'none'} stroke={isFavorite ? '#facc15' : 'white'} strokeWidth="2">
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
           </svg>
         </button>
@@ -699,25 +926,42 @@ function TemplateCard({ template, index = 0, onActionClick, onTagClick, isFavori
       <div style={{ padding: 20 }}>
         <div style={{ marginBottom: 10 }}>
           <h3 style={{ fontSize: 16, fontWeight: 600, letterSpacing: '-0.3px', marginBottom: 4 }}>{template.name}</h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{template.role || (template as any).profession} &bull; {template.theme || 'Custom Theme'}</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 13 }}>
+            {template.role || (template as any).profession} &bull; {template.theme || 'Editorial Theme'}
+          </p>
         </div>
-        <p style={{ color: 'var(--text-secondary)', fontSize: 13, lineHeight: 1.6, marginBottom: 16 }}>
-          {template.description || 'A beautifully designed template crafted for professionals.'}
+        <p style={{
+          color: 'var(--text-secondary)',
+          fontSize: 13,
+          lineHeight: 1.6,
+          marginBottom: 16,
+          display: '-webkit-box',
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+        }}>
+          {template.description || 'A professionally designed portfolio template ready for deployment.'}
         </p>
 
-        {/* Tags — prioritized: structure, collection, mode keywords, then topics */}
+        {/* Tags */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
           {(() => {
-            const tags = template.tags || [];
             const priority = tags.filter((t) =>
-              /^(single-page|multi-page|core|festival|collection|genre-lab|garland-|float-|scroll-|reveal-|3d|webgl|glsl|interactive|gsap|threejs)$/.test(t));
+              /^(single-page|multi-page|core|festival|collection|genre-lab|3d-webgl|photo-editorial|canvas-interactive|web-audio|gsap-motion|garland-|float-|edition-)/.test(t));
             const rest = tags.filter((t) => !priority.includes(t) && !['html', 'css', 'js'].includes(t));
-            return [...priority, ...rest].slice(0, 5).map((tag) => (
-              <span key={tag} onClick={() => onTagClick(tag)} title={'Filter by ' + tag} style={{
-                padding: '3px 8px', background: 'rgba(255,255,255,0.06)', borderRadius: 6,
-                fontSize: 11, color: 'var(--text-secondary)', cursor: 'pointer',
-                border: '1px solid transparent', transition: 'border-color .15s, color .15s',
-              }}
+            return [...priority, ...rest].slice(0, 6).map((tag) => (
+              <span
+                key={tag}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onTagClick(tag);
+                }}
+                title={'Filter by ' + tag}
+                style={{
+                  padding: '3px 8px', background: 'rgba(255,255,255,0.06)', borderRadius: 6,
+                  fontSize: 11, color: 'var(--text-secondary)', cursor: 'pointer',
+                  border: '1px solid transparent', transition: 'border-color .15s, color .15s',
+                }}
                 onMouseEnter={(e: any) => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
                 onMouseLeave={(e: any) => { e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
               >
@@ -730,13 +974,10 @@ function TemplateCard({ template, index = 0, onActionClick, onTagClick, isFavori
         {/* Actions */}
         <div style={{ display: 'flex', gap: 10 }}>
           <motion.a
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
             href={githubUrl}
-            onClick={(e: any) => {
-              e.preventDefault();
-              onActionClick(githubUrl);
-            }}
+            onClick={(e) => e.stopPropagation()}
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -751,17 +992,10 @@ function TemplateCard({ template, index = 0, onActionClick, onTagClick, isFavori
             View Code
           </motion.a>
           <motion.a
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            href={isAvailable ? previewUrl : githubUrl}
-            onClick={(e: any) => {
-              e.preventDefault();
-              if (isAvailable) {
-                onActionClick(previewUrl);
-              } else {
-                onActionClick(githubUrl);
-              }
-            }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            href={targetLink}
+            onClick={(e) => e.stopPropagation()}
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -769,11 +1003,11 @@ function TemplateCard({ template, index = 0, onActionClick, onTagClick, isFavori
               background: isAvailable ? 'var(--accent)' : 'rgba(255,255,255,0.08)',
               color: isAvailable ? '#fff' : 'var(--text-secondary)',
               fontSize: 13, fontWeight: 500, textDecoration: 'none',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onMouseEnter={(e: any) => { if (isAvailable) e.currentTarget.style.background = 'var(--accent-hover)'; }}
             onMouseLeave={(e: any) => { if (isAvailable) e.currentTarget.style.background = 'var(--accent)'; }}
-            title={statusMessage || 'Live Preview'}
+            title={statusMessage || 'Open Live Deployed Site'}
           >
             {isAvailable ? 'Live Preview' : 'Code Only'}
           </motion.a>

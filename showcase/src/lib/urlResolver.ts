@@ -11,8 +11,8 @@ export interface ResolvedTemplateUrls {
   statusMessage?: string;
   baseUrl: string;
   previewUrl: string;
+  displayUrlPath: string;
   githubUrl: string;
-  previewImageSrc: string;
 }
 
 const DEFAULT_SHARD_BASES: Record<string, string> = {
@@ -80,25 +80,17 @@ export function resolveTemplateUrl(template: any): ResolvedTemplateUrls {
     }
   }
 
-  // 4. GitHub canonical source repository link (points straight to exact project subfolder)
+  // 4. Clean display URL label for generated face cards
+  const displayUrlPath = previewUrl
+    .replace(/^https?:\/\//i, '')
+    .replace(/\/index\.html$/i, '');
+
+  // 5. GitHub canonical source repository link (points straight to exact project subfolder)
   const codePath = cleanPath.replace(/\/(dist|out)$/, '');
   const externalRepo = template.source?.repository;
   const githubUrl = externalRepo
     ? externalRepo
     : `https://github.com/SudiptaSanki/PortfolioBuilder/tree/main/${codePath}`;
-
-  // 5. Preview image resolution
-  let previewImageSrc = '/images/placeholder.webp';
-  if (template.preview) {
-    const p = typeof template.preview === 'string' ? template.preview : template.preview.image;
-    if (p) {
-      if (p.startsWith('http://') || p.startsWith('https://') || p.startsWith('/')) {
-        previewImageSrc = p;
-      } else if (baseUrl) {
-        previewImageSrc = `${baseUrl}/${p}`;
-      }
-    }
-  }
 
   return {
     provider,
@@ -109,7 +101,7 @@ export function resolveTemplateUrl(template: any): ResolvedTemplateUrls {
     statusMessage,
     baseUrl,
     previewUrl,
-    githubUrl,
-    previewImageSrc
+    displayUrlPath,
+    githubUrl
   };
 }
