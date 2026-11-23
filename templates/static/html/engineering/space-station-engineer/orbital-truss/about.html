@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Method — Hardpoint orbital structures</title>
+<meta name="description" content="How a truss bay is designed: load cases, finite element models, joint preload, modal survey, thermal balance and the test that overrides the model.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2314171A'/%3E%3Cpath d='M10 46L24 18l14 28 14-28' fill='none' stroke='%23E07A4A' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+<header class="head">
+  <a class="mark" href="index.html">
+    <svg class="mark__glyph" viewBox="0 0 28 28" aria-hidden="true" focusable="false">
+      <path d="M2 24 8 6l6 18 6-18 6 18" fill="none" stroke="currentColor" stroke-width="2"/>
+    </svg>
+    <span class="mark__type">Hardpoint<em>orbital structures &middot; Bremen</em></span>
+  </a>
+  <nav class="tabs" aria-label="Primary">
+    <a href="index.html"><span>01</span>Index</a>
+    <a href="about.html" aria-current="page"><span>02</span>Method</a>
+    <a href="projects.html"><span>03</span>Structures</a>
+    <a href="contact.html"><span>04</span>Statement</a>
+  </nav>
+  <p class="rev">Rev&nbsp;04 &middot; 2026-11-18</p>
+</header>
+
+<main id="main">
+
+  <section class="page-head">
+    <div>
+      <p class="tag">Method &middot; sheet 02</p>
+      <h1>Every model is wrong until a shaker says otherwise</h1>
+    </div>
+    <p>We do the analysis, then we build a bay and try to break the analysis. The order matters: a finite element model that has never been tested is a drawing with numbers on it.</p>
+  </section>
+
+  <div class="doc">
+    <aside class="doc__aside">
+      <p><b>Practice</b>Hardpoint Struktur GmbH, Bremen. Nine engineers, one test cell, two autoclaves within walking distance.</p>
+      <p><b>Standards</b>ECSS-E-ST-32-01C for structural factors, NASA-STD-5001B for metallic design, GSFC-STD-7000A for the vibro-acoustic environment, ECSS-Q-ST-70-36C for stress corrosion.</p>
+      <p><b>Tools</b>Nastran for the global model, our own joint preload sheet for the details, and a modal hammer nobody is allowed to use without signing the log.</p>
+      <p><b>Rule</b>If the test and the model disagree by more than 15&nbsp;%, the test is right and the model is reworked before the next design review.</p>
+    </aside>
+
+    <div class="prose">
+      <p class="lede">A truss is a way of spending mass to keep two points a fixed distance apart. Almost every decision follows from where those two points are, what the structure has to survive on the way up, and how little metal the launch vehicle will let you carry.</p>
+
+      <h2>The chain, in the order we run it</h2>
+      <ol class="chain">
+        <li>
+          <h3>Requirements and envelopes</h3>
+          <p>Interface points, alignment budget, mass cap, survival environment, and the launch vehicle's coupled loads. We write these down before any geometry exists, because half of the arguments later are really arguments about this page.</p>
+          <span class="tool">SOW</span>
+        </li>
+        <li>
+          <h3>Load cases</h3>
+          <p>Quasi-static launch, sine and random vibration, docking impulse, crew push-off, and the thermal gradient across eclipse entry. Each case gets a factor from ECSS-E-ST-32-01C and a note on whether it is limit or ultimate.</p>
+          <span class="tool">Loadset v2</span>
+        </li>
+        <li>
+          <h3>Global model</h3>
+          <p>Beam-and-shell model of the whole assembly, with the payload as a mass and inertia, and the vehicle interface as a boundary condition we argue about with the launch authority. We keep the model to under 300,000 degrees of freedom so it can be re-run in an afternoon rather than a week.</p>
+          <span class="tool">Nastran</span>
+        </li>
+        <li>
+          <h3>Joint design</h3>
+          <p>Nodes are where trusses die. Every bolted joint gets a preload, a slip check, a bearing check and a galvanic pair check; every bonded joint gets a surface preparation procedure that the workshop has actually seen.</p>
+          <span class="tool">Preload sheet</span>
+        </li>
+        <li>
+          <h3>Modal survey</h3>
+          <p>The bay is hung from soft bungees, instrumented with 32 accelerometers, and struck with a modal hammer at 120 points. We compare frequencies and mode shapes to the model and update the joint stiffnesses, not the material properties.</p>
+          <span class="tool">Test cell 1</span>
+        </li>
+        <li>
+          <h3>Qualification</h3>
+          <p>Sine vibration to qualification levels, a thermal balance run in vacuum, and a static proof load. Then the flight unit is built and the whole thing happens again at acceptance levels, which is where the schedule usually goes.</p>
+          <span class="tool">TVAC</span>
+        </li>
+      </ol>
+
+      <p class="pull">A truss that passes analysis and fails test is not a truss. It is a hypothesis with a part number.</p>
+
+      <h2>What the numbers on the model page are, and are not</h2>
+      <p>The bay model on the front page is a closed-form cantilever: Euler&ndash;Bernoulli bending, a constant through-depth thermal gradient, and a mass build-up from the tube schedule. It is honest about its inputs and crude about its joints. A real bay has nodal eccentricities, bolt slip, and a first mode that usually comes in 10&ndash;20&nbsp;% lower than the beam estimate because the joints are softer than the tubes.</p>
+      <p>We publish it because it is useful for an early sizing conversation: it shows quickly why Invar is a poor choice for a 14&nbsp;m mast and why a carbon bay with a near-zero expansion coefficient still bows in eclipse. It is not a certificate, and we would refuse to sign a stress report based on it.</p>
+
+      <h2>Microgravity changes the problem</h2>
+      <p>On the ground, a structure's own weight preloads every joint and damps the small modes. In orbit there is no such help. A crew member pushing off a handrail is an impulse with nothing to react against, and the resulting oscillation can sit exactly where the attitude controller is trying to work. The control band for a large station is often quoted as 0.01&ndash;0.1&nbsp;Hz, which is precisely where the flexible modes of a long truss live, so the job is not to remove them but to place them somewhere the controller can ignore and damp them when it cannot.</p>
+
+      <h2>Who we are</h2>
+      <p><strong>Tomas Reiner</strong> spent eleven years on the structure of a European space laboratory before starting Hardpoint in 2019, and still does the joint sheets himself. <strong>Mariam Osei</strong> runs analysis and has an unnerving ability to find the one load case everyone forgot. <strong>Jonas Wilk</strong> runs the test cell and has broken four of our designs, which is why the fifth one flew.</p>
+      <p>We work with primes as a structural subcontractor and directly with instrument teams who need a frame and cannot get one from a catalogue.</p>
+
+      <table class="data">
+        <caption>Typical delivery against a bay family, from kickoff</caption>
+        <thead>
+          <tr><th scope="col">Phase</th><th scope="col">Output</th><th scope="col" class="num">Weeks</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Concept</td><td>Two geometries, mass and stiffness estimates, one recommendation</td><td class="num">3</td></tr>
+          <tr><td>Detail design</td><td>Drawings, joint sheets, procurement package</td><td class="num">10&ndash;16</td></tr>
+          <tr><td>Build and test</td><td>Qualification unit, modal survey report, updated model</td><td class="num">12&ndash;18</td></tr>
+          <tr><td>Flight unit</td><td>Acceptance test, delivery review data pack</td><td class="num">8&ndash;12</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<footer class="titleblock">
+  <div class="tb">
+    <div class="tb__cell tb__wide">
+      <p class="tb__label">Project</p>
+      <p>Hardpoint orbital structures &middot; method</p>
+    </div>
+    <div class="tb__cell">
+      <p class="tb__label">Drawn by</p>
+      <p>T. Reiner</p>
+    </div>
+    <div class="tb__cell">
+      <p class="tb__label">Checked</p>
+      <p>M. Osei</p>
+    </div>
+    <div class="tb__cell">
+      <p class="tb__label">Scale</p>
+      <p>n/a</p>
+    </div>
+    <div class="tb__cell">
+      <p class="tb__label">Sheet</p>
+      <p>02 of 04</p>
+    </div>
+  </div>
+  <p class="titleblock__legal">&copy; <span data-year>2026</span> Hardpoint Struktur GmbH, Bremen. Standards cited are the editions used on current projects.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

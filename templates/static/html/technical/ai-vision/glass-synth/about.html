@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Approach — Mireille Dossou, perception systems</title>
+<meta name="description" content="How Mireille Dossou works on computer vision for robots: measure the lens, build the failure set, report calibrated uncertainty, and fit the control loop.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600&family=Sora:wght@200;300;400;500&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230b1a1d'/%3E%3Ccircle cx='32' cy='32' r='17' fill='none' stroke='%236fc9c4' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23d8a24a'/%3E%3C/svg%3E">
+</head>
+<body data-page="about">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar static">
+  <a class="brand" href="index.html">
+    <span class="brand-name">Mireille Dossou</span>
+    <span class="brand-sub">Perception systems · Lausanne</span>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a href="index.html#inspector">Inspector</a>
+    <a href="projects.html">Work</a>
+    <a href="about.html" aria-current="page">Approach</a>
+    <a href="contact.html" class="nav-cta">Talk to me</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">Approach</p>
+      <h1>The model is the last thing I change.</h1>
+      <p class="lede">A perception stack fails for boring reasons: a lens model that was assumed, a rolling shutter that was ignored, an uncertainty estimate nobody calibrated. I start there, because those fixes are cheaper and they keep working after the next model release.</p>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="layout-2">
+      <div class="prose">
+        <h2>Six years of cameras with consequences</h2>
+        <p>I did a PhD on depth from defocus, which is a slightly unfashionable corner of vision: no learned prior, just the physics of a lens and the way a known aperture blurs a scene at different distances. It taught me to measure the camera before trusting the network, and it is the reason I still reach for a calibration rig before a new architecture.</p>
+        <p>Since 2021 I have worked on surgical robotics and mobile manipulation. Both fields share a constraint that academic benchmarks are kind enough to omit: a wrong depth estimate does not lower a score, it moves a metal instrument towards something it should not touch. That changes what a reasonable error metric looks like, and it makes calibrated uncertainty a requirement rather than a nice figure in a paper.</p>
+
+        <h2>What I actually do in the first two weeks</h2>
+        <p><strong>Measure the optics.</strong> Focal length, distortion, principal point, rolling-shutter line delay, and the real aperture curve — measured, not read from the datasheet. On three of the last five projects, the single largest accuracy gain came from replacing an assumed lens model with a measured one.</p>
+        <p><strong>Look at the failures.</strong> Not the metrics: the frames. I collect two hundred failures with a reason attached and sort them into optics, data, label and model. Usually the split is nothing like what the team expected, and the optics bucket is bigger than anyone wants.</p>
+        <p><strong>Set the budget.</strong> The controller runs at a fixed rate; the perception stack has to fit inside it, on the computer that ships. I write the latency and memory budget down before choosing anything, because a model that misses the loop is not a model that ships.</p>
+
+        <h2>On uncertainty</h2>
+        <p>A depth map without confidence is a pretty picture. For a robot, the useful output is a distribution or at least a calibrated interval, so the planner can decide whether to move slowly, look again, or stop. I train with a heteroscedastic loss, then check calibration on held-out scenes: does the 90 % interval actually contain the truth 90 % of the time? If not, the uncertainty is decoration and I say so.</p>
+        <blockquote>If the system cannot tell you when it is unsure, it is not ready to move.</blockquote>
+
+        <h2>Things I have changed my mind about</h2>
+        <p>I used to think synthetic data was a shortcut. It is not: it is a way to buy coverage of conditions you cannot film, and it works when the renderer is calibrated to the real sensor. Smoking out a synthetic-to-real gap with five hundred real frames is now the first experiment, not the last.</p>
+        <p>I also used to dismiss classical geometry as a fallback. In practice a well-calibrated homography beats a learned pose head on a planar target, every time, and it is auditable. The modern stack is geometry where geometry is exact, and learning where the world is ambiguous.</p>
+
+        <h2>Collaborations</h2>
+        <p>I work with one external group at a time for six to twelve weeks. The best fit is a team that already has data, a specific failure and a deadline; the worst is a team that wants a demo for a funding review, because the honest version of that job is a slide, and I am not the right person for it.</p>
+      </div>
+
+      <aside>
+        <div class="side-box">
+          <h3>At a glance</h3>
+          <dl>
+            <div><dt>Based</dt><dd>Lausanne, CH</dd></div>
+            <div><dt>Lab</dt><dd>CVLab, EPFL</dd></div>
+            <div><dt>Focus</dt><dd>Depth, segmentation, pose</dd></div>
+            <div><dt>Hardware</dt><dd>Orin NX, RealSense</dd></div>
+            <div><dt>Papers</dt><dd>6 peer-reviewed</dd></div>
+            <div><dt>Since</dt><dd>2019, applied vision</dd></div>
+          </dl>
+        </div>
+        <div class="side-box">
+          <h3>Tools that earn their place</h3>
+          <p>PyTorch, ONNX Runtime, OpenCV for calibration, COLMAP when a scene needs structure, and a printed checkerboard that lives in my bag. The checkerboard has fixed more bugs than any architecture change.</p>
+        </div>
+        <div class="side-box">
+          <h3>Teaching</h3>
+          <p>“Geometry and learning for robot perception”, a master's course at EPFL. The labs are a calibration rig, a stereo pair and a depth network that has to beat the rig on a metric the students choose.</p>
+        </div>
+        <div class="side-box">
+          <h3>Reading</h3>
+          <p>Currently: the 2025 survey on event-based depth, and a very old paper on lens aberrations that explains a bug I have been chasing for a month.</p>
+        </div>
+      </aside>
+    </div>
+
+    <section class="block" aria-labelledby="rigTitle">
+      <div class="section-head">
+        <div>
+          <p class="kicker">The rig</p>
+          <h2 id="rigTitle">What is on the bench</h2>
+        </div>
+        <p class="note">Calibration first, model second. The rig is boring on purpose: a target, a rail, and a lot of repetition.</p>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="prose" style="width:100%;border-collapse:collapse;font-size:0.86rem">
+          <caption class="visually-hidden">Calibration and capture equipment</caption>
+          <thead>
+            <tr>
+              <th scope="col" style="text-align:left;border-bottom:1px solid var(--text);padding:8px 12px 8px 0;font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);font-weight:400">Item</th>
+              <th scope="col" style="text-align:left;border-bottom:1px solid var(--text);padding:8px 12px 8px 0;font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);font-weight:400">Used for</th>
+              <th scope="col" style="text-align:right;border-bottom:1px solid var(--text);padding:8px 0;font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);font-weight:400">Since</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row" style="text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--line-soft)">ChArUco board, 800 × 600 mm</th><td style="padding:8px 12px 8px 0;border-bottom:1px solid var(--line-soft)">Intrinsics and distortion, 40 poses</td><td style="text-align:right;padding:8px 0;border-bottom:1px solid var(--line-soft);font-family:var(--mono);font-size:0.7rem;color:var(--muted)">2021</td></tr>
+            <tr><th scope="row" style="text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--line-soft)">Optical rail, 1.6 m</th><td style="padding:8px 12px 8px 0;border-bottom:1px solid var(--line-soft)">Defocus calibration, 0.3–1.5 m in 5 cm steps</td><td style="text-align:right;padding:8px 0;border-bottom:1px solid var(--line-soft);font-family:var(--mono);font-size:0.7rem;color:var(--muted)">2020</td></tr>
+            <tr><th scope="row" style="text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--line-soft)">Rolling-shutter rig</th><td style="padding:8px 12px 8px 0;border-bottom:1px solid var(--line-soft)">Line delay against a spinning target</td><td style="text-align:right;padding:8px 0;border-bottom:1px solid var(--line-soft);font-family:var(--mono);font-size:0.7rem;color:var(--muted)">2022</td></tr>
+            <tr><th scope="row" style="text-align:left;padding:8px 12px 8px 0;border-bottom:1px solid var(--line-soft)">Surgical phantom, smoke</th><td style="padding:8px 12px 8px 0;border-bottom:1px solid var(--line-soft)">Instrument segmentation under occlusion</td><td style="text-align:right;padding:8px 0;border-bottom:1px solid var(--line-soft);font-family:var(--mono);font-size:0.7rem;color:var(--muted)">2023</td></tr>
+            <tr><th scope="row" style="text-align:left;padding:8px 12px 8px 0">Orin NX devkit</th><td style="padding:8px 12px 8px 0">Latency budget, 31 ms per frame</td><td style="text-align:right;padding:8px 0;font-family:var(--mono);font-size:0.7rem;color:var(--muted)">2024</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <p class="foot-mark">Mireille Dossou</p>
+          <p>Perception systems<br>Lausanne, Switzerland</p>
+        </div>
+        <div>
+          <p class="mono">Contact</p>
+          <p><a href="mailto:m.dossou@vision-lab.ch">m.dossou@vision-lab.ch</a><br>EPFL, building BC</p>
+        </div>
+        <div>
+          <p class="mono">Elsewhere</p>
+          <p><a href="projects.html">Work</a> · <a href="about.html">Approach</a><br>Code on request</p>
+        </div>
+      </div>
+      <p class="foot-fine">© 2026 Mireille Dossou · every figure on this page is generated in the browser · no audio, by design</p>
+    </div>
+  </footer>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

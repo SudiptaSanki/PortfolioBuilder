@@ -1,0 +1,386 @@
+/* Mainspring Atelier — the service book.
+   Ledger ruling carries the structure: horizontal rules, a red margin
+   rule in the date column, stamps as the only ornament. Flat colour
+   only — no gradients, no glass, no shadow cards, no hover-lift. */
+
+:root{
+  --paper:#f6f0e0;
+  --paper-deep:#efe5cd;
+  --ink:#2b2620;
+  --ink-soft:#5d5648;
+  --rule:#c8b995;
+  --rule-dark:#a08c5f;
+  --margin:#b0512f;
+  --stamp:#44549e;
+  --red:#9c3a24;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:"Source Sans 3",-apple-system,"Segoe UI",sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+[hidden]{display:none!important}
+
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+}
+
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:1.0625rem;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{max-width:1020px;margin:0 auto;padding:0 24px}
+
+h1,h2,h3{font-weight:600;line-height:1.2}
+h2{font-size:1.65rem;margin-bottom:.35em}
+h3{font-size:1.15rem}
+p{margin-bottom:1em}
+a{color:var(--ink);text-decoration-color:var(--margin);text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+::selection{background:var(--paper-deep)}
+
+/* ---------- the bookplate header ---------- */
+header.bookplate{
+  border-bottom:3px double var(--rule-dark);
+  background:var(--paper);
+}
+.plate{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:1.5rem;padding-top:1.1rem;padding-bottom:1rem;flex-wrap:wrap;
+}
+.wordmark{line-height:1.15}
+.wordmark .name{
+  font-size:1.45rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+}
+.wordmark .sub{
+  font-family:var(--sans);font-size:.78rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-soft);margin-top:.3rem;
+}
+nav.index-nav{display:flex;gap:1.6rem;flex-wrap:wrap}
+nav.index-nav a{
+  font-family:var(--sans);font-size:.92rem;font-weight:600;
+  text-decoration:none;color:var(--ink);padding:.35rem 0;
+  border-bottom:2px solid transparent;
+}
+nav.index-nav a .n{
+  font-family:var(--serif);font-style:italic;font-weight:400;
+  color:var(--margin);margin-right:.4rem;
+}
+nav.index-nav a:hover{border-bottom-color:var(--rule-dark)}
+nav.index-nav a[aria-current="page"]{border-bottom-color:var(--margin)}
+.menu-btn{display:none}
+.menu-btn .bars{display:inline-block}
+.menu-btn .bars i{display:block;width:17px;height:2px;background:currentColor;margin:3px 0}
+
+/* ---------- page furniture ---------- */
+main{display:block}
+@keyframes pageIn{from{opacity:0}to{opacity:1}}
+main{animation:pageIn .45s ease-out}
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:pageIn .3s ease-out reverse}
+::view-transition-new(root){animation:pageIn .3s ease-out}
+@media (prefers-reduced-motion: reduce){
+  main{animation:none}
+  ::view-transition-old(root),::view-transition-new(root){animation:none}
+}
+
+section{padding:3.2rem 0}
+section + section{border-top:1px solid var(--rule)}
+.kicker{
+  font-family:var(--sans);font-size:.78rem;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--margin);
+  margin-bottom:.7rem;
+}
+.lede{font-size:1.16rem;max-width:62ch}
+.small{font-size:.92rem;color:var(--ink-soft)}
+.num{font-variant-numeric:tabular-nums lining-nums}
+
+/* ---------- the open book (hero) ---------- */
+.book{
+  border:1px solid var(--rule-dark);
+  border-top:3px double var(--rule-dark);
+  background:var(--paper);
+  margin-top:2.2rem;
+}
+.book-title{
+  padding:1.6rem 1.8rem 1.2rem;border-bottom:1px solid var(--rule);
+}
+.book-title h1{font-size:2.15rem;max-width:22ch}
+.book-title .kept{
+  font-family:var(--sans);font-size:.8rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:.8rem;
+}
+.book-title p{max-width:64ch;margin-bottom:0}
+
+/* ledger entries */
+.entry{
+  display:grid;grid-template-columns:104px 1fr;gap:0;
+  border-bottom:1px solid var(--rule);position:relative;
+}
+.entry:last-child{border-bottom:none}
+.entry .when{
+  padding:1.05rem .9rem 1.05rem 0;text-align:right;
+  border-right:1px solid var(--margin);
+  font-family:var(--sans);font-size:.82rem;color:var(--ink-soft);
+  line-height:1.45;
+}
+.entry .when .no{display:block;font-family:var(--serif);font-size:1rem;color:var(--ink);font-weight:600}
+.entry .body{padding:1.05rem 9.5rem 1.05rem 1.4rem;position:relative}
+.entry h3{margin-bottom:.25rem}
+.entry h3 .cal{font-weight:400;font-style:italic;color:var(--ink-soft);font-size:1rem}
+.entry dl{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));
+  gap:.15rem 2rem;margin:.55rem 0 .2rem;
+}
+.entry dl div{display:flex;gap:.5rem;align-items:baseline}
+.entry dt{
+  font-family:var(--sans);font-size:.74rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+  flex:0 0 4.6rem;
+}
+.entry dd{font-size:.98rem}
+.entry .figs{font-variant-numeric:tabular-nums lining-nums}
+.entry .note{font-size:.95rem;color:var(--ink-soft);margin:.35rem 0 0;max-width:62ch}
+
+/* the stamp — the only ornament, and the assigned scroll effect */
+.stamp{
+  position:absolute;right:.4rem;top:.9rem;
+  font-family:var(--sans);font-weight:700;font-size:.72rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--stamp);
+  border:2px solid var(--stamp);border-radius:4px;
+  padding:.32rem .6rem .26rem;opacity:.88;
+  transform:rotate(-5deg);pointer-events:none;white-space:nowrap;
+}
+html.js .stamp{
+  opacity:0;transform:rotate(-5deg) scale(1.7);
+  transition:opacity .18s ease-out,transform .3s cubic-bezier(.2,1.35,.4,1);
+}
+html.js .stamp.landed{opacity:.88;transform:rotate(-5deg) scale(1)}
+@media (prefers-reduced-motion: reduce){
+  html.js .stamp{opacity:.88;transform:rotate(-5deg);transition:none}
+}
+
+/* testimonial attached to its entry */
+.testimonial{
+  margin:.8rem 0 .2rem;padding:.7rem 0 0 1rem;
+  border-left:2px solid var(--rule-dark);max-width:60ch;
+}
+.testimonial p{font-style:italic;margin-bottom:.3rem}
+.testimonial cite{font-style:normal;font-family:var(--sans);font-size:.85rem;color:var(--ink-soft)}
+
+/* ---------- tables (the printed data) ---------- */
+.table-scroll{overflow-x:auto;margin:1.1rem 0 1.4rem}
+table.ledger-table{
+  border-collapse:collapse;width:100%;min-width:560px;
+  font-size:.98rem;
+}
+table.ledger-table caption{
+  text-align:left;font-family:var(--sans);font-weight:700;font-size:.8rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--margin);
+  padding-bottom:.55rem;
+}
+table.ledger-table th,table.ledger-table td{
+  text-align:left;padding:.5rem .8rem .5rem 0;vertical-align:top;
+  border-bottom:1px solid var(--rule);
+  font-variant-numeric:tabular-nums lining-nums;
+}
+table.ledger-table thead th{
+  font-family:var(--sans);font-size:.76rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
+  border-bottom:2px solid var(--rule-dark);
+}
+table.ledger-table td.r,table.ledger-table th.r{text-align:right;padding-right:0}
+table.ledger-table tr.total td{
+  border-bottom:none;border-top:3px double var(--rule-dark);font-weight:700;
+}
+
+/* ---------- the planner & estimator ---------- */
+.tool{
+  border:1px solid var(--rule-dark);border-top:3px double var(--rule-dark);
+  padding:1.5rem 1.8rem 1.7rem;margin:1.4rem 0;background:var(--paper);
+}
+.tool h3{font-size:1.3rem;margin-bottom:.2rem}
+fieldset{border:none;margin:1.1rem 0}
+legend,.field-label{
+  font-family:var(--sans);font-size:.78rem;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--margin);
+  margin-bottom:.55rem;display:block;
+}
+.choice-list{list-style:none;border-top:1px solid var(--rule)}
+.choice-list li{border-bottom:1px solid var(--rule)}
+.choice-list label{
+  display:flex;gap:.7rem;align-items:baseline;cursor:pointer;
+  padding:.62rem .4rem;min-height:48px;
+}
+.choice-list input{accent-color:var(--margin);width:1.05rem;height:1.05rem;flex:0 0 auto;position:relative;top:.15rem}
+.choice-list label:hover{background:var(--paper-deep)}
+.choice-list .why{color:var(--ink-soft);font-size:.92rem}
+.value-row{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.value-row .pound{font-size:1.2rem}
+input[type="number"],input[type="text"],input[type="email"],select,textarea{
+  font-family:var(--serif);font-size:1rem;color:var(--ink);
+  background:#fffdf6;border:1px solid var(--rule-dark);
+  padding:.6rem .7rem;border-radius:2px;min-height:48px;
+}
+input[type="number"]{width:9.5rem}
+button.action,.stepper button{
+  font-family:var(--sans);font-weight:700;letter-spacing:.06em;
+  background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+  padding:.8rem 1.4rem;min-height:48px;cursor:pointer;border-radius:2px;
+  font-size:.95rem;
+}
+button.action:hover{background:#453d31}
+.stepper{display:inline-flex;align-items:center;gap:.9rem}
+.stepper button{width:48px;padding:.8rem 0;font-size:1.15rem}
+.stepper .count{font-size:1.25rem;min-width:2ch;text-align:center;font-variant-numeric:tabular-nums}
+.checkline{display:flex;gap:.7rem;align-items:flex-start;cursor:pointer;padding:.5rem .4rem;min-height:48px}
+.checkline input{accent-color:var(--margin);width:1.05rem;height:1.05rem;margin-top:.3rem}
+
+.result{margin-top:1.5rem;border-top:3px double var(--rule-dark);padding-top:1.1rem}
+.result .scope-line{font-size:1.28rem;font-weight:600}
+.result .reason{color:var(--ink-soft);max-width:64ch}
+ul.arithmetic{list-style:none;margin:.9rem 0;max-width:560px}
+ul.arithmetic li{
+  display:flex;align-items:baseline;gap:.6rem;padding:.34rem 0;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+ul.arithmetic .dots{flex:1;border-bottom:1px dotted var(--rule-dark);transform:translateY(-4px)}
+ul.arithmetic li.total{
+  border-top:3px double var(--rule-dark);margin-top:.4rem;padding-top:.55rem;
+  font-weight:700;font-size:1.1rem;
+}
+.expect{max-width:64ch;font-size:.98rem}
+.expect .from{
+  font-family:var(--sans);font-size:.74rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+}
+.red-entry{
+  border:1.5px solid var(--red);color:var(--red);
+  padding:.9rem 1.1rem;margin:1rem 0;max-width:64ch;background:var(--paper);
+}
+.red-entry .head{
+  font-family:var(--sans);font-weight:700;font-size:.78rem;
+  letter-spacing:.18em;text-transform:uppercase;display:block;margin-bottom:.35rem;
+}
+.less-work{
+  border-left:3px solid var(--stamp);padding:.4rem 0 .4rem 1rem;
+  margin:1rem 0;max-width:64ch;
+}
+
+/* ---------- scoreboard (a ledger summary, not stat cards) ---------- */
+table.summary{border-collapse:collapse;width:100%;max-width:640px}
+table.summary td{
+  padding:.55rem 1rem .55rem 0;border-bottom:1px solid var(--rule);
+  vertical-align:baseline;
+}
+table.summary td.n{
+  text-align:right;font-size:1.3rem;font-weight:600;
+  font-variant-numeric:tabular-nums lining-nums;white-space:nowrap;
+}
+table.summary tr:last-child td{border-bottom:none}
+
+/* ---------- case books (projects) ---------- */
+.case{padding:2.6rem 0}
+.case + .case{border-top:1px solid var(--rule)}
+.case h2{max-width:26ch}
+.case .tomb{
+  font-family:var(--sans);font-size:.85rem;color:var(--ink-soft);
+  letter-spacing:.04em;margin:.4rem 0 1rem;
+}
+.case .cols{display:grid;grid-template-columns:1fr 320px;gap:2.4rem;align-items:start}
+.case .cols>*{min-width:0}
+.case figure{margin:0}
+.case figure img{width:100%;height:auto;display:block;border:1px solid var(--rule-dark)}
+.case figcaption{font-size:.86rem;color:var(--ink-soft);margin-top:.5rem;line-height:1.5}
+.case h3{margin:1.2rem 0 .3rem;font-size:1.05rem}
+.case h3:first-child{margin-top:0}
+
+/* ---------- about ---------- */
+.portrait{max-width:420px;margin:0 0 1.5rem}
+.portrait img{width:100%;height:auto;display:block;border:1px solid var(--rule-dark)}
+.portrait figcaption{font-size:.86rem;color:var(--ink-soft);margin-top:.5rem;line-height:1.5}
+ol.steps{list-style:none;counter-reset:step;max-width:66ch}
+ol.steps li{
+  counter-increment:step;padding:.85rem 0 .85rem 3.2rem;position:relative;
+  border-bottom:1px solid var(--rule);
+}
+ol.steps li:last-child{border-bottom:none}
+ol.steps li::before{
+  content:counter(step,decimal-leading-zero);
+  position:absolute;left:0;top:.85rem;font-style:italic;color:var(--margin);
+  font-size:1.05rem;
+}
+ol.steps .st{font-weight:600}
+ul.plain{list-style:none;max-width:66ch}
+ul.plain li{padding:.5rem 0 .5rem 1.2rem;border-bottom:1px solid var(--rule);position:relative}
+ul.plain li::before{content:"—";position:absolute;left:0;color:var(--margin)}
+ul.plain li:last-child{border-bottom:none}
+
+/* ---------- contact ---------- */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem 1.6rem;max-width:760px}
+.form-grid .full{grid-column:1/-1}
+label.flabel{font-family:var(--sans);font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:.4rem}
+.form-grid input,.form-grid select,.form-grid textarea{width:100%}
+textarea{resize:vertical;min-height:130px}
+.field-err{color:var(--red);font-size:.9rem;margin-top:.35rem;font-family:var(--sans)}
+.confirmation{
+  border:1px solid var(--rule-dark);border-top:3px double var(--rule-dark);
+  padding:1.4rem 1.6rem;max-width:760px;
+}
+.confirmation .ref{font-size:1.25rem;font-weight:600}
+
+/* ---------- footer ---------- */
+footer{
+  border-top:3px double var(--rule-dark);margin-top:1rem;
+  padding:2rem 0 2.6rem;font-size:.92rem;color:var(--ink-soft);
+}
+footer .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.4rem 2.5rem}
+footer h3{font-size:.95rem;color:var(--ink);margin-bottom:.4rem}
+footer p{margin-bottom:.5rem}
+footer .ruling{font-style:italic}
+
+/* ---------- mobile ---------- */
+@media (max-width:760px){
+  .plate{flex-direction:column;align-items:flex-start;gap:.9rem}
+  nav.index-nav{display:none}
+  .menu-btn{
+    display:inline-flex;align-items:center;gap:.55rem;
+    font-family:var(--sans);font-weight:700;letter-spacing:.08em;font-size:.92rem;
+    background:none;border:1px solid var(--ink);color:var(--ink);
+    padding:.7rem 1.1rem;min-height:48px;cursor:pointer;border-radius:2px;
+  }
+  nav.index-nav.open{
+    display:flex;flex-direction:column;gap:0;width:100%;
+    border-top:1px solid var(--rule);padding:.4rem 0 .8rem;
+    animation:pageIn .3s ease-out;
+  }
+  nav.index-nav.open a{padding:.8rem .2rem;border-bottom:1px solid var(--rule);min-height:48px}
+  .book-title h1{font-size:1.7rem}
+  .book-title{padding:1.2rem 1rem 1rem}
+  section{padding:2.3rem 0}
+  .tool{padding:1.2rem 1rem 1.3rem}
+  .entry{grid-template-columns:1fr}
+  .entry .when{
+    text-align:left;border-right:none;border-bottom:1px dashed var(--rule);
+    padding:.8rem 0 .5rem;
+  }
+  .entry .when .no{display:inline;margin-right:.5rem}
+  .entry .body{padding:.9rem 0 1.1rem}
+  .stamp{position:static;display:inline-block;margin-top:.7rem;transform:rotate(-3deg)}
+  html.js .stamp{transform:rotate(-3deg) scale(1.7)}
+  html.js .stamp.landed{transform:rotate(-3deg) scale(1)}
+  @media (prefers-reduced-motion: reduce){
+    html.js .stamp{transform:rotate(-3deg)}
+  }
+  .case .cols{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  h2{font-size:1.4rem}
+}
+@media (prefers-reduced-motion: reduce){
+  nav.index-nav.open{animation:none}
+}

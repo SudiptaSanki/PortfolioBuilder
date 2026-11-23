@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mireille Dossou — perception systems, Lausanne</title>
+<meta name="description" content="Computer vision for robots and surgical instruments: monocular depth, segmentation under smoke, and models calibrated against what the optics actually did.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600&family=Sora:wght@200;300;400;500&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230b1a1d'/%3E%3Ccircle cx='32' cy='32' r='17' fill='none' stroke='%236fc9c4' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23d8a24a'/%3E%3C/svg%3E">
+</head>
+<body data-page="index">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span class="brand-name">Mireille Dossou</span>
+    <span class="brand-sub">Perception systems · Lausanne</span>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a href="#inspector">Inspector</a>
+    <a href="projects.html">Work</a>
+    <a href="about.html">Approach</a>
+    <a href="contact.html" class="nav-cta">Talk to me</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="hero" aria-label="Introduction">
+    <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
+    <div class="hero-shade" aria-hidden="true"></div>
+    <div class="hud" aria-hidden="true">
+      <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+      <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+      <div class="hud-read">
+        <span>CAM 02 · 3840 × 2160</span>
+        <span>f/2.0 · 1/250 s · ISO 400</span>
+        <span><b>DEPTH ENGINE · 31 ms</b></span>
+        <span>46.52° N 6.63° E</span>
+      </div>
+      <div class="hud-ticks"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="hud-scale"><span>0.3 m</span><span>—</span><span>12 m</span><span>—</span><span>∞</span></div>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="hero-tag">Computer vision · EPFL Lausanne</p>
+        <h1>A camera records light, not meaning.</h1>
+        <p>I build perception for robots and surgical instruments: monocular depth that survives smoke, segmentation that knows when it is unsure, and calibration against the optics that actually took the picture.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#inspector">Open the inspector</a>
+          <a class="btn btn-outline" href="projects.html">Selected work</a>
+        </div>
+      </div>
+
+      <aside class="glass" aria-label="Current system readout">
+        <div class="glass-head"><span>System · live</span><b>seg-dpt v6</b></div>
+        <div class="glass-rows">
+          <div class="glass-row"><span>Depth RMSE, indoor</span><b>2.1 cm <i>@ 0.4–1.2 m</i></b></div>
+          <div class="glass-row"><span>Instrument IoU, smoke</span><b>0.88 <i>+0.11 vs baseline</i></b></div>
+          <div class="glass-row"><span>Latency, Orin NX</span><b>31 ms <i>32 fps</i></b></div>
+          <div class="glass-row"><span>Calibration drift, 6 h</span><b>0.07 px <i>after re-fit</i></b></div>
+        </div>
+        <div class="glass-foot"><span>trained on 18 h of theatre video</span><span>no patient data</span></div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="intro">
+      <p class="big">Most vision failures are not model failures. They are a lens, a rolling shutter, or a depth cue that the network was never given.</p>
+      <div class="intro-side">
+        <div><span>Base</span><b>Lausanne, CH</b></div>
+        <div><span>Lab</span><b>CVLab, EPFL</b></div>
+        <div><span>Hardware</span><b>Orin NX · RealSense</b></div>
+        <div><span>Published</span><b>6 papers</b></div>
+      </div>
+    </section>
+
+    <section class="block" id="inspector" aria-labelledby="inspTitle">
+      <div class="section-head">
+        <div>
+          <p class="kicker">01 / Perception inspector</p>
+          <h2 id="inspTitle">Detections are a negotiation between a threshold and the optics.</h2>
+        </div>
+        <p class="note">One synthetic frame, eleven candidate boxes, a real NMS pass and a real defocus model. Nothing is pre-rendered.</p>
+      </div>
+
+      <div class="inspector">
+        <div class="insp-head">
+          <div>
+            <h3>Detection, suppression and depth of field</h3>
+            <p>The frame is drawn procedurally into three depth bands. Aperture and focus decide how much each band is blurred; the detector proposes boxes, NMS removes duplicates above the IoU threshold, and the edge map is computed from the rendered pixels rather than drawn by hand.</p>
+          </div>
+          <div class="insp-badge">
+            Detector
+            <b>seg-dpt v6</b>
+            <span>11 candidates</span>
+          </div>
+        </div>
+
+        <div class="insp-grid">
+          <form class="controls" id="inspForm" novalidate>
+            <div class="ctl">
+              <label for="conf">Confidence <output id="confOut" for="conf">0.45</output></label>
+              <input type="range" id="conf" name="conf" min="0.05" max="0.95" step="0.01" value="0.45">
+              <span class="hint">Below 0.35 the empty background starts proposing boxes.</span>
+            </div>
+            <div class="ctl">
+              <label for="iou">NMS IoU <output id="iouOut" for="iou">0.45</output></label>
+              <input type="range" id="iou" name="iou" min="0.05" max="0.95" step="0.01" value="0.45">
+              <span class="hint">Lower merges more duplicates and can merge two objects.</span>
+            </div>
+            <div class="ctl">
+              <label class="switch" for="soft"><input type="checkbox" id="soft" name="soft"> Soft-NMS (Gaussian)</label>
+              <span class="hint">Decays neighbours instead of deleting them.</span>
+            </div>
+            <div class="ctl">
+              <label for="focus">Focus distance <output id="focusOut" for="focus">0.55</output></label>
+              <input type="range" id="focus" name="focus" min="0" max="1" step="0.01" value="0.55">
+            </div>
+            <div class="ctl">
+              <label for="aperture">Aperture <output id="apertureOut" for="aperture">f/2.0</output></label>
+              <input type="range" id="aperture" name="aperture" min="1" max="16" step="0.2" value="2">
+              <span class="hint">Wide open throws the sign and the person out of focus.</span>
+            </div>
+          </form>
+
+          <div class="viewer">
+            <figure class="frame" style="margin:0">
+              <canvas class="scene" id="sceneCanvas" aria-label="Synthetic harbour scene with detection boxes drawn over three objects"></canvas>
+              <span class="frame-tag">frame 01842 · dusk</span>
+              <span class="frame-tag right" id="frameTag">3 kept / 11</span>
+              <span class="frame-bracket tl"></span><span class="frame-bracket br"></span>
+            </figure>
+            <div class="side-stack">
+              <figure class="mini" style="margin:0">
+                <figcaption>Edge magnitude</figcaption>
+                <canvas id="edgeCanvas" aria-label="Sobel edge magnitude computed from the rendered frame"></canvas>
+              </figure>
+              <figure class="mini" style="margin:0">
+                <figcaption>Relative depth</figcaption>
+                <canvas id="depthCanvas" aria-label="Schematic relative depth map with three bands"></canvas>
+              </figure>
+            </div>
+          </div>
+        </div>
+
+        <div class="readout" id="readout">
+          <div class="rd"><span>Kept</span><b id="roKept">3</b></div>
+          <div class="rd"><span>Precision</span><b id="roPrec">100<small>%</small></b></div>
+          <div class="rd"><span>Recall</span><b id="roRec">100<small>%</small></b></div>
+          <div class="rd"><span>Mean IoU</span><b id="roMiou">0.82</b></div>
+          <div class="rd"><span>Blur, person</span><b id="roBlur">0<small>px</small></b></div>
+          <div class="rd"><span>Latency</span><b id="roLat">31<small>ms</small></b></div>
+        </div>
+
+        <p class="verdict" id="verdict" role="status" aria-live="polite">Three detections kept at 0.45 confidence with a 0.45 IoU threshold: both near objects matched, the sign matched at 0.71 IoU.</p>
+
+        <div class="insp-foot">
+          <span>NMS: sort by score, keep while IoU &lt; threshold</span>
+          <span id="footOptics">defocus ∝ |depth − focus| / f-number · 3 depth bands</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="sysTitle">
+      <div class="section-head">
+        <div>
+          <p class="kicker">02 / Systems</p>
+          <h2 id="sysTitle">Three things I have put in front of a robot.</h2>
+        </div>
+        <a class="textlink" href="projects.html">All projects</a>
+      </div>
+      <div class="systems">
+        <article class="system">
+          <div class="fig">
+            <svg viewBox="0 0 260 112" role="img" aria-label="Diagram of a depth map with a near object rendered in amber over a teal gradient">
+              <defs>
+                <linearGradient id="dgrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#0d2b2f"/><stop offset="1" stop-color="#1c5f5c"/>
+                </linearGradient>
+              </defs>
+              <rect width="260" height="112" fill="url(#dgrad)"/>
+              <path d="M0 74 L48 62 L96 72 L150 58 L206 70 L260 64 V112 H0 Z" fill="#0a2023" opacity="0.85"/>
+              <rect x="44" y="44" width="34" height="44" rx="3" fill="#d8a24a" opacity="0.9"/>
+              <rect x="150" y="38" width="26" height="34" rx="3" fill="#6fc9c4" opacity="0.55"/>
+              <g stroke="#e8f4f2" stroke-width="0.6" opacity="0.35">
+                <path d="M0 28 H260"/><path d="M0 56 H260"/><path d="M0 84 H260"/>
+              </g>
+              <text x="8" y="14" fill="#bfe6e1" font-family="'Fragment Mono', monospace" font-size="7">DEPTH · 0.4 m → 12 m</text>
+            </svg>
+          </div>
+          <span class="tag">Monocular depth</span>
+          <h3>Depth from defocus, indoors</h3>
+          <p>A single lens and a known aperture give a usable depth cue in the 0.4–1.2 m range where a surgical robot actually works. The model learns the blur kernel, not the scene.</p>
+          <dl>
+            <div><dt>RMSE</dt><dd>2.1 cm</dd></div>
+            <div><dt>Frame</dt><dd>31 ms</dd></div>
+          </dl>
+        </article>
+
+        <article class="system">
+          <div class="fig">
+            <svg viewBox="0 0 260 112" role="img" aria-label="Diagram of instrument segmentation: two teal instrument silhouettes under a smoke haze">
+              <rect width="260" height="112" fill="#10282b"/>
+              <g opacity="0.5" fill="#7fa8a4">
+                <ellipse cx="80" cy="52" rx="52" ry="26"/>
+                <ellipse cx="180" cy="66" rx="46" ry="22"/>
+              </g>
+              <path d="M26 34 L120 74 L112 84 L18 44 Z" fill="#6fc9c4"/>
+              <path d="M122 34 L206 78 L198 86 L114 44 Z" fill="#6fc9c4" opacity="0.8"/>
+              <circle cx="120" cy="78" r="5" fill="#d8a24a"/>
+              <g stroke="#e8f4f2" stroke-width="0.5" opacity="0.28">
+                <path d="M0 20 H260"/><path d="M0 92 H260"/>
+              </g>
+              <text x="8" y="14" fill="#bfe6e1" font-family="'Fragment Mono', monospace" font-size="7">SEG · INSTRUMENT IoU 0.88</text>
+            </svg>
+          </div>
+          <span class="tag">Segmentation</span>
+          <h3>Instruments under smoke</h3>
+          <p>Cautery smoke removes most of the texture a segmentation network relies on. We add a temporal prior from the previous frame and a synthetic smoke generator that is trained, not tuned.</p>
+          <dl>
+            <div><dt>IoU</dt><dd>0.88</dd></div>
+            <div><dt>Recall</dt><dd>0.91</dd></div>
+          </dl>
+        </article>
+
+        <article class="system">
+          <div class="fig">
+            <svg viewBox="0 0 260 112" role="img" aria-label="Diagram of six-degree-of-freedom pose estimation with a wireframe box around a small object">
+              <rect width="260" height="112" fill="#0b1f22"/>
+              <g stroke="#2b5f5c" stroke-width="0.7" opacity="0.6">
+                <path d="M0 84 H260"/><path d="M130 0 V112"/>
+              </g>
+              <g stroke="#6fc9c4" stroke-width="1.2" fill="none">
+                <path d="M96 48 L160 36 L196 56 L132 70 Z"/>
+                <path d="M96 48 L96 78 L132 100 L132 70"/>
+                <path d="M132 100 L196 86 L196 56"/>
+              </g>
+              <circle cx="146" cy="58" r="2.4" fill="#d8a24a"/>
+              <g fill="#d8a24a" opacity="0.85">
+                <circle cx="96" cy="48" r="2"/><circle cx="160" cy="36" r="2"/><circle cx="196" cy="56" r="2"/><circle cx="132" cy="70" r="2"/>
+              </g>
+              <text x="8" y="14" fill="#bfe6e1" font-family="'Fragment Mono', monospace" font-size="7">POSE · 6-DoF · 2.6° RMS</text>
+            </svg>
+          </div>
+          <span class="tag">Pose</span>
+          <h3>Six degrees of freedom, one marker</h3>
+          <p>A fiducial the size of a fingernail, tracked through motion blur and partial occlusion. The network predicts the corner offsets; the pose itself is solved geometrically, so it stays auditable.</p>
+          <dl>
+            <div><dt>Rotation</dt><dd>2.6° RMS</dd></div>
+            <div><dt>Translation</dt><dd>1.8 mm</dd></div>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="methodTitle">
+      <div class="section-head">
+        <div>
+          <p class="kicker">03 / Method</p>
+          <h2 id="methodTitle">Calibrate the optics before blaming the network.</h2>
+        </div>
+      </div>
+      <div class="method">
+        <article class="step">
+          <span class="n">01</span>
+          <h3>Measure the lens</h3>
+          <p>Focal length, distortion, rolling shutter and the real aperture curve, measured on a rig rather than read from a datasheet. Half of the depth error in a lab demo is a lens model that was never checked.</p>
+        </article>
+        <article class="step">
+          <span class="n">02</span>
+          <h3>Build the failure set</h3>
+          <p>Frames where the system was wrong, kept with the reason: smoke, specular reflection, motion blur, an instrument that looks like another instrument. That set decides what gets fixed.</p>
+        </article>
+        <article class="step">
+          <span class="n">03</span>
+          <h3>Report uncertainty</h3>
+          <p>A depth map without a confidence value cannot be used by a controller that has to decide whether to move. We predict per-pixel uncertainty and check it is calibrated, not just present.</p>
+        </article>
+        <article class="step">
+          <span class="n">04</span>
+          <h3>Run at frame rate</h3>
+          <p>The model has to fit the robot's control loop on the robot's computer. A 31 ms budget on an Orin NX is the constraint that shapes the architecture, not the other way round.</p>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <section class="cta-band">
+    <div class="wrap cta-inner">
+      <div>
+        <h2>Have a perception problem with a deadline?</h2>
+        <p>I take on one collaboration at a time, usually six to twelve weeks, usually with a dataset already in hand.</p>
+      </div>
+      <a class="btn" href="contact.html">Start a conversation</a>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <p class="foot-mark">Mireille Dossou</p>
+          <p>Perception systems<br>Lausanne, Switzerland</p>
+        </div>
+        <div>
+          <p class="mono">Contact</p>
+          <p><a href="mailto:m.dossou@vision-lab.ch">m.dossou@vision-lab.ch</a><br>EPFL, building BC</p>
+        </div>
+        <div>
+          <p class="mono">Elsewhere</p>
+          <p><a href="projects.html">Work</a> · <a href="about.html">Approach</a><br>Code on request</p>
+        </div>
+      </div>
+      <p class="foot-fine">© 2026 Mireille Dossou · every figure on this page is generated in the browser · no audio, by design</p>
+    </div>
+  </footer>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

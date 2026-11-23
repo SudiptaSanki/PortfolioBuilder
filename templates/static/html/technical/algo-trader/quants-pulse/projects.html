@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research — Raghavan, execution research</title>
+<meta name="description" content="Research notes on execution: square-root impact, capacity under correlation, participation and alpha decay, closing auctions, and what a fill log actually shows.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Work+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2eee4'/%3E%3Cpath d='M8 44 L20 30 L30 36 L44 16 L56 24' fill='none' stroke='%23131a22' stroke-width='3'/%3E%3Ccircle cx='44' cy='16' r='4' fill='%23a32a1e'/%3E%3C/svg%3E">
+</head>
+<body data-page="projects">
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="mast-top">
+      <span>Vol. IV · No. 11 · Research</span>
+      <span class="right"><span>Singapore</span><span>20 November 2026</span></span>
+    </div>
+    <div class="mast-title">
+      <a class="wordmark" href="index.html">
+        <span class="wm-main">Raghavan</span>
+        <span class="wm-sub">Systematic futures · execution research</span>
+      </a>
+      <div class="desk">
+        <b>Books</b> three strategies<br>
+        <b>Universe</b> ES · NQ · FESX<br>
+        <b>AUM</b> $14.2m proprietary
+      </div>
+    </div>
+    <div class="navbar">
+      <nav aria-label="Primary">
+        <a href="index.html#bench">Bench</a>
+        <a href="projects.html" aria-current="page">Research</a>
+        <a href="about.html">Method</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <span class="ticker">ES 5,004.25 <b>+0.42 %</b> · NQ 18,412.50 <b>+0.71 %</b> · FESX 4,982.50 <i>−0.18 %</i></span>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <p class="kicker">Research</p>
+      <h1>Seven notes on what fills actually cost.</h1>
+      <p class="standfirst">Written from the fill log of a small book, which is the only advantage a small book has: every trade is measured, and none of it is a rounded number from a vendor deck.</p>
+    </section>
+
+    <div class="filters" role="group" aria-label="Filter notes by topic">
+      <button class="filt" type="button" data-filter="all" aria-pressed="true">All</button>
+      <button class="filt" type="button" data-filter="execution" aria-pressed="false">Execution</button>
+      <button class="filt" type="button" data-filter="capacity" aria-pressed="false">Capacity</button>
+      <button class="filt" type="button" data-filter="risk" aria-pressed="false">Risk</button>
+      <button class="filt" type="button" data-filter="data" aria-pressed="false">Data</button>
+    </div>
+    <p class="mono" id="noteCount" style="color:var(--muted);margin:10px 0 0">7 notes</p>
+
+    <div style="padding-bottom:10px">
+      <article class="rnote" data-topic="execution">
+        <span class="nn">N-01</span>
+        <div>
+          <h3>Square-root impact, measured on 41,000 fills</h3>
+          <p>Impact against size relative to volume, fitted per quarter since 2024. The exponent sits between 0.44 and 0.58 depending on the regime, which is close enough to the textbook square root to use it and far enough to matter when sizing a large order.</p>
+          <p>The residual is not noise: it correlates with the five-minute return after the order starts, which means the model is missing the part where my own signal predicts the move.</p>
+        </div>
+        <div class="spec">41,000 fills · 11 quarters<br>exponent 0.44–0.58<br>out-of-sample error 0.8 bps</div>
+      </article>
+
+      <article class="rnote" data-topic="execution">
+        <span class="nn">N-02</span>
+        <div>
+          <h3>Participation is a risk choice, not a speed setting</h3>
+          <p>Going from 15 % to 5 % participation cuts impact by about a third and doubles the exposure time. On a signal with a two-hour half-life, that trade is roughly neutral; on a signal with a twenty-minute half-life, it loses money. The schedule should be derived from the alpha decay, not set by habit.</p>
+        </div>
+        <div class="spec">impact −34 % at 5 %<br>timing +2.1 bps<br>break-even half-life 1.4 h</div>
+      </article>
+
+      <article class="rnote" data-topic="capacity">
+        <span class="nn">N-03</span>
+        <div>
+          <h3>Capacity collapses when the correlations rise</h3>
+          <p>Three strategies with a 0.2 average pairwise correlation have a combined capacity close to the sum of their parts. At 0.6 it is about half. In March 2025 the correlation went to 0.8 for a week and the safe size was a quarter of the model's estimate, which is why the portfolio cap is one third and not one half.</p>
+        </div>
+        <div class="spec">ρ 0.2 → 0.9 × sum<br>ρ 0.6 → 0.5 × sum<br>ρ 0.8 → 0.25 × sum</div>
+      </article>
+
+      <article class="rnote" data-topic="capacity">
+        <span class="nn">N-04</span>
+        <div>
+          <h3>The closing auction is not free liquidity</h3>
+          <p>For a book that must be flat overnight, the closing auction looks like an answer: deep, single price, no queue. On ES the auction is thin relative to the continuous session, and the imbalance published in the last ten minutes is a signal other people trade against. My measured cost there is 1.8 bps, against 2.4 bps in the last half hour — better, but not the discount people claim.</p>
+        </div>
+        <div class="spec">auction 1.8 bps<br>last 30 min 2.4 bps<br>sample: 213 closes</div>
+      </article>
+
+      <article class="rnote" data-topic="risk">
+        <span class="nn">N-05</span>
+        <div>
+          <h3>Drawdown control that does not sell the bottom</h3>
+          <p>Halving size at a 12 % drawdown and flattening at 20 % is crude, and it works: the recovery time after a stop is shorter than the time spent in the drawdown it avoids. The rule is tested on the 2024 and 2025 episodes and on synthetic paths with the same volatility, and it is the only risk rule I have never been tempted to override at 2 a.m.</p>
+        </div>
+        <div class="spec">max DD −5.1 % portfolio<br>stop triggered 3 times<br>avg recovery 19 days</div>
+      </article>
+
+      <article class="rnote" data-topic="data">
+        <span class="nn">N-06</span>
+        <div>
+          <h3>Cleaning the tape without deleting the signal</h3>
+          <p>Exchange tick data has bad prints: crossed quotes, zero-volume updates, timestamps out of order. The naive filter removes 0.4 % of rows and, unfortunately, most of the fast moves. I keep the bad prints, flag them, and let the impact model learn from them, because the market did trade there.</p>
+        </div>
+        <div class="spec">0.4 % flagged, not dropped<br>3 years of ticks<br>storage 1.1 TB</div>
+      </article>
+
+      <article class="rnote" data-topic="data execution">
+        <span class="nn">N-07</span>
+        <div>
+          <h3>Backtest and fill log, one schema</h3>
+          <p>The single most useful engineering decision on this desk: simulated fills and real fills are rows in the same table, with a flag for which is which. Slippage analysis is a query, the cost model trains on both, and a research result that cannot be joined to reality is visible immediately.</p>
+        </div>
+        <div class="spec">one table, 2.1m rows<br>query time 400 ms<br>schema shared since 2024</div>
+      </article>
+    </div>
+
+    <section class="block" aria-labelledby="pubTitle">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Talks and writing</p>
+          <h2 id="pubTitle">Where this has been said out loud.</h2>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="ledger">
+          <caption>Selected talks, 2024–2026</caption>
+          <thead>
+            <tr><th scope="col">Year</th><th scope="col">Title</th><th scope="col">Venue</th><th scope="col">Length</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">2026</th><td style="text-align:left">What a fill costs when the book is small</td><td>Singapore quant meetup</td><td>35 min</td></tr>
+            <tr><th scope="row">2026</th><td style="text-align:left">Capacity is a correlation problem</td><td>Internal, prop desk</td><td>20 min</td></tr>
+            <tr><th scope="row">2025</th><td style="text-align:left">Square-root impact, fitted honestly</td><td>NUS seminar</td><td>45 min</td></tr>
+            <tr><th scope="row">2024</th><td style="text-align:left">Why the backtest and the fill log should be one table</td><td>Engineering review</td><td>15 min</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-top">
+      <div>
+        <p class="foot-mark">Raghavan</p>
+        <p>Systematic futures and execution research<br>Singapore</p>
+      </div>
+      <div>
+        <p class="mono">Contact</p>
+        <p><a href="mailto:desk@raghavan.trade">desk@raghavan.trade</a><br><a href="contact.html">Enquiries</a></p>
+      </div>
+      <div>
+        <p class="mono">Disclosure</p>
+        <p>Proprietary capital only<br>No client money, no solicitation</p>
+      </div>
+    </div>
+    <p class="foot-fine">© 2026 Priya Raghavan · figures computed in the browser from the model described · nothing here is investment advice</p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

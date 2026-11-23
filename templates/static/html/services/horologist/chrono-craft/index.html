@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chrono Craft — independent watchmaker, service and restoration</title>
+<meta name="description" content="An independent watchmaker in Edinburgh servicing, regulating and restoring mechanical movements — with the escapement running live and the torque curve on the bench.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314171a'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23c2a05a' stroke-width='1.4'/%3E%3Cpath d='M16 8v8l5 3' stroke='%23c2a05a' stroke-width='1.4' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="head-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">Chrono Craft</span>
+    </a>
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
+      <a href="index.html" aria-current="page">Bench</a>
+      <a href="about.html">Workshop</a>
+      <a href="projects.html">Restorations</a>
+      <a href="contact.html">Service</a>
+    </nav>
+    <p class="head-note">Edinburgh · independent</p>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span><span class="sr-only">Menu</span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <div class="split-shell">
+    <aside class="bench-panel" aria-label="Live movement bench">
+      <div class="panel-head">
+        <p class="panel-label">Calibre CC-01 · on the bench</p>
+        <p class="panel-serial">No. 1147</p>
+      </div>
+
+      <div class="movement">
+        <svg id="escapement" viewBox="0 0 460 460" role="img" aria-label="Swiss lever escapement with balance wheel, pallet fork and escape wheel, running at the selected beat rate">
+          <defs>
+            <radialGradient id="plateGlow" cx="50%" cy="38%" r="62%">
+              <stop offset="0%" stop-color="#242a2f"/>
+              <stop offset="100%" stop-color="#14171a"/>
+            </radialGradient>
+          </defs>
+          <circle cx="230" cy="230" r="212" fill="url(#plateGlow)"/>
+          <g class="mv-grid">
+            <circle cx="230" cy="230" r="196"/>
+            <circle cx="230" cy="230" r="150"/>
+            <path d="M20 230h420M230 20v420"/>
+          </g>
+
+          <g id="balanceGroup">
+            <circle class="balance-rim" cx="230" cy="230" r="128"/>
+            <circle class="balance-rim-inner" cx="230" cy="230" r="118"/>
+            <path class="balance-spoke" d="M230 112v236M122 230h216M156 156l148 148M304 156L156 304"/>
+            <circle class="balance-hub" cx="230" cy="230" r="16"/>
+            <path class="balance-spring" d="M230 230 m0 -34 a34 34 0 1 1 -24 58 a26 26 0 1 0 30 -44 a18 18 0 1 1 -16 30"/>
+          </g>
+
+          <g id="escapeGroupSmall">
+            <circle class="escape-rim" cx="230" cy="382" r="38"/>
+            <g id="escapeTeeth"></g>
+            <circle class="balance-hub" cx="230" cy="382" r="5"/>
+          </g>
+
+          <g id="forkGroup">
+            <path class="fork" d="M230 330 l-20 -26 h40 z"/>
+            <path class="fork" d="M198 288 l-16 -18 M262 288 l16 -18"/>
+            <path class="fork-staff" d="M230 316 v-16"/>
+          </g>
+
+          <circle class="jewel" cx="230" cy="230" r="4"/>
+          <circle class="jewel" cx="230" cy="382" r="3"/>
+        </svg>
+      </div>
+
+      <div class="panel-controls">
+        <fieldset class="beat-set">
+          <legend>Beat rate</legend>
+          <div class="beat-options" role="group" aria-label="Beat rate">
+            <button type="button" class="beat-btn" data-beat="18000" aria-pressed="false">18,000</button>
+            <button type="button" class="beat-btn is-on" data-beat="21600" aria-pressed="true">21,600</button>
+            <button type="button" class="beat-btn" data-beat="28800" aria-pressed="false">28,800</button>
+          </div>
+        </fieldset>
+
+        <div class="power">
+          <label for="powerRange">Power reserve <output id="powerOut" for="powerRange">72 %</output></label>
+          <input id="powerRange" type="range" min="5" max="100" step="1" value="72">
+        </div>
+
+        <div class="panel-readout">
+          <div><span>Frequency</span><b id="pvFreq">3 Hz</b></div>
+          <div><span>Amplitude</span><b id="pvAmp">284°</b></div>
+          <div><span>Torque</span><b id="pvTorque">4.1 µNm</b></div>
+          <div><span>Rate</span><b id="pvRate">+1.8 s/d</b></div>
+        </div>
+
+        <div class="torque">
+          <div class="torque-head">
+            <span>Mainspring torque over the reserve</span>
+            <span id="torqueNow">72 %</span>
+          </div>
+          <svg id="torqueCurve" viewBox="0 0 360 90" role="img" aria-label="Torque curve across the 42 hour power reserve, with the current point marked">
+            <g class="tc-grid">
+              <line x1="0" y1="20" x2="360" y2="20"/><line x1="0" y1="50" x2="360" y2="50"/><line x1="0" y1="80" x2="360" y2="80"/>
+              <line x1="90" y1="0" x2="90" y2="88"/><line x1="180" y1="0" x2="180" y2="88"/><line x1="270" y1="0" x2="270" y2="88"/>
+            </g>
+            <path id="tcPath" class="tc-line" d="M0 78 C120 40 240 30 360 22"/>
+            <line id="tcMarker" class="tc-marker" x1="200" y1="10" x2="200" y2="88"/>
+            <circle id="tcDot" class="tc-dot" cx="200" cy="34" r="3.4"/>
+            <g class="tc-axis"><text x="0" y="88">0 h</text><text x="344" y="88">42 h</text></g>
+          </svg>
+          <p class="torque-note">Torque is modelled as a linear decline of 38 % across the reserve, with amplitude following to a floor of 210°.</p>
+        </div>
+
+        <button class="tick-btn" type="button" id="tickBtn" aria-pressed="false">
+          <span class="tick-dot" aria-hidden="true"></span>
+          <span id="tickLabel">Hear the escapement</span>
+        </button>
+
+        <p class="panel-foot">Swiss lever · 15-tooth escape · lift 51° · 27 jewels<br>Beat shown at the balance, not the train.</p>
+      </div>
+    </aside>
+
+    <div class="scroll-col">
+      <section class="intro">
+        <p class="kicker">Watchmaker · Edinburgh · since 2011</p>
+        <h1>Time, taken apart and put back right</h1>
+        <p class="lede">Independent servicing, regulation and restoration of mechanical movements. Full services from £480, with the timing sheet before and after, and the parts that came out in a small labelled bag.</p>
+        <div class="intro-actions">
+          <a class="btn" href="contact.html">Book a service</a>
+          <a class="btn btn-line" href="projects.html">See restorations</a>
+        </div>
+        <dl class="intro-facts">
+          <div><dt>Movements serviced</dt><dd>1,240</dd></div>
+          <div><dt>Average rate after</dt><dd>+1.8 s/d</dd></div>
+          <div><dt>Turnaround</dt><dd>4–7 weeks</dd></div>
+          <div><dt>Warranty</dt><dd>24 months</dd></div>
+        </dl>
+      </section>
+
+      <section class="reading">
+        <p class="kicker">01 — the escapement</p>
+        <h2>The only part that makes a watch a watch</h2>
+        <p>A mechanical watch stores energy in a mainspring and releases it in equal packets. The escapement is what decides the size of the packet: the balance swings, the pallet fork lets one tooth of the escape wheel pass, and the train advances by a fixed amount. Everything else in the movement exists to deliver that impulse cleanly.</p>
+        <p>The panel beside this text is running the same geometry as the calibre on my bench. At 21,600 beats per hour the balance turns three times a second and the escape wheel steps twelve times; at 28,800 it steps sixteen. A higher beat rate usually buys stability at the cost of power, which is why the torque curve underneath matters as much as the beat.</p>
+        <p class="pull">A watch does not keep time because it is accurate. It keeps time because the errors cancel.</p>
+        <dl class="tech-list">
+          <div><dt>Escapement</dt><dd>Swiss lever, 15-tooth escape wheel</dd></div>
+          <div><dt>Lift angle</dt><dd>51°, measured on the timing machine</dd></div>
+          <div><dt>Amplitude, serviced</dt><dd>275–310° at full wind</dd></div>
+          <div><dt>Isochronism</dt><dd>within 4 s/d across the reserve</dd></div>
+        </dl>
+      </section>
+
+      <section class="calibre">
+        <p class="kicker">02 — the calibre</p>
+        <h2>What is inside CC-01</h2>
+        <p>A hand-wound calibre built on an ETA 6497 base, re-worked here: new bridges, a free-sprung balance, a corrected going train and a Geneva-striped finish that follows the original geometry rather than a pattern laid over it.</p>
+        <table class="spec-table">
+          <caption class="sr-only">Calibre CC-01 specification</caption>
+          <tbody>
+            <tr><th scope="row">Diameter</th><td>36.6 mm</td></tr>
+            <tr><th scope="row">Height</th><td>4.5 mm</td></tr>
+            <tr><th scope="row">Jewels</th><td>27</td></tr>
+            <tr><th scope="row">Frequency</th><td>21,600 vph (3 Hz)</td></tr>
+            <tr><th scope="row">Power reserve</th><td>42 hours</td></tr>
+            <tr><th scope="row">Balance</th><td>free-sprung, 10.5 mm</td></tr>
+            <tr><th scope="row">Shock protection</th><td>Incabloc, both pivots</td></tr>
+            <tr><th scope="row">Finish</th><td>Geneva stripes, anglaged bridges</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="services">
+        <p class="kicker">03 — the service</p>
+        <h2>Four kinds of work</h2>
+        <ul class="service-list">
+          <li>
+            <span class="s-no">01</span>
+            <div><h3>Full service</h3><p>Complete strip, ultrasonic clean, new gaskets and mainspring, reassemble, lubricate, regulate over six positions. Timing sheet before and after.</p></div>
+            <span class="s-price">from £480</span>
+          </li>
+          <li>
+            <span class="s-no">02</span>
+            <div><h3>Regulation</h3><p>For a watch that runs but drifts. Measured on the timing machine, adjusted at the balance, observed for a week on the wrist before it goes back.</p></div>
+            <span class="s-price">£120</span>
+          </li>
+          <li>
+            <span class="s-no">03</span>
+            <div><h3>Restoration</h3><p>Vintage movements, water damage, broken staffs, missing parts made to the original. Quoted after the movement is stripped and photographed.</p></div>
+            <span class="s-price">quoted</span>
+          </li>
+          <li>
+            <span class="s-no">04</span>
+            <div><h3>Bespoke</h3><p>A movement built around a dial or a case you already own, or from a drawing. Eighteen months minimum, and a waiting list.</p></div>
+            <span class="s-price">from £9,400</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="work">
+        <p class="kicker">04 — recent work</p>
+        <h2>Three from the bench this year</h2>
+        <div class="work-list">
+          <article>
+            <h3>Omega cal. 321</h3>
+            <p class="work-meta">1968 · chronograph · full restoration</p>
+            <p>Water ingress had corroded the chronograph bridge. New bridge made and anglaged, column wheel re-cut, amplitude restored from 198° to 297°.</p>
+            <p class="work-nums"><span>Rate before −24 s/d</span><span>after +1.2 s/d</span></p>
+          </article>
+          <article>
+            <h3>Longines cal. 12.68Z</h3>
+            <p class="work-meta">1954 · hand-wound · service</p>
+            <p>A family watch with a snapped balance staff and a replaced ratchet wheel from an earlier repair. Staff turned here, wheel re-made to the original profile.</p>
+            <p class="work-nums"><span>Amplitude 198°</span><span>295° after</span></p>
+          </article>
+          <article>
+            <h3>Smiths cal. 0104</h3>
+            <p class="work-meta">1962 · hand-wound · restoration</p>
+            <p>One of the last British-made movements, brought in with a broken jewel and a dial that had been cleaned with the wrong solvent. Dial conserved, not refinished.</p>
+            <p class="work-nums"><span>Rate +38 s/d</span><span>+2.4 s/d after</span></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="method">
+        <p class="kicker">05 — the path</p>
+        <h2>What happens to your watch</h2>
+        <ol class="method-list">
+          <li><span>i</span><p>Intake photographs, a timing reading and a written estimate before anything is opened.</p></li>
+          <li><span>ii</span><p>Strip and clean. Every part photographed on a tray, and anything worn is listed.</p></li>
+          <li><span>iii</span><p>Reassemble, lubricate with six oils, and set the beat and the rate on the machine.</p></li>
+          <li><span>iv</span><p>Six positions, then a week on the wrist of a colleague to catch what the machine misses.</p></li>
+          <li><span>v</span><p>Returned with the old parts, the timing sheets and a two-year warranty.</p></li>
+        </ol>
+      </section>
+
+      <section class="cta">
+        <h2>Send the watch, or bring it in</h2>
+        <p>The bench is in Leith, two flights up. Appointments Tuesday to Thursday, and the kettle is usually on.</p>
+        <a class="btn" href="contact.html">Book a service</a>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <span class="brand-name">Chrono Craft</span>
+      <p>Independent watchmaker. Service, regulation and restoration of mechanical movements in Leith, Edinburgh.</p>
+    </div>
+    <nav aria-label="Footer">
+      <a href="index.html">Bench</a>
+      <a href="about.html">Workshop</a>
+      <a href="projects.html">Restorations</a>
+      <a href="contact.html">Service</a>
+    </nav>
+    <div class="foot-meta">
+      <a href="mailto:bench@chronocraft.studio">bench@chronocraft.studio</a>
+      <p>11 Sandport Street, Leith EH6 6PJ</p>
+      <p>Tue–Thu, 09:30–17:30</p>
+    </div>
+  </div>
+  <p class="foot-fine">All work carried out on the premises. Estimates in GBP. Rolex, Omega and other marks belong to their owners; this workshop is independent.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

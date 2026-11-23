@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Files — Nadia Rahman, Agent Systems Engineering</title>
+<meta name="description" content="Three agent-system engagements told as brief, decisions, outcome: a loop that cost $47,900, an evaluation harness that blocked a bad upgrade, and a write-access redesign.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2314161a'/%3E%3Ctext x='50' y='68' font-family='monospace' font-size='58' font-weight='bold' fill='%233fae7c' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site">
+  <div class="wrap head-row">
+    <a class="brand" href="index.html">
+      <span class="name">NADIA RAHMAN <em>/ agent systems</em></span>
+      <span class="sub">Design reviews · Evaluation harnesses · Production hardening — London</span>
+    </a>
+    <nav class="main" aria-label="Main">
+      <a href="index.html">INDEX</a>
+      <a href="projects.html" aria-current="page">CASE FILES</a>
+      <a href="about.html">METHOD</a>
+      <a href="contact.html">ENQUIRE</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobilePanel">☰ INDEX</button>
+  </div>
+</header>
+
+<div id="mobilePanel" aria-hidden="false">
+  <div class="scrim"></div>
+  <div class="sheet" role="dialog" aria-label="Site index">
+    <div class="idx-head"><span>Report index</span><button id="panelClose" aria-label="Close menu">✕</button></div>
+    <nav aria-label="Mobile">
+      <a href="index.html">Index <span class="n">§00</span></a>
+      <a href="projects.html" aria-current="page">Case files <span class="n">§01</span></a>
+      <a href="about.html">Method <span class="n">§02</span></a>
+      <a href="contact.html">Enquire <span class="n">§03</span></a>
+    </nav>
+    <p class="idx-note">SOUND: NONE — this site makes no sound, by ruling.<br><br>Traces before opinions.</p>
+  </div>
+</div>
+
+<main id="main">
+  <div class="wrap page-head">
+    <p class="kicker">§01 — Case files</p>
+    <h1 style="font-size:clamp(2rem,4.4vw,3.1rem);margin-bottom:14px">Three engagements, told the way they happened</h1>
+    <p class="lede">Each file follows the same discipline as the work: the brief as it arrived, the decisions that mattered, and the outcome measured on the client's own numbers. Client names are withheld — the composites are fictionalised, as the footer states — but the failure classes are the real ones from §03 of the index, and the arithmetic is shown where money moved.</p>
+  </div>
+
+  <section class="block tight">
+    <div class="wrap">
+
+      <!-- CASE 01 -->
+      <article class="case rv" id="case-01">
+        <div class="case-head">
+          <div><span class="cid">Case File 01 — Loops · Class 01</span><h2>The $47,900 weekend</h2></div>
+          <div class="client">CLIENT: B2B SaaS, ~400 staff<br>SUPPORT-TRIAGE AGENT, 6 TOOLS</div>
+        </div>
+        <div class="case-body">
+          <div class="case-main">
+            <h3>The brief</h3>
+            <p>A support-triage agent — the same shape as the run in §01 of the index — had been live for five months and was, by every dashboard, fine. Then the monthly model invoice arrived at roughly <strong>six times the forecast</strong>, and the team asked the only question that mattered: where did it go? There were no error spikes to investigate. Nothing had crashed. The traces existed but nobody had ever read twenty of them in a row.</p>
+            <h3>The decisions</h3>
+            <p>The trace review came first, before any fix was proposed. Reading the weekend's runs in sequence showed the pattern within an hour: on tickets where a billing lookup returned an ambiguous result, the agent re-asked with a wider window, then a wider one, then rephrased — <strong>a median run cost of $2.65 against a healthy $0.08</strong>, across 9,800 weekend tickets. The fix was specified as guards, not prompt edits: a hard cap of 12 steps per run; repeated-call detection that halts on a third materially-identical call; a per-run budget cap of $0.50 with the halt logged as a first-class event; and a daily spend alarm set at the forecast, not at six times it. The hardening sprint installed all four on the client's own stack.</p>
+            <h3>The outcome</h3>
+            <p>Median run cost returned to $0.08 and the p95 settled at $0.41 — the honest price of the genuinely hard tickets. In the six months following, the repeated-call guard halted 214 runs; every one was a loop that would previously have billed until it timed out. The client's Head of AI Platform's testimonial is attached to this file on the index page, where it belongs.</p>
+          </div>
+          <aside class="case-side">
+            <figure class="shot">
+              <img src="assets/server-closeup.jpg" alt="Close-up of a server unit in a data centre" width="1600" height="1065" loading="lazy">
+              <figcaption>REFERENCE PHOTOGRAPH — a server unit (panumas nikhomkhai / Pexels). The invoice came from machines like this one, not from the client's office.</figcaption>
+            </figure>
+            <div class="tomb">
+              <div class="tr"><span class="tk">Engagement</span><span class="tv">Trace Review → Hardening Sprint</span></div>
+              <div class="tr"><span class="tk">Duration</span><span class="tv">3 weeks</span></div>
+              <div class="tr"><span class="tk">Failure class</span><span class="tv">Loops (Class 01)</span></div>
+              <div class="tr"><span class="tk">Weekend spend found</span><span class="tv">$47,900</span></div>
+              <div class="tr"><span class="tk">Status</span><span class="tv">Closed — guards live</span></div>
+            </div>
+          </aside>
+        </div>
+        <div class="outcome-strip">
+          <div class="oc"><div class="v">$2.65 → $0.08</div><div class="k">median cost per ticket run, before and after the guards</div></div>
+          <div class="oc"><div class="v">214</div><div class="k">loops halted by repeated-call detection in the first six months</div></div>
+          <div class="oc"><div class="v">0</div><div class="k">repeat weekend incidents in the two quarters after the sprint</div></div>
+        </div>
+      </article>
+
+      <!-- CASE 02 -->
+      <article class="case rv" id="case-02">
+        <div class="case-head">
+          <div><span class="cid">Case File 02 — Silent wrong answers · Class 04</span><h2>The upgrade that passed the demo</h2></div>
+          <div class="client">CLIENT: CONSUMER FINTECH<br>SUPPORT COPILOT, 11 TOOLS</div>
+        </div>
+        <div class="case-body">
+          <div class="case-main">
+            <h3>The brief</h3>
+            <p>A support copilot was due a model upgrade: cheaper per token, faster, and — on the vendor's demo script and the team's own twenty scripted scenarios — flawless, 20 out of 20. The team had been burned before by a change that "passed everything and broke production", and commissioned an evaluation harness before the rollout rather than after it.</p>
+            <h3>The decisions</h3>
+            <p>The harness was built from the client's real work, not from scenarios written for the occasion: <strong>240 held-out tickets</strong>, graded by the client's own support leads against a written rubric, frozen before the new model ever saw them. Held-out matters — a set the builders can see becomes a set the system is tuned to, and stops measuring anything. On that set the upgrade scored <strong>79% task success against the incumbent's 87%</strong>. The traces found the cause: the new model emitted one tool's arguments in a subtly different shape, and the client's parser silently defaulted the missing field — every affected call "succeeded" and searched the wrong account segment. Two fixes followed: strict schema validation that rejects malformed calls instead of defaulting them, and the harness wired into the release pipeline as a gate a model change must pass to deploy.</p>
+            <h3>The outcome</h3>
+            <p>The upgrade was blocked, the vendor informed with traces attached, and a corrected version passed the same gate five weeks later. Three further upgrades have since gone through the gate; one was rejected. The set has grown to 310 cases — every production failure the team finds is graded and added, so the harness gets stricter as the system gets older, which is the correct direction.</p>
+          </div>
+          <aside class="case-side">
+            <figure class="shot">
+              <img src="assets/code-review.jpg" alt="A team reviewing code together on laptops" width="1200" height="1800" loading="lazy">
+              <figcaption>REFERENCE PHOTOGRAPH — a team reviewing work together (Mizuno K / Pexels). Grading 240 real tickets is human work before it is automation.</figcaption>
+            </figure>
+            <div class="tomb">
+              <div class="tr"><span class="tk">Engagement</span><span class="tv">Evaluation Harness Build</span></div>
+              <div class="tr"><span class="tk">Duration</span><span class="tv">4 weeks</span></div>
+              <div class="tr"><span class="tk">Failure class</span><span class="tv">Silent wrong answers (Class 04)</span></div>
+              <div class="tr"><span class="tk">Held-out set</span><span class="tv">240 cases, human-graded</span></div>
+              <div class="tr"><span class="tk">Status</span><span class="tv">Gate live in their pipeline</span></div>
+            </div>
+          </aside>
+        </div>
+        <div class="outcome-strip">
+          <div class="oc"><div class="v">87% → 79%</div><div class="k">held-out task success, incumbent vs the upgrade the demo scored 20/20</div></div>
+          <div class="oc"><div class="v">1</div><div class="k">rollout blocked before a single customer met the regression</div></div>
+          <div class="oc"><div class="v">310</div><div class="k">cases in the set today — every production failure gets graded and added</div></div>
+        </div>
+      </article>
+
+      <!-- CASE 03 -->
+      <article class="case rv" id="case-03">
+        <div class="case-head">
+          <div><span class="cid">Case File 03 — Tool misuse · Class 02</span><h2>Write access, removed</h2></div>
+          <div class="client">CLIENT: LOGISTICS OPERATOR<br>INTERNAL OPS AGENT, 14 TOOLS</div>
+        </div>
+        <div class="case-body">
+          <div class="case-main">
+            <h3>The brief</h3>
+            <p>An internal operations agent saved the team real hours: it chased shipment exceptions, updated customer records and issued refunds for damaged consignments. It also held, in one undifferentiated toolset, the ability to do all of that <strong>directly and irreversibly</strong> — refund any amount, edit any record, with no approval step and no preview. Nothing had gone visibly wrong yet. The operations director's brief was one sentence: "Tell me what this thing can do on its worst day."</p>
+            <h3>The decisions</h3>
+            <p>The design review mapped every tool by reversibility, and the redesign followed that single line. Reads stayed free — an agent that must ask permission to look things up is a slow search box. Writes were split: every write tool gained a <strong>dry-run mode that renders exactly what would change</strong>, refunds above £50 and any record deletion moved to a human approval queue, and every executed write wrote an audit entry a person could replay. The agent kept all fourteen tools; what it lost was the ability to use eleven of them unobserved. This is the part of agent design nobody demos: the demo is the capability, the product is the permission structure around it.</p>
+            <h3>The outcome</h3>
+            <p>The irreversible-action failure class closed: in the first quarter under the new structure, 1,140 write actions were previewed, 96 went to the approval queue, and 7 were rejected by approvers — each rejection a small, cheap save. The median approval decision took four minutes, so the team's hours saved survived the change. The agent kept its job. It lost its pen.</p>
+          </div>
+          <aside class="case-side">
+            <div class="tomb">
+              <div class="tr"><span class="tk">Engagement</span><span class="tv">Agent Design Review → Sprint</span></div>
+              <div class="tr"><span class="tk">Duration</span><span class="tv">5 weeks</span></div>
+              <div class="tr"><span class="tk">Failure class</span><span class="tv">Tool misuse (Class 02)</span></div>
+              <div class="tr"><span class="tk">Tools re-permissioned</span><span class="tv">14 (11 writes gated)</span></div>
+              <div class="tr"><span class="tk">Status</span><span class="tv">Closed — structure live</span></div>
+            </div>
+            <p class="small" style="margin-top:16px;color:var(--ink-soft)">No photograph on this file: the client's systems are internal, and a stock picture of a warehouse would decorate a case that is about permissions, not places.</p>
+          </aside>
+        </div>
+        <div class="outcome-strip">
+          <div class="oc"><div class="v">1,140</div><div class="k">write actions previewed in dry-run in the first quarter</div></div>
+          <div class="oc"><div class="v">7</div><div class="k">writes rejected by human approvers — the class working as designed</div></div>
+          <div class="oc"><div class="v">4 min</div><div class="k">median approval decision — the speed the team feared losing, kept</div></div>
+        </div>
+      </article>
+
+      <div style="text-align:center;margin-top:6px">
+        <h2 style="margin-bottom:10px">Your agent's worst day is already in its traces.</h2>
+        <p class="lede" style="margin:0 auto 22px">A trace review reads twenty of them and names the class before it invoices you.</p>
+        <a class="btn" href="contact.html?type=trace">Book a trace review — £1,900 fixed</a>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3>The practice</h3>
+        <p>Nadia Rahman is a fictional agent systems engineer and this portfolio is a design demonstration. The engagements are illustrative composites, not real client work. The run in §01 of the index is a constructed example with real arithmetic: every cost on this site is computed from the token counts and prices printed beside it.</p>
+      </div>
+      <div>
+        <h3>Index</h3>
+        <nav aria-label="Footer">
+          <a href="index.html">Index — the trace &amp; the fees</a>
+          <a href="projects.html">Case files — three engagements</a>
+          <a href="about.html">Method — how engagements run</a>
+          <a href="contact.html">Enquire — one form, one email</a>
+        </nav>
+      </div>
+      <div>
+        <h3>Standards</h3>
+        <p>Sound: none. An agent console that beeps teaches nothing, and no audio plays anywhere on this site — the need-test fails for this trade. Photographs are reference images credited in CREDITS.md inside this template folder; they are never pictures of clients or their systems.</p>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Nadia Rahman (fictional) — agent systems engineering, London</span>
+      <span>Traces before opinions.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

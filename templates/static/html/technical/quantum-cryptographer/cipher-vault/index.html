@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hana Sugimoto — post-quantum cryptography migration, Cipher Vault</title>
+<meta name="description" content="Hana Sugimoto helps product teams migrate TLS, firmware and HSMs to ML-KEM and ML-DSA: cryptographic inventories, hybrid handshakes, and measurable handshake budgets.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23080a0b'/%3E%3Crect x='6' y='6' width='20' height='20' fill='none' stroke='%23d9a15c' stroke-width='1.3'/%3E%3Cpath d='M11 16h10M16 11v10' stroke='%23d9a15c' stroke-width='1.3'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%23d9a15c'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="shell">
+  <aside class="rail">
+    <a class="rail-brand" href="index.html">
+      <svg class="rail-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <rect x="5" y="5" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M13 20h14M20 13v14" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="20" cy="20" r="3" fill="currentColor"/>
+      </svg>
+      <span><strong>Cipher Vault</strong><small>Hana Sugimoto<br>Quantum-safe cryptography</small></span>
+    </a>
+    <button class="rail-menu" id="railMenu" aria-expanded="false" aria-controls="railNav">Sections</button>
+    <nav class="rail-nav" id="railNav" aria-label="Main">
+      <a href="index.html" aria-current="page"><span class="n">01</span> Bench</a>
+      <a href="projects.html"><span class="n">02</span> Engagements</a>
+      <a href="about.html"><span class="n">03</span> Practice</a>
+      <a href="contact.html"><span class="n">04</span> Contact</a>
+    </nav>
+    <div class="rail-foot">
+      <div class="rail-status">
+        <b><span class="dot"></span>Accepting Q1 work</b>
+        Kyoto 35.01°N 135.77°E<br>
+        ML-KEM / ML-DSA readiness<br>
+        Last audit: 06 Nov 2026
+      </div>
+      <a class="rail-cta" href="contact.html">Request an inventory</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="crumb"><b>Post-quantum migration</b><span>/</span><span>FIPS 203 · 204 · 205</span></span>
+      <span class="live">NIST IR 8547 timeline tracked</span>
+    </div>
+
+    <main id="main">
+      <section class="hero">
+        <div class="wrap hero-grid">
+          <div>
+            <p class="kicker">Cryptography engineering · 2016 – 2026</p>
+            <h1>Every key exchange today is being recorded for a machine that does not exist <span class="dim">yet</span>.</h1>
+            <p class="lede">I migrate production cryptography to post-quantum algorithms without stopping the release train: inventories of where keys actually live, hybrid handshakes that survive a bad day, and firmware that fits in the flash it has.</p>
+            <div class="actions">
+              <a class="btn" href="#bench">Size a handshake <span class="ar">↘</span></a>
+              <a class="btn ghost" href="projects.html">Engagement notes</a>
+            </div>
+            <div class="hero-foot">
+              <span><i></i>ML-KEM-768 deployed</span>
+              <span><i></i>1,840 endpoints inventoried</span>
+              <span><i></i>Hybrid first, always</span>
+            </div>
+          </div>
+
+          <figure>
+            <div class="instrument">
+              <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+              <div class="inst-head"><span><b>BB84</b> · 128 km fibre link · decoy-state</span><span id="runState">idle</span></div>
+              <div class="inst-body">
+                <canvas id="bb84" width="680" height="380" role="img" aria-label="BB84 key sifting diagram: Alice bits and bases, Bob bases and measurements across 24 photon slots, with sifted positions and bit errors marked"></canvas>
+              </div>
+              <div class="inst-foot">
+                <span class="qber">QBER <b id="qber">—</b></span>
+                <span>sifted <b id="sifted">—</b> / 24</span>
+                <span>key rate <b id="keyrate">—</b></span>
+              </div>
+            </div>
+            <div class="inst-controls">
+              <button id="runBtn" type="button">Run exchange</button>
+              <button id="resetBtn" type="button">Reset</button>
+              <span class="legend"><span><i style="background:#d9a15c"></i>bit 1</span><span><i style="background:#5f6a6d"></i>bit 0</span><span><i style="border:1px solid #8c9699"></i>sifted</span></span>
+            </div>
+            <figcaption><b>Sifting, not secrecy.</b> Alice sends one photon per slot in a random basis; Bob measures in a basis he also picks. Where the bases agree the bit is kept. An eavesdropper shows up as errors in that kept set — here 2 in 18, a QBER of 11.1%, which is above the 11% abort threshold for a decoy-state link. QKD still needs an authenticated classical channel, which is why the signatures matter more than the photons.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="Practice figures">
+        <div class="wrap metrics-in">
+          <div class="metric"><p class="mt">Endpoints inventoried</p><p class="mv">1,840<small>hosts</small></p><p class="sub">across 6 client networks</p></div>
+          <div class="metric"><p class="mt">Largest handshake saving</p><p class="mv">1.9<small>kB</small></p><p class="sub">by pruning certificate chains</p></div>
+          <div class="metric"><p class="mt">Cortex-M4 decapsulation</p><p class="mv">1.42<small>M cycles</small></p><p class="sub">ML-KEM-768, no assembly</p></div>
+          <div class="metric"><p class="mt">Median migration</p><p class="mv">11<small>months</small></p><p class="sub">inventory to production</p></div>
+        </div>
+      </section>
+
+      <section class="band" id="bench">
+        <div class="wrap">
+          <div class="sec-head">
+            <div>
+              <p class="label">01 / Handshake bench</p>
+              <h2>What a quantum-safe handshake costs in bytes and milliseconds</h2>
+              <p>Choose a key encapsulation mechanism and a path. The numbers below are the wire sizes from FIPS 203 and the X25519 sizes from RFC 7748, not estimates.</p>
+            </div>
+            <span class="meta">measure · don’t assume</span>
+          </div>
+
+          <div class="bench-grid">
+            <div class="bench-col">
+              <h3>Parameters</h3>
+              <div class="field">
+                <label for="kem">Key exchange <output id="kemTag">ML-KEM-768</output></label>
+                <select id="kem">
+                  <option value="x25519">X25519 (classical)</option>
+                  <option value="ml512">ML-KEM-512</option>
+                  <option value="ml768" selected>ML-KEM-768</option>
+                  <option value="ml1024">ML-KEM-1024</option>
+                  <option value="hybrid">Hybrid X25519 + ML-KEM-768</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="rtt">Round-trip time <output id="rttTag">38 ms</output></label>
+                <input id="rtt" type="range" min="5" max="300" value="38" step="1">
+                <p class="hint">Mobile network in Seoul at 19:00, or a satellite backhaul. Both change the answer.</p>
+              </div>
+              <div class="field">
+                <label for="mtu">Path MTU <output id="mtuTag">1500 B</output></label>
+                <select id="mtu">
+                  <option value="1280">1280 — IPv6 minimum</option>
+                  <option value="1400">1400 — tunnel</option>
+                  <option value="1500" selected>1500 — Ethernet</option>
+                  <option value="9000">9000 — jumbo frame</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="bw">Link rate <output id="bwTag">20 Mbps</output></label>
+                <input id="bw" type="range" min="1" max="200" value="20" step="1">
+              </div>
+              <dl class="kem-out">
+                <div><dt>Client key share</dt><dd id="outEk">1,184<small>B</small></dd></div>
+                <div><dt>Server response</dt><dd id="outCt">1,088<small>B</small></dd></div>
+                <div><dt>Extra vs X25519</dt><dd id="outDelta">+2,208<small>B</small></dd></div>
+                <div><dt>Handshake floor</dt><dd id="outTime">76<small>ms</small></dd></div>
+              </dl>
+              <p class="note">Handshake floor = 2 RTT plus key generation and encapsulation on a 2.1 GHz server core. It excludes certificate flight and any TLS 1.3 retransmission. Extra bytes compares the raw key-exchange fields only.</p>
+              <div class="sources">
+                <span>Sources</span>
+                FIPS 203 §7.3, Table 2 — encapsulation key and ciphertext sizes<br>
+                RFC 7748 §6.1 — X25519 public key length<br>
+                Measured on Cortex-M4 at 240 MHz for the cycle figures
+              </div>
+            </div>
+
+            <div class="bench-col">
+              <h3>Wire comparison · key-exchange bytes per handshake</h3>
+              <div class="compare" id="compare"></div>
+
+              <div class="lattice">
+                <div class="lattice-head"><span id="latTitle">Module lattice · ML-KEM-768 · k = 3</span><span id="latDims">3 × 3 matrices</span></div>
+                <svg id="latSvg" viewBox="0 0 900 320" role="img" aria-label="Module lattice structure: a three by three grid of polynomial matrices over a 256-coefficient ring"></svg>
+              </div>
+
+              <div class="lattice" style="margin-top:14px">
+                <div class="lattice-head"><span>Packets on the path</span><span id="pktTag">2 + 2</span></div>
+                <svg id="pktSvg" viewBox="0 0 900 130" role="img" aria-label="Packet count for each direction of the handshake"></svg>
+              </div>
+              <p class="note" id="benchNote">ML-KEM-768 adds 2,208 bytes to the key exchange against X25519, which is 1.5 packets on an Ethernet path but three packets on a 1280-byte IPv6 path. If your client hello must fit one packet, that is the number to argue about — not the algorithm name.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="wrap">
+          <div class="sec-head">
+            <div>
+              <p class="label">02 / Written up</p>
+              <h2>Field notes from migrations</h2>
+              <p>Technical reports from client work, published with permission. Reproducers and measurement scripts are in the appendix of each.</p>
+            </div>
+            <span class="meta">5 reports</span>
+          </div>
+          <div class="paper-list">
+            <a class="paper" href="projects.html#cv-2604">
+              <span class="yr">2026</span>
+              <span><h3>Measuring ML-KEM decapsulation on a Cortex-M4 with no assembly</h3><p>Cycle counts for all three parameter sets with the reference C implementation, stack high-water marks, and the flash cost of a hybrid fallback.</p></span>
+              <span class="venue">Technical report<br>CV-TR-2026-04</span>
+              <span class="tag">Embedded</span>
+            </a>
+            <a class="paper" href="projects.html#cv-2602">
+              <span class="yr">2026</span>
+              <span><h3>A cryptographic inventory you can keep: 1,840 endpoints in nine days</h3><p>How to read certificate transparency, SNI logs and JA4 fingerprints together, and the four places keys hide that scanners never see.</p></span>
+              <span class="venue">Technical report<br>CV-TR-2026-02</span>
+              <span class="tag">Inventory</span>
+            </a>
+            <a class="paper" href="projects.html#cv-2511">
+              <span class="yr">2025</span>
+              <span><h3>Hybrid key exchange is a rollback risk, not just a safety net</h3><p>What happens when one half of a hybrid fails on a middlebox, and why a downgrade path needs its own test suite.</p></span>
+              <span class="venue">Technical report<br>CV-TR-2025-11</span>
+              <span class="tag">TLS</span>
+            </a>
+            <a class="paper" href="projects.html#cv-2507">
+              <span class="yr">2025</span>
+              <span><h3>QKD in a data centre: what the photons do not solve</h3><p>Deployment notes from a 128 km link, including the authentication problem that made the classical PKI the harder half of the project.</p></span>
+              <span class="venue">Technical report<br>CV-TR-2025-07</span>
+              <span class="tag">QKD</span>
+            </a>
+            <a class="paper" href="projects.html#cv-2503">
+              <span class="yr">2025</span>
+              <span><h3>Crypto-agility as a build-system property</h3><p>Why algorithm choice belongs in configuration, not in source, and the interface that let one payment network swap signature schemes in a week.</p></span>
+              <span class="venue">Technical report<br>CV-TR-2025-03</span>
+              <span class="tag">Agility</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="wrap">
+          <div class="sec-head">
+            <div>
+              <p class="label">03 / How the work runs</p>
+              <h2>Three habits that decide whether a migration lands</h2>
+            </div>
+          </div>
+          <div class="approach">
+            <div>
+              <span class="num">01</span>
+              <h3>Inventory before algorithms</h3>
+              <p>You cannot migrate a key you cannot find. Certificates on load balancers, pinned keys in mobile binaries, a vendor’s HSM firmware, the one cron job with a static RSA key — the inventory is the deliverable that outlives the project.</p>
+            </div>
+            <div>
+              <span class="num">02</span>
+              <h3>Hybrid until the evidence is in</h3>
+              <p>X25519 plus ML-KEM-768 is safe against both a quantum adversary and a new lattice implementation bug. The hybrid is not a compromise; it is the correct engineering choice until one half has a decade of field time.</p>
+            </div>
+            <div>
+              <span class="num">03</span>
+              <h3>Agility is the real output</h3>
+              <p>Algorithms change every fifteen years and implementations change every quarter. The team that can swap a signature scheme in a week, behind a configuration flag, has solved the problem permanently.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pull">
+        <div class="wrap pull-grid">
+          <blockquote>“The migration was nine hundred lines of configuration and one hard conversation about a certificate nobody owned.” <em>That is normal.</em>
+            <footer>— Closing note, payment network migration, 2026</footer>
+          </blockquote>
+          <div class="pull-side">
+            Current standards<br>
+            FIPS 203 — ML-KEM<br>
+            FIPS 204 — ML-DSA<br>
+            FIPS 205 — SLH-DSA<br>
+            Deprecation of RSA-2048 and P-256 proposed after 2030; disallowed after 2035.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-in">
+        <div class="brandline">Cipher Vault · Hana Sugimoto<small>Post-quantum migration · Kyoto, Japan</small></div>
+        <div class="foot-links">
+          <a href="index.html">Bench</a>
+          <a href="projects.html">Engagements</a>
+          <a href="about.html">Practice</a>
+          <a href="contact.html">Contact</a>
+          <a href="mailto:hana@ciphervault.jp">hana@ciphervault.jp</a>
+        </div>
+      </div>
+      <div class="colophon">
+        <span>© 2026 Hana Sugimoto. Reports CC BY 4.0; client data excluded.</span>
+        <span>Space Grotesk · Manrope · JetBrains Mono</span>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<script src="script.js" defer></script>
+</body>
+</html>

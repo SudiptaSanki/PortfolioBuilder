@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rhea Kapadia — inference and eval engineering, Berlin</title>
+<meta name="description" content="Rhea Kapadia builds prompt pipelines, retrieval and eval harnesses for production language-model features. Context budgets, latency, and a number that proves the change.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2314161a'/%3E%3Ctext x='10' y='44' font-family='monospace' font-size='30' fill='%23e8c39e'%3E%26gt;%3C/text%3E%3Crect x='34' y='38' width='16' height='4' fill='%23e8c39e'/%3E%3C/svg%3E">
+</head>
+<body data-page="index">
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="shell">
+  <aside class="rail">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Rhea Kapadia</span>
+      <span class="brand-sub">Inference engineering</span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="index.html" aria-current="page"><span>01</span><span>Overview</span></a>
+      <a href="projects.html"><span>02</span><span>Work</span></a>
+      <a href="about.html"><span>03</span><span>Notes</span></a>
+      <a href="contact.html"><span>04</span><span>Contact</span></a>
+    </nav>
+    <div class="rail-status">
+      <p class="status-row"><span class="status-dot" aria-hidden="true"></span>Booking from January</p>
+      <p class="mono">Berlin · CET<br>Remote across EU/UK<br>Two projects at a time</p>
+      <a class="rail-cta" href="contact.html">Start a conversation</a>
+    </div>
+  </aside>
+
+  <div class="content">
+    <div class="content-inner">
+      <div class="topline">
+        <span>Inference &amp; evaluations</span>
+        <span class="tl-right"><span>Berlin 52.52° N</span><span>Updated Nov 2026</span></span>
+      </div>
+
+      <main id="main">
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="kicker">Prompt, retrieval and eval engineering</p>
+            <h1>Fewer tokens, better answers, and a number that proves it.</h1>
+            <p class="lede">I build language-model features that survive contact with customers: contract review, support triage, clinical search. Most of the work is cutting context, measuring what actually regressed, and making the case for the smaller model.</p>
+            <div class="hero-actions">
+              <a class="btn" href="#budget">Open the context bench</a>
+              <a class="textlink" href="projects.html">Read a case study</a>
+            </div>
+            <p class="hero-meta">
+              <span><b>8 years</b> backend</span>
+              <span><b>3</b> production LLM systems</span>
+              <span><b>p95 640 ms</b> at 70B</span>
+              <span><b>€0.0043</b> per document</span>
+            </p>
+          </div>
+
+          <figure class="console-card" aria-label="A prompt file showing line-by-line token costs">
+            <div class="cc-head">
+              <span>clause_extract.prompt</span>
+              <span class="cc-tag">v4 · production</span>
+            </div>
+            <div class="cc-body">
+              <div class="cc-line"><span class="ln">1</span><span class="tx">system: extract clause risk</span><span class="tk">14</span></div>
+              <div class="cc-line"><span class="ln">2</span><span class="tx">retrieved: huurvoorwaarden §7.3</span><span class="tk">1,254</span></div>
+              <div class="cc-line add"><span class="ln">3</span><span class="tx">+ only answer from the clause</span><span class="tk">11</span></div>
+              <div class="cc-line dim"><span class="ln">4</span><span class="tx">history: 2 turns (trimmed)</span><span class="tk">180</span></div>
+              <div class="cc-line"><span class="ln">5</span><span class="tx">schema: {risk, clause, confidence}</span><span class="tk">9</span></div>
+            </div>
+            <div class="cc-foot">
+              <div class="cc-stat"><span>Context</span><b>1.5k<small>/128k</small></b></div>
+              <div class="cc-stat"><span>p95</span><b>640<small>ms</small></b></div>
+              <div class="cc-stat"><span>Field F1</span><b>0.941</b></div>
+            </div>
+          </figure>
+        </section>
+
+        <section class="block" id="budget" aria-labelledby="budgetTitle">
+          <div class="section-head">
+            <p class="kicker">01 / Context budget</p>
+            <h2 id="budgetTitle">The window is a budget, not a target.</h2>
+            <p class="note">Set the shape of one request and see what it costs in KV cache, latency and money before it reaches the model.</p>
+          </div>
+
+          <div class="budget">
+            <div class="budget-head">
+              <div>
+                <h3>Context window and KV-cache bench</h3>
+                <p>Token counts are what a tokeniser actually bills: system, examples, retrieved chunks, history and output reserve. Cache size follows the architecture (layers × KV heads × head dimension × precision), and decode speed follows the bytes the GPU must read for every token — weights plus cache, over bandwidth. Nothing here is a benchmark score; it is arithmetic you can check.</p>
+              </div>
+              <div class="budget-id">
+                <span>Target</span>
+                <strong id="targetName">Llama 3.1 70B</strong>
+                <span id="targetSpec">80 layers · 8 KV heads · 128 dim</span>
+              </div>
+            </div>
+
+            <div class="budget-grid">
+              <form class="bctl" id="budgetForm" novalidate>
+                <div class="bctl-group">
+                  <span class="mono">Model</span>
+                  <div class="field">
+                    <label for="model">Weights</label>
+                    <select id="model" name="model">
+                      <option value="8">Llama 3.1 8B dense</option>
+                      <option value="32">Qwen2.5 32B dense</option>
+                      <option value="70" selected>Llama 3.1 70B dense</option>
+                      <option value="moe">Mixtral 8×7B (46.7B total)</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="gpu">GPU</label>
+                    <select id="gpu" name="gpu">
+                      <option value="a100" selected>A100 80 GB · 2.0 TB/s</option>
+                      <option value="h100">H100 80 GB · 3.35 TB/s</option>
+                      <option value="l40s">L40S 48 GB · 864 GB/s</option>
+                      <option value="4090">RTX 4090 24 GB · 1.0 TB/s</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="precision">Cache precision</label>
+                    <select id="precision" name="precision">
+                      <option value="2" selected>FP16 · 2 bytes</option>
+                      <option value="1">INT8 · 1 byte</option>
+                      <option value="0.5">INT4 · 0.5 byte</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="bctl-group">
+                  <span class="mono">Prompt</span>
+                  <div class="field">
+                    <label for="context">Window <output id="contextOut" for="context">128k</output></label>
+                    <input type="range" id="context" name="context" min="8" max="200" step="4" value="128">
+                  </div>
+                  <div class="field">
+                    <label for="system">System prompt <output id="systemOut" for="system">420</output></label>
+                    <input type="range" id="system" name="system" min="120" max="2400" step="20" value="420">
+                  </div>
+                  <div class="field">
+                    <label for="shots">Few-shot <output id="shotsOut" for="shots">600</output></label>
+                    <input type="range" id="shots" name="shots" min="0" max="4000" step="100" value="600">
+                  </div>
+                </div>
+
+                <div class="bctl-group">
+                  <span class="mono">Retrieval</span>
+                  <div class="field">
+                    <label for="chunks">Chunks <output id="chunksOut" for="chunks">6</output></label>
+                    <input type="range" id="chunks" name="chunks" min="0" max="20" step="1" value="6">
+                  </div>
+                  <div class="field">
+                    <label for="chunkSize">Tokens per chunk <output id="chunkSizeOut" for="chunkSize">320</output></label>
+                    <input type="range" id="chunkSize" name="chunkSize" min="80" max="800" step="20" value="320">
+                  </div>
+                </div>
+
+                <div class="bctl-group">
+                  <span class="mono">Conversation</span>
+                  <div class="field">
+                    <label for="turns">Prior turns <output id="turnsOut" for="turns">3</output></label>
+                    <input type="range" id="turns" name="turns" min="0" max="30" step="1" value="3">
+                  </div>
+                  <div class="field">
+                    <label for="turnSize">Tokens per turn <output id="turnSizeOut" for="turnSize">180</output></label>
+                    <input type="range" id="turnSize" name="turnSize" min="40" max="400" step="10" value="180">
+                  </div>
+                </div>
+
+                <div class="bctl-group">
+                  <span class="mono">Serving</span>
+                  <div class="field">
+                    <label for="output">Output reserve <output id="outputOut" for="output">800</output></label>
+                    <input type="range" id="output" name="output" min="128" max="4096" step="64" value="800">
+                  </div>
+                  <div class="field">
+                    <label for="batch">Batch <output id="batchOut" for="batch">8</output></label>
+                    <input type="range" id="batch" name="batch" min="1" max="64" step="1" value="8">
+                  </div>
+                </div>
+              </form>
+
+              <div class="budget-view">
+                <div class="window">
+                  <div class="window-head">
+                    <span>Window allocation</span>
+                    <b id="windowUsed">38% of 128k</b>
+                  </div>
+                  <div class="segments" id="segments" role="img" aria-label="Context window split between system prompt, examples, retrieval, history and output">
+                    <span class="seg seg-system" id="segSystem"></span>
+                    <span class="seg seg-shots" id="segShots"></span>
+                    <span class="seg seg-retrieval" id="segRetrieval"></span>
+                    <span class="seg seg-history" id="segHistory"></span>
+                    <span class="seg seg-output" id="segOutput"></span>
+                    <span class="seg seg-over" id="segOver"></span>
+                  </div>
+                  <div class="legend">
+                    <span><i style="background:#5b6570"></i>System</span>
+                    <span><i style="background:#7a8794"></i>Few-shot</span>
+                    <span><i style="background:#9c6b3e"></i>Retrieval</span>
+                    <span><i style="background:#8a8f7a"></i>History</span>
+                    <span><i style="background:#e8c39e"></i>Output</span>
+                    <span><i style="background:#b23b2e"></i>Over</span>
+                  </div>
+                  <div class="window-scale"><span>0</span><span id="scaleMid">64k</span><span id="scaleEnd">128k</span></div>
+                </div>
+
+                <figure class="chart-hold">
+                  <figcaption>
+                    <span>Decode speed as the window fills</span>
+                    <span id="chartNote">70B · FP16 · batch 8</span>
+                  </figcaption>
+                  <canvas id="decodeCanvas" aria-label="Line chart of decode tokens per second against context length, with the current request marked"></canvas>
+                </figure>
+
+                <div class="cache-strip" aria-label="Cache size at other context lengths for the same batch">
+                  <div><span>Cache at 8k</span><b id="cache8">3.4 GB</b></div>
+                  <div><span>Cache at 32k</span><b id="cache32">13.7 GB</b></div>
+                  <div><span>Cache at 128k</span><b id="cache128">54.8 GB</b></div>
+                  <div><span>Weights</span><b id="cacheWeights">140 GB</b></div>
+                </div>
+
+                <div class="budget-readout" id="readout">
+                  <div class="rdo"><span>Prompt tokens</span><b id="roPrompt">3,480</b></div>
+                  <div class="rdo"><span>KV per token</span><b id="roKv">320<small>KiB</small></b></div>
+                  <div class="rdo"><span>Cache, batch</span><b id="roCache">11.3<small>GB</small></b></div>
+                  <div class="rdo"><span>Decode</span><b id="roTps">20<small>tok/s</small></b></div>
+                  <div class="rdo"><span>First token</span><b id="roTtft">2231<small>ms</small></b></div>
+                  <div class="rdo"><span>Per 1k requests</span><b id="roCost">€10.38</b></div>
+                </div>
+              </div>
+            </div>
+
+            <p class="verdict" id="verdict" role="status" aria-live="polite">At 3% of the window with an 11.3 GB cache, the 70B model decodes at 20 tokens per second for a batch of 8 on two A100s.</p>
+
+            <div class="budget-foot">
+              <span>KV/token = 2 × layers × KV heads × head dim × bytes</span>
+              <span id="footGpu">A100 80 GB · 2.0 TB/s · 45% kernel efficiency</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="workTitle">
+          <div class="section-head">
+            <p class="kicker">02 / Selected systems</p>
+            <h2 id="workTitle">Four shipped features, and what moved.</h2>
+            <a class="textlink" href="projects.html">All work</a>
+          </div>
+          <div class="work-grid">
+            <article class="work-card">
+              <div class="wc-head"><span class="mono">Legal · 2026</span><span class="mono">Contract review</span></div>
+              <h3>Clause extraction for a lease platform</h3>
+              <p>Replaced a single 90k-token prompt with retrieval over 12 clause families and a typed JSON schema. The model stopped guessing at missing clauses, and the review team stopped reading the ones it invented.</p>
+              <div class="wc-metrics">
+                <div><b>0.941</b>field F1</div>
+                <div><b>−71%</b>input tokens</div>
+                <div><b>€0.0043</b>per document</div>
+              </div>
+            </article>
+            <article class="work-card">
+              <div class="wc-head"><span class="mono">Fintech · 2026</span><span class="mono">Support triage</span></div>
+              <h3>Routing 38,000 tickets a week</h3>
+              <p>A classifier-plus-LLM hybrid: the small model handles 82% of tickets outright, the large one only sees the ambiguous remainder with a compact evidence pack. Escalation precision is the metric the ops team watches, not accuracy.</p>
+              <div class="wc-metrics">
+                <div><b>71%</b>auto-resolved</div>
+                <div><b>0.93</b>escalation precision</div>
+                <div><b>1.9 s</b>p95 response</div>
+              </div>
+            </article>
+            <article class="work-card">
+              <div class="wc-head"><span class="mono">Health · 2025</span><span class="mono">Knowledge search</span></div>
+              <h3>Clinical guidance over 12,000 chunks</h3>
+              <p>Hybrid BM25 and dense retrieval with a reranker, plus a refusal path that is evaluated as a first-class output. The refusal rate fell from 18% to 4% without loosening the evidence threshold.</p>
+              <div class="wc-metrics">
+                <div><b>0.89</b>recall@5</div>
+                <div><b>4%</b>refusal rate</div>
+                <div><b>12k</b>chunks indexed</div>
+              </div>
+            </article>
+            <article class="work-card">
+              <div class="wc-head"><span class="mono">Dev tools · 2025</span><span class="mono">Internal copilot</span></div>
+              <h3>Repository answers without pasting the repo</h3>
+              <p>Tree-sitter chunking with symbol-aware packing, so a question about one function does not drag in four thousand tokens of imports. The eval set is 240 real questions from the team's issue tracker.</p>
+              <div class="wc-metrics">
+                <div><b>2.4k</b>median input tokens</div>
+                <div><b>0.86</b>answer usefulness</div>
+                <div><b>−64%</b>cost per answer</div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="methodTitle">
+          <div class="section-head">
+            <p class="kicker">03 / Method</p>
+            <h2 id="methodTitle">Measure first, prompt second.</h2>
+          </div>
+          <div class="method">
+            <div class="method-intro">
+              <p>A prompt change is a product change, and it needs the same evidence as one: a set of cases that failed before, a metric that is allowed to regress, and a cost line that a finance team can read.</p>
+              <p>I start with twenty real failures, not twenty imagined ones. If the eval set cannot be built from production traffic, the feature is not ready for an eval — it is still a prototype.</p>
+              <p><a class="textlink" href="about.html">How the work runs</a></p>
+            </div>
+            <ol class="method-list">
+              <li class="method-step">
+                <span class="n">01</span>
+                <div><h3>Collect the failures</h3><p>Twenty to two hundred real requests with the wrong answer, the model's reasoning, and what the right answer was. This set is the only thing that decides whether a change is an improvement.</p></div>
+              </li>
+              <li class="method-step">
+                <span class="n">02</span>
+                <div><h3>Make the metric honest</h3><p>Exact match where the output is structured, rubric grading where it is prose, and a separate refusal metric. Inter-annotator agreement on a sample, or the metric is a guess.</p></div>
+              </li>
+              <li class="method-step">
+                <span class="n">03</span>
+                <div><h3>Cut the context</h3><p>Shorter prompts are faster, cheaper and usually more accurate. Few-shot examples earn their tokens only when the failure set proves it; retrieval earns them only when the chunk is actually cited.</p></div>
+              </li>
+              <li class="method-step">
+                <span class="n">04</span>
+                <div><h3>Serve it like software</h3><p>Typed outputs, retries on schema failure, a timeout budget, and a dashboard that separates model errors from retrieval errors. A prompt with no version number is an incident waiting for a date.</p></div>
+              </li>
+            </ol>
+          </div>
+        </section>
+      </main>
+
+      <footer class="foot">
+        <div class="foot-inner">
+          <div>
+            <p><strong>Rhea Kapadia</strong><br>Inference and eval engineering<br>Kreuzberg, Berlin</p>
+          </div>
+          <div>
+            <p class="mono">Elsewhere</p>
+            <p><a href="mailto:rhea@kapadia.systems">rhea@kapadia.systems</a><br><a href="projects.html">Work</a> · <a href="about.html">Notes</a></p>
+          </div>
+          <div>
+            <p class="mono">Availability</p>
+            <p>January 2027 onward<br>Two projects at a time</p>
+          </div>
+        </div>
+        <p class="mono" style="margin-top:22px;color:var(--muted)">© 2026 Rhea Kapadia · the numbers on this site come from the eval sets, not from a brochure</p>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

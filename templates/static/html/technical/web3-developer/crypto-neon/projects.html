@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Files — Tomas Berg, Smart Contract Engineering &amp; Security Review</title>
+<meta name="description" content="Three engagements told as brief, decisions and outcome: a pre-launch review that caught an access-control flaw, a gas optimisation pass with the arithmetic printed, and a testnet-first integration.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%231B1E23'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='56' font-weight='bold' fill='%23FAF9F5' text-anchor='middle'%3EB%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="brand" href="index.html" aria-label="Tomas Berg — overview">
+      <svg class="seal" width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="1.5" y="1.5" width="37" height="37" rx="6" fill="none" stroke="#1B1E23" stroke-width="2.5"/><rect x="7" y="7" width="26" height="26" rx="3" fill="none" stroke="#2B50AA" stroke-width="1.5"/><text x="20" y="27" font-family="Georgia,serif" font-size="16" font-weight="bold" fill="#1B1E23" text-anchor="middle">B</text></svg>
+      <span class="brand-text"><strong>Tomas Berg</strong><small>Smart contract engineering &amp; review</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Main">
+      <a href="index.html">Overview</a>
+      <a href="projects.html" aria-current="page">Case files</a>
+      <a href="about.html">Method &amp; limits</a>
+      <a href="contact.html">Enquire</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobilePanel">☰ Contents</button>
+  </div>
+  <div class="mobile-panel" id="mobilePanel">
+    <nav aria-label="Mobile">
+      <a href="index.html">Overview <small>§ Index</small></a>
+      <a href="projects.html" aria-current="page">Case files <small>§ Work</small></a>
+      <a href="about.html">Method &amp; limits <small>§ About</small></a>
+      <a href="contact.html">Enquire <small>§ Contact</small></a>
+    </nav>
+    <p class="panel-note">Booking: one security-review slot — March 2026</p>
+  </div>
+</header>
+
+<main>
+  <section class="block" style="padding-bottom:20px">
+    <div class="wrap">
+      <p class="kicker">Case files · Selected engagements</p>
+      <h1 style="font-size:clamp(34px,5vw,48px);margin-bottom:16px">The work, told the way it happened</h1>
+      <p class="lede">Three engagements, each told as the brief, the decisions and the outcome. Client names are withheld under NDA, findings are described at class level — the detail lives in the reports, which belong to the clients — and every figure quoted is a figure from the engagement’s own paperwork.</p>
+    </div>
+  </section>
+
+  <!-- CASE 01 -->
+  <section class="block tight" aria-labelledby="case01-h">
+    <div class="wrap">
+      <article class="case rv" id="case-01">
+        <div class="case-head">
+          <p class="case-no">Case file 01 · Security review</p>
+          <h2 id="case01-h">The setter that wasn’t gated</h2>
+        </div>
+        <dl class="tombstone">
+          <div><dt>Type</dt><dd>Pre-launch security review</dd></div>
+          <div><dt>Client</dt><dd>DAO tooling team (name withheld)</dd></div>
+          <div><dt>Scope</dt><dd>3 contracts · ≈1,900 lines</dd></div>
+          <div><dt>Duration</dt><dd>2 weeks</dd></div>
+          <div><dt>Status</dt><dd>Complete — launched after fixes</dd></div>
+        </dl>
+        <div class="case-body">
+          <div>
+            <h4>The brief</h4>
+            <p>A treasury vesting system, two weeks from a launch the team had already announced publicly. The code was written, the tests were green, and the team wanted a review mainly as a formality — which is precisely when a review earns its fee.</p>
+          </div>
+          <div>
+            <h4>The decisions</h4>
+            <p>Read the specification against the code before reading the code alone. Then trace every state-changing function back to its authorisation check, by hand, in a table — no sampling. And when the launch date pressed, decline to compress the re-review of the fixes: the re-review is the review.</p>
+          </div>
+          <div>
+            <h4>The outcome</h4>
+            <p>Fourteen findings: <strong>1 high, 3 medium, 10 low or informational</strong>, each answered in writing. The high finding was an access-control flaw at class level: a configuration setter verified the admin role, but the function it configured did not — the protection was on the door, not on the room. Fixed, re-reviewed, and launched nine days late by the client’s own decision. The testimonial on the overview page is from this engagement.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CASE 02 -->
+  <section class="block tight" aria-labelledby="case02-h">
+    <div class="wrap">
+      <article class="case rv" id="case-02">
+        <div class="case-head">
+          <p class="case-no">Case file 02 · Gas optimisation</p>
+          <h2 id="case02-h">A third off every claim</h2>
+        </div>
+        <dl class="tombstone">
+          <div><dt>Type</dt><dd>Gas optimisation pass</dd></div>
+          <div><dt>Client</dt><dd>Token distribution platform (name withheld)</dd></div>
+          <div><dt>Scope</dt><dd>1 distributor contract</dd></div>
+          <div><dt>Duration</dt><dd>1 week</dd></div>
+          <div><dt>Status</dt><dd>Complete — live</dd></div>
+        </dl>
+        <div class="case-body">
+          <div>
+            <h4>The brief</h4>
+            <p>A vesting distributor whose users claim in small amounts. At the client’s modelled volume, the per-claim transaction cost was eating the product’s margin — and being paid, in the end, by the users least able to pay it.</p>
+          </div>
+          <div>
+            <h4>The decisions</h4>
+            <p>Profile where the gas actually went before touching anything: storage layout first. Pack the claim record into fewer storage slots, remove one redundant external call, and change nothing about behaviour — every optimisation proven against the original test suite plus property tests on the claim maths.</p>
+          </div>
+          <div>
+            <h4>The outcome</h4>
+            <table class="mini">
+              <thead><tr><th>Per claim</th><th class="n">Before</th><th class="n">After</th></tr></thead>
+              <tbody>
+                <tr><td>Gas used</td><td class="n">96,400</td><td class="n">61,700</td></tr>
+                <tr><td>Cost at 25 gwei</td><td class="n">0.002410 ETH</td><td class="n">0.001543 ETH</td></tr>
+                <tr><td>Saving per claim</td><td class="n" colspan="2">0.000868 ETH (−36%)</td></tr>
+              </tbody>
+            </table>
+            <p>At the client’s modelled 40,000 claims a year, that is ≈34.7 ETH a year. Their volume, their model — my job was the per-claim figure, and that one is measured, not modelled. The estimator in §02 of the overview shows the same multiplication.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CASE 03 -->
+  <section class="block tight" aria-labelledby="case03-h">
+    <div class="wrap">
+      <article class="case rv" id="case-03">
+        <div class="case-head">
+          <p class="case-no">Case file 03 · Integration</p>
+          <h2 id="case03-h">Testnet first, caps on, then live</h2>
+        </div>
+        <dl class="tombstone">
+          <div><dt>Type</dt><dd>Integration engagement</dd></div>
+          <div><dt>Client</dt><dd>Payments firm (name withheld)</dd></div>
+          <div><dt>Scope</dt><dd>Checkout integration with an existing euro stablecoin contract</dd></div>
+          <div><dt>Duration</dt><dd>6 weeks</dd></div>
+          <div><dt>Status</dt><dd>Complete — live</dd></div>
+        </dl>
+        <div class="case-body">
+          <div>
+            <h4>The brief</h4>
+            <p>A payments firm adding a crypto checkout option against a stablecoin contract it did not write and could not change. Their condition, stated in the first meeting: a smart-contract incident must never be allowed to become a payments incident.</p>
+          </div>
+          <div>
+            <h4>The decisions</h4>
+            <p>Test against a fork of live chain state before any testnet deployment — the contract’s real behaviour, not its documentation. Stage the rollout with per-transaction and daily caps in the client’s own systems, where their controls live. And rehearse the kill switch before launch, in a drill, not for the first time during an incident.</p>
+          </div>
+          <div>
+            <h4>The outcome</h4>
+            <p>Live in six weeks. Caps raised in two planned steps as the integration earned trust. Zero incidents in the first ninety days. The artefact the client’s on-call team asked to keep was not the code — it was the runbook.</p>
+          </div>
+        </div>
+      </article>
+
+      <div class="cta-band rv">
+        <div>
+          <h3>Your contracts could be the fourth file</h3>
+          <p>Reviews are booked one slot at a time so the reading gets done properly. The next slot is March 2026.</p>
+        </div>
+        <a class="btn" href="contact.html?type=review">Start an enquiry</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div>
+      <h4>Tomas Berg</h4>
+      <p>Independent smart contract engineering and security review. Gothenburg, Sweden; working worldwide, in writing, async-first.</p>
+    </div>
+    <div>
+      <h4>Pages</h4>
+      <nav aria-label="Footer">
+        <a href="index.html">Overview</a>
+        <a href="projects.html">Case files</a>
+        <a href="about.html">Method &amp; limits</a>
+        <a href="contact.html">Enquire</a>
+      </nav>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>Email: <a href="mailto:tomas@berg-contracts.example">tomas@berg-contracts.example</a><br>Booking: one security-review slot, March 2026.<br>Replies within two working days.</p>
+    </div>
+  </div>
+  <div class="wrap foot-base">
+    <p>© 2026 Tomas Berg. <strong>Tomas Berg is a fictional portfolio persona</strong>; the practice, clients and figures on this site are illustrative, and no real person or project is depicted. Photographs are reference images credited in CREDITS.md inside this template folder.</p>
+    <p>No investment advice is offered anywhere on this site. A security review is not an endorsement of any project or token.</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

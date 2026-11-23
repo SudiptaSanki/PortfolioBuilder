@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Korhonen Quantum Hardware — Cryogenic Qubit Bring-Up &amp; Characterisation</title>
+<meta name="description" content="Cryogenic quantum-hardware engineering: transmon device bring-up, cryogenic wiring and thermalisation, coherence characterisation printed as distributions, not best-ever numbers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%2305080f'/%3E%3Ctext x='50' y='68' font-family='monospace' font-size='58' font-weight='bold' fill='%237fd4e8' text-anchor='middle'%3EK%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap mast-in">
+    <a class="brand" href="index.html"><b>KORHONEN</b><span>Quantum Hardware · Helsinki</span></a>
+    <div class="readout" aria-hidden="true">FRIDGE K-2 · MXC <b>12 mK</b><br>COOLDOWN LOG · <b>OPEN</b></div>
+    <nav class="dnav" aria-label="Pages">
+      <a href="index.html" aria-current="page">Log</a>
+      <a href="projects.html">Case files</a>
+      <a href="about.html">About &amp; method</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button id="menuBtn" type="button" aria-expanded="false" aria-controls="mnav"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>Stages</button>
+  </div>
+</header>
+
+<div class="mnav" id="mnav" hidden>
+  <div class="mnav-sheet" role="dialog" aria-modal="true" aria-label="Cooldown sequence — site pages">
+    <div class="mnav-head"><span>Cooldown sequence</span><button id="menuClose" type="button">Close</button></div>
+    <a class="mlink" href="index.html" aria-current="page"><span><span class="st">Stage 01 · Room temperature</span><span class="pg">Log</span></span><span class="tp">300 K</span></a>
+    <a class="mlink" href="projects.html"><span><span class="st">Stage 02 · 4 K plate</span><span class="pg">Case files</span></span><span class="tp">4 K</span></a>
+    <a class="mlink" href="about.html"><span><span class="st">Stage 03 · Cold plate</span><span class="pg">About &amp; method</span></span><span class="tp">100 mK</span></a>
+    <a class="mlink" href="contact.html"><span><span class="st">Stage 04 · Mixing chamber</span><span class="pg">Contact</span></span><span class="tp">15 mK</span></a>
+    <p class="mnav-note">Coldest last. That is where the devices live — and where every enquiry ends up.</p>
+  </div>
+</div>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <div class="hero">
+    <div class="wrap">
+      <div class="logstamp"><span>Cooldown log · Entry 014</span><b>Helsinki · 60.17° N · Fridge K-2 at base temperature</b></div>
+      <div class="hero-grid">
+        <div>
+          <span class="kick">Cryogenic quantum hardware · Transmon devices</span>
+          <h1>A qubit count is not a <em>capability</em>.</h1>
+          <p class="lede">Korhonen Quantum Hardware is the practice of <b>Dr Aino Korhonen</b>, a cryogenic quantum-hardware engineer. I bring transmon devices up from a cold finger to a measured processor: cryogenic wiring and thermalisation, cooldown discipline, and coherence characterisation for quantum-computing companies and national laboratories.</p>
+          <p class="honest">The honesty is in the units. Coherence varies device to device and day to day, so this site prints <b>measured distributions with their dates</b> — medians and spreads, never a best-ever number. A qubit count without error rates is marketing, and you will not find one here.</p>
+          <div class="cta-row">
+            <a class="btn" href="#tool">Run the cold &amp; coherence tool</a>
+            <a class="btn ghost" href="projects.html">Read the case files</a>
+          </div>
+        </div>
+        <figure class="shot">
+          <img src="assets/lab-bench.jpg" alt="A measurement bench in an electronics laboratory: an oscilloscope showing a trace, a signal generator and bench power supplies" width="1600" height="1200">
+          <figcaption>A measurement bench in an electronics teaching laboratory — oscilloscope, signal generator, bench supplies. Reference photograph by khezez via Pexels. It is not the practice's laboratory, and no photograph on this site shows the practice's own cryostats or devices.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SCOREBOARD ================= -->
+  <div class="score" aria-label="The practice in counted units">
+    <div class="wrap score-grid">
+      <div class="score-cell"><span class="n">31</span><span class="l">Devices brought up, cold finger to measured processor</span></div>
+      <div class="score-cell"><span class="n">58</span><span class="l">Cooldowns logged, each with its stage record kept</span></div>
+      <div class="score-cell"><span class="n">9</span><span class="l">Client fridges re-wired after a thermal fault was found</span></div>
+      <div class="score-cell"><span class="n"><i>0</i></span><span class="l">Best-ever numbers quoted — here or in any report</span></div>
+    </div>
+  </div>
+
+  <!-- ================= THE LADDER ================= -->
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="kick">The instrument the work happens in</span>
+        <h2>The ladder: where a qubit has to live</h2>
+        <p class="lede">A dilution refrigerator is a staircase of temperatures, and every stage earns its place by carrying heat, cables or the device itself. The tool further down this page runs on these same stages.</p>
+      </div>
+      <div class="ladder rv">
+        <div class="lad-row hot">
+          <div class="t">300 K<small>Room</small></div>
+          <h3>The laboratory</h3>
+          <p>Where the engineers, the paperwork and the optimism live. Every cable that reaches the device starts here, carrying room-temperature heat with it unless it is stopped on the way down.</p>
+        </div>
+        <div class="lad-row hot">
+          <div class="t">50 K<small>First stage</small></div>
+          <h3>Pulse-tube first stage</h3>
+          <p>The radiation shield and the first heat-sinking of every loom. Unglamorous, and the cause of more failed cooldowns than any stage below it.</p>
+        </div>
+        <div class="lad-row">
+          <div class="t">4 K<small>Second stage</small></div>
+          <h3>The 4 K plate</h3>
+          <p>Amplifiers, circulators and the bulk of the wiring are anchored here. Most of a fridge's working hardware never goes any colder — and never needs to.</p>
+        </div>
+        <div class="lad-row">
+          <div class="t">800 mK<small>Still</small></div>
+          <h3>The still</h3>
+          <p>Pumps the helium mixture that makes the cold below possible. A stage you feel in the plumbing and the pump lines, not in the data.</p>
+        </div>
+        <div class="lad-row">
+          <div class="t">100 mK<small>Cold plate</small></div>
+          <h3>The cold plate</h3>
+          <p>The last warm stop. At 5 GHz the bath here still holds about <b>0.1 thermal photons per mode</b> — quiet enough for wiring, far too loud to measure a qubit honestly. The tool below shows the arithmetic.</p>
+        </div>
+        <div class="lad-row">
+          <div class="t">12 mK<small>Mixing chamber</small></div>
+          <h3>The mixing chamber</h3>
+          <p>Where the device sits, at a thermal occupation near <b>10⁻⁷ photons per mode</b>. Everything the practice does — every anchor, filter and shield — exists to protect this stage.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= THE TOOL ================= -->
+  <section class="block" id="tool" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="kick">Signature instrument · Runs entirely on this page</span>
+        <h2>Cold &amp; coherence, computed in the open</h2>
+        <p class="lede">Two printed relations, worked line by line. The tool reads its constants and its device table from this page, so the numbers it shows are the numbers printed beside it — check them with a pencil.</p>
+      </div>
+
+      <div class="instrument rv">
+        <div class="inst-head">
+          <span class="t">Instrument 01 · Thermal occupation &amp; gate error</span>
+          <span class="s">Constants and device data as printed · No data leaves the page</span>
+        </div>
+
+        <!-- Part 1: thermal occupation -->
+        <div class="inst-part">
+          <h3>1 · Thermal occupation — why the mixing chamber matters</h3>
+          <p class="sub">A qubit at frequency f, sitting in a bath at temperature T, shares its mode with thermal photons. Their mean number, n̄, is set by one relation. Step the frequency, pick a stage, and watch what the last two stages of the ladder are for.</p>
+          <div class="consts" id="consts" data-h="6.62607015e-34" data-kb="1.380649e-23">
+            Printed constants — h = <b>6.62607015 × 10⁻³⁴ J·s</b> · k<sub>B</sub> = <b>1.380649 × 10⁻²³ J/K</b><br>
+            Relation — <b>n̄ = 1 / (e<sup>hf/k<sub>B</sub>T</sup> − 1)</b>, hence hf/k<sub>B</sub> = f × <b>47.99 mK per GHz</b>
+          </div>
+          <div class="ctl-grid">
+            <div>
+              <span class="ctl-label" id="freqLabel">Qubit frequency f</span>
+              <div class="stepper" role="group" aria-labelledby="freqLabel">
+                <button type="button" id="freqDown" aria-label="Decrease frequency by 0.25 gigahertz">−</button>
+                <span class="val" id="freqVal">5.00 GHz</span>
+                <button type="button" id="freqUp" aria-label="Increase frequency by 0.25 gigahertz">+</button>
+              </div>
+              <p class="caveat">Printed range 4.00–6.00 GHz, in 0.25 GHz steps — the band the practice's transmons are designed into.</p>
+            </div>
+            <div>
+              <span class="ctl-label">Stage temperature T — printed presets</span>
+              <div class="chips" id="stageChips">
+                <button type="button" class="chip" data-mk="4000" data-sname="the 4 K plate" aria-pressed="false"><b>4 K plate</b>4,000 mK</button>
+                <button type="button" class="chip" data-mk="800" data-sname="the still" aria-pressed="false"><b>Still</b>800 mK</button>
+                <button type="button" class="chip" data-mk="100" data-sname="the cold plate" aria-pressed="true"><b>Cold plate</b>100 mK</button>
+                <button type="button" class="chip" data-mk="50" data-sname="the heat exchanger" aria-pressed="false"><b>Heat exchanger</b>50 mK</button>
+                <button type="button" class="chip" data-mk="15" data-sname="the mixing chamber" aria-pressed="false"><b>Mixing chamber</b>15 mK</button>
+                <button type="button" class="chip" data-mk="10" data-sname="the mixing chamber, on its best day" aria-pressed="false"><b>MXC, best case</b>10 mK</button>
+              </div>
+            </div>
+          </div>
+          <div class="readout-grid" aria-live="polite">
+            <div class="readout-cell"><span class="k">hf / k<sub>B</sub> — the qubit as a temperature</span><span class="v" id="roHF">239.96 <small>mK</small></span></div>
+            <div class="readout-cell"><span class="k">x = hf / k<sub>B</sub>T</span><span class="v" id="roX">2.400</span></div>
+            <div class="readout-cell"><span class="k">n̄ — thermal photons per mode</span><span class="v" id="roN">0.0998</span></div>
+          </div>
+          <p class="verdict" id="thVerdict"><b>Marginal.</b> At the cold plate, about one mode in ten holds a thermal photon at 5 GHz — quiet enough for wiring, too loud for an honest qubit measurement. Keep cooling.</p>
+          <div class="workings" id="thWork"></div>
+        </div>
+
+        <!-- Part 2: gate-error rule of thumb -->
+        <div class="inst-part">
+          <h3>2 · The gate-error rule of thumb</h3>
+          <p class="sub">The roughest useful question in the building: given a device's measured T₁, what does a gate of a given length cost in relaxation alone? Pick a device from Table D — its T₁ is a median with a spread and a date, because that is what a measurement is — then step the gate time.</p>
+          <span class="ctl-label">Table D — example devices, measured by the practice</span>
+          <div class="table-scroll" role="region" aria-label="Table D, example devices — horizontally scrollable on small screens">
+            <table class="data" id="devTable">
+              <thead>
+                <tr><th scope="col">Device</th><th scope="col">Type</th><th scope="col" class="num">T₁ median</th><th scope="col" class="num">Spread (IQR · n)</th><th scope="col" class="num">Measured</th></tr>
+              </thead>
+              <tbody>
+                <tr aria-selected="true" data-t1="212" data-name="K-07 “Aava”">
+                  <td><button type="button" class="devpick"><b>K-07 “Aava”</b></button></td>
+                  <td>Fixed-frequency transmon</td>
+                  <td class="num">212 µs</td><td class="num">168–257 µs · n = 14</td><td class="num">Mar 2026</td>
+                </tr>
+                <tr aria-selected="false" data-t1="148" data-name="K-09 “Aava II”">
+                  <td><button type="button" class="devpick"><b>K-09 “Aava II”</b></button></td>
+                  <td>Fixed-frequency transmon</td>
+                  <td class="num">148 µs</td><td class="num">121–176 µs · n = 12</td><td class="num">Jan 2026</td>
+                </tr>
+                <tr aria-selected="false" data-t1="96" data-name="T-03 “Sampo”">
+                  <td><button type="button" class="devpick"><b>T-03 “Sampo”</b></button></td>
+                  <td>Tunable transmon</td>
+                  <td class="num">96 µs</td><td class="num">74–118 µs · n = 10</td><td class="num">Nov 2025</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ctl-grid" style="margin-top:26px">
+            <div>
+              <span class="ctl-label" id="gateLabel">Single-qubit gate time t<sub>gate</sub></span>
+              <div class="stepper" role="group" aria-labelledby="gateLabel">
+                <button type="button" id="gateDown" aria-label="Decrease gate time by 5 nanoseconds">−</button>
+                <span class="val" id="gateVal">25 ns</span>
+                <button type="button" id="gateUp" aria-label="Increase gate time by 5 nanoseconds">+</button>
+              </div>
+              <p class="caveat">Printed range 10–60 ns, in 5 ns steps.</p>
+            </div>
+            <div>
+              <span class="ctl-label">Selected device</span>
+              <p class="mono" id="gateDev" style="font-size:1.02rem; padding-top:12px">K-07 “Aava” — T₁ median 212 µs</p>
+            </div>
+          </div>
+          <div class="readout-grid" aria-live="polite">
+            <div class="readout-cell"><span class="k">ε ≈ t<sub>gate</sub> / T₁</span><span class="v" id="roEps">1.18 × 10⁻⁴</span></div>
+            <div class="readout-cell"><span class="k">The same, as a percentage</span><span class="v" id="roEpsPct">0.0118 <small>%</small></span></div>
+            <div class="readout-cell"><span class="k">Gate times inside one T₁</span><span class="v" id="roPer">8,480</span></div>
+          </div>
+          <div class="workings" id="gateWork"></div>
+          <p class="caveat"><b style="color:var(--ink)">Rule of thumb, labelled as one.</b> ε ≈ t<sub>gate</sub>/T₁ prices relaxation during the gate and nothing else — not leakage, not control error, not crosstalk, and not the two-qubit gate, which is where real error budgets usually die. Characterisation reports from this practice carry measured benchmarking numbers; this panel teaches scale, not specifications.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SERVICES REGISTER ================= -->
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="kick">Services register</span>
+        <h2>What the practice takes on</h2>
+        <p class="lede">Five services, each with the clients it serves, the systems it touches and its current status. If a service is not listed, the practice does not sell it — in particular, it does not sell qubit counts.</p>
+      </div>
+      <div class="reg rv">
+        <div class="reg-row">
+          <span class="id">S.01</span>
+          <div><h3>Device bring-up</h3><p>From a mounted chip to a measured processor: first cooldown, wiring verification, spectroscopy, coherence baseline.</p></div>
+          <span class="meta">Quantum-computing companies</span>
+          <span class="meta">Transmon devices, 4–64 qubits</span>
+          <span class="status">Booking Q3 2026</span>
+        </div>
+        <div class="reg-row">
+          <span class="id">S.02</span>
+          <div><h3>Coherence characterisation</h3><p>T₁, T₂ and gate benchmarking reported as distributions over the full device, with dates and conditions — the report is the product.</p></div>
+          <span class="meta">National laboratories · Companies</span>
+          <span class="meta">Client devices on client fridges</span>
+          <span class="status">Open</span>
+        </div>
+        <div class="reg-row">
+          <span class="id">S.03</span>
+          <div><h3>Cryogenic wiring &amp; thermalisation</h3><p>Loom design, attenuation and filtering budgets, anchoring at every stage — the work Case file 01 is about.</p></div>
+          <span class="meta">Laboratories building new lines</span>
+          <span class="meta">Dilution systems, any maker</span>
+          <span class="status">Open</span>
+        </div>
+        <div class="reg-row">
+          <span class="id">S.04</span>
+          <div><h3>Cryostat design review</h3><p>A written review of a planned system against its heat loads and device count, before the purchase order — see Case file 03.</p></div>
+          <span class="meta">Companies specifying new systems</span>
+          <span class="meta">Planned dilution installations</span>
+          <span class="status">Open</span>
+        </div>
+        <div class="reg-row">
+          <span class="id">S.05</span>
+          <div><h3>Cooldown supervision &amp; fault-finding</h3><p>On site for the cooldown that matters, or the one that went wrong. Thermal faults found by measurement, not by swapping parts.</p></div>
+          <span class="meta">Any laboratory</span>
+          <span class="meta">Any dilution system</span>
+          <span class="status wait">Waitlist</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FEES + ESTIMATOR ================= -->
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="kick">Fee shape · Published, as it should be</span>
+        <h2>What it costs, and what moves it</h2>
+      </div>
+      <div class="fee-grid rv">
+        <div class="fee-list">
+          <div class="fee-line"><span class="w">Bring-up &amp; characterisation engineering</span><span class="p">€1,600 / day</span></div>
+          <div class="fee-line"><span class="w">Cryostat time — the practice's fridge, supervised</span><span class="p">€1,150 / day</span></div>
+          <div class="fee-line"><span class="w">Wiring loom &amp; thermalisation build</span><span class="p">€2,300 / cooldown</span></div>
+          <div class="fee-line"><span class="w">Cryostat design review — written, fixed</span><span class="p">€4,800</span></div>
+          <div class="fee-line"><span class="w">Fault-finding call-out</span><span class="p">€1,600 / day + parts at cost</span></div>
+        </div>
+        <div class="moves">
+          <h3>What moves the price</h3>
+          <p><b>Channel count and cooldown cycles, first.</b> Every line into the fridge is hardware, anchoring and a day of verification; every cooldown is four to six days of calendar whether the device behaves or not.</p>
+          <p><b>Device risk stays with the client.</b> A device that measures badly is a finding, not a discount event.</p>
+          <p><b>The conclusion never moves the price.</b> A report that says your device is limited by its dielectric costs exactly what a clean report costs.</p>
+        </div>
+      </div>
+
+      <div class="instrument rv" style="margin-top:44px">
+        <div class="inst-head">
+          <span class="t">Instrument 02 · Engagement estimator</span>
+          <span class="s">Rates as printed above · A scope signal, never a quote</span>
+        </div>
+        <div class="inst-part">
+          <div class="est-row">
+            <div class="w"><b>Engineering days</b><span>€1,600 / day · bring-up or characterisation</span></div>
+            <div class="stepper" role="group" aria-label="Engineering days">
+              <button type="button" id="estEngDown" aria-label="Fewer engineering days">−</button>
+              <span class="val" id="estEngVal">6 days</span>
+              <button type="button" id="estEngUp" aria-label="More engineering days">+</button>
+            </div>
+            <span class="line" id="estEngLine">€9,600</span>
+          </div>
+          <div class="est-row">
+            <div class="w"><b>Cryostat days</b><span>€1,150 / day · practice's fridge, supervised</span></div>
+            <div class="stepper" role="group" aria-label="Cryostat days">
+              <button type="button" id="estFridgeDown" aria-label="Fewer cryostat days">−</button>
+              <span class="val" id="estFridgeVal">4 days</span>
+              <button type="button" id="estFridgeUp" aria-label="More cryostat days">+</button>
+            </div>
+            <span class="line" id="estFridgeLine">€4,600</span>
+          </div>
+          <div class="est-row">
+            <div class="w"><b>Loom &amp; thermalisation builds</b><span>€2,300 / cooldown · lines, anchors, filters</span></div>
+            <div class="stepper" role="group" aria-label="Loom builds">
+              <button type="button" id="estLoomDown" aria-label="Fewer loom builds">−</button>
+              <span class="val" id="estLoomVal">1</span>
+              <button type="button" id="estLoomUp" aria-label="More loom builds">+</button>
+            </div>
+            <span class="line" id="estLoomLine">€2,300</span>
+          </div>
+          <div class="est-row">
+            <div class="w"><b>Cryostat design review</b><span>€4,800 fixed · written, before you order</span></div>
+            <button type="button" class="chip toggle-chip" id="estReview" aria-pressed="false"><b>Add the review</b>+ €4,800</button>
+            <span class="line" id="estReviewLine">€0</span>
+          </div>
+          <div class="est-total">
+            <span class="k">Estimated total</span>
+            <span class="v" id="estTotal">€16,500</span>
+          </div>
+          <div class="workings" id="estWork"></div>
+          <p class="caveat">Arithmetic, not a quote: engagements are scoped in writing first, and the scope — not this panel — sets the fee. Travel outside Finland is billed at cost and agreed in advance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TESTIMONIAL ================= -->
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="testi rv">
+        <span class="attach">Testimonial · Attached to Case file 01 — “The fridge was the bug”</span>
+        <blockquote>Our chip was blamed for a fridge fault for five months. Aino found the unanchored loom in the second cooldown, and the same silicon measured five times the T₁. The redesign budget went back in the bank.</blockquote>
+        <p class="who"><b>Head of Hardware</b> · Quantum-computing company, 12-qubit programme<br>Client name withheld under NDA; the measurements from this engagement are Case file 01 on the projects page.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CTA ================= -->
+  <div class="cta-band">
+    <div class="wrap cta-in">
+      <div>
+        <h2>Have a device that won't cool — or won't cohere?</h2>
+        <p class="small">One contact path, answered by the engineer who would do the work.</p>
+      </div>
+      <a class="btn" href="contact.html">Open an enquiry — 15 mK</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <span class="fh">Korhonen Quantum Hardware</span>
+        <p>Cryogenic quantum-hardware engineering: device bring-up, cryogenic wiring and thermalisation, coherence characterisation. Helsinki, Finland — on site wherever the fridge is.</p>
+      </div>
+      <div>
+        <span class="fh">Pages</span>
+        <ul>
+          <li><a href="index.html">Log — tool, services, fees</a></li>
+          <li><a href="projects.html">Case files</a></li>
+          <li><a href="about.html">About &amp; method</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="fh">Enquiries</span>
+        <ul>
+          <li><a href="mailto:enquiries@korhonen-cryo.example">enquiries@korhonen-cryo.example</a></li>
+          <li>Replies within two working days.</li>
+          <li>Currently booking: Q3 2026.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot-note">Dr Aino Korhonen is a fictional persona created for this portfolio template; the practice, clients, devices and measurements shown are illustrative, worked from published practice in the field. Photographs are reference images credited in CREDITS.md — none shows the practice's own cryostats or devices. Sound ruling: none. Nothing on this site makes a sound — cryogenics is read from logs and distributions, and no audio would teach it better.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

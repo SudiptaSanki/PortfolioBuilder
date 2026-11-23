@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notes — Rhea Kapadia, inference engineering</title>
+<meta name="description" content="How Rhea Kapadia works: eval sets before prompts, retrieval budgets, typed outputs, and the parts of language-model engineering that are still backend work.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2314161a'/%3E%3Ctext x='10' y='44' font-family='monospace' font-size='30' fill='%23e8c39e'%3E%26gt;%3C/text%3E%3Crect x='34' y='38' width='16' height='4' fill='%23e8c39e'/%3E%3C/svg%3E">
+</head>
+<body data-page="about">
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="shell">
+  <aside class="rail">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Rhea Kapadia</span>
+      <span class="brand-sub">Inference engineering</span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="index.html"><span>01</span><span>Overview</span></a>
+      <a href="projects.html"><span>02</span><span>Work</span></a>
+      <a href="about.html" aria-current="page"><span>03</span><span>Notes</span></a>
+      <a href="contact.html"><span>04</span><span>Contact</span></a>
+    </nav>
+    <div class="rail-status">
+      <p class="status-row"><span class="status-dot" aria-hidden="true"></span>Booking from January</p>
+      <p class="mono">Berlin · CET<br>Remote across EU/UK<br>Two projects at a time</p>
+      <a class="rail-cta" href="contact.html">Start a conversation</a>
+    </div>
+  </aside>
+
+  <div class="content">
+    <div class="content-inner">
+      <div class="topline">
+        <span>Notes on the work</span>
+        <span class="tl-right"><span>Last edited 12 Nov 2026</span></span>
+      </div>
+
+      <main id="main">
+        <section class="page-head">
+          <p class="kicker">03 / Notes</p>
+          <h1>Most of this job is backend work with a probabilistic dependency.</h1>
+          <p class="lede">Timeouts, schemas, retries, versioning, cost dashboards. The model is the part that cannot be unit-tested into certainty, so everything around it has to be boring and exact.</p>
+        </section>
+
+        <div class="two-col">
+          <div class="prose">
+            <h2>How I got here</h2>
+            <p>I spent six years building payment and document systems in Amsterdam, mostly the unglamorous half: idempotency keys, reconciliation jobs, and the customer-support tooling that tells a human why a payment failed. When language models became good enough to put in front of customers, the interesting problem was not the model. It was that nobody could say what a regression looked like.</p>
+            <p>Since 2023 I have worked on four production systems and turned down a handful of others. The pattern is consistent: a team has a demo that works on the five examples in the deck, and no way to know whether the sixth example is a bug or a Tuesday. The job starts there.</p>
+
+            <h2>Four things I believe</h2>
+            <p><strong>An eval set is the product.</strong> Twenty real failures are worth more than a hundred synthetic examples, because they carry the mess of production: the typo, the scanned PDF, the customer who writes in Dutch and attaches a German contract. If a team cannot produce twenty failures, the feature is not ready for evaluation, only for a demo.</p>
+            <p><strong>Context is a cost, not a capability.</strong> A 200k window means you can paste everything, not that you should. Every retrieved chunk has to earn its tokens against a baseline that did not include it. In practice I delete more prompt text than I write.</p>
+            <p><strong>Refusals and abstentions are outputs.</strong> “I do not have enough in the record to answer that” is a correct answer when the record is thin, and it needs its own metric. Teams that do not measure refusal end up with a model that confidently fills gaps.</p>
+            <p><strong>The smaller model usually wins.</strong> Not always, but often enough that it should be the baseline. A 32B model with a good retrieval layer beats a 70B model with a stuffed prompt on cost, latency, and — usually — accuracy, because the retrieval does the part the model was guessing at.</p>
+
+            <h2>How an engagement runs</h2>
+            <p>Two weeks to a first honest eval, four to six weeks to something in production. Week one is reading the current pipeline and collecting failures; week two is the harness and the baseline number. After that we work against the number, and every change is a pull request with a before-and-after table.</p>
+            <p>I work as an engineer on the team, not as an advisor. That means writing the code, reviewing the other pull requests, and being on the channel when the prompt starts failing at 02:00 because a document format changed. It also means I will say no to a feature that cannot be evaluated.</p>
+
+            <h2>What I do not do</h2>
+            <ul>
+              <li>Model training or fine-tuning as a first move. Retrieval and prompts usually get there first, and they are reversible.</li>
+              <li>“AI strategy” decks. If the output is a slide, the work has not started.</li>
+              <li>Benchmarks quoted without the harness. A public leaderboard number is not a claim about your traffic.</li>
+            </ul>
+
+            <h2>Tools, honestly</h2>
+            <p>The stack matters less than the loop, but people ask: Python, FastAPI, Postgres with pgvector, a thin retrieval service, and whatever serving layer the team already runs. I use vLLM when the team self-hosts and a hosted API when it does not. For evaluations, a small harness in pytest that logs every case, the model output, the grader's verdict, and the token count, because a spreadsheet with 400 rows becomes unmaintainable at row 120.</p>
+          </div>
+
+          <aside>
+            <div class="side-card">
+              <h3>At a glance</h3>
+              <dl>
+                <div><dt>Based</dt><dd>Berlin, Kreuzberg</dd></div>
+                <div><dt>Working</dt><dd>EU / UK remote</dd></div>
+                <div><dt>Since</dt><dd>2023, LLM systems</dd></div>
+                <div><dt>Before</dt><dd>6 yrs payments</dd></div>
+                <div><dt>Capacity</dt><dd>2 projects</dd></div>
+              </dl>
+            </div>
+
+            <div class="side-card">
+              <h3>Engagement shapes</h3>
+              <ul>
+                <li>Eval harness and baseline, 2 weeks</li>
+                <li>Retrieval rebuild, 4–6 weeks</li>
+                <li>Cost and latency pass, 1–2 weeks</li>
+                <li>Fractional engineer, 2 days a week</li>
+              </ul>
+            </div>
+
+            <div class="side-card">
+              <h3>Speaking and writing</h3>
+              <p style="font-size:0.82rem;color:var(--ink-2);margin:0;line-height:1.55">“The eval set is the product”, Berlin ML meetup, March 2026.<br><br>“What a 200k window actually costs”, internal seminar, two fintech teams, October 2025.</p>
+            </div>
+          </aside>
+        </div>
+
+        <section class="block" aria-labelledby="stackTitle">
+          <div class="section-head">
+            <p class="kicker">In the toolkit</p>
+            <h2 id="stackTitle">What I reach for, and what it is for</h2>
+          </div>
+          <table class="spec-table">
+            <caption>Default stack, adapted to whatever the team already runs</caption>
+            <thead>
+              <tr><th scope="col">Tool</th><th scope="col">Used for</th><th scope="col">Years</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Python / FastAPI</th><td>Request handling, schema validation, retries</td><td>9</td></tr>
+              <tr><th scope="row">Postgres + pgvector</th><td>Retrieval where a separate vector store is overkill</td><td>4</td></tr>
+              <tr><th scope="row">vLLM</th><td>Self-hosted serving, prefix caching, KV quantisation</td><td>2</td></tr>
+              <tr><th scope="row">pytest harness</th><td>Case-level evals, regression gates in CI</td><td>3</td></tr>
+              <tr><th scope="row">OpenTelemetry</th><td>Separating model errors from retrieval errors in production</td><td>5</td></tr>
+              <tr><th scope="row">Tree-sitter</th><td>Symbol-aware chunking for code and structured documents</td><td>2</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </main>
+
+      <footer class="foot">
+        <div class="foot-inner">
+          <div><p><strong>Rhea Kapadia</strong><br>Inference and eval engineering<br>Kreuzberg, Berlin</p></div>
+          <div><p class="mono">Elsewhere</p><p><a href="mailto:rhea@kapadia.systems">rhea@kapadia.systems</a><br><a href="projects.html">Work</a> · <a href="about.html">Notes</a></p></div>
+          <div><p class="mono">Availability</p><p>January 2027 onward<br>Two projects at a time</p></div>
+        </div>
+        <p class="mono" style="margin-top:22px;color:var(--muted)">© 2026 Rhea Kapadia · the numbers on this site come from the eval sets, not from a brochure</p>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

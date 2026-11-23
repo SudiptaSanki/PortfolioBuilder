@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ines Kovač — atomic vapor cell magnetometry</title>
+<meta name="description" content="Designing rubidium SERF vapor-cell magnetometers: cell geometry, coatings, laser optics and shielding, from a bench sensitivity of 3 fT/√Hz to a fielded sensor.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600&family=Azeret+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f7f8fa'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%232f3391' stroke-width='1.4'/%3E%3Cpath d='M16 7v18' stroke='%232f3391' stroke-width='0.9'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="head-in">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">IK</span>
+      <span class="brand-text">Ines Kovač<small>Atomic magnetometry · Jena</small></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav">Menu</button>
+    <nav class="nav" id="siteNav" aria-label="Main">
+      <a href="projects.html">Instruments</a>
+      <a href="index.html#bench">Bench</a>
+      <a href="about.html">Lab</a>
+      <a href="contact.html" class="nav-cta">Commission a sensor</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="hero-head">
+      <p class="eyebrow">Optically pumped magnetometers · Rb-87 · SERF regime</p>
+      <p class="sheet-meta">Sheet 1 of 4<br>Bench record 2026<br>Jena, 50.93°N</p>
+      <h1>A magnetometer is a glass cell and thirty years of getting the glass right.</h1>
+    </div>
+    <div class="hero-body">
+      <p class="standfirst">I design rubidium vapor-cell sensors for people who need to measure a field a million times weaker than the one the room is sitting in. Cell geometry, coating, laser detuning, buffer gas, shielding. The physics is published; the craft is in the cell that survives the third thermal cycle.</p>
+      <dl class="hero-facts">
+        <div><dt>Bench sensitivity</dt><dd>1.4 fT/√Hz</dd></div>
+        <div><dt>Cells built</dt><dd>212</dd></div>
+        <div><dt>Fielded sensors</dt><dd>38</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="bench" id="bench" aria-labelledby="benchTitle">
+    <div class="bench-head">
+      <div>
+        <h2 id="benchTitle">Rb-87 SERF bench</h2>
+        <p>Larmor precession, coherence and the projection-noise limit for a single cell</p>
+      </div>
+      <span class="bench-tag">Bench sheet 07</span>
+    </div>
+
+    <div class="bench-main">
+      <figure class="scope">
+        <svg id="scope" viewBox="0 0 560 300" role="img" aria-labelledby="scopeTitle scopeDesc">
+          <title id="scopeTitle">Precession signal from the cell</title>
+          <desc id="scopeDesc">A damped oscillation at the Larmor frequency, with the exponential envelope drawn as dashed curves and the coherence time and period annotated.</desc>
+          <g id="scopeGrid" stroke="rgba(20,22,28,0.10)" fill="none"></g>
+          <g id="scopeLabels" font-family="Azeret Mono, monospace" font-size="9" fill="#6d7484"></g>
+          <line id="zeroLine" x1="48" y1="0" x2="536" y2="0" stroke="rgba(20,22,28,0.3)" stroke-width="0.8"></line>
+          <path id="envTop" fill="none" stroke="rgba(47,51,145,0.35)" stroke-width="1" stroke-dasharray="3 3"></path>
+          <path id="envBot" fill="none" stroke="rgba(47,51,145,0.35)" stroke-width="1" stroke-dasharray="3 3"></path>
+          <path id="signalPath" fill="none" stroke="#2f3391" stroke-width="1.5"></path>
+        </svg>
+        <figcaption id="scopeCap">50 nT applied field, 168 °C cell. Seven periods of precession inside one coherence time.</figcaption>
+      </figure>
+
+      <dl class="readouts">
+        <div><dt>Larmor frequency</dt><dd id="outFreq">—</dd></div>
+        <div><dt>Precession period</dt><dd id="outPeriod">—</dd></div>
+        <div><dt>Rb density</dt><dd id="outDensity">—</dd></div>
+        <div><dt>Coherence time</dt><dd id="outT2">—</dd></div>
+        <div><dt>Sensitivity</dt><dd id="outSens">—</dd></div>
+        <div><dt>Spin-exchange rate</dt><dd id="outSerf">—</dd></div>
+      </dl>
+    </div>
+
+    <div class="bench-controls">
+      <div class="ctl">
+        <label for="field">Applied field <output id="fieldOut">50 nT</output></label>
+        <input type="range" id="field" min="1" max="1000" step="1" value="50">
+      </div>
+      <div class="ctl">
+        <label for="temp">Cell temperature <output id="tempOut">168 °C</output></label>
+        <input type="range" id="temp" min="100" max="200" step="1" value="168">
+      </div>
+      <div class="ctl">
+        <label for="size">Cell inner size <output id="sizeOut">10 mm</output></label>
+        <input type="range" id="size" min="4" max="24" step="1" value="10">
+      </div>
+      <div class="ctl">
+        <label for="power">Pump power <output id="powerOut">60 mW</output></label>
+        <input type="range" id="power" min="5" max="200" step="5" value="60">
+      </div>
+      <div class="ctl">
+        <label for="buffer">Buffer gas <output id="bufferOut">60 torr</output></label>
+        <input type="range" id="buffer" min="5" max="200" step="5" value="60">
+      </div>
+    </div>
+
+    <p class="bench-note" id="benchNote">At 168 °C the cell holds 2.2 × 10¹² atoms and coheres for 9.4 ms. The projection-noise limit sits at 1.3 fT/√Hz with 60 mW of pump light.</p>
+  </section>
+
+  <section class="rules" aria-label="Bench record">
+    <div class="rules-in">
+      <div><span>Cells pumped and sealed</span><b>212</b></div>
+      <div><span>Cells that survived 200 cycles</span><b>161</b></div>
+      <div><span>Best measured sensitivity</span><b>0.9 fT/√Hz</b></div>
+      <div><span>Longest continuous run</span><b>410 days</b></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <p class="datum">01 — Physics</p>
+      <h2>Four things the cell has to do at once</h2>
+      <p class="sec-intro">A SERF magnetometer works by making the atoms forget their own spin-exchange collisions. That happens at high density and low field, which are two conditions that fight everything else in the design.</p>
+    </div>
+    <div class="principles">
+      <article>
+        <h3>Hold density without broadening</h3>
+        <p>More atoms means a bigger signal, but spin-exchange collisions broaden the resonance. The SERF regime buys the density back by making those collisions spin-conserving, and it only works below about 10 µT and above about 10¹² atoms per cubic centimetre.</p>
+        <p class="principle-fig">10¹² cm⁻³</p>
+      </article>
+      <article>
+        <h3>Keep the wall out of the wall</h3>
+        <p>Every atom that touches the glass loses its spin. A paraffin or antirelaxation coating keeps a fraction of them alive for a few hundred collisions, which is the difference between a coherence time of 1 ms and 10 ms.</p>
+        <p class="principle-fig">10 ms</p>
+      </article>
+      <article>
+        <h3>Pump hard, detect gently</h3>
+        <p>The pump laser polarises the ensemble; the probe reads its rotation. Pump power that saturates the transition heats and broadens the sample, so the optimum is a compromise measured on the bench, not calculated on paper.</p>
+        <p class="principle-fig">60 mW</p>
+      </article>
+      <article>
+        <h3>Shield the field, then measure it</h3>
+        <p>The sensor measures a field in the femtotesla range inside a room holding a 50 µT field. A three-layer mu-metal shield with a ferrite inner liner gets 60 dB; the rest of the job is done by not moving anything made of iron.</p>
+        <p class="principle-fig">60 dB</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <p class="datum">02 — Cell</p>
+      <h2>What is inside the glass</h2>
+      <p class="sec-intro">A 10 mm cube of borosilicate, filled at 60 torr of neon, with a droplet of rubidium that has been distilled three times and a coating that is applied in a rotating oven over nine hours.</p>
+    </div>
+    <div class="cell-grid">
+      <figure class="cell-fig">
+        <svg viewBox="0 0 420 300" role="img" aria-labelledby="cellTitle cellDesc">
+          <title id="cellTitle">Vapor cell with pump and probe beams</title>
+          <desc id="cellDesc">A cubic glass cell with a pump beam entering one face and a probe beam crossing it at right angles, and two photodetectors at the exits.</desc>
+          <rect width="420" height="300" fill="#eef0f4"></rect>
+          <g stroke="rgba(20,22,28,0.10)"><path d="M0 60h420M0 120h420M0 180h420M0 240h420"></path></g>
+          <rect x="150" y="100" width="120" height="120" fill="rgba(47,51,145,0.04)" stroke="#14161c" stroke-width="1.4"></rect>
+          <path d="M150 100 L178 72 H298 L270 100" fill="none" stroke="#14161c" stroke-width="1"></path>
+          <path d="M270 220 L298 192 V72" fill="none" stroke="#14161c" stroke-width="1"></path>
+          <line x1="60" y1="160" x2="150" y2="160" stroke="#2f3391" stroke-width="1.6"></line>
+          <polygon points="150,160 140,155 140,165" fill="#2f3391"></polygon>
+          <line x1="210" y1="40" x2="210" y2="100" stroke="#2f3391" stroke-width="1.6"></line>
+          <polygon points="210,100 205,90 215,90" fill="#2f3391"></polygon>
+          <line x1="210" y1="220" x2="210" y2="268" stroke="#2f3391" stroke-width="1.2" stroke-dasharray="3 3"></line>
+          <line x1="270" y1="160" x2="370" y2="160" stroke="#2f3391" stroke-width="1.2" stroke-dasharray="3 3"></line>
+          <rect x="356" y="150" width="14" height="20" fill="#14161c"></rect>
+          <rect x="203" y="252" width="14" height="16" fill="#14161c"></rect>
+          <g font-family="Azeret Mono, monospace" font-size="9" fill="#4b5261">
+            <text x="56" y="150">pump 780 nm</text>
+            <text x="216" y="52">probe</text>
+            <text x="290" y="150">detector</text>
+            <text x="216" y="284">detector</text>
+            <text x="152" y="238">10 mm</text>
+            <text x="152" y="94">cell, 168 °C</text>
+          </g>
+          <circle cx="196" cy="176" r="3" fill="#c8552b"></circle>
+          <text x="168" y="196" font-family="Azeret Mono, monospace" font-size="8" fill="#c8552b">Rb droplet</text>
+        </svg>
+        <figcaption>Cell 212, section. Pump and probe cross at right angles; the droplet sits in the corner away from both beams.</figcaption>
+      </figure>
+
+      <table class="data">
+        <caption>Cell 212, as built</caption>
+        <tbody>
+          <tr><th>Body</th><td>Borosilicate, 10 mm inner cube, 1.5 mm wall</td></tr>
+          <tr><th>Alkali</th><td>Rb-87, distilled three times, 99.9% enriched</td></tr>
+          <tr><th>Buffer gas</th><td>Neon, 60 torr, sealed at 10⁻⁷ mbar</td></tr>
+          <tr><th>Coating</th><td>Paraffin, 9 h rotating oven cure</td></tr>
+          <tr><th>Windows</th><td>Four faces, AR coated at 780 and 795 nm</td></tr>
+          <tr><th>Heater</th><td>Indium tin oxide film, 3 W at 168 °C</td></tr>
+          <tr><th>Mass</th><td>11.4 g including the mount</td></tr>
+          <tr><th>Cycles survived</th><td>340 thermal cycles before the seal failed</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="quote-band">
+    <blockquote>
+      <p>“The magnetometer is not the laser, and it is not the cell. It is the twelve decisions about where the laser points and how the cell is held that nobody publishes.”</p>
+    </blockquote>
+  </section>
+
+  <section class="section">
+    <div class="sec-head">
+      <p class="datum">03 — Field</p>
+      <h2>Where these sensors go</h2>
+      <p class="sec-intro">Three applications pay for the work: brain fields, buried ordnance and geological anomaly mapping. Each one asks a different question of the same glass cell.</p>
+    </div>
+    <div class="applications">
+      <article>
+        <p class="app-fig">10 fT</p>
+        <h3>Magnetoencephalography</h3>
+        <p>Neural currents produce fields of 10 to 1,000 fT at the scalp. A helmet of 48 sensors can resolve them without liquid helium, which means a patient can move their head during a scan for the first time.</p>
+      </article>
+      <article>
+        <p class="app-fig">0.1 nT</p>
+        <h3>Unexploded ordnance</h3>
+        <p>A 250 kg bomb at 5 m looks like a 0.1 nT anomaly against the geomagnetic background. Gradiometer pairs reject the background and leave the target, at walking pace, over ground that a coil survey cannot reach.</p>
+      </article>
+      <article>
+        <p class="app-fig">1 pT</p>
+        <h3>Geophysical mapping</h3>
+        <p>Airborne surveys resolve crustal magnetisation at the picotesla level. A sensor with 1 fT/√Hz sensitivity and a 1 kHz bandwidth lets the aircraft fly faster over the same ground, which is the whole economics of a survey.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-in">
+      <div>
+        <h2>Bring a field, a bandwidth and a budget</h2>
+        <p>I build three or four sensors a year and take one development programme at a time. If you need 100 identical units, the useful conversation is about who manufactures the cell, not about who designs it.</p>
+      </div>
+      <a class="btn" href="contact.html">Commission a sensor</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="foot-in">
+    <div>
+      <strong>Ines Kovač</strong>
+      <p>Atomic magnetometry and vapor-cell instrumentation. Jena, Germany, working with labs across the EU.</p>
+    </div>
+    <div>
+      <p class="foot-label">Current</p>
+      <p>Institut für Photonik, Jena<br>Guest lecturer, TU Ilmenau<br>DIN working group, magnetic sensors</p>
+    </div>
+    <div>
+      <p class="foot-label">Contact</p>
+      <p><a href="mailto:i.kovac@vaporcell.de">i.kovac@vaporcell.de</a><br>+49 3641 555 0248</p>
+    </div>
+  </div>
+  <p class="foot-base">© 2026 Ines Kovač · Static template, no trackers, no audio</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

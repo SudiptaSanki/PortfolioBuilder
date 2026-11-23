@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engagements — Hana Sugimoto, Cipher Vault</title>
+<meta name="description" content="Six post-quantum cryptography engagements: firmware KEMs, endpoint inventories, hybrid TLS rollback, a 128 km QKD link, crypto-agility and ML-DSA firmware signing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23080a0b'/%3E%3Crect x='6' y='6' width='20' height='20' fill='none' stroke='%23d9a15c' stroke-width='1.3'/%3E%3Cpath d='M11 16h10M16 11v10' stroke='%23d9a15c' stroke-width='1.3'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%23d9a15c'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="shell">
+  <aside class="rail">
+    <a class="rail-brand" href="index.html">
+      <svg class="rail-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <rect x="5" y="5" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M13 20h14M20 13v14" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="20" cy="20" r="3" fill="currentColor"/>
+      </svg>
+      <span><strong>Cipher Vault</strong><small>Hana Sugimoto<br>Quantum-safe cryptography</small></span>
+    </a>
+    <button class="rail-menu" id="railMenu" aria-expanded="false" aria-controls="railNav">Sections</button>
+    <nav class="rail-nav" id="railNav" aria-label="Main">
+      <a href="index.html"><span class="n">01</span> Bench</a>
+      <a href="projects.html" aria-current="page"><span class="n">02</span> Engagements</a>
+      <a href="about.html"><span class="n">03</span> Practice</a>
+      <a href="contact.html"><span class="n">04</span> Contact</a>
+    </nav>
+    <div class="rail-foot">
+      <div class="rail-status">
+        <b><span class="dot"></span>Accepting Q1 work</b>
+        Kyoto 35.01°N 135.77°E<br>
+        ML-KEM / ML-DSA readiness<br>
+        Last audit: 06 Nov 2026
+      </div>
+      <a class="rail-cta" href="contact.html">Request an inventory</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="crumb"><b>Engagements</b><span>/</span><span>2025 – 2026</span></span>
+      <span class="live">6 of 23 shown</span>
+    </div>
+
+    <main id="main">
+      <div class="wrap page-head">
+        <p class="kicker">Engagements · selected</p>
+        <h1>What a migration looks like from the inside</h1>
+        <p>Six programmes, each with the constraint that made it hard: a five-year firmware cycle, a middlebox that rewrote handshakes, a board that wanted a quantum deadline it could put in a risk register.</p>
+      </div>
+
+      <div class="wrap" style="padding-block: 28px 56px;">
+        <div class="cases">
+
+          <article class="case" id="cv-2604">
+            <div class="case-left">
+              <span class="cid">CV-2604 · Embedded</span>
+              <h2>ML-KEM on a fleet that cannot be reflashed twice</h2>
+              <p class="sector">Utility meters · ARM Cortex-M4 · 240 MHz</p>
+            </div>
+            <div class="case-right">
+              <p>The meter fleet had 96 kB of flash headroom and a bootloader that could only be updated once, by design: a failed flash in the field means a truck roll. The vendor wanted ML-KEM-768 for the next key rotation, and the obvious port of the reference implementation did not fit — 34 kB of code plus a 6 kB stack peak against a 4 kB budget.</p>
+              <p>We rebuilt the NTT with a smaller precomputed table, moved the matrix generation to the server side of the protocol where it belonged, and measured the result on the actual silicon rather than on a development board. Decapsulation settled at 1.42 million cycles and the stack high-water mark at 3.6 kB. The hybrid path kept X25519 as the fallback for the 4,100 meters that would receive firmware on the older radio.</p>
+              <div class="case-stats">
+                <div><dt>Duration</dt><dd>9 weeks</dd></div>
+                <div><dt>Flash saved</dt><dd>11.8 kB</dd></div>
+                <div><dt>Stack peak</dt><dd>3.6 kB</dd></div>
+                <div><dt>Status</dt><dd>Shipped</dd></div>
+              </div>
+              <p class="result"><b>RESULT</b> ML-KEM-768 shipped to 41,000 meters in two waves, with the older radio cohort on hybrid for another 18 months. The report is CV-TR-2026-04.</p>
+            </div>
+          </article>
+
+          <article class="case" id="cv-2602">
+            <div class="case-left">
+              <span class="cid">CV-2602 · Inventory</span>
+              <h2>1,840 endpoints in nine days, and the 214 keys nobody owned</h2>
+              <p class="sector">Regional bank · TLS, mTLS, code signing</p>
+            </div>
+            <div class="case-right">
+              <p>The bank believed it had 1,200 TLS endpoints. Certificate transparency, load-balancer configuration and a scan of the mobile apps produced 1,840, of which 214 had no owner in the configuration management database. Eleven were leaf certificates for internal services that had been decommissioned but not shut down.</p>
+              <p>The inventory was built as a CSV with a fixed schema and a second file describing how each row was discovered, so the next team can re-run it. We also recorded the key type and the signature algorithm per endpoint, because "RSA-2048" and "ECDSA P-256" fail the 2030 deprecation test at different times.</p>
+              <p>The 214 unowned keys became a separate finding: 84 were revoked within the month, 61 turned out to belong to a subsidiary’s staging environment, and the rest were assigned owners after a week of asking. The CIO’s summary was three lines long.</p>
+              <div class="case-stats">
+                <div><dt>Duration</dt><dd>9 days</dd></div>
+                <div><dt>Endpoints</dt><dd>1,840</dd></div>
+                <div><dt>Unowned</dt><dd>214</dd></div>
+                <div><dt>Status</dt><dd>Complete</dd></div>
+              </div>
+              <p class="result"><b>RESULT</b> 84 certificates revoked, 130 assigned, and a repeatable script handed to the platform team. The report is CV-TR-2026-02.</p>
+            </div>
+          </article>
+
+          <article class="case" id="cv-2511">
+            <div class="case-left">
+              <span class="cid">CV-2511 · Telecom</span>
+              <h2>A middlebox that quietly downgraded the hybrid</h2>
+              <p class="sector">Mobile network · TLS termination · 38 PoPs</p>
+            </div>
+            <div class="case-right">
+              <p>The carrier had rolled out X25519 plus ML-KEM-768 to its customer-facing API and reported 100% coverage. A capture at one peering point showed 7% of sessions negotiating to X25519 alone. The cause was a TLS-terminating appliance that dropped any ClientHello over 1,400 bytes, and the client retried without the new key share — correctly, per the spec, and silently.</p>
+              <p>We instrumented the negotiation path to log the selected group and the reason for the fallback, then built a canary that alerts on any session where the hybrid is not selected. The fix was a configuration change on 11 appliances and a client-side flag that refuses to downgrade for high-value endpoints.</p>
+              <p>The lesson is in the report: a hybrid rollout is not complete when the code ships, it is complete when you can prove which group was selected on every path you care about.</p>
+              <div class="case-stats">
+                <div><dt>Duration</dt><dd>6 weeks</dd></div>
+                <div><dt>Silent fallback</dt><dd>7.1%</dd></div>
+                <div><dt>After fix</dt><dd>0.0%</dd></div>
+                <div><dt>Status</dt><dd>Shipped</dd></div>
+              </div>
+              <p class="result"><b>RESULT</b> Downgrade eliminated on all 38 PoPs; group-selection telemetry is now a permanent dashboard. The report is CV-TR-2025-11.</p>
+            </div>
+          </article>
+
+          <article class="case" id="cv-2507">
+            <div class="case-left">
+              <span class="cid">CV-2507 · QKD</span>
+              <h2>128 km of fibre, and a certificate problem</h2>
+              <p class="sector">Data centre interconnect · decoy-state BB84</p>
+            </div>
+            <div class="case-right">
+              <p>The operator wanted a QKD link between two data centres and expected the hard part to be the optics. The optics behaved: 128 km of installed fibre, 1.9 kbps of sifted key at 11% QBER on a warm afternoon, which is enough for a key-refresh channel and not enough for bulk encryption. The hard part was authenticating the classical channel that carries the sifting conversation.</p>
+              <p>QKD gives you a shared secret with information-theoretic security only if the parties can authenticate each other; otherwise the man in the middle is just another endpoint. The existing PKI was RSA-2048, which defeats the purpose. We designed the link to authenticate with ML-DSA-65 signatures on a separate channel, and documented the trust assumption rather than hiding it.</p>
+              <p>The link is now in production for key refresh on a backup circuit, with a clear note in the architecture record that it does not protect the traffic itself.</p>
+              <div class="case-stats">
+                <div><dt>Duration</dt><dd>11 weeks</dd></div>
+                <div><dt>Distance</dt><dd>128 km</dd></div>
+                <div><dt>Sifted rate</dt><dd>1.9 kbps</dd></div>
+                <div><dt>Status</dt><dd>In service</dd></div>
+              </div>
+              <p class="result"><b>RESULT</b> Key refresh moved to the QKD link for one circuit; authentication moved to ML-DSA-65. The report is CV-TR-2025-07.</p>
+            </div>
+          </article>
+
+          <article class="case" id="cv-2503">
+            <div class="case-left">
+              <span class="cid">CV-2503 · Agility</span>
+              <h2>Swapping a signature scheme in a week</h2>
+              <p class="sector">Payment network · code signing · 4 HSM vendors</p>
+            </div>
+            <div class="case-right">
+              <p>The network signed release artefacts with RSA-3072 on three HSM models, with the algorithm hard-coded in a Java service and duplicated in a Go tool. Adding ML-DSA meant touching nine repositories, four vendors and a certification body. We replaced the call sites with a signing interface that takes an algorithm identifier and a key handle, and moved the choice into configuration with a versioned key manifest.</p>
+              <p>The first real test was a swap from ML-DSA-65 to ML-DSA-87 on one product line: it took four days, including the HSM firmware update and the re-issued key manifest. The same change would have taken a quarter before.</p>
+              <p>The interface is deliberately boring. Boring is what survives an acquisition.</p>
+              <div class="case-stats">
+                <div><dt>Duration</dt><dd>14 weeks</dd></div>
+                <div><dt>Repos changed</dt><dd>9</dd></div>
+                <div><dt>Swap time</dt><dd>4 days</dd></div>
+                <div><dt>Status</dt><dd>In service</dd></div>
+              </div>
+              <p class="result"><b>RESULT</b> Algorithm selection is configuration, not code. Two schemes run in parallel and a third can be added without a release. The report is CV-TR-2025-03.</p>
+            </div>
+          </article>
+
+          <article class="case" id="cv-2606">
+            <div class="case-left">
+              <span class="cid">CV-2606 · Firmware</span>
+              <h2>Signing 30 MB images with a 2.4 kB signature</h2>
+              <p class="sector">Industrial gateway · secure boot · 12-year support</p>
+            </div>
+            <div class="case-right">
+              <p>The gateway verified firmware with RSA-2048 and a 12-year support commitment, which is exactly the horizon where a quantum break becomes someone’s problem. The constraint was the boot ROM: 8 kB of mask ROM, no possibility of a field update, and a verification path that had to run before any mutable code.</p>
+              <p>ML-DSA-44 verification fitted in 6.1 kB of ROM with a 2.4 kB signature expansion per image, and the key size stayed within the OTP fuse budget. SLH-DSA was rejected on signature size — 7.8 kB for the smallest parameter set, against a 30 MB image that was already tight on the recovery partition.</p>
+              <p>The migration runs both verifiers for two product generations, with the new key in a separate fuse bank. The boot ROM change is in the next mask revision; the fielded units get the dual verifier through the existing update path.</p>
+              <div class="case-stats">
+                <div><dt>Duration</dt><dd>10 weeks</dd></div>
+                <div><dt>ROM used</dt><dd>6.1 kB</dd></div>
+                <div><dt>Signature</dt><dd>2.4 kB</dd></div>
+                <div><dt>Status</dt><dd>In validation</dd></div>
+              </div>
+              <p class="result"><b>RESULT</b> Dual verification shipped in firmware 4.2; the mask ROM change is scheduled for the 2027 silicon revision.</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <section class="pull">
+        <div class="wrap pull-grid">
+          <blockquote>“Every engagement ends with a document someone else can run. If it needs me to explain it, it is not finished.”</blockquote>
+          <div class="pull-side">Reference calls available<br>Under NDA, with client consent<br>No vendor referral fees</div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-in">
+        <div class="brandline">Cipher Vault · Hana Sugimoto<small>Post-quantum migration · Kyoto, Japan</small></div>
+        <div class="foot-links">
+          <a href="index.html">Bench</a>
+          <a href="projects.html">Engagements</a>
+          <a href="about.html">Practice</a>
+          <a href="contact.html">Contact</a>
+          <a href="mailto:hana@ciphervault.jp">hana@ciphervault.jp</a>
+        </div>
+      </div>
+      <div class="colophon">
+        <span>© 2026 Hana Sugimoto. Reports CC BY 4.0; client data excluded.</span>
+        <span>Space Grotesk · Manrope · JetBrains Mono</span>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<script src="script.js" defer></script>
+</body>
+</html>

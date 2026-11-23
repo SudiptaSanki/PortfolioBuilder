@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice — Hana Sugimoto, Cipher Vault</title>
+<meta name="description" content="Hana Sugimoto's background in lattice cryptography and production TLS, the standards she works against, and the positions that shape her migration advice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23080a0b'/%3E%3Crect x='6' y='6' width='20' height='20' fill='none' stroke='%23d9a15c' stroke-width='1.3'/%3E%3Cpath d='M11 16h10M16 11v10' stroke='%23d9a15c' stroke-width='1.3'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%23d9a15c'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="shell">
+  <aside class="rail">
+    <a class="rail-brand" href="index.html">
+      <svg class="rail-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <rect x="5" y="5" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M13 20h14M20 13v14" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="20" cy="20" r="3" fill="currentColor"/>
+      </svg>
+      <span><strong>Cipher Vault</strong><small>Hana Sugimoto<br>Quantum-safe cryptography</small></span>
+    </a>
+    <button class="rail-menu" id="railMenu" aria-expanded="false" aria-controls="railNav">Sections</button>
+    <nav class="rail-nav" id="railNav" aria-label="Main">
+      <a href="index.html"><span class="n">01</span> Bench</a>
+      <a href="projects.html"><span class="n">02</span> Engagements</a>
+      <a href="about.html" aria-current="page"><span class="n">03</span> Practice</a>
+      <a href="contact.html"><span class="n">04</span> Contact</a>
+    </nav>
+    <div class="rail-foot">
+      <div class="rail-status">
+        <b><span class="dot"></span>Accepting Q1 work</b>
+        Kyoto 35.01°N 135.77°E<br>
+        Standards: FIPS 203 / 204 / 205<br>
+        Last audit: 06 Nov 2026
+      </div>
+      <a class="rail-cta" href="contact.html">Request an inventory</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="crumb"><b>Practice</b><span>/</span><span>Background, standards, positions</span></span>
+      <span class="live">Available Q1 2027</span>
+    </div>
+
+    <main id="main">
+      <div class="wrap page-head">
+        <p class="kicker">Practice · since 2016</p>
+        <h1>Cryptography is a maintenance discipline, not a choice of algorithm</h1>
+        <p>I have spent ten years on the unglamorous side of the field: the implementation, the deployment, the inventory nobody wants to build, and the migration that has to survive a Tuesday release.</p>
+      </div>
+
+      <div class="wrap about-grid">
+        <div class="prose">
+          <h2>From lattice proofs to a payment network</h2>
+          <p class="drop">My doctorate was on the concrete cost of lattice reduction against module-LWE with small parameters — the kind of question that is interesting for a year and then becomes a product decision a decade later. I finished in 2019, when Kyber was a candidate and “post-quantum” was still a phrase that made product managers change the subject.</p>
+          <p>I spent four years after that at a payment network, on a team of nine people responsible for every key in the scheme. We had 12,000 endpoints terminating TLS, an HSM estate from three vendors, and a firmware team that shipped on a five-year cycle. That is where I learned that a cryptographic migration is 20% mathematics and 80% finding out which certificate is pinned inside a mobile app that nobody has the source for.</p>
+          <p>Since 2022 I have worked independently, mostly with teams that have already decided to migrate and need a plan that survives contact with their own release process. The work splits into three kinds: inventories, implementations, and the argument that gets a budget approved.</p>
+
+          <h2>What I actually do on an engagement</h2>
+          <p><strong>Cryptographic inventory.</strong> A machine-readable map of every key, certificate, protocol and library in scope, with an owner for each. I read certificate transparency, load-balancer configuration, mobile binaries, firmware images and the procurement list, because the vendor you forgot is usually the one that matters.</p>
+          <p><strong>Hybrid handshake work.</strong> Measurement first: what the new key share does to packet counts, latency and middlebox behaviour on your actual paths. Then the rollout order — canary, internal, then customers — and the rollback that does not silently renegotiate to classical-only.</p>
+          <p><strong>Implementation review.</strong> Lattice code has different failure modes from RSA: constant-time discipline matters more, stack use is larger, and a single early return in a decapsulation routine can leak the key. I review the code and the side-channel tests, and I run the decapsulation on hardware you actually ship.</p>
+          <p><strong>Standards translation.</strong> Someone has to read FIPS 203 and turn §7.3 into a ticket. I do that, in your tracker, with acceptance criteria that a test can check.</p>
+
+          <h2>Positions I will defend</h2>
+          <p><strong>QKD is not a replacement for public-key cryptography.</strong> It solves key distribution over a dedicated link and nothing else. Authentication still needs signatures; a QKD link without an authenticated channel is a very expensive way to exchange a key with an attacker. I deploy it where the link justifies it and say plainly where it does not.</p>
+          <p><strong>A hybrid is a safety net only if it fails closed.</strong> If a middlebox strips the ML-KEM share and the client quietly continues with X25519 alone, you have deployed a downgrade path, not a migration. The downgrade needs its own test.</p>
+          <p><strong>“Quantum-safe” is a claim with a date on it.</strong> Algorithms age. The durable property is crypto-agility: algorithm selection in configuration, a versioned key format, and a test suite that runs against two schemes at once.</p>
+          <p><strong>Don’t migrate what you can delete.</strong> The cheapest quantum-safe certificate is the one retired last quarter. Inventories usually find 10–15% of keys that no live service needs.</p>
+
+          <h2>Teaching and review</h2>
+          <p>I teach a two-day internal course on implementing lattice KEMs, run twice a year for engineering teams, and I review for two cryptography journals. I do not take speaking fees from vendors whose products appear in the talk.</p>
+        </div>
+
+        <aside>
+          <div class="side-card">
+            <h3>At a glance</h3>
+            <dl>
+              <div><dt>Based</dt><dd>Kyoto, JP</dd></div>
+              <div><dt>Independent since</dt><dd>2022</dd></div>
+              <div><dt>Engagements a year</dt><dd>5 – 6</dd></div>
+              <div><dt>Focus</dt><dd>Lattice KEMs, TLS</dd></div>
+              <div><dt>Languages</dt><dd>JA · EN</dd></div>
+            </dl>
+          </div>
+          <div class="side-card">
+            <h3>Standards I work against</h3>
+            <dl>
+              <div><dt>ML-KEM</dt><dd>FIPS 203</dd></div>
+              <div><dt>ML-DSA</dt><dd>FIPS 204</dd></div>
+              <div><dt>SLH-DSA</dt><dd>FIPS 205</dd></div>
+              <div><dt>TLS hybrid</dt><dd>draft-ietf-tls-ecdhe-mlkem</dd></div>
+              <div><dt>Curves</dt><dd>RFC 7748</dd></div>
+            </dl>
+          </div>
+          <div class="side-card">
+            <h3>Contact</h3>
+            <p>Briefs by email, signed if you have a key. For anything sensitive, use the fingerprint below and expect a reply within two working days.</p>
+            <div class="pgp">4B22 90C1 6E7D 5A38 F014<br>8C6B 2D77 91EA 0F3C 55A8</div>
+          </div>
+          <div class="side-card">
+            <h3>Currently reading</h3>
+            <p>Implementing ML-DSA on Cortex-M0+, and the last three years of CA/Browser Forum ballots on certificate lifetimes. One of these will change my advice; the other is a slow-motion argument about 90-day certificates.</p>
+          </div>
+        </aside>
+      </div>
+
+      <section class="band">
+        <div class="wrap">
+          <div class="sec-head">
+            <div>
+              <p class="label">History</p>
+              <h2>Where the practice came from</h2>
+            </div>
+          </div>
+          <div class="timeline">
+            <div class="tl">
+              <span class="yr">2022 —</span>
+              <div><h3>Independent cryptography engineer</h3><p>Migration programmes, implementation review and lattice benchmarking for payment, telecom and public-sector teams.</p></div>
+              <span class="org">Cipher Vault · Kyoto</span>
+            </div>
+            <div class="tl">
+              <span class="yr">2019 — 2022</span>
+              <div><h3>Cryptography engineer, payment network</h3><p>Owned the TLS and HSM estate. Led the first hybrid key-exchange pilot across 12,000 endpoints and wrote the inventory tooling the team still uses.</p></div>
+              <span class="org">Payments · 12k endpoints</span>
+            </div>
+            <div class="tl">
+              <span class="yr">2016 — 2019</span>
+              <div><h3>PhD, information security</h3><p>Thesis on concrete lattice-reduction cost for module-LWE with small moduli, supervised at Kyoto University. Three of the benchmarks became parameters in later implementation papers.</p></div>
+              <span class="org">Kyoto University</span>
+            </div>
+            <div class="tl">
+              <span class="yr">2014 — 2016</span>
+              <div><h3>Research engineer, secure elements</h3><p>Wrote constant-time ECC for a smart-card platform and learned why a compiler can undo your best intentions.</p></div>
+              <span class="org">Semiconductor · Osaka</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pull">
+        <div class="wrap pull-grid">
+          <blockquote>“Nobody has ever been fired for a cryptographic inventory. That is exactly why it is the first thing I deliver.”</blockquote>
+          <div class="pull-side">Reading list on request<br>Technical reports: CV-TR-2025-03 through 2026-04<br>Course outline available under NDA</div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <div class="foot-in">
+        <div class="brandline">Cipher Vault · Hana Sugimoto<small>Post-quantum migration · Kyoto, Japan</small></div>
+        <div class="foot-links">
+          <a href="index.html">Bench</a>
+          <a href="projects.html">Engagements</a>
+          <a href="about.html">Practice</a>
+          <a href="contact.html">Contact</a>
+          <a href="mailto:hana@ciphervault.jp">hana@ciphervault.jp</a>
+        </div>
+      </div>
+      <div class="colophon">
+        <span>© 2026 Hana Sugimoto. Reports CC BY 4.0; client data excluded.</span>
+        <span>Space Grotesk · Manrope · JetBrains Mono</span>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<script src="script.js" defer></script>
+</body>
+</html>

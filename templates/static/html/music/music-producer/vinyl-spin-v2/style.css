@@ -1,0 +1,555 @@
+/* ============================================================
+   VERMEULEN CUTTING ROOM — vinyl-spin
+   The cutting-room log / side sheet. Paper, ink, stamp red.
+   Type: Libre Franklin (the label grotesque) + Courier Prime
+   (the typed log) — the documents this trade actually makes.
+   ============================================================ */
+:root{
+  --paper:#f4efe3;
+  --paper-2:#ece4cf;
+  --ink:#211d15;
+  --ink-soft:#5a5342;
+  --rule:#c6bb9e;
+  --stamp:#a93226;
+  --stamp-lt:#e0705f;
+  --lacquer:#171410;
+  --lacquer-ink:#efe9da;
+  --head:'Libre Franklin', 'Franklin Gothic Medium', sans-serif;
+  --log:'Courier Prime', 'Courier New', monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--head); font-size:17px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%; height:auto; display:block}
+a{color:inherit}
+.wrap{max-width:1280px; margin:0 auto; padding-left:24px; padding-right:24px}
+::selection{background:var(--stamp); color:#fff}
+
+/* ---------- page turn (cross-document view transition) ---------- */
+@view-transition{ navigation:auto }
+::view-transition-old(root){animation:page-out .26s ease both}
+::view-transition-new(root){animation:page-in .26s ease both}
+@keyframes page-out{ to{opacity:0; transform:translateX(-14px)} }
+@keyframes page-in{ from{opacity:0; transform:translateX(14px)} }
+@media (prefers-reduced-motion: reduce){
+  ::view-transition-old(root),::view-transition-new(root){animation:none}
+}
+/* live-element entry is opacity only — never a slide (it would
+   inflate scrollWidth by exactly the slide distance) */
+main{animation:entry .3s ease both}
+@keyframes entry{ from{opacity:0} }
+@media (prefers-reduced-motion: reduce){ main{animation:none} }
+
+/* ---------- reveal (opacity only, JS-gated) ---------- */
+.rev{transition:opacity .5s ease}
+.rev-pre{opacity:0}
+@media (prefers-reduced-motion: reduce){ .rev{transition:none} .rev-pre{opacity:1} }
+
+/* ================= masthead — the log cover ================= */
+.masthead{border-top:8px solid var(--ink); background:var(--paper)}
+.cover{
+  display:flex; justify-content:space-between; align-items:flex-end; gap:28px;
+  padding-top:22px; padding-bottom:16px; flex-wrap:wrap;
+}
+.brand{text-decoration:none; display:block}
+.brand-name{
+  font-weight:800; font-size:clamp(30px,4.6vw,46px); line-height:.98;
+  letter-spacing:-.015em; text-transform:uppercase;
+}
+.brand-name .thin{font-weight:300}
+.brand-sub{
+  font-family:var(--log); font-size:13.5px; letter-spacing:.04em;
+  color:var(--ink-soft); margin-top:6px;
+}
+.log-fields{display:flex; gap:0; border:1px solid var(--ink)}
+.log-fields .lf{
+  padding:8px 14px 7px; border-left:1px solid var(--ink); min-width:0;
+}
+.log-fields .lf:first-child{border-left:none}
+.log-fields .k{
+  display:block; font-family:var(--log); font-size:10.5px;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft);
+}
+.log-fields .v{
+  display:block; font-family:var(--log); font-weight:700; font-size:15px;
+  white-space:nowrap;
+}
+/* the log index — the nav, ruled like an index page */
+.logindex{
+  border-top:3px double var(--ink); border-bottom:1px solid var(--ink);
+  display:flex; align-items:stretch; gap:0; flex-wrap:wrap;
+}
+.logindex a{
+  text-decoration:none; padding:11px 18px 10px 0; margin-right:18px;
+  font-size:15px; font-weight:600; display:flex; align-items:baseline; gap:8px;
+  border-bottom:3px solid transparent; margin-bottom:-1px;
+}
+.logindex a .no{font-family:var(--log); font-weight:700; font-size:13px; color:var(--stamp)}
+.logindex a:hover{border-bottom-color:var(--rule)}
+.logindex a[aria-current="page"]{border-bottom-color:var(--stamp)}
+.menu-btn{
+  display:none; margin-left:auto; align-self:center;
+  font-family:var(--log); font-weight:700; font-size:14px; letter-spacing:.06em;
+  background:var(--ink); color:var(--paper); border:none; cursor:pointer;
+  padding:12px 16px; min-height:44px; align-items:center; gap:10px;
+}
+.menu-btn .bars{display:inline-flex; flex-direction:column; gap:3px}
+.menu-btn .bars i{display:block; width:16px; height:2px; background:var(--paper)}
+.menu-btn:focus-visible, a:focus-visible, button:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible{
+  outline:3px solid var(--stamp); outline-offset:2px;
+}
+
+/* mobile log-index panel — a leaf of the log, ruled */
+.index-panel{position:fixed; inset:0; z-index:60; visibility:hidden; overflow:hidden}
+.index-panel.open{visibility:visible}
+.index-panel .scrim{
+  position:absolute; inset:0; background:rgba(23,20,16,.55);
+  opacity:0; transition:opacity .25s ease;
+}
+.index-panel.open .scrim{opacity:1}
+.index-panel .leaf{
+  position:absolute; top:0; right:0; bottom:0; width:min(340px,88vw);
+  background:var(--paper); border-left:3px double var(--ink);
+  padding:26px 24px; transform:translateX(102%); transition:transform .3s ease;
+  overflow:auto;
+}
+.index-panel.open .leaf{transform:none}
+@media (prefers-reduced-motion: reduce){
+  .index-panel .leaf,.index-panel .scrim{transition:none}
+}
+.leaf-k{
+  font-family:var(--log); font-size:12px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-soft);
+  border-bottom:1px solid var(--rule); padding-bottom:10px; margin-bottom:6px;
+}
+.leaf a{
+  display:flex; align-items:baseline; gap:10px; text-decoration:none;
+  padding:14px 2px; border-bottom:1px solid var(--rule);
+  font-weight:600; font-size:17px; min-height:44px;
+}
+.leaf a .no{font-family:var(--log); font-weight:700; font-size:13px; color:var(--stamp)}
+.leaf a .hint{
+  display:block; font-family:var(--log); font-weight:400; font-size:12.5px;
+  color:var(--ink-soft); margin-left:auto; text-align:right;
+}
+.leaf .close-row{margin-top:18px}
+.leaf .close-btn{
+  font-family:var(--log); font-weight:700; font-size:14px; cursor:pointer;
+  background:none; border:1px solid var(--ink); padding:11px 18px; min-height:44px;
+}
+
+/* ================= log entries ================= */
+.entry{padding-top:44px; padding-bottom:8px}
+.entry-label{
+  font-family:var(--log); font-size:13px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--stamp); font-weight:700;
+  display:flex; align-items:center; gap:14px;
+}
+.entry-label::after{content:""; flex:1; border-top:1px solid var(--rule)}
+h1{
+  font-size:clamp(38px,6.2vw,68px); line-height:1.02; font-weight:800;
+  letter-spacing:-.02em; margin:18px 0 0; max-width:16ch;
+}
+h1 .u{box-shadow:inset 0 -.18em 0 var(--paper-2)}
+.lede{font-size:19px; line-height:1.6; color:#37321f; max-width:56ch}
+.lede.small{font-size:16.5px}
+.log-grid{
+  display:grid; grid-template-columns:minmax(0,1fr) 230px; gap:44px;
+  align-items:start;
+}
+.margin-note{
+  font-family:var(--log); font-size:13.5px; line-height:1.65;
+  color:var(--ink-soft); border-left:1px solid var(--rule);
+  padding-left:16px; margin-top:6px;
+}
+.margin-note b{color:var(--stamp); font-weight:700}
+.margin-note .mn-k{
+  display:block; font-size:11px; letter-spacing:.14em;
+  text-transform:uppercase; margin-bottom:6px; color:var(--ink);
+}
+figure.plate{margin:0}
+figure.plate img{border:1px solid var(--ink)}
+.fig-cap{
+  font-family:var(--log); font-size:12.5px; line-height:1.55;
+  color:var(--ink-soft); border-bottom:1px solid var(--rule);
+  padding:8px 0 10px;
+}
+.fig-cap b{color:var(--ink)}
+.cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:26px}
+.btn{
+  display:inline-flex; align-items:center; min-height:48px;
+  padding:12px 22px; text-decoration:none; font-weight:700; font-size:15.5px;
+  border:1.5px solid var(--ink); background:transparent; color:var(--ink);
+  cursor:pointer; font-family:var(--head);
+}
+.btn.primary{background:var(--ink); color:var(--paper)}
+.btn.primary:hover{background:var(--stamp); border-color:var(--stamp)}
+.btn:hover{border-color:var(--stamp); color:var(--stamp)}
+.btn.primary:hover{color:#fff}
+
+/* groove-band divider — the spacing of a groove group, drawn */
+.grooves{display:block; width:100%; height:26px; margin:34px 0 6px}
+
+/* ================= tally band (the release record) ================= */
+.tally{
+  background:var(--lacquer); color:var(--lacquer-ink); margin-top:46px;
+}
+.tally .wrap{
+  display:grid; grid-template-columns:repeat(5,minmax(0,1fr));
+  padding-top:0; padding-bottom:0;
+}
+.tally .cell{
+  padding:22px 18px 20px; border-left:1px solid #3a352a; min-width:0;
+}
+.tally .cell:first-child{border-left:none; padding-left:0}
+.tally .n{font-size:40px; font-weight:800; line-height:1; letter-spacing:-.01em}
+.tally .n em{font-style:normal; color:var(--stamp-lt)}
+.tally .l{
+  font-family:var(--log); font-size:12.5px; line-height:1.5;
+  color:#bdb49c; margin-top:8px;
+}
+.tally-cap{
+  font-family:var(--log); font-size:12px; letter-spacing:.14em;
+  text-transform:uppercase; color:#bdb49c; padding-top:16px;
+}
+
+/* ================= sections & plates ================= */
+.block{padding-top:56px; padding-bottom:10px}
+.sec-head{max-width:70ch}
+.sec-head h2{
+  font-size:clamp(27px,3.6vw,38px); font-weight:800; letter-spacing:-.015em;
+  line-height:1.08; margin:10px 0 0;
+}
+.sec-head p{color:#37321f; font-size:17px}
+.sub-label{
+  font-family:var(--log); font-size:12.5px; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--stamp); font-weight:700;
+}
+.plate-box{
+  border:1.5px solid var(--ink); background:#faf6ea;
+  margin-top:26px;
+}
+.plate-head{
+  display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  border-bottom:1.5px solid var(--ink); padding:12px 18px;
+  font-family:var(--log); font-size:13px;
+}
+.plate-head .t{font-weight:700; letter-spacing:.08em; text-transform:uppercase}
+.plate-head .s{color:var(--ink-soft)}
+.plate-body{padding:20px 18px 22px}
+
+/* ruled tables — the log's handwriting */
+table.log{width:100%; border-collapse:collapse; font-size:15.5px}
+table.log caption{
+  text-align:left; font-family:var(--log); font-size:12.5px;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft);
+  padding-bottom:10px;
+}
+table.log th, table.log td{
+  text-align:left; padding:10px 12px 9px; border-bottom:1px solid var(--rule);
+  vertical-align:top;
+}
+table.log thead th{
+  font-family:var(--log); font-size:12px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-soft); border-bottom:1.5px solid var(--ink);
+}
+table.log td.num, table.log th.num{
+  font-family:var(--log); font-weight:700; text-align:right; white-space:nowrap;
+}
+table.log tr.total td{
+  border-bottom:none; border-top:1.5px solid var(--ink);
+  font-weight:700;
+}
+.table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+.table-scroll table{min-width:560px}
+
+/* band verdicts */
+.band-tag{
+  display:inline-block; font-family:var(--log); font-weight:700;
+  font-size:12.5px; letter-spacing:.1em; text-transform:uppercase;
+  border:1.5px solid var(--ink); padding:4px 10px 3px;
+}
+.band-tag.b2{border-color:var(--stamp); color:var(--stamp)}
+.band-tag.b3{background:var(--stamp); border-color:var(--stamp); color:#fff}
+
+/* ================= the side sheet (planner) ================= */
+.track-table td, .track-table th{vertical-align:middle}
+.track-title{font-weight:600}
+.track-note{font-family:var(--log); font-size:12.5px; color:var(--ink-soft)}
+.track-note.hot{color:var(--stamp); font-weight:700}
+.mobile-note{display:none}
+.assign{display:flex; gap:6px; justify-content:flex-end}
+.assign button{
+  font-family:var(--log); font-weight:700; font-size:15px;
+  width:46px; min-height:46px; cursor:pointer;
+  background:transparent; border:1.5px solid var(--ink); color:var(--ink);
+}
+.assign button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+.assign button:hover{border-color:var(--stamp)}
+.side-panels{
+  display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:22px;
+}
+.side-panel{border:1.5px solid var(--ink); background:#faf6ea; min-width:0}
+.side-panel .sp-head{
+  display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+  border-bottom:1.5px solid var(--ink); padding:11px 16px;
+}
+.side-panel .sp-head .t{
+  font-weight:800; text-transform:uppercase; letter-spacing:.04em; font-size:17px;
+}
+.side-panel .sp-head .total{font-family:var(--log); font-weight:700; font-size:19px}
+.side-panel .sp-body{padding:14px 16px 16px}
+.sp-tracks{list-style:none; margin:0; padding:0; font-size:15px}
+.sp-tracks li{
+  display:flex; justify-content:space-between; gap:12px;
+  padding:5px 0; border-bottom:1px dotted var(--rule);
+}
+.sp-tracks li span:last-child{font-family:var(--log); font-weight:700}
+.sp-tracks li.empty{color:var(--ink-soft); font-family:var(--log); font-size:13.5px}
+.sp-sum{
+  font-family:var(--log); font-size:14.5px; line-height:1.7; margin-top:12px;
+  overflow-wrap:anywhere;
+}
+.sp-sum .eq{font-weight:700; font-size:16.5px}
+.sp-verdict{margin-top:12px; display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap}
+.sp-verdict p{margin:0; font-size:14.5px; flex:1 1 220px; min-width:0}
+.sp-caution{
+  margin-top:12px; border:1.5px solid var(--stamp); color:var(--stamp);
+  font-family:var(--log); font-weight:700; font-size:13.5px; line-height:1.55;
+  padding:10px 12px;
+}
+.planner-foot{
+  display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  align-items:center; margin-top:18px;
+}
+.planner-foot p{font-family:var(--log); font-size:13px; color:var(--ink-soft); margin:0; max-width:62ch}
+
+/* ================= pressing calculator ================= */
+.calc-grid{
+  display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:26px;
+  align-items:start;
+}
+.chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px}
+.chips button{
+  font-family:var(--log); font-weight:700; font-size:15px; cursor:pointer;
+  min-height:48px; padding:10px 18px; background:transparent;
+  border:1.5px solid var(--ink); color:var(--ink);
+}
+.chips button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+.ctl-label{
+  font-family:var(--log); font-size:12px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--ink-soft); margin:20px 0 0;
+}
+.ctl-label:first-child{margin-top:0}
+.stepper{display:flex; align-items:stretch; gap:8px; margin-top:8px}
+.stepper button{
+  font-family:var(--log); font-weight:700; font-size:15px; cursor:pointer;
+  min-height:48px; padding:10px 16px; background:transparent;
+  border:1.5px solid var(--ink); color:var(--ink);
+}
+.stepper button:hover, .chips button:hover{border-color:var(--stamp)}
+.step-val{
+  display:flex; align-items:baseline; gap:8px; padding:8px 6px;
+  font-family:var(--log);
+}
+.step-val .v{font-size:26px; font-weight:700}
+.step-val .u{font-size:13px; color:var(--ink-soft)}
+.calc-out{
+  border-top:1.5px solid var(--ink); margin-top:22px; padding-top:14px;
+  font-family:var(--log); font-size:15px; line-height:2;
+}
+.calc-out .row{display:flex; justify-content:space-between; gap:16px}
+.calc-out .row span:last-child{font-weight:700; white-space:nowrap}
+.calc-out .grand{
+  border-top:1px solid var(--rule); margin-top:8px; padding-top:8px;
+  font-size:17px;
+}
+.calc-out .verdict-line{line-height:1.6; margin-top:10px; font-size:14.5px}
+.calc-out .verdict-line b{color:var(--stamp)}
+
+/* ================= registers & rate card ================= */
+.register{border-top:1.5px solid var(--ink); margin-top:26px}
+.register .entry-row{
+  display:grid; grid-template-columns:64px minmax(0,1.4fr) minmax(0,1fr) minmax(0,.8fr) minmax(0,.9fr);
+  gap:16px; padding:15px 0 14px; border-bottom:1px solid var(--rule);
+  align-items:baseline;
+}
+.register .entry-row > *{min-width:0}
+.register .ref{font-family:var(--log); font-weight:700; color:var(--stamp)}
+.register .what{font-weight:700; font-size:16.5px}
+.register .who, .register .fmt{color:#37321f; font-size:15px}
+.register .status{font-family:var(--log); font-size:13px; font-weight:700}
+.tombstone{
+  font-family:var(--log); font-size:13px; color:var(--ink-soft);
+  display:flex; gap:8px 22px; flex-wrap:wrap; margin-top:10px;
+}
+.tombstone b{color:var(--ink)}
+
+/* testimonial — a client note pinned in the margin of the log */
+.client-note{
+  border:1.5px solid var(--ink); background:var(--paper-2);
+  padding:22px 22px 18px; margin-top:26px;
+}
+.client-note .cn-k{
+  font-family:var(--log); font-size:12px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--stamp); font-weight:700;
+}
+.client-note blockquote{
+  margin:12px 0 0; font-size:19px; line-height:1.55; font-weight:600;
+}
+.client-note figcaption{
+  font-family:var(--log); font-size:13px; color:var(--ink-soft); margin-top:12px;
+}
+
+/* ================= case files ================= */
+.case{border-top:3px double var(--ink); padding-top:30px; margin-top:44px}
+.case:first-of-type{margin-top:30px}
+.case-head{display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; align-items:flex-start}
+.case h3{font-size:clamp(24px,3vw,32px); font-weight:800; letter-spacing:-.01em; margin:6px 0 0}
+.case-cols{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:26px;
+  margin-top:18px; align-items:start;
+}
+.case-cols > *{min-width:0}
+.case h4{
+  font-family:var(--log); font-size:12.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--stamp); margin:20px 0 6px;
+}
+.case h4:first-child{margin-top:0}
+.case p{margin:0 0 10px; color:#2c2718}
+.mini-sheet{border:1.5px solid var(--ink); background:#faf6ea; margin-top:12px}
+.mini-sheet .ms-head{
+  font-family:var(--log); font-weight:700; font-size:13px; letter-spacing:.08em;
+  text-transform:uppercase; border-bottom:1.5px solid var(--ink); padding:9px 14px;
+  display:flex; justify-content:space-between; gap:12px;
+}
+.mini-sheet table{font-size:14.5px}
+.mini-sheet .ms-foot{
+  padding:10px 14px; font-family:var(--log); font-size:13.5px; line-height:1.6;
+  border-top:1px solid var(--rule);
+}
+.stamp-rej{
+  display:inline-block; font-family:var(--log); font-weight:700;
+  color:var(--stamp); border:3px solid var(--stamp); border-radius:4px;
+  font-size:19px; letter-spacing:.22em; padding:8px 16px 6px;
+  transform:rotate(-4deg); text-transform:uppercase; background:transparent;
+}
+
+/* ================= about ================= */
+.stages{border-top:1.5px solid var(--ink); margin-top:26px}
+.stage{
+  display:grid; grid-template-columns:70px minmax(0,1fr); gap:18px;
+  padding:18px 0 16px; border-bottom:1px solid var(--rule);
+}
+.stage .sn{font-family:var(--log); font-weight:700; font-size:22px; color:var(--stamp)}
+.stage h3{margin:0 0 4px; font-size:18.5px; font-weight:800}
+.stage p{margin:0; color:#2c2718; max-width:64ch}
+.trade-list{list-style:none; margin:18px 0 0; padding:0}
+.trade-list li{
+  padding:13px 0 12px; border-bottom:1px solid var(--rule);
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); gap:8px 26px;
+}
+.trade-list li > *{min-width:0}
+.trade-list .tl-k{font-weight:800; font-size:16.5px}
+.trade-list .tl-v{color:#2c2718}
+
+/* ================= contact ================= */
+.contact-grid{
+  display:grid; grid-template-columns:minmax(0,6fr) minmax(0,5fr); gap:30px;
+  align-items:start; margin-top:8px;
+}
+.contact-grid > *{min-width:0}
+form.log-form{display:grid; gap:16px}
+form.log-form label{
+  display:block; font-family:var(--log); font-size:12.5px; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px;
+}
+form.log-form input, form.log-form select, form.log-form textarea{
+  width:100%; font-family:var(--head); font-size:16.5px; color:var(--ink);
+  background:#faf6ea; border:1.5px solid var(--ink); padding:12px 14px;
+  min-height:48px; border-radius:0;
+}
+form.log-form textarea{min-height:120px; resize:vertical}
+.field-err{
+  font-family:var(--log); font-size:13px; font-weight:700; color:var(--stamp);
+  margin-top:6px;
+}
+.form-note{font-family:var(--log); font-size:13px; color:var(--ink-soft); line-height:1.6}
+.confirm-box{border:1.5px solid var(--ink); background:var(--paper-2); padding:22px}
+.confirm-box h3{margin:0 0 8px; font-size:21px; font-weight:800}
+.confirm-box p{margin:0 0 8px}
+.confirm-box .ref{font-family:var(--log); font-weight:700; font-size:17px; color:var(--stamp)}
+.send-list{list-style:none; margin:14px 0 0; padding:0}
+.send-list li{
+  padding:11px 0 10px; border-bottom:1px solid var(--rule);
+  display:flex; gap:14px; align-items:baseline;
+}
+.send-list .sn{font-family:var(--log); font-weight:700; color:var(--stamp)}
+
+/* ================= footer — the log closes ================= */
+footer{
+  background:var(--lacquer); color:var(--lacquer-ink); margin-top:70px;
+}
+footer .wrap{padding-top:36px; padding-bottom:34px}
+.foot-grid{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px;
+}
+.foot-grid > *{min-width:0}
+footer .f-k{
+  font-family:var(--log); font-size:11.5px; letter-spacing:.15em;
+  text-transform:uppercase; color:#bdb49c; margin-bottom:8px;
+}
+footer p{margin:0; font-size:14.5px; line-height:1.65; color:#d9d2bd}
+footer a{color:var(--lacquer-ink)}
+.foot-close{
+  border-top:1px solid #3a352a; margin-top:28px; padding-top:16px;
+  font-family:var(--log); font-size:12.5px; color:#bdb49c;
+  display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+}
+
+/* ================= responsive ================= */
+@media (max-width: 1020px){
+  .tally .wrap{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tally .cell{border-left:none; padding-left:0}
+  .register .entry-row{grid-template-columns:52px minmax(0,1fr) minmax(0,1fr)}
+  .register .fmt, .register .status{grid-column:2 / -1}
+}
+@media (max-width: 860px){
+  .log-grid{grid-template-columns:minmax(0,1fr)}
+  .margin-note{border-left:none; border-top:1px solid var(--rule); padding:12px 0 0}
+  .calc-grid, .case-cols, .contact-grid{grid-template-columns:minmax(0,1fr)}
+  .side-panels{grid-template-columns:minmax(0,1fr)}
+  .foot-grid{grid-template-columns:minmax(0,1fr)}
+  .logindex a{display:none}
+  .logindex a[aria-current="page"]{display:flex}
+  .menu-btn{display:inline-flex}
+  .cover{padding-top:18px}
+  .log-fields .lf{padding:7px 10px 6px}
+  .trade-list li{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width: 640px){
+  /* the side sheet is the signature tool: its A/B controls must be
+     reachable without horizontal scrolling — the cut-note column
+     folds into the title cell instead */
+  .table-scroll table.track-table{min-width:0}
+  .track-table th:nth-child(4), .track-table td:nth-child(4){display:none}
+  .mobile-note{display:block; margin-top:2px}
+  .track-table th, .track-table td{padding-left:8px; padding-right:8px}
+}
+@media (max-width: 560px){
+  body{font-size:16px}
+  .tally .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tally .n{font-size:32px}
+  .log-fields{flex-wrap:wrap}
+  .register .entry-row{grid-template-columns:minmax(0,1fr)}
+  .register .ref{margin-bottom:-8px}
+  .assign button{width:48px}
+  .stage{grid-template-columns:44px minmax(0,1fr)}
+}

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case files — Red Shell, Ines Duarte</title>
+<meta name="description" content="Six offensive security operations: assumed breach at an insurer, OT at a water utility, cloud CI takeover, helpdesk MFA reset, purple-team tuning and adversary emulation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..600;1,62..125,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0b0b'/%3E%3Cpath d='M6 22 L16 8 L26 22 Z' fill='%23e2382a'/%3E%3Cpath d='M11 22 L16 14 L21 22 Z' fill='%230b0b0b'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap mast-in">
+    <a class="wordmark" href="index.html">
+      <svg class="wm-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 24 L16 5 L28 24 Z"/><path d="M10 24 L16 14 L22 24 Z" fill="#0b0b0b"/></svg>
+      <span><span class="wm-text">RED<span>SHELL</span></span><span class="wm-sub">Ines Duarte · offensive security</span></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav">Menu</button>
+    <nav class="nav" id="siteNav" aria-label="Main">
+      <a href="index.html">Operations</a>
+      <a href="projects.html" aria-current="page">Case files</a>
+      <a href="about.html">Operator</a>
+      <a href="contact.html" class="nav-cta">Request rules of engagement</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="wrap page-head">
+    <p class="kicker">Case files · 2019 – 2026</p>
+    <h1>Six operations with the boring part included</h1>
+    <p>The interesting part of an offensive engagement is rarely the exploit. It is the path, the detection, and the conversation on the day the client learns which of their assumptions was load-bearing.</p>
+  </div>
+
+  <div class="wrap" style="padding-block: clamp(20px,3vw,34px) clamp(40px,5vw,64px);">
+    <div class="case-list">
+
+      <article class="case">
+        <span class="case-no">01</span>
+        <div>
+          <h3>Assumed breach at a regional insurer</h3>
+          <p class="meta">Sector · financial services<br>Window · 6 weeks, on-site<br>Result · domain admin in 11 days</p>
+          <div class="case-tags"><span class="hot">Assumed breach</span><span>Purple team</span><span>Detection timeline</span></div>
+        </div>
+        <div class="case-body">
+          <p>One low-privilege account and a laptop on the corporate VLAN, as agreed. The path to domain admin took eleven days and used nothing exotic: a service account whose password had not changed since 2019, a scheduled task running from a world-writable directory, and a domain controller that accepted an NTLM relay from a print server.</p>
+          <p>Seven of the eleven steps had a detection rule that should have fired. Four of those rules were disabled after a noisy rollout in 2023, and the other three were enabled but routed to a queue nobody watched overnight. Restoring them produced 2,300 events a day, which became the second finding: the client had detection coverage on paper and no capacity to triage it.</p>
+          <p>The debrief took two sessions. The first was technical; the second was with the head of infrastructure, who needed to understand that the print server was not the problem, the trust relationship was.</p>
+        </div>
+      </article>
+
+      <article class="case">
+        <span class="case-no">02</span>
+        <div>
+          <h3>An ICS site that could not be scanned</h3>
+          <p class="meta">Sector · water utility<br>Window · 4 weeks<br>Result · pump controller reached in 16 days</p>
+          <div class="case-tags"><span class="hot">OT</span><span>Passive first</span><span>Safety officer</span></div>
+        </div>
+        <div class="case-body">
+          <p>Rules of engagement for process networks are stricter than for IT and should be. No active scanning, no exploitation of anything that could actuate a valve, and a hard stop if the client’s safety officer called it — which he did, once, on day nine, when a maintenance window moved. We stopped, confirmed no state change, and resumed the next morning.</p>
+          <p>We started from an engineering workstation image and the site’s own maintenance laptop. The engineering VLAN was reached on day nine using credentials in a technician’s notes file, and the pump controller on day sixteen through a vendor remote-support tool with a default password that had never been changed across forty-one sites.</p>
+          <p>No exploit was used anywhere in the operation. The recommendation was not a firewall: it was to remove the vendor tool, rotate the shared password, and put the maintenance laptop on a network where a notes file is not a credential store.</p>
+        </div>
+      </article>
+
+      <article class="case">
+        <span class="case-no">03</span>
+        <div>
+          <h3>Cloud tenant, no malware at all</h3>
+          <p class="meta">Sector · SaaS<br>Window · 5 weeks<br>Result · production bucket read access</p>
+          <div class="case-tags"><span class="hot">Cloud</span><span>CI/CD</span><span>Identity</span></div>
+        </div>
+        <div class="case-body">
+          <p>The client expected an endpoint story and had bought accordingly. The estate was fully managed, patched and monitored, so the endpoint path was a dead end within a week. We took the identity route: a personal access token committed to a public repository in 2022, a CI runner that trusted any token from the organisation, and a deployment key with read access to a production bucket.</p>
+          <p>No implant, no command and control, no file written to a disk. Every action was an API call from an approved region using an approved identity. The only alert that fired was a data-transfer threshold three days later, and it fired on volume rather than on behaviour.</p>
+          <p>The retest after remediation took a day and a half: token scoping fixed, runner trust narrowed to two repositories, and a rule that alerts on a deployment key used outside the release pipeline.</p>
+        </div>
+      </article>
+
+      <article class="case">
+        <span class="case-no">04</span>
+        <div>
+          <h3>One phone call to the helpdesk</h3>
+          <p class="meta">Sector · logistics<br>Window · 3 weeks<br>Result · MFA reset on a finance director</p>
+          <div class="case-tags"><span class="hot">Social engineering</span><span>Identity</span><span>Process</span></div>
+        </div>
+        <div class="case-body">
+          <p>The brief allowed one pretext call to the service desk, recorded and disclosed afterwards. The operator, using a name from a public org chart and a caller ID from a VOIP provider, asked for an MFA reset because the phone was lost. The agent followed the script: verified the employee number, which is printed on every internal document, and reset the factor.</p>
+          <p>From there it was a mailbox, a shared finance drive, and a payment approval template — all within forty minutes and without a single piece of malware. The client’s fraud team stopped the payment because the account details had changed on a Friday afternoon, which is the control that actually worked.</p>
+          <p>The fix was not more training. It was a callback to a number held in the HR system, and a rule that payment-detail changes require a second approver. Both were live within a month.</p>
+        </div>
+      </article>
+
+      <article class="case">
+        <span class="case-no">05</span>
+        <div>
+          <h3>Purple team at a retailer, in the same room</h3>
+          <p class="meta">Sector · retail<br>Window · 5 weeks<br>Result · coverage 41% to 78% on the top chain</p>
+          <div class="case-tags"><span class="hot">Purple team</span><span>Detection</span><span>Retest</span></div>
+        </div>
+        <div class="case-body">
+          <p>For this one the blue team sat in the same room and watched the operation on a shared screen. We ran the same three chains repeatedly while they tuned, and stopped whenever a rule fired so they could read the alert and decide whether it was useful.</p>
+          <p>Coverage on the highest-risk chain went from 41% to 78% in five weeks, but the more useful number was the false positive rate: down from 340 alerts a day to 60 without losing any of the new detections. The tuning was mostly about narrowing scope to the identities and hosts that mattered.</p>
+          <p>The deliverable was a detection backlog with an owner and a test case for every rule. Six months later, 31 of the 34 rules were still enabled — a better retention rate than the client had ever managed from a written report.</p>
+        </div>
+      </article>
+
+      <article class="case">
+        <span class="case-no">06</span>
+        <div>
+          <h3>Adversary emulation for a bank’s board</h3>
+          <p class="meta">Sector · banking<br>Window · 8 weeks<br>Result · two paths to SWIFT-adjacent systems</p>
+          <div class="case-tags"><span class="hot">Emulation</span><span>Threat-led</span><span>Board readout</span></div>
+        </div>
+        <div class="case-body">
+          <p>The board had approved a budget on the strength of a threat report and wanted evidence that the controls matched the specific intrusion set named in it. We modelled that set’s known TTPs — initial access through a supplier portal, living-off-the-land execution, credential access from memory — and ran them against the estate with the same stop conditions as any other operation.</p>
+          <p>Two paths reached systems adjacent to the payment network, both through supplier connections the bank had classified as low risk. The emulation also showed that the actor’s preferred persistence mechanism would have been caught, which was the one piece of good news.</p>
+          <p>The board readout was twenty minutes with three slides: what we did, what we reached, what it would cost to close. The supplier access review that followed removed 60 of 214 external connections.</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <section class="band paper">
+    <div class="wrap band-in">
+      <div class="sec-head">
+        <div><span class="sec-label"><b>Note</b></span></div>
+        <div>
+          <h2>What these files leave out</h2>
+          <p class="sec-intro">Client names, exact dates, credentials and any detail that would identify a system. What remains is the shape of the finding and the change it produced. Full anonymised reports are available under NDA at scoping, with the client’s consent.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-in">
+      <div class="foot-brand">RED SHELL<small>Ines Duarte · Lisbon · offensive security</small></div>
+      <div class="foot-links">
+        <a href="index.html">Operations</a>
+        <a href="projects.html">Case files</a>
+        <a href="about.html">Operator</a>
+        <a href="contact.html">Rules of engagement</a>
+        <a href="mailto:ines@redshell.pt">ines@redshell.pt</a>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>© 2026 Ines Duarte. Techniques described follow MITRE ATT&amp;CK; no client system is identified.</span>
+      <span>Archivo · DM Mono</span>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js" defer></script>
+</body>
+</html>

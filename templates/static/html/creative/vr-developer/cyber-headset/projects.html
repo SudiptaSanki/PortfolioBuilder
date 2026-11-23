@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build log — Ines Kovač, VR titles and prototypes</title>
+<meta name="description" content="A build log of VR titles and prototypes by Ines Kovač: platforms, team sizes, frame budgets and the specific mechanic each project had to solve.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Sora:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2307080b'/%3E%3Cpath d='M5 13h22v7a4 4 0 0 1-4 4h-4l-3-3-3 3H9a4 4 0 0 1-4-4z' fill='none' stroke='%23ff3d81' stroke-width='2'/%3E%3Ccircle cx='11' cy='17' r='2' fill='%233fe0cf'/%3E%3Ccircle cx='21' cy='17' r='2' fill='%233fe0cf'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<aside class="rail" aria-label="Studio">
+  <a class="rail-mark" href="index.html" aria-label="Ines Kovac, home">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 12h20v8a4 4 0 0 1-4 4h-3l-3-3-3 3h-3a4 4 0 0 1-4-4z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="16.5" r="1.8" fill="currentColor"/><circle cx="20" cy="16.5" r="1.8" fill="currentColor"/></svg>
+  </a>
+  <p class="rail-name">INES<br>KOVAČ</p>
+  <div class="rail-line" aria-hidden="true"></div>
+  <p class="rail-meta">XR<br>ENGINEER<br>SI · 46.05°N</p>
+  <div class="rail-foot" aria-hidden="true"><span>90</span><span>Hz</span></div>
+</aside>
+
+<div class="shell">
+  <header class="topbar">
+    <div class="status"><span class="dot" aria-hidden="true"></span><span>BUILD LOG · 5 SHIPPED · 2 PROTOTYPES</span></div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav">Menu</button>
+    <nav class="nav" id="siteNav" aria-label="Main">
+      <a href="index.html">Work</a>
+      <a href="projects.html" aria-current="page">Titles</a>
+      <a href="about.html">Profile</a>
+      <a href="contact.html" class="nav-cta">Brief a build</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <div>
+        <p class="eyebrow">Build log</p>
+        <h1>Five shipped titles, two prototypes, one graveyard.</h1>
+        <p class="lede">Each entry lists the platform, the team, and the one engineering problem that ate the schedule. Frame numbers are from the release build on the named device, measured with the platform’s own profiler.</p>
+      </div>
+      <div class="spec">
+        <h2>At a glance</h2>
+        <dl>
+          <div><dt>Shipped</dt><dd>5 titles</dd></div>
+          <div><dt>Prototypes</dt><dd>2, both dead</dd></div>
+          <div><dt>Longest build</dt><dd>26 months</dd></div>
+          <div><dt>Smallest team</dt><dd>2 people</dd></div>
+          <div><dt>Engines</dt><dd>Unity 6, Unreal 5</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <div class="page-body">
+      <div class="filter-bar" role="group" aria-label="Filter the build log">
+        <button class="chip" data-filter="all" aria-pressed="true">Everything</button>
+        <button class="chip" data-filter="shipped" aria-pressed="false">Shipped</button>
+        <button class="chip" data-filter="prototype" aria-pressed="false">Prototypes</button>
+        <button class="chip" data-filter="rnd" aria-pressed="false">R&amp;D</button>
+      </div>
+
+      <article class="log-row" data-cat="shipped">
+        <div class="log-key"><strong>2025</strong>Shipped<br>Quest 3 / PCVR</div>
+        <div class="log-body">
+          <h2>Low Orbit Salvage</h2>
+          <p>A zero-gravity salvage game. The mechanic that defined the project was the tether: grab a drifting cargo module and you inherit its momentum, so a wrong pull sends you both spinning. We rewrote the constraint solver twice before it stopped feeling like a rubber band and started feeling like mass.</p>
+          <p><strong>The hard problem:</strong> hand velocity in VR is noisy. Filtering it enough to feel stable added 40 ms of lag, which read as “sticky hands”. We ended up predicting the grab point from the last three frames and snapping the constraint to the predicted point, then blending out the correction over 90 ms.</p>
+          <div class="log-tags"><span>Unity 6</span><span>OpenXR</span><span>PhysX</span><span>4-person team</span></div>
+        </div>
+        <div class="log-side">90 Hz<br><b>8% headroom</b><br>1.6 M tris<br>312 draw calls</div>
+      </article>
+
+      <article class="log-row" data-cat="shipped">
+        <div class="log-key"><strong>2024</strong>Shipped<br>Quest 3</div>
+        <div class="log-body">
+          <h2>The Cartographer’s Room</h2>
+          <p>A room-scale puzzle box where the room is the map. Hand tracking only — no controllers, no buttons, no laser pointers. The player folds paper, presses stamps and drags a compass across a physical table. Written with Sana Iqbal; built solo over fourteen months.</p>
+          <p><strong>The hard problem:</strong> hand tracking loses the fingers when they overlap. Rather than fake confidence, the game waits: a ghost outline holds the last known pose for 300 ms and the puzzle refuses input until the hand is seen again. Playtesters read it as the game being polite, not broken.</p>
+          <div class="log-tags"><span>Unity</span><span>Meta XR SDK</span><span>Hand tracking</span><span>Solo + writer</span></div>
+        </div>
+        <div class="log-side">120 Hz<br><b>21% headroom</b><br>0.7 M tris<br>148 draw calls</div>
+      </article>
+
+      <article class="log-row" data-cat="shipped">
+        <div class="log-key"><strong>2023</strong>Shipped<br>Location-based</div>
+        <div class="log-body">
+          <h2>Riftline</h2>
+          <p>An eight-player arcade racer for a venue in Vienna: tethered PC headsets, motion platforms, 90-minute session blocks. Players queue in a physical pit lane and the race starts on a real light tree. Shipping to a venue means the build must boot into a known state with no operator skill.</p>
+          <p><strong>The hard problem:</strong> eight headsets, eight tracking baselines, one room. We wrote a calibration routine that walks an attendant through placing each headset on a marked stand, then bakes the offsets into a config file the session loads. Calibration went from eleven minutes to under four.</p>
+          <div class="log-tags"><span>Unreal 5</span><span>SteamVR</span><span>Netcode</span><span>6-person team</span></div>
+        </div>
+        <div class="log-side">90 Hz<br><b>12% headroom</b><br>3.1 M tris<br>640 draw calls</div>
+      </article>
+
+      <article class="log-row" data-cat="shipped">
+        <div class="log-key"><strong>2022</strong>Shipped<br>PSVR2 / PC</div>
+        <div class="log-body">
+          <h2>Hands On — a surgical tray trainer</h2>
+          <p>A training simulation for a medical device company: nurses practise assembling a sterile tray before touching a real one. No scoring, no timer, no gamification — the client was firm about that, and they were right. What the simulation does is track every instrument and report where the hand went out of the sterile field.</p>
+          <p><strong>The hard problem:</strong> the client wanted photoreal instruments, which is exactly the wrong goal at 90 Hz on a console-class GPU. We built a materials review with them and agreed on eleven surfaces that had to be exact; everything else is a two-texture approximation that nobody has noticed in two years of use.</p>
+          <div class="log-tags"><span>Unity</span><span>PSVR2</span><span>Eye tracking</span><span>4-person team</span></div>
+        </div>
+        <div class="log-side">90 Hz<br><b>26% headroom</b><br>1.1 M tris<br>210 draw calls</div>
+      </article>
+
+      <article class="log-row" data-cat="shipped">
+        <div class="log-key"><strong>2021</strong>Shipped<br>Quest 2</div>
+        <div class="log-body">
+          <h2>Paper Planets</h2>
+          <p>A small mixed-reality toy: the player folds paper shapes and drops them into a solar system floating over their actual desk. Sold as a launch title for a museum installation in Ljubljana, then released on the store. Twelve thousand downloads and a very kind review in a German VR magazine.</p>
+          <p><strong>The hard problem:</strong> passthrough on Quest 2 is grainy and the colour temperature drifts. Any virtual object that is supposed to sit on the real desk had to be rim-lit to hide the mismatch. I wrote a small calibration screen where the user holds a white card and the app samples the passthrough white point.</p>
+          <div class="log-tags"><span>Unity</span><span>Passthrough</span><span>AR Foundation</span><span>3-person team</span></div>
+        </div>
+        <div class="log-side">72 Hz<br><b>31% headroom</b><br>0.4 M tris<br>96 draw calls</div>
+      </article>
+
+      <article class="log-row" data-cat="prototype">
+        <div class="log-key"><strong>2024</strong>Prototype<br>Quest 3</div>
+        <div class="log-body">
+          <h2>Stairwell</h2>
+          <p>A horror prototype built around the one thing VR does better than a screen: the moment before you turn around. Never shipped — the scares depended on withholding agency, and every playtest ended with people taking the headset off rather than walking forward. That is a valid reaction to horror and a fatal one for a 40-minute piece.</p>
+          <div class="log-tags"><span>Unity</span><span>Prototype</span><span>6 weeks</span></div>
+        </div>
+        <div class="log-side">90 Hz<br><b>killed</b><br>0.9 M tris<br>260 draw calls</div>
+      </article>
+
+      <article class="log-row" data-cat="rnd">
+        <div class="log-key"><strong>2026</strong>R&amp;D<br>Quest 3</div>
+        <div class="log-body">
+          <h2>Wrist menus that do not need a wrist</h2>
+          <p>An internal investigation into menu placement for hand-tracked apps. The finding: the palm-up wrist menu fails for about one in five players because their hand does not occlude the way the design assumes. A menu anchored to the lower field of view, summoned by a pinch held for 200 ms, tested better for everyone and cost 4 ms less per frame.</p>
+          <div class="log-tags"><span>Unity</span><span>Input design</span><span>Internal</span></div>
+        </div>
+        <div class="log-side">120 Hz<br><b>finding</b><br>14 testers<br>—</div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <p>Ines Kovač · VR gameplay engineering · Ljubljana, Slovenia</p>
+    <p class="foot-links"><a href="projects.html">Titles</a><a href="about.html">Profile</a><a href="contact.html">Contact</a></p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

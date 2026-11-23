@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work — Rhea Kapadia, inference engineering</title>
+<meta name="description" content="Case studies from production language-model systems: lease clause extraction, ticket triage at 38,000 a week, clinical knowledge search, an internal code copilot.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2314161a'/%3E%3Ctext x='10' y='44' font-family='monospace' font-size='30' fill='%23e8c39e'%3E%26gt;%3C/text%3E%3Crect x='34' y='38' width='16' height='4' fill='%23e8c39e'/%3E%3C/svg%3E">
+</head>
+<body data-page="projects">
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="shell">
+  <aside class="rail">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Rhea Kapadia</span>
+      <span class="brand-sub">Inference engineering</span>
+    </a>
+    <nav aria-label="Primary">
+      <a href="index.html"><span>01</span><span>Overview</span></a>
+      <a href="projects.html" aria-current="page"><span>02</span><span>Work</span></a>
+      <a href="about.html"><span>03</span><span>Notes</span></a>
+      <a href="contact.html"><span>04</span><span>Contact</span></a>
+    </nav>
+    <div class="rail-status">
+      <p class="status-row"><span class="status-dot" aria-hidden="true"></span>Booking from January</p>
+      <p class="mono">Berlin · CET<br>Remote across EU/UK<br>Two projects at a time</p>
+      <a class="rail-cta" href="contact.html">Start a conversation</a>
+    </div>
+  </aside>
+
+  <div class="content">
+    <div class="content-inner">
+      <div class="topline">
+        <span>Selected work · 2023–2026</span>
+        <span class="tl-right"><span>6 cases</span><span>Numbers from the eval sets</span></span>
+      </div>
+
+      <main id="main">
+        <section class="page-head">
+          <p class="kicker">02 / Work</p>
+          <h1>Six systems, and the number each one had to move.</h1>
+          <p class="lede">Every case below started with a failure set and a baseline. The metrics are the ones the team agreed to be judged on before any work began, which is the only way a number means anything after the fact.</p>
+        </section>
+
+        <div class="tabs" role="group" aria-label="Filter case studies by domain">
+          <button class="tab" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="tab" type="button" data-filter="legal" aria-pressed="false">Legal</button>
+          <button class="tab" type="button" data-filter="fintech" aria-pressed="false">Fintech</button>
+          <button class="tab" type="button" data-filter="health" aria-pressed="false">Health</button>
+          <button class="tab" type="button" data-filter="devtools" aria-pressed="false">Dev tools</button>
+        </div>
+
+        <div class="section-head" style="margin-bottom:14px">
+          <p class="mono" id="caseCount" style="margin:0;color:var(--muted)">6 case studies</p>
+        </div>
+
+        <div class="cases">
+          <article class="case" data-domain="legal">
+            <span class="cno">01</span>
+            <div>
+              <h3>Lease clause extraction, 12 clause families</h3>
+              <p>A European residential-lease platform processed 4,000 contracts a month by hand. The first prototype pasted the whole contract into a 90k-token prompt and asked for a JSON summary; it worked on clean PDFs and invented clauses on scanned ones. We replaced it with eighteen clause-family retrievers, a typed schema per family, and a refusal path when the retrieved passage did not contain the clause.</p>
+              <p>The evaluation set was 1,200 clauses labelled by two paralegals, with disagreements resolved in the room. Field-level F1 went from 0.79 to 0.941, and — the number the business cared about — the share of contracts needing a full manual read fell from 61% to 12%.</p>
+              <div class="case-tags"><span class="tag">Retrieval</span><span class="tag">Structured output</span><span class="tag">Dutch + English</span></div>
+            </div>
+            <div class="case-spec">
+              <div><b>0.941</b>field F1, from 0.79</div>
+              <div><b>−71%</b>input tokens</div>
+              <div><b>€0.0043</b>per document</div>
+              <div><b>p95 640 ms</b>at 32B, batch 4</div>
+            </div>
+          </article>
+
+          <article class="case" data-domain="fintech">
+            <span class="cno">02</span>
+            <div>
+              <h3>Support triage across 38,000 tickets a week</h3>
+              <p>The team had a classifier with high accuracy and poor usefulness: it could tell a billing question from a login question, but not whether the ticket needed a human. We rebuilt the routing as a two-stage system — a small model for the clear majority, and a 70B model for the ambiguous remainder with a compact evidence pack of the customer's last three interactions and the relevant help-centre passages.</p>
+              <p>Escalation precision is the metric operations watch, because a wrongly escalated ticket costs a queue slot and a wrongly resolved one costs a customer. It went to 0.93 at a 71% auto-resolve rate, and the average handling time for escalated tickets fell by 41 seconds because the human now receives a summary instead of a transcript.</p>
+              <div class="case-tags"><span class="tag">Routing</span><span class="tag">Two-stage</span><span class="tag">Cost model</span></div>
+            </div>
+            <div class="case-spec">
+              <div><b>71%</b>auto-resolved</div>
+              <div><b>0.93</b>escalation precision</div>
+              <div><b>−41 s</b>handling time</div>
+              <div><b>1.9 s</b>p95 end to end</div>
+            </div>
+          </article>
+
+          <article class="case" data-domain="health">
+            <span class="cno">03</span>
+            <div>
+              <h3>Clinical guidance search over 12,000 chunks</h3>
+              <p>A hospital knowledge base of internal protocols, searchable only by keyword. Clinicians either found the paragraph or gave up and paged a colleague. We built hybrid retrieval — BM25 for drug names and codes, dense vectors for the prose question — with a cross-encoder reranker over the top fifty candidates, and a refusal path evaluated as a first-class output.</p>
+              <p>The refusal rate fell from 18% to 4% without loosening the evidence threshold, because the retrieval stopped missing the right chunk rather than because the model became more willing to answer. Every answer carries the protocol version and the last-reviewed date, which the clinical governance group required before sign-off.</p>
+              <div class="case-tags"><span class="tag">Hybrid retrieval</span><span class="tag">Reranking</span><span class="tag">Abstention</span></div>
+            </div>
+            <div class="case-spec">
+              <div><b>0.89</b>recall@5</div>
+              <div><b>4%</b>refusal, from 18%</div>
+              <div><b>12k</b>chunks, 3 sources</div>
+              <div><b>0.87</b>answer faithfulness</div>
+            </div>
+          </article>
+
+          <article class="case" data-domain="devtools">
+            <span class="cno">04</span>
+            <div>
+              <h3>Repository answers without pasting the repository</h3>
+              <p>A 140-person engineering team wanted a copilot that could answer “where is the retry budget set for the payments client”. The naive version stuffed files until the window filled and answered confidently from the wrong module. We chunked with Tree-sitter on symbol boundaries, packed by import proximity, and made the retrieval return a citation for every claim.</p>
+              <p>The evaluation set is 240 questions taken from the team's own issue tracker, each with a file-and-line ground truth. Answer usefulness is graded 1–5 by two engineers; anything below 3 counts as a failure. Median input tokens dropped from 9,100 to 2,400, and cost per answer by 64%.</p>
+              <div class="case-tags"><span class="tag">Code chunking</span><span class="tag">Citations</span><span class="tag">CI evals</span></div>
+            </div>
+            <div class="case-spec">
+              <div><b>2.4k</b>median input tokens</div>
+              <div><b>0.86</b>usefulness score</div>
+              <div><b>240</b>graded questions</div>
+              <div><b>−64%</b>cost per answer</div>
+            </div>
+          </article>
+
+          <article class="case" data-domain="legal fintech">
+            <span class="cno">05</span>
+            <div>
+              <h3>KYC document review, with a human in the loop</h3>
+              <p>An onboarding team reviewed company documents for beneficial-ownership inconsistencies. The model extracts the ownership graph, and a deterministic check compares it against the register; the model is only asked to explain a mismatch, never to decide whether it matters. That split is deliberate: the arithmetic is exact and auditable, the prose is not.</p>
+              <p>The eval set includes 40 adversarial documents with altered share percentages. Extraction recall is 0.96; the explanation step is graded for whether it names the right entity and the right figure, and fails 3% of the time, down from 22% at the start.</p>
+              <div class="case-tags"><span class="tag">Extraction</span><span class="tag">Deterministic checks</span><span class="tag">Audit trail</span></div>
+            </div>
+            <div class="case-spec">
+              <div><b>0.96</b>extraction recall</div>
+              <div><b>3%</b>explanation failures</div>
+              <div><b>40</b>adversarial docs</div>
+              <div><b>100%</b>decisions logged</div>
+            </div>
+          </article>
+
+          <article class="case" data-domain="fintech devtools">
+            <span class="cno">06</span>
+            <div>
+              <h3>A cost and latency pass on an existing feature</h3>
+              <p>Not a rebuild: a six-week-old summarisation feature was costing more than the revenue it supported. The prompt carried eleven few-shot examples, a 6k-token policy document, and the full email thread. We measured each block's contribution against the failure set, removed seven examples and the policy document, replaced it with two retrieved paragraphs, and quantised the KV cache to INT8.</p>
+              <p>Quality on the eval set was unchanged within the confidence interval, and the p95 latency fell from 3.2 s to 1.4 s. The change was eleven pull requests and one dashboard, and it is the least interesting case here, which is why it is worth listing.</p>
+              <div class="case-tags"><span class="tag">Prompt diet</span><span class="tag">KV quantisation</span><span class="tag">Regression gate</span></div>
+            </div>
+            <div class="case-spec">
+              <div><b>−58%</b>cost per request</div>
+              <div><b>1.4 s</b>p95, from 3.2 s</div>
+              <div><b>0</b>quality regressions</div>
+              <div><b>6 weeks</b>start to ship</div>
+            </div>
+          </article>
+        </div>
+
+        <section class="block" aria-labelledby="refTitle">
+          <div class="section-head">
+            <p class="kicker">References</p>
+            <h2 id="refTitle">Who to ask</h2>
+          </div>
+          <p class="prose" style="font-size:0.9rem;color:var(--ink-2);max-width:64ch">Two of these engagements are under NDA, so the case is described without the company name. If you want a reference call, ask and I will connect you with the engineering lead on the closest piece of work — with their permission, and only after we have talked about whether the fit is right. Names are not a substitute for the eval set anyway.</p>
+        </section>
+      </main>
+
+      <footer class="foot">
+        <div class="foot-inner">
+          <div><p><strong>Rhea Kapadia</strong><br>Inference and eval engineering<br>Kreuzberg, Berlin</p></div>
+          <div><p class="mono">Elsewhere</p><p><a href="mailto:rhea@kapadia.systems">rhea@kapadia.systems</a><br><a href="projects.html">Work</a> · <a href="about.html">Notes</a></p></div>
+          <div><p class="mono">Availability</p><p>January 2027 onward<br>Two projects at a time</p></div>
+        </div>
+        <p class="mono" style="margin-top:22px;color:var(--muted)">© 2026 Rhea Kapadia · the numbers on this site come from the eval sets, not from a brochure</p>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+/* Thandai Frost — a recipe ledger, kept as a document.
+   F4 document frame · container 880px · Bitter (display) + Hind (body).
+   Ruled lines and borders only: no shadows, no gradients, no pills. */
+
+:root{
+  --paper:#f7f0dc;
+  --paper-deep:#efe4c6;
+  --ink:#2e2117;
+  --ink-soft:#5d4c37;
+  --rule:#c9b184;
+  --rule-dark:#8a6f4a;
+  --kesar:#b45a0d;
+  --stamp:#9c2f38;
+  --leaf:#4e6128;
+  --bad-bg:#f6e3d9;
+  --ok-bg:#ecefd9;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  overflow-x:clip;
+  background:var(--paper-deep);
+  color:var(--ink);
+  font-family:"Hind",system-ui,sans-serif;
+  font-size:17px;
+  line-height:1.55;
+}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--kesar)}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:2px dashed var(--kesar);outline-offset:3px;
+}
+
+/* ---------- the sheet ---------- */
+.sheet{
+  max-width:880px;
+  margin:0 auto;
+  overflow-x:clip;
+  background:var(--paper);
+  border-left:1px solid var(--rule);
+  border-right:1px solid var(--rule);
+  padding:0 34px 56px;
+  min-height:100vh;
+}
+@media (max-width:560px){ .sheet{padding:0 18px 44px} }
+
+/* ---------- masthead (the ledger's own heading block) ---------- */
+.masthead{border-bottom:3px double var(--rule-dark);padding:26px 0 0}
+.mast-top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.brand{
+  font-family:"Bitter",serif;font-weight:800;
+  font-size:clamp(30px,6vw,44px);line-height:1.02;letter-spacing:.01em;
+  color:var(--ink);text-decoration:none;
+}
+.brand small{
+  display:block;font-family:"Hind",sans-serif;font-weight:600;
+  font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--kesar);
+  margin-bottom:6px;
+}
+.mast-meta{
+  font-size:13.5px;color:var(--ink-soft);text-align:right;line-height:1.45;
+}
+.mast-meta strong{color:var(--ink)}
+@media (max-width:560px){ .mast-meta{text-align:left} }
+
+/* nav as the ledger index */
+.index-btn{
+  display:none;
+  margin:16px 0 0;width:100%;
+  background:var(--paper);border:1px solid var(--rule-dark);
+  padding:12px 14px;cursor:pointer;
+  font-family:"Bitter",serif;font-weight:700;font-size:16px;color:var(--ink);
+  align-items:center;justify-content:space-between;gap:10px;min-height:48px;
+}
+.index-btn .bars{display:inline-flex;flex-direction:column;gap:4px}
+.index-btn .bars i{display:block;width:22px;height:2px;background:var(--ink)}
+.nav-panel{margin-top:14px}
+.nav-list{
+  list-style:none;margin:0;padding:0;
+  display:flex;flex-wrap:wrap;gap:2px 26px;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+}
+.nav-list li{margin:0}
+.nav-list a{
+  display:inline-block;padding:11px 2px;min-height:44px;
+  color:var(--ink);text-decoration:none;font-weight:600;font-size:15.5px;
+}
+.nav-list a .no{color:var(--kesar);font-family:"Bitter",serif;margin-right:7px}
+.nav-list a[aria-current="page"]{color:var(--kesar);box-shadow:inset 0 -3px 0 var(--kesar)}
+@media (max-width:720px){
+  .index-btn{display:flex}
+  .nav-panel{
+    max-height:0;overflow:hidden;opacity:0;margin-top:0;
+    transition:max-height .45s ease,opacity .3s ease,margin .3s ease;
+  }
+  .nav-panel.open{max-height:340px;opacity:1;margin-top:12px}
+  .nav-list{flex-direction:column;gap:0;background:var(--paper-deep)}
+  .nav-list li{border-bottom:1px solid var(--rule)}
+  .nav-list li:last-child{border-bottom:none}
+  .nav-list a{display:block;padding:13px 12px}
+}
+
+/* ---------- entry motion (opacity only, per program lesson) ---------- */
+@keyframes pagein{from{opacity:0}to{opacity:1}}
+main{animation:pagein .35s ease both}
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:pagein .18s ease reverse both}
+::view-transition-new(root){animation:pagein .22s ease both}
+
+/* ---------- type & ledger furniture ---------- */
+h1,h2,h3{font-family:"Bitter",serif;line-height:1.15;color:var(--ink)}
+h1{font-size:clamp(30px,5.4vw,42px);font-weight:800;margin:.2em 0 .35em}
+h2{font-size:clamp(22px,3.6vw,27px);font-weight:700;margin:0 0 .5em}
+h3{font-size:19px;font-weight:700;margin:0 0 .35em}
+p{margin:0 0 1em}
+.lede{font-size:19px;line-height:1.5}
+.small{font-size:14px;color:var(--ink-soft)}
+.eyebrow{
+  font-size:12.5px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--kesar);margin:0 0 8px;
+}
+section{padding:30px 0 6px}
+.sec-head{border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:16px}
+.sec-head .folio{float:right;font-family:"Bitter",serif;color:var(--rule-dark);font-size:14px}
+
+.lrow{
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  border-bottom:1px solid var(--rule);padding:9px 0;
+}
+.lrow .k{font-weight:600}
+.lrow .v{font-family:"Bitter",serif;font-weight:700;text-align:right;white-space:nowrap}
+.lrow .note{display:block;font-weight:400;font-size:13.5px;color:var(--ink-soft);font-family:"Hind",sans-serif}
+
+table.ledger{width:100%;border-collapse:collapse;font-size:15.5px}
+table.ledger th,table.ledger td{
+  text-align:left;padding:8px 10px 8px 0;border-bottom:1px solid var(--rule);vertical-align:top;
+}
+table.ledger th{font-family:"Bitter",serif;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+table.ledger td.num,table.ledger th.num{text-align:right;padding-right:0;font-variant-numeric:tabular-nums;white-space:nowrap}
+.table-scroll{overflow-x:auto}
+.table-scroll table{min-width:520px}
+
+figure{margin:22px 0}
+figure img{border:1px solid var(--rule-dark)}
+figcaption{font-size:13.5px;color:var(--ink-soft);padding-top:7px;border-bottom:1px solid var(--rule);padding-bottom:9px}
+
+blockquote.testimony{
+  margin:18px 0;padding:4px 0 4px 18px;border-left:3px solid var(--kesar);
+  font-family:"Bitter",serif;font-size:18px;line-height:1.5;
+}
+blockquote.testimony footer{font-family:"Hind",sans-serif;font-size:14px;color:var(--ink-soft);margin-top:8px}
+
+/* ---------- stamps ---------- */
+.stamp{
+  display:inline-block;font-family:"Bitter",serif;font-weight:700;
+  font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--stamp);border:2px solid var(--stamp);outline:1px solid var(--stamp);outline-offset:3px;
+  padding:4px 10px;transform:rotate(-4deg);background:transparent;white-space:nowrap;
+}
+.stamp.green{color:var(--leaf);border-color:var(--leaf);outline-color:var(--leaf)}
+html.js .stamp{
+  transition:opacity .16s ease,transform .22s cubic-bezier(.2,2.2,.4,1);
+}
+html.js .stamp.pre{opacity:0;transform:rotate(-10deg) scale(1.08)}
+.stamp-row{display:flex;gap:20px;flex-wrap:wrap;align-items:center;margin:14px 0 4px}
+
+/* ---------- planner ---------- */
+.planner{border:2px solid var(--ink);padding:20px 20px 8px;background:var(--paper);margin:18px 0}
+.planner h3{margin-top:0}
+.p-row{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  border-bottom:1px solid var(--rule);padding:11px 0;flex-wrap:wrap;
+}
+.p-row .lab{font-weight:600}
+.p-row .lab span{display:block;font-weight:400;font-size:13.5px;color:var(--ink-soft)}
+.stepper{display:inline-flex;align-items:center;gap:2px}
+.step-btn{
+  width:46px;height:46px;font-size:22px;line-height:1;cursor:pointer;
+  background:var(--paper-deep);border:1px solid var(--rule-dark);color:var(--ink);
+  font-family:"Bitter",serif;font-weight:700;
+}
+.step-btn:active{background:var(--kesar);color:#fff}
+.step-val{
+  min-width:64px;text-align:center;font-family:"Bitter",serif;font-weight:700;font-size:19px;
+}
+.seg{display:inline-flex;border:1px solid var(--rule-dark)}
+.seg-btn{
+  padding:12px 16px;min-height:46px;cursor:pointer;background:var(--paper);
+  border:none;border-right:1px solid var(--rule-dark);
+  font-family:"Hind",sans-serif;font-weight:600;font-size:15.5px;color:var(--ink);
+}
+.seg-btn:last-child{border-right:none}
+.seg-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.results{margin-top:16px}
+.results .lrow .v{font-variant-numeric:tabular-nums}
+.total-row{display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid var(--ink);border-bottom:3px double var(--rule-dark);padding:10px 0;margin-top:4px}
+.total-row .t{font-family:"Bitter",serif;font-weight:800;font-size:20px}
+.total-row .amt{font-family:"Bitter",serif;font-weight:800;font-size:24px;color:var(--kesar)}
+.verdict{margin:16px 0;padding:13px 16px;border:1px solid var(--rule-dark);font-size:15.5px}
+.verdict.ok{background:var(--ok-bg);border-left:6px solid var(--leaf)}
+.verdict.no{background:var(--bad-bg);border-left:6px solid var(--stamp)}
+.verdict strong{font-family:"Bitter",serif}
+
+/* ---------- forms ---------- */
+form.book{display:grid;gap:14px;margin-top:8px}
+form.book label{font-weight:600;display:block}
+form.book label span{display:block;font-weight:400;font-size:13.5px;color:var(--ink-soft)}
+form.book input,form.book select,form.book textarea{
+  width:100%;margin-top:5px;padding:12px;border:1px solid var(--rule-dark);
+  background:#fffdf4;font:inherit;color:var(--ink);border-radius:0;min-height:48px;
+}
+.btn{
+  display:inline-block;background:var(--ink);color:var(--paper);border:none;cursor:pointer;
+  font-family:"Bitter",serif;font-weight:700;font-size:17px;padding:14px 26px;min-height:52px;
+  text-decoration:none;text-align:center;
+}
+.btn:active{background:var(--kesar)}
+.confirmation{border:2px solid var(--leaf);background:var(--ok-bg);padding:18px;margin-top:16px}
+.confirmation .ref{font-family:"Bitter",serif;font-weight:800;font-size:22px;color:var(--leaf)}
+
+/* ---------- footer ---------- */
+.site-foot{border-top:3px double var(--rule-dark);margin-top:40px;padding-top:16px;font-size:14px;color:var(--ink-soft)}
+.site-foot .cols{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.site-foot a{color:var(--kesar)}
+
+[hidden]{display:none!important}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  main{animation:none}
+  html.js .stamp{transition:none}
+  .nav-panel{transition:none}
+  ::view-transition-old(root),::view-transition-new(root){animation:none}
+}

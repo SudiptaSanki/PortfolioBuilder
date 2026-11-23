@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Van der Meer Tether Dynamics — Space Tether Mechanics, Bremen</title>
+<meta name="description" content="Dr Jeroen van der Meer runs dynamics analysis, deployment studies and design reviews for space tether systems. The flight record is printed on the site, including the failures.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307090c'/%3E%3Cline x1='50' y1='14' x2='50' y2='86' stroke='%237fb6cc' stroke-width='5'/%3E%3Crect x='38' y='8' width='24' height='14' fill='%23e9e6dc'/%3E%3Ccircle cx='50' cy='86' r='8' fill='%237fb6cc'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="brand" href="index.html" aria-label="Van der Meer Tether Dynamics — dynamics log home">
+      <svg class="mark" width="30" height="34" viewBox="0 0 100 112" aria-hidden="true"><line x1="50" y1="16" x2="50" y2="94" stroke="#7fb6cc" stroke-width="5"/><rect x="36" y="8" width="28" height="16" fill="#e9e6dc"/><circle cx="50" cy="96" r="9" fill="#7fb6cc"/></svg>
+      <span>
+        <span class="bname">VAN DER MEER</span>
+        <span class="bsub">TETHER DYNAMICS · BREMEN</span>
+      </span>
+    </a>
+    <nav class="mainnav" aria-label="Dynamics log">
+      <a href="index.html" aria-current="page">Log</a>
+      <a href="projects.html">Study files</a>
+      <a href="about.html">About &amp; method</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mnav">
+      <span class="mbars" aria-hidden="true"><i></i><i></i><i></i></span> FLIGHT LOG
+    </button>
+  </div>
+  <div class="phase-track" aria-hidden="true">
+    <div class="wrap phase-in">
+      <span class="phase"><b>P1</b> SEPARATION</span><span class="phase-sep"></span>
+      <span class="phase"><b>P2</b> DEPLOYMENT</span><span class="phase-sep"></span>
+      <span class="phase ph-opt"><b>P3</b> LIBRATION SETTLING</span><span class="phase-sep"></span>
+      <span class="phase ph-opt"><b>P4</b> STEADY STATE</span>
+    </div>
+  </div>
+</header>
+
+<div class="mnav" id="mnav" hidden>
+  <div class="scrim" data-close></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Flight log index">
+    <div class="sheet-top">
+      <span>FLIGHT LOG · INDEX</span>
+      <button class="close-btn" data-close>CLOSE</button>
+    </div>
+    <nav aria-label="Dynamics log, mobile">
+      <a class="mlink" href="index.html" aria-current="page"><span class="no">L.01</span> Log</a>
+      <a class="mlink" href="projects.html"><span class="no">L.02</span> Study files</a>
+      <a class="mlink" href="about.html"><span class="no">L.03</span> About &amp; method</a>
+      <a class="mlink" href="contact.html"><span class="no">L.04</span> Contact</a>
+    </nav>
+    <p class="sheet-note">The dangerous hour of any tether mission is deployment. Studies are booked against mission phase, not against hope. Enquiries — dynamics@vandermeer-tether.example</p>
+  </div>
+</div>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow rv">DYNAMICS LOG · VAN DER MEER TETHER DYNAMICS · BREMEN</p>
+      <h1 class="rv">Tethers fail interestingly. <span class="thin">Design for it.</span></h1>
+      <p class="lede rv">I am <strong>Dr Jeroen van der Meer</strong>, a space tether mechanics and cable dynamics specialist. I run dynamics analysis, deployment studies and independent design reviews for agencies, satellite programmes and research groups. The honest starting point, printed here rather than in a footnote: <strong>the flight record of tethers is a record of partial successes and instructive failures</strong> — jammed deployers, severed lines, one satellite lost. The dynamics are nonlinear, deployment is the dangerous hour, and a sizing number is the start of an analysis, never the end of one.</p>
+      <div class="cta-row rv">
+        <a class="btn" href="#sizer">Run the tension sizer</a>
+        <a class="btn ghost" href="projects.html">Read the study files</a>
+      </div>
+
+      <div class="log-note rv" role="note">
+        <div class="ln-head">LOG NOTE · A RETIRED NUMBER</div>
+        <p>An earlier version of this page carried a banner reading <strong>&ldquo;CABLE TENSION: 450 kN&rdquo;</strong>. No tether in low Earth orbit pulls like that. A 100 kg tip mass on 10 km of line at 400 km altitude pulls with about <strong>1.9 N — roughly the weight of an apple</strong>. The banner is retired. The arithmetic that replaces it is Entry 01, below, and it shows its working.</p>
+      </div>
+
+      <div class="scoreboard rv" role="group" aria-label="Practice record in numbers">
+        <div><div class="num">23</div><div class="lab">tether dynamics studies delivered since 2016</div></div>
+        <div><div class="num">7</div><div class="lab">deployment analyses for systems that went on to fly</div></div>
+        <div><div class="num">3</div><div class="lab">studies whose recommendation was: do not deploy — delay, redesign, or both</div></div>
+        <div><div class="num">0</div><div class="lab">sizing numbers issued without their assumptions printed beside them</div></div>
+      </div>
+
+      <figure class="shot rv">
+        <img src="assets/iss-orbit.jpg" alt="The International Space Station above Earth, solar panels extended" width="1600" height="1067">
+        <figcaption>FIG. 01 — A large crewed station in low Earth orbit. <b>Reference photograph</b> by SpaceX via Pexels — not a client system. Station-keeping structures like this one are the neighbourhood my clients&rsquo; tethers work in: the same gravity gradient, the same debris field, the same unforgiving deployment physics.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================= ENTRY 01 · THE SIZER ================= -->
+  <section class="block" id="sizer" aria-labelledby="sizer-h">
+    <div class="wrap">
+      <div class="entry-head rv">
+        <span class="no">ENTRY 01</span>
+        <h2 id="sizer-h">The tension sizer</h2>
+        <span class="side">RUNS ON TABLES 1 + 2, BELOW</span>
+      </div>
+      <p class="intro rv">Every study starts with the preliminary relation printed here, exactly as it appears in my reports. For a tip mass <strong>m</strong> held on a near-vertical tether of length <strong>L</strong> in an orbit with angular rate <strong>n = 2&pi;/T</strong>, the gravity-gradient tension at the tip mass is approximately <strong>T &asymp; (3/2)&thinsp;&middot;&thinsp;m&thinsp;&middot;&thinsp;n&sup2;&thinsp;&middot;&thinsp;L</strong>. It assumes a tether of negligible mass — so the sizer checks that assumption against Table 2 as it goes, and <strong>flags it in print when the assumption stops holding</strong>. Choose an orbit, set the mass and length, pick a line material.</p>
+
+      <div class="table-scroll rv" tabindex="0" role="region" aria-label="Table 1, orbit presets, scrollable">
+        <table id="orbit-table">
+          <caption>TABLE 1 — ORBIT PRESETS. CIRCULAR LOW EARTH ORBITS; PERIODS ROUNDED TO ONE DECIMAL. THE SIZER READS THESE NUMBERS, NOT A COPY OF THEM.</caption>
+          <thead>
+            <tr><th scope="col">Orbit</th><th scope="col">Altitude</th><th scope="col">Period T</th><th scope="col">Regime note</th></tr>
+          </thead>
+          <tbody>
+            <tr data-period="92.4" class="hl">
+              <td><span class="t">Station orbit</span></td>
+              <td class="num">400 km</td>
+              <td class="num">92.4 min</td>
+              <td>The crowded shell. Short period, strong gradient, the most debris per cubic kilometre of any regime in this table.</td>
+            </tr>
+            <tr data-period="100.7">
+              <td><span class="t">Sun-synchronous band</span></td>
+              <td class="num">800 km</td>
+              <td class="num">100.7 min</td>
+              <td>Earth-observation country. Dawn–dusk planes are where deorbit tethers earn their keep.</td>
+            </tr>
+            <tr data-period="127.0">
+              <td><span class="t">High LEO</span></td>
+              <td class="num">2,000 km</td>
+              <td class="num">127.0 min</td>
+              <td>Weaker gradient, longer periods, radiation belts beginning to matter for electronics and polymers alike.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-scroll rv" tabindex="0" role="region" aria-label="Table 2, tether line materials, scrollable">
+        <table id="mat-table">
+          <caption>TABLE 2 — LINE MATERIALS, FIBRE-LEVEL FIGURES AS PRINTED IN THE PRACTICE&rsquo;S SIZING SHEETS. WORKING STRESS IS BREAKING STRENGTH &divide; 4 — THE PRACTICE&rsquo;S PRELIMINARY FACTOR, BEFORE ANY SURVIVABILITY SIZING.</caption>
+          <thead>
+            <tr><th scope="col">Material class</th><th scope="col">Breaking strength &sigma;<sub>b</sub></th><th scope="col">Density &rho;</th><th scope="col">Field note</th></tr>
+          </thead>
+          <tbody>
+            <tr data-sigb="3.0" data-rho="1440" class="hl">
+              <td><span class="t">Aramid braid</span> (Kevlar-49 class)</td>
+              <td class="num">3.0 GPa</td>
+              <td class="num">1,440 kg/m&sup3;</td>
+              <td>The flown default for decades. Creeps under sustained load and degrades under UV; both are budgeted, neither is hidden.</td>
+            </tr>
+            <tr data-sigb="3.5" data-rho="970">
+              <td><span class="t">UHMWPE braid</span> (Dyneema SK78 class)</td>
+              <td class="num">3.5 GPa</td>
+              <td class="num">970 kg/m&sup3;</td>
+              <td>Lightest per unit strength in the table. Creep is the governing worry on multi-year missions, not strength.</td>
+            </tr>
+            <tr data-sigb="5.8" data-rho="1560">
+              <td><span class="t">PBO fibre</span> (Zylon class)</td>
+              <td class="num">5.8 GPa</td>
+              <td class="num">1,560 kg/m&sup3;</td>
+              <td>The strongest fibre here and the least forgiving: degrades with humidity and light before it ever flies.</td>
+            </tr>
+            <tr data-sigb="2.2" data-rho="7850">
+              <td><span class="t">High-tensile steel wire</span></td>
+              <td class="num">2.2 GPa</td>
+              <td class="num">7,850 kg/m&sup3;</td>
+              <td>Flown on early experiments. Honest, well understood — and heavy enough to break the sizer&rsquo;s own assumption at long lengths. Try it at 100 km.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sizer rv">
+        <div class="ctl">
+          <div class="ctl-group">
+            <div class="ctl-lab"><span>ORBIT (TABLE 1)</span></div>
+            <div class="chips" role="group" aria-label="Orbit preset">
+              <button class="chip orb-btn" data-i="0" aria-pressed="true">400 km<small>92.4 min</small></button>
+              <button class="chip orb-btn" data-i="1" aria-pressed="false">800 km<small>100.7 min</small></button>
+              <button class="chip orb-btn" data-i="2" aria-pressed="false">2,000 km<small>127.0 min</small></button>
+            </div>
+          </div>
+          <div class="ctl-group">
+            <div class="ctl-lab"><span>TIP MASS m</span><span class="val" id="mValLab">100 kg</span></div>
+            <div class="stepper">
+              <button id="mMinus" aria-label="Decrease tip mass by 25 kilograms">&minus;</button>
+              <span class="sv" id="mVal">100 kg</span>
+              <button id="mPlus" aria-label="Increase tip mass by 25 kilograms">+</button>
+            </div>
+          </div>
+          <div class="ctl-group">
+            <div class="ctl-lab"><span>TETHER LENGTH L</span><span class="val" id="lValLab">10 km</span></div>
+            <div class="stepper">
+              <button id="lMinus" aria-label="Decrease tether length by 1 kilometre">&minus;</button>
+              <span class="sv" id="lVal">10 km</span>
+              <button id="lPlus" aria-label="Increase tether length by 1 kilometre">+</button>
+            </div>
+            <div class="chips" role="group" aria-label="Length presets" style="margin-top:10px">
+              <button class="chip len-chip" data-len="5" aria-pressed="false">5 km</button>
+              <button class="chip len-chip" data-len="10" aria-pressed="true">10 km</button>
+              <button class="chip len-chip" data-len="20" aria-pressed="false">20 km</button>
+              <button class="chip len-chip" data-len="50" aria-pressed="false">50 km</button>
+              <button class="chip len-chip" data-len="100" aria-pressed="false">100 km</button>
+            </div>
+          </div>
+          <div class="ctl-group">
+            <div class="ctl-lab"><span>LINE MATERIAL (TABLE 2)</span></div>
+            <div class="chips" role="group" aria-label="Line material">
+              <button class="chip mat-btn" data-i="0" aria-pressed="true">Aramid</button>
+              <button class="chip mat-btn" data-i="1" aria-pressed="false">UHMWPE</button>
+              <button class="chip mat-btn" data-i="2" aria-pressed="false">PBO</button>
+              <button class="chip mat-btn" data-i="3" aria-pressed="false">Steel wire</button>
+            </div>
+          </div>
+        </div>
+        <div class="out" aria-live="polite">
+          <div class="out-head">WORKINGS — EVERY LINE, NO HIDDEN STEPS</div>
+          <div class="workings">
+            <div id="wTorb">—</div>
+            <div id="wN">—</div>
+            <div id="wT">—</div>
+            <div id="wSigma">—</div>
+            <div id="wArea">—</div>
+            <div id="wLam">—</div>
+          </div>
+          <div class="big-read">
+            <div class="br"><div class="v" id="rT">—</div><div class="k">TENSION AT TIP MASS</div></div>
+            <div class="br"><div class="v" id="rDia">—</div><div class="k">LINE DIAMETER (TENSION ONLY)</div></div>
+            <div class="br"><div class="v" id="rMass">—</div><div class="k">TETHER&rsquo;S OWN MASS</div></div>
+            <div class="br"><div class="v" id="rRatio">—</div><div class="k">OF THE TIP MASS</div></div>
+          </div>
+          <div class="verdict" id="verdict" data-state="holds">
+            <div class="v-head" id="vHead">—</div>
+            <p id="vText">—</p>
+          </div>
+          <p class="tool-note">Read the diameter honestly: pure tension sizing gives a line thinner than a hair, and <strong>nobody flies that line</strong>. Real tethers are sized by survivability — micrometeoroid tolerance, handling, deployment snatch loads — which is why flown lines are far thicker than this arithmetic suggests. The sizer sizes the <em>load</em>. The study sizes the <em>line</em>.</p>
+        </div>
+      </div>
+
+      <div class="diagram rv">
+        <svg viewBox="0 0 760 400" role="img" aria-label="Diagram of a gravity-gradient tether: a host spacecraft holds a tip mass on a long line along the local vertical, librating at a small angle theta">
+          <path d="M -40 400 A 900 900 0 0 1 800 400" fill="none" stroke="#242c34" stroke-width="2"/>
+          <path d="M -40 384 A 900 900 0 0 1 800 384" fill="none" stroke="#1a2129" stroke-width="1"/>
+          <text x="24" y="382" fill="#7e8891" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="2">EARTH — ORBIT RADIUS SETS n</text>
+          <line x1="380" y1="58" x2="380" y2="318" stroke="#7e8891" stroke-width="1.5" stroke-dasharray="5 6"/>
+          <line x1="380" y1="66" x2="424" y2="306" stroke="#7fb6cc" stroke-width="2.5"/>
+          <path d="M 380 190 A 132 132 0 0 1 399 188" fill="none" stroke="#e0a83e" stroke-width="1.5"/>
+          <text x="404" y="182" fill="#e0a83e" font-family="IBM Plex Mono, monospace" font-size="12">&theta; — LIBRATION</text>
+          <rect x="356" y="34" width="48" height="26" fill="#e9e6dc"/>
+          <rect x="322" y="41" width="26" height="12" fill="#242c34"/>
+          <rect x="412" y="41" width="26" height="12" fill="#242c34"/>
+          <text x="452" y="52" fill="#a7b0b8" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.5">HOST SPACECRAFT</text>
+          <circle cx="424" cy="306" r="9" fill="#7fb6cc"/>
+          <text x="446" y="311" fill="#a7b0b8" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.5">TIP MASS m</text>
+          <text x="300" y="200" fill="#7fb6cc" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.5" transform="rotate(79 300 200)">TETHER — LENGTH L</text>
+          <text x="240" y="330" fill="#7e8891" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.5">LOCAL VERTICAL (DASHED)</text>
+          <path d="M 96 52 H 150" stroke="#a7b0b8" stroke-width="1.5"/><path d="M 150 52 l -8 -4 v 8 z" fill="#a7b0b8"/>
+          <text x="96" y="38" fill="#a7b0b8" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.5">ORBIT DIRECTION</text>
+        </svg>
+        <p class="cap">FIG. 02 — The geometry the sizer prices. A gravity-gradient tether hangs along the local vertical because the nearer end is pulled harder than the farther end; the difference is the tension. The system librates — swings — about that vertical at angle &theta;, and managing the swing is most of the real engineering. Original diagram, drawn for this page.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ENTRY 02 · FAILURE REGISTER ================= -->
+  <section class="block" aria-labelledby="fail-h" style="padding-top:10px">
+    <div class="wrap">
+      <div class="entry-head rv">
+        <span class="no">ENTRY 02</span>
+        <h2 id="fail-h">Failure modes, listed like weather</h2>
+        <span class="side">THE REGISTER EVERY STUDY OPENS</span>
+      </div>
+      <p class="intro rv">A tether study that begins with performance is written backwards. Mine begin with this register: the ways tether systems have actually failed, or nearly have, and what an analysis owes each one. Severity is the practice&rsquo;s own grading — <strong>mission-ending</strong>, <strong>mission-shortening</strong>, or <strong>manageable, if modelled</strong>.</p>
+      <div class="table-scroll rv" tabindex="0" role="region" aria-label="Failure mode register, scrollable">
+        <table class="failmode">
+          <caption>THE FAILURE REGISTER — REVIEWED AT THE START OF EVERY ENGAGEMENT, AGAINST THE CLIENT&rsquo;S ACTUAL DESIGN, NOT A GENERIC ONE.</caption>
+          <thead>
+            <tr><th scope="col">Failure mode</th><th scope="col">What happens</th><th scope="col">Severity</th><th scope="col">What the study does about it</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Deployment libration runaway</td>
+              <td>Deploying line feeds energy into the swing. Past a rate-dependent threshold the libration grows instead of settling, and the system can end up rotating or wrapped.</td>
+              <td><span class="sev high">MISSION-ENDING</span></td>
+              <td>Deployment-rate profile simulated across the full length range, with the unstable bands named and excluded before flight.</td>
+            </tr>
+            <tr>
+              <td>Skip-rope resonance</td>
+              <td>The line&rsquo;s transverse modes — the skipping-rope modes — couple to libration or to deployer forcing at specific deployed lengths. Models without bending stiffness can miss it entirely.</td>
+              <td><span class="sev high">MISSION-ENDING</span></td>
+              <td>High-fidelity bead model with bending terms; resonance lengths printed in the report, not averaged away.</td>
+            </tr>
+            <tr>
+              <td>Micrometeoroid / debris severance</td>
+              <td>A single-strand line is one particle away from two free-flying objects. The flown record includes a tether severed days after a successful deployment.</td>
+              <td><span class="sev high">MISSION-ENDING</span></td>
+              <td>Survivability sizing (multi-strand or tape geometries), flux exposure by orbit regime, expected-life arithmetic shown.</td>
+            </tr>
+            <tr>
+              <td>Deployer jam or snag</td>
+              <td>The line stops paying out partway — a protruding bolt did exactly this to a 20 km experiment, which deployed 256 m. The mission becomes a retrieval problem.</td>
+              <td><span class="sev mid">MISSION-SHORTENING</span></td>
+              <td>Deployer design review, payout-torque margins, and a written partial-deployment plan before anyone flies.</td>
+            </tr>
+            <tr>
+              <td>Electrodynamic arcing</td>
+              <td>A bare conductive tether collects current along its length; an insulation flaw can arc and sever the line — the accepted explanation for the loss of a 19.7 km experiment.</td>
+              <td><span class="sev high">MISSION-ENDING</span></td>
+              <td>Current-collection modelling, insulation and termination review, arc-risk statement in the deliverable.</td>
+            </tr>
+            <tr>
+              <td>Slack-line snap loads</td>
+              <td>Orbital perturbations can momentarily slacken a line; when it re-tensions, the snatch load is a multiple of the steady tension the sizer prints.</td>
+              <td><span class="sev mid">MISSION-SHORTENING</span></td>
+              <td>Minimum-tension analysis across the orbit; snatch factors applied to fittings and terminations, stated numerically.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ENTRY 03 · SERVICES + ESTIMATOR ================= -->
+  <section class="block" aria-labelledby="svc-h" style="padding-top:10px">
+    <div class="wrap">
+      <div class="entry-head rv">
+        <span class="no">ENTRY 03</span>
+        <h2 id="svc-h">Services, fees, and the estimator</h2>
+        <span class="side">PRICE SHAPE PUBLISHED, AS ALWAYS</span>
+      </div>
+      <div class="table-scroll rv" tabindex="0" role="region" aria-label="Services register, scrollable">
+        <table>
+          <caption>SERVICES REGISTER — WHAT THE PRACTICE SELLS, TO WHOM, AND ITS CURRENT STATUS.</caption>
+          <thead>
+            <tr><th scope="col">Ref</th><th scope="col">Service</th><th scope="col">Typical clients</th><th scope="col">Systems</th><th scope="col">Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">S.01</td><td><span class="t">Dynamics analysis &amp; simulation</span> — bead-model simulation of deployment, libration and steady state, with resonance lengths identified.</td><td>Agencies, satellite primes</td><td>All tether classes</td><td><span class="tag live">BOOKING</span></td></tr>
+            <tr><td class="num">S.02</td><td><span class="t">Deployment study</span> — the dangerous hour, analysed end to end: rate profile, unstable bands, partial-deployment plan.</td><td>Programmes within 18 months of flight</td><td>Deploying systems</td><td><span class="tag live">BOOKING</span></td></tr>
+            <tr><td class="num">S.03</td><td><span class="t">Independent design review</span> — a second pair of eyes with no stake in the answer, reporting to the client&rsquo;s review board.</td><td>Agencies, insurers, review boards</td><td>All tether classes</td><td><span class="tag live">BOOKING</span></td></tr>
+            <tr><td class="num">S.04</td><td><span class="t">Deorbit &amp; end-of-life sizing</span> — electrodynamic and drag tether sizing with assumption flags printed, built for disposal-compliance cases.</td><td>Operators, constellation fleets</td><td>Electrodynamic, drag</td><td><span class="tag live">BOOKING</span></td></tr>
+            <tr><td class="num">S.05</td><td><span class="t">Momentum-exchange feasibility</span> — rotovator-class concepts assessed at study level, including the capture problem nobody can simulate away.</td><td>Research groups, advanced concepts</td><td>Rotating systems</td><td><span class="tag hold">WAITLIST</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-scroll rv" tabindex="0" role="region" aria-label="Fee table, scrollable">
+        <table id="fee-table">
+          <caption>FEE TABLE — THE ESTIMATOR BELOW READS THESE RATES FROM THIS TABLE. VAT EXCLUDED; STUDIES ARE FIXED-SCOPE ONCE THE GEOMETRY IS AGREED.</caption>
+          <thead>
+            <tr><th scope="col">Line</th><th scope="col">Rate</th><th scope="col">Basis</th></tr>
+          </thead>
+          <tbody>
+            <tr data-rate="1650"><td><span class="t">Dynamics analysis</span></td><td class="num">&euro;1,650</td><td>Per analysis day</td></tr>
+            <tr data-rate="1150"><td><span class="t">Simulation case</span></td><td class="num">&euro;1,150</td><td>Per model case (geometry &times; rate profile)</td></tr>
+            <tr data-rate="9800"><td><span class="t">Deployment study</span></td><td class="num">&euro;9,800</td><td>Fixed, per deployment campaign</td></tr>
+            <tr data-rate="4600"><td><span class="t">Independent design review</span></td><td class="num">&euro;4,600</td><td>Fixed, per review</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="est rv">
+        <div class="ctl">
+          <div class="ctl-group">
+            <div class="ctl-lab"><span>ANALYSIS DAYS</span><span class="val">&euro;1,650 / day</span></div>
+            <div class="stepper">
+              <button id="aMinus" aria-label="Remove one analysis day">&minus;</button>
+              <span class="sv" id="aVal">8 days</span>
+              <button id="aPlus" aria-label="Add one analysis day">+</button>
+            </div>
+          </div>
+          <div class="ctl-group">
+            <div class="ctl-lab"><span>SIMULATION CASES</span><span class="val">&euro;1,150 / case</span></div>
+            <div class="stepper">
+              <button id="cMinus" aria-label="Remove one simulation case">&minus;</button>
+              <span class="sv" id="cVal">2 cases</span>
+              <button id="cPlus" aria-label="Add one simulation case">+</button>
+            </div>
+          </div>
+          <div class="ctl-group">
+            <div class="ctl-lab"><span>DEPLOYMENT STUDY</span><span class="val">&euro;9,800 fixed</span></div>
+            <div class="tgl-row">
+              <button class="chip" id="depTgl" aria-pressed="true">INCLUDED</button>
+            </div>
+          </div>
+          <div class="ctl-group">
+            <div class="ctl-lab"><span>INDEPENDENT DESIGN REVIEW</span><span class="val">&euro;4,600 fixed</span></div>
+            <div class="tgl-row">
+              <button class="chip" id="revTgl" aria-pressed="false">EXCLUDED</button>
+            </div>
+          </div>
+        </div>
+        <div class="out">
+          <div class="out-head">ESTIMATE — STUDY SHAPE ONLY, FIXED ONCE SCOPED</div>
+          <div class="est-lines" id="estLines"></div>
+          <div class="est-total"><span class="k">INDICATIVE TOTAL</span><span class="v" id="estTotal">—</span></div>
+          <p class="tool-note">An estimate is a shape, not a quote: the fixed price is set after the mission geometry and the failure register have been reviewed against your actual design. If the honest study is smaller than the one you asked for, the smaller one is what gets priced — see Study File 01.</p>
+        </div>
+      </div>
+
+      <div class="moves rv">
+        <h3>WHAT MOVES THE PRICE, IN ORDER</h3>
+        <ol>
+          <li><strong>Dynamics scope</strong> — a steady-state sizing is days; a full deployment campaign with resonance mapping is weeks. This is most of the price.</li>
+          <li><strong>Deployment analysis</strong> — flying within 18 months adds the deployment study, because that is where the risk lives.</li>
+          <li><strong>Model fidelity</strong> — more beads, bending stiffness, deployer mechanics: each fidelity step is priced as simulation cases, and the report says which step changed the answer.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CTA ================= -->
+  <section class="block" style="padding-top:6px">
+    <div class="wrap">
+      <div class="cta-band rv">
+        <h2>Bring the geometry. Leave with the bands you must not cross.</h2>
+        <p>Every engagement starts from the failure register and ends with numbers whose assumptions are printed on them. If the analysis says do not deploy, that is the deliverable — and it is cheaper than the alternative.</p>
+        <div class="cta-row">
+          <a class="btn" href="contact.html">Start an enquiry</a>
+          <a class="btn ghost" href="about.html">How a study runs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-in">
+      <span class="fbrand">VAN DER MEER · TETHER DYNAMICS</span>
+      <span class="fbrand">LOG · STUDY FILES · ABOUT · CONTACT</span>
+    </div>
+    <p><b>Persona:</b> Dr Jeroen van der Meer is a fictional specialist created for this portfolio template, and is disclosed as fictional here and in the practice&rsquo;s terms. The physics, the flight record and the shape of the rates are real. <b>Sound:</b> none — tether dynamics is read from traces and tables, nothing on this site teaches through audio, so the site is silent by ruling. <b>Photographs:</b> reference images only, credited in CREDITS.md — never a client&rsquo;s system. &copy; Van der Meer Tether Dynamics (fictional practice).</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

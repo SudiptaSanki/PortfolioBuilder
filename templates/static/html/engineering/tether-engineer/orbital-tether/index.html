@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Longline — orbital tether systems</title>
+<meta name="description" content="Longline builds electrodynamic tethers for deorbit and station-keeping: Lorentz-force modelling, plasma contactors, and tethers that survive the micrometeoroid environment.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230B1020'/%3E%3Cpath d='M32 6v40' stroke='%239FB6D6' stroke-width='2'/%3E%3Ccircle cx='32' cy='52' r='6' fill='none' stroke='%23E3A857' stroke-width='2'/%3E%3Crect x='28' y='10' width='8' height='6' fill='%23E3A857'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="bar">
+  <a class="brand" href="index.html">
+    <span class="brand__name">Longline</span>
+    <span class="brand__sub">orbital tether systems &middot; Trondheim</span>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a href="index.html" aria-current="page">Systems</a>
+    <a href="about.html">Method</a>
+    <a href="projects.html">Programmes</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <p class="bar__meta"><span class="dot" aria-hidden="true"></span>63.43&deg;N 10.40&deg;E</p>
+</header>
+
+<main id="main">
+
+  <section class="orbit" aria-labelledby="orbit-title">
+    <canvas id="limb" width="1440" height="880" aria-hidden="true"></canvas>
+    <div class="orbit__inner">
+      <p class="station">Station 00 &middot; 400&nbsp;km &middot; 7.67&nbsp;km/s</p>
+      <h1 id="orbit-title">The long way down<br>is a wire</h1>
+      <p class="lede">An electrodynamic tether turns a satellite's own orbital energy into current and lets the planet's magnetic field do the braking. No propellant, no tank, no explosion at the end of the mission &mdash; just a 5&nbsp;km conductor and a contactor that has to work in plasma for two years.</p>
+      <div class="orbit__cta">
+        <a class="btn" href="#calculator">Run the deboost calculator</a>
+        <a class="btn btn--ghost" href="projects.html">See the programmes</a>
+      </div>
+    </div>
+    <dl class="telemetry">
+      <div><dt>Tether flown</dt><dd>18.4<span>km</span></dd></div>
+      <div><dt>Longest single line</dt><dd>6.2<span>km</span></dd></div>
+      <div><dt>Propellant saved</dt><dd>340<span>kg</span></dd></div>
+      <div><dt>Lines cut in orbit</dt><dd>1<span>of 9</span></dd></div>
+    </dl>
+  </section>
+
+  <section class="calculator" id="calculator" aria-labelledby="calc-title">
+    <div class="calc__head">
+      <p class="station">Tool 01 &middot; electrodynamic deboost</p>
+      <h2 id="calc-title">Deboost calculator</h2>
+      <p class="calc__sub">A conducting line moving through the geomagnetic field is a generator. Choose a length, a current and an altitude, and the model returns the force, the orbit-averaged velocity change and the days it would take to drop the perigee into the atmosphere.</p>
+    </div>
+
+    <div class="calc__grid">
+      <form class="calc__form" id="calc-form" aria-label="Tether parameters">
+        <div class="field">
+          <label for="length">Tether length <output id="length-out" for="length">5.0 km</output></label>
+          <input type="range" id="length" name="length" min="1" max="20" step="0.5" value="5">
+        </div>
+        <div class="field">
+          <label for="current">Current <output id="current-out" for="current">0.6 A</output></label>
+          <input type="range" id="current" name="current" min="0" max="3" step="0.05" value="0.6">
+        </div>
+        <div class="field">
+          <label for="altitude">Circular altitude <output id="altitude-out" for="altitude">400 km</output></label>
+          <input type="range" id="altitude" name="altitude" min="200" max="1000" step="10" value="400">
+        </div>
+        <div class="field">
+          <label for="endmass">End mass <output id="endmass-out" for="endmass">500 kg</output></label>
+          <input type="range" id="endmass" name="endmass" min="50" max="500" step="10" value="500">
+        </div>
+        <div class="field">
+          <label for="conductor">Conductor</label>
+          <select id="conductor" name="conductor">
+            <option value="al" selected>Aluminium, 0.5 mm&sup2;</option>
+            <option value="cu">Copper, 0.5 mm&sup2;</option>
+            <option value="tape">Aluminium tape, 2 mm&sup2;</option>
+          </select>
+        </div>
+        <div class="field field--wide">
+          <button type="button" class="btn btn--ghost" id="reset">Reset to the Kite 2 case</button>
+        </div>
+      </form>
+
+      <div class="calc__out">
+        <div class="grid-out" aria-live="polite">
+          <div><p class="k">Field strength</p><p class="v" id="out-b">25.9<span>&micro;T</span></p></div>
+          <div><p class="k">Generated EMF</p><p class="v" id="out-emf">993<span>V</span></p></div>
+          <div><p class="k">Lorentz force</p><p class="v" id="out-force">78<span>mN</span></p></div>
+          <div><p class="k">Acceleration</p><p class="v" id="out-accel">0.16<span>mm/s&sup2;</span></p></div>
+          <div><p class="k">&Delta;v per day</p><p class="v" id="out-dv">4.7<span>m/s</span></p></div>
+          <div><p class="k">Days to deorbit</p><p class="v" id="out-days">17.2<span>days</span></p></div>
+          <div><p class="k">Tether mass</p><p class="v" id="out-mass">6.8<span>kg</span></p></div>
+          <div><p class="k">Tension stress</p><p class="v" id="out-stress">13<span>MPa</span></p></div>
+        </div>
+
+        <div class="chart">
+          <div class="chart__head">
+            <span>&Delta;v per day (m/s) against current &middot; this length and altitude</span>
+            <span class="mono" id="chart-note">generator limit 1.2 A</span>
+          </div>
+          <svg id="chart" viewBox="0 0 560 220" role="img" aria-label="Chart of orbit-averaged velocity change per day against tether current, with the generator limit and the current operating point marked"></svg>
+          <p class="chart__foot">Solid: current the tether can generate on its own. Dashed: current that needs the contactor driven by the spacecraft bus. Orbit averaging includes the 2/&pi; factor and a 55&nbsp;% plasma duty cycle.</p>
+        </div>
+        <p class="verdict" id="calc-verdict">Set a current to run the model.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="stations" aria-labelledby="stations-title">
+    <h2 id="stations-title" class="sr-only">How a tether mission is built</h2>
+
+    <article class="station-block">
+      <p class="station">Station 01 &middot; 400 km</p>
+      <div class="station-block__body">
+        <h3>Deploy without a snag</h3>
+        <p>A 5&nbsp;km line is wound on a spool the size of a coffee tin and comes out at 8&nbsp;m/s. The deployment is the single most dangerous hour of the mission: any snag, any thruster plume, any residual charge and the line becomes a 5&nbsp;km whip around the spacecraft. We deploy in a sun-pointing attitude with the contactor cold, and we cut the line if the tension trace ever goes outside a band.</p>
+      </div>
+      <dl class="station-block__spec">
+        <div><dt>Deploy rate</dt><dd>8 m/s</dd></div>
+        <div><dt>Snag abort</dt><dd>2 s</dd></div>
+        <div><dt>Spool mass</dt><dd>2.1 kg</dd></div>
+      </dl>
+    </article>
+
+    <article class="station-block">
+      <p class="station">Station 02 &middot; 1 000 km</p>
+      <div class="station-block__body">
+        <h3>Make contact with nothing</h3>
+        <p>At 400&nbsp;km the plasma is thin enough that a bare wire collects current only near the ends; the hollow-cathode contactor does the rest. It has to expel a neutralised plasma without eroding its own insert, at 3&nbsp;A for hours, in an environment that swings from eclipse to full sun every 96 minutes. The contactor is the part that fails first, and it is the part we test longest.</p>
+      </div>
+      <dl class="station-block__spec">
+        <div><dt>Contactor</dt><dd>hollow cathode</dd></div>
+        <div><dt>Plasma impedance</dt><dd>300 &Omega;</dd></div>
+        <div><dt>Life tested</dt><dd>4 200 h</dd></div>
+      </dl>
+    </article>
+
+    <article class="station-block">
+      <p class="station">Station 03 &middot; 35 786 km</p>
+      <div class="station-block__body">
+        <h3>Stay in the sky for the hard cases</h3>
+        <p>A tether is also a way to hold an orbit without fuel: at higher altitude the same wire can push rather than brake. We have modelled a 12&nbsp;km conductor for a geostationary station-keeping role, where the &Delta;v bill is 50&nbsp;m/s a year and the mass of the propellant is the mass of the spacecraft. It is not a product yet. The cut rate at that altitude, and the charging behaviour during a solar storm, are not good enough to sell.</p>
+      </div>
+      <dl class="station-block__spec">
+        <div><dt>Modelled line</dt><dd>12 km</dd></div>
+        <div><dt>Station-keeping</dt><dd>50 m/s/yr</dd></div>
+        <div><dt>Status</dt><dd>Study</dd></div>
+      </dl>
+    </article>
+  </section>
+
+  <section class="closing">
+    <blockquote>
+      <p>&ldquo;Every kilogram of propellant you do not carry is a kilogram of instrument. That is the whole pitch, and it only holds if the wire survives.&rdquo;</p>
+      <footer>Rune Halvorsen, founder</footer>
+    </blockquote>
+    <div class="closing__side">
+      <h2>What we are looking for</h2>
+      <p>Small satellites between 6 and 250&nbsp;kg in low Earth orbit, with a mission that ends earlier than the hardware does. We do the deorbit and station-keeping analysis, the deployment mechanism and the cut test, and we fly on your spacecraft rather than ours.</p>
+      <a class="btn" href="contact.html">Talk about a mission</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot__word">Longline</p>
+  <div class="foot__cols">
+    <div>
+      <p class="foot__label">Studio</p>
+      <p>Longline AS, Trondheim. Systems engineering and test for electrodynamic tethers.</p>
+    </div>
+    <div>
+      <p class="foot__label">Index</p>
+      <a href="index.html">Systems</a>
+      <a href="about.html">Method</a>
+      <a href="projects.html">Programmes</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div>
+      <p class="foot__label">Contact</p>
+      <a href="mailto:post@longline.example">post@longline.example</a>
+      <p class="mono">+47 73 00 00 00</p>
+    </div>
+  </div>
+  <p class="foot__legal">&copy; <span data-year>2026</span> Longline AS. The calculator is an engineering estimate: dipole field, orbit-averaged current and a fixed plasma impedance. Flight performance is measured, not promised.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

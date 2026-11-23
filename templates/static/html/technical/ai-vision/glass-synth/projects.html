@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work — Mireille Dossou, perception systems</title>
+<meta name="description" content="Selected computer-vision work: depth from defocus for surgical robotics, instrument segmentation under smoke, 6-DoF pose tracking, defect detection on a production line.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600&family=Sora:wght@200;300;400;500&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230b1a1d'/%3E%3Ccircle cx='32' cy='32' r='17' fill='none' stroke='%236fc9c4' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23d8a24a'/%3E%3C/svg%3E">
+</head>
+<body data-page="projects">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar static">
+  <a class="brand" href="index.html">
+    <span class="brand-name">Mireille Dossou</span>
+    <span class="brand-sub">Perception systems · Lausanne</span>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a href="index.html#inspector">Inspector</a>
+    <a href="projects.html" aria-current="page">Work</a>
+    <a href="about.html">Approach</a>
+    <a href="contact.html" class="nav-cta">Talk to me</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="kicker">Work · 2021–2026</p>
+      <h1>Six systems, measured on the machine that runs them.</h1>
+      <p class="lede">Every number below was measured on the target hardware at the stated resolution. Accuracy without a latency is half a result, and a depth map without a confidence interval is a picture.</p>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="filters" role="group" aria-label="Filter work by task">
+      <button class="filt" type="button" data-filter="all" aria-pressed="true">All</button>
+      <button class="filt" type="button" data-filter="depth" aria-pressed="false">Depth</button>
+      <button class="filt" type="button" data-filter="segmentation" aria-pressed="false">Segmentation</button>
+      <button class="filt" type="button" data-filter="pose" aria-pressed="false">Pose</button>
+      <button class="filt" type="button" data-filter="industry" aria-pressed="false">Industry</button>
+    </div>
+    <p class="mono" id="projCount" style="color:var(--muted);margin:0 0 8px">6 projects</p>
+
+    <div class="proj-list">
+      <article class="proj" data-task="depth">
+        <span class="pn">01</span>
+        <div>
+          <h3>Depth from defocus in the instrument field</h3>
+          <p>A surgical robot needs 2 mm accuracy at 40 cm, and a stereo pair cannot fit on the instrument shaft. We used a single lens with a known aperture and learned the relationship between blur and distance, trained on a rail with 5 cm steps and validated on tissue phantoms.</p>
+          <p>The interesting failure was specular highlights: a wet surface has no usable blur cue. The final model predicts depth and a confidence value, and the controller ignores the low-confidence band rather than averaging it.</p>
+          <div class="chips"><span class="chip">Monocular</span><span class="chip">Confidence</span><span class="chip">Phantom</span></div>
+        </div>
+        <div class="spec">
+          2.1 cm RMSE indoors<br>
+          31 ms on Orin NX<br>
+          0.4–1.2 m range<br>
+          Confidence: 90 % interval, 88 % coverage
+        </div>
+      </article>
+
+      <article class="proj" data-task="segmentation">
+        <span class="pn">02</span>
+        <div>
+          <h3>Instrument segmentation under cautery smoke</h3>
+          <p>Smoke removes texture exactly where the instrument is, which is exactly where the network needs it. We added a temporal prior from the previous frame and a physics-inspired smoke generator, then trained on 18 hours of theatre video with instrument masks labelled by two clinicians.</p>
+          <p>IoU on smoke-heavy frames went from 0.77 to 0.88. The gain came from the temporal prior, not from the generator, which was the opposite of what we expected.</p>
+          <div class="chips"><span class="chip">Temporal</span><span class="chip">Synthetic smoke</span><span class="chip">Clinical</span></div>
+        </div>
+        <div class="spec">
+          IoU 0.88 in smoke<br>
+          Recall 0.91<br>
+          −34 % flicker frame-to-frame<br>
+          18 h of labelled video
+        </div>
+      </article>
+
+      <article class="proj" data-task="pose">
+        <span class="pn">03</span>
+        <div>
+          <h3>6-DoF pose from a fingernail-sized marker</h3>
+          <p>A calibration target small enough to sit on a tool, tracked through motion blur and partial occlusion. The network predicts the four corner offsets; the pose comes from a geometric solve, so a wrong pose can be explained by a wrong corner rather than by an opaque regression.</p>
+          <p>At 2.6° and 1.8 mm RMS it is not the most accurate tracker in the lab, but it is the one that survived a 90-minute procedure without drifting out of frame.</p>
+          <div class="chips"><span class="chip">Fiducial</span><span class="chip">Geometric solve</span><span class="chip">Long-run</span></div>
+        </div>
+        <div class="spec">
+          2.6° rotation RMS<br>
+          1.8 mm translation RMS<br>
+          120 fps at 640 × 480<br>
+          90 min without re-acquire
+        </div>
+      </article>
+
+      <article class="proj" data-task="depth pose">
+        <span class="pn">04</span>
+        <div>
+          <h3>Stereo depth for a mobile manipulator</h3>
+          <p>A warehouse robot needed depth at 3 m for grasping on a moving base. Stereo with a learned refinement beat a structured-light sensor in daylight and lost badly on white shelving, which is the kind of trade-off that only shows up when you test both.</p>
+          <p>We shipped a hybrid: stereo for daylight, active light for the shelving aisle, with a confidence-based switch that the planner can query.</p>
+          <div class="chips"><span class="chip">Stereo</span><span class="chip">Active light</span><span class="chip">Hybrid</span></div>
+        </div>
+        <div class="spec">
+          8 mm at 1 m, 34 mm at 3 m<br>
+          24 ms per frame<br>
+          Switch latency 1 frame<br>
+          Deployed on 12 robots
+        </div>
+      </article>
+
+      <article class="proj" data-task="industry segmentation">
+        <span class="pn">05</span>
+        <div>
+          <h3>Surface defect detection on a coating line</h3>
+          <p>Six cameras, 40 m/min, defects between 0.3 and 3 mm. The classical filter bank was fast but could not separate a drip from a reflection; the network could, but only at 12 frames a second. We ran the filter bank as a proposal stage and the network only on candidates.</p>
+          <p>Recall went to 0.96 at a false-alarm rate the line operators accepted, which was the real constraint: a system that cries wolf gets switched off in a week.</p>
+          <div class="chips"><span class="chip">Proposals</span><span class="chip">Two-stage</span><span class="chip">Production line</span></div>
+        </div>
+        <div class="spec">
+          Recall 0.96 at 0.3 mm<br>
+          0.4 false alarms / 100 m²<br>
+          40 m/min line speed<br>
+          Six cameras, one GPU
+        </div>
+      </article>
+
+      <article class="proj" data-task="depth industry">
+        <span class="pn">06</span>
+        <div>
+          <h3>A calibration service nobody has to think about</h3>
+          <p>Every deployed camera drifts. Rather than shipping a rig to each site, we built a calibration routine that uses the robot's own motion: a short scripted sweep, a target the operator already has, and a fit that reports whether the result is good enough to use.</p>
+          <p>Drift after six hours is 0.07 px with the re-fit, and the routine refuses to certify a calibration it cannot verify, which is more useful than a green tick.</p>
+          <div class="chips"><span class="chip">Self-calibration</span><span class="chip">Field</span><span class="chip">Verification</span></div>
+        </div>
+        <div class="spec">
+          0.07 px drift over 6 h<br>
+          90 s routine per camera<br>
+          Refuses to certify bad fits<br>
+          38 sites
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <p class="foot-mark">Mireille Dossou</p>
+          <p>Perception systems<br>Lausanne, Switzerland</p>
+        </div>
+        <div>
+          <p class="mono">Contact</p>
+          <p><a href="mailto:m.dossou@vision-lab.ch">m.dossou@vision-lab.ch</a><br>EPFL, building BC</p>
+        </div>
+        <div>
+          <p class="mono">Elsewhere</p>
+          <p><a href="projects.html">Work</a> · <a href="about.html">Approach</a><br>Code on request</p>
+        </div>
+      </div>
+      <p class="foot-fine">© 2026 Mireille Dossou · every figure on this page is generated in the browser · no audio, by design</p>
+    </div>
+  </footer>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

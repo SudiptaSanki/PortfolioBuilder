@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sounding Line — hydrophone arrays &amp; underwater bioacoustics</title>
+<meta name="description" content="Sounding Line designs, moors and reads hydrophone arrays: passive acoustic monitoring of cetaceans, shipping noise and the deep sound channel. Detection bench with live sonar-equation solver.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050d11'/%3E%3Cpath d='M4 21c3 0 3-8 6-8s3 8 6 8 3-8 6-8 3 8 6 8' fill='none' stroke='%235ee0c4' stroke-width='1.6'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="head-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 24"><path d="M1 12h5M8 12c2-7 4-7 6 0s4 7 6 0 4-7 6 0 4 7 6 0" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+      </span>
+      <span class="brand-name">Sounding&nbsp;Line</span>
+    </a>
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
+      <a href="index.html" aria-current="page">Bench</a>
+      <a href="about.html">Analyst</a>
+      <a href="projects.html">Deployments</a>
+      <a href="contact.html">Brief a survey</a>
+    </nav>
+    <p class="head-note">Station 47 · 12°58′S 78°04′W</p>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span><span class="sr-only">Menu</span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="depth-rail" aria-hidden="true">
+      <p class="rail-label">Depth<br>m</p>
+      <ol class="rail-ticks">
+        <li>0</li><li>500</li><li>1000</li><li>1500</li><li>2000</li><li>2500</li><li>3000</li><li>3500</li><li>4000</li><li>4500</li><li>5000</li>
+      </ol>
+      <span class="rail-axis"></span>
+    </div>
+
+    <div class="hero-copy">
+      <p class="kicker"><span class="dot"></span>Hydrophone arrays · year-long moorings · Southern Ocean to the Gulf of Guinea</p>
+      <h1>The deep ocean is loud.<br><em>Almost none of it is noise.</em></h1>
+      <p class="lede">I build and moor passive acoustic arrays, then spend the next twelve months reading what they heard. A blue whale's 18 Hz call rides the sound channel for three hundred kilometres; a container ship's cavitation blanks out the same band for forty. Separating the two is the work.</p>
+      <dl class="hero-facts">
+        <div><dt>Moorings recovered</dt><dd>41</dd></div>
+        <div><dt>Deepest sensor</dt><dd>5,860 m</dd></div>
+        <div><dt>Audio archived</dt><dd>34 TB</dd></div>
+        <div><dt>Peer-reviewed sets</dt><dd>7</dd></div>
+      </dl>
+      <p class="hero-jump"><a href="#bench">Run the detection bench <span aria-hidden="true">↓</span></a></p>
+    </div>
+  </section>
+
+  <section class="bench" id="bench">
+    <div class="bench-head">
+      <div>
+        <p class="kicker">Live instrument · no recording, no autoplay</p>
+        <h2>Detection bench</h2>
+      </div>
+      <p class="bench-note">Set a listening depth and a source. The bench solves the passive sonar equation &mdash; <span class="mono">SE = SL − TL − (NL − DI) − DT</span> &mdash; through the measured sound-speed profile of the basin. Every number below is computed here, not illustrated.</p>
+    </div>
+
+    <div class="spec">
+      <p class="spec-freq" aria-hidden="true">
+        <span style="--y:2%">100 kHz</span>
+        <span style="--y:25%">10 kHz</span>
+        <span style="--y:50%">1 kHz</span>
+        <span style="--y:75%">100 Hz</span>
+        <span style="--y:92%">20 Hz</span>
+      </p>
+      <div class="spec-canvas">
+        <canvas id="spectro" width="1200" height="320" role="img" aria-label="Live spectrogram of the selected source: frequency on a logarithmic vertical axis from 10 hertz to 100 kilohertz, sixty seconds of passing time horizontally"></canvas>
+        <p class="spec-tag" id="specTag">BLUE WHALE B CALL · 18 Hz · 16 s</p>
+      </div>
+      <p class="spec-time" aria-hidden="true"><span>60 s ago</span><span>30</span><span>now</span></p>
+    </div>
+
+    <div class="bench-body">
+      <form class="controls" id="benchForm" novalidate>
+        <div class="ctl">
+          <label for="depth">Listening depth <output id="depthOut" for="depth">1,000 m</output></label>
+          <input type="range" id="depth" name="depth" min="0" max="5000" step="10" value="1000">
+          <p class="ctl-hint" id="depthHint">Sound channel axis at 980 m — you are inside it.</p>
+        </div>
+        <div class="ctl">
+          <label for="sea">Sea state <output id="seaOut" for="sea">3</output></label>
+          <input type="range" id="sea" name="sea" min="0" max="6" step="1" value="3">
+          <p class="ctl-hint">Sea state raises the ambient envelope by 2.5 dB per step above 3.</p>
+        </div>
+        <div class="ctl">
+          <label for="space">Hydrophone spacing <output id="spaceOut" for="space">1.50 m</output></label>
+          <input type="range" id="space" name="space" min="0.2" max="4" step="0.05" value="1.5">
+          <p class="ctl-hint" id="aliasHint">Spatial Nyquist: usable to 493 Hz before grating lobes.</p>
+        </div>
+        <fieldset class="sources">
+          <legend>Source under the array</legend>
+          <button type="button" class="src" data-src="blue" aria-pressed="true">Blue whale<span>18 Hz · 185 dB</span></button>
+          <button type="button" class="src" data-src="fin" aria-pressed="false">Fin whale<span>20 Hz · 180 dB</span></button>
+          <button type="button" class="src" data-src="sperm" aria-pressed="false">Sperm whale<span>12 kHz · 205 dB</span></button>
+          <button type="button" class="src" data-src="humpback" aria-pressed="false">Humpback<span>800 Hz · 165 dB</span></button>
+          <button type="button" class="src" data-src="airgun" aria-pressed="false">Seismic airgun<span>60 Hz · 225 dB</span></button>
+          <button type="button" class="src" data-src="ship" aria-pressed="false">Container ship<span>120 Hz · 175 dB</span></button>
+        </fieldset>
+      </form>
+
+      <div class="readout-wrap">
+        <div class="readouts">
+          <div class="ro"><p class="ro-label">Sound speed at depth</p><p class="ro-value" id="roSpeed">1,481<small>m/s</small></p></div>
+          <div class="ro"><p class="ro-label">Ambient noise NL</p><p class="ro-value" id="roNoise">91<small>dB/Hz</small></p></div>
+          <div class="ro"><p class="ro-label">Loss at 10 km</p><p class="ro-value" id="roLoss">63<small>dB</small></p></div>
+          <div class="ro ro-wide"><p class="ro-label">Detection radius</p><p class="ro-value ro-big" id="roRange">312<small>km</small></p></div>
+        </div>
+        <p class="readout-foot" id="roFoot">Mode: mode-stripping, 15 log r. Directional index 0 dB · detection threshold 9 dB.</p>
+        <div class="listen">
+          <button type="button" class="listen-btn" id="listenBtn" aria-pressed="false">
+            <span class="play" aria-hidden="true"></span><span id="listenLabel">Listen to this source · 12 s</span>
+          </button>
+          <p class="listen-note">Synthesised in the browser, silent until you press. Headphones help: the blue whale fundamental is below the audibility floor, so what you hear is its harmonic stack.</p>
+          <div class="meter" aria-hidden="true"><span id="meterBar"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="method" id="method">
+    <div class="method-head">
+      <p class="kicker">01 — How sound crosses an ocean</p>
+      <h2>Three numbers decide whether a call arrives</h2>
+      <p>Depth is not a neutral axis. It bends every ray: temperature cools the water until roughly a kilometre down, pressure then compresses it, and the two effects cross at a sound-speed minimum. A call launched near that axis is trapped between the thermocline above and the pressure gradient below, and loses 15&nbsp;dB per decade of range instead of 20.</p>
+    </div>
+    <figure class="profile">
+      <svg id="ssp" viewBox="0 0 420 540" role="img" aria-label="Measured sound-speed profile from the surface to 5000 metres. Sound speed falls from 1536 metres per second at the surface to a minimum of 1487 at 1200 metres, then rises again with pressure.">
+        <g class="ssp-grid" id="sspGrid"></g>
+        <g class="ssp-axis" id="sspAxis"></g>
+        <path id="sspGlow" d="M62 20 L62 500" fill="none" stroke="#5ee0c4" stroke-width="7" stroke-opacity="0.13"/>
+        <path id="sspPath" d="M62 20 L62 500" fill="none" stroke="#5ee0c4" stroke-width="1.8"/>
+        <line class="ssp-axisline" id="sspAxisLine" x1="62" x2="396" y1="130" y2="130"/>
+        <text class="ssp-note" id="sspNote" x="66" y="122">channel axis</text>
+      </svg>
+      <figcaption>Sound speed from the 2023 station-47 cast, 1,478–1,566 m/s. Minimum 1,487.0 m/s at 1,200 m; the axis wanders about 60 m over a spring–neap cycle.</figcaption>
+    </figure>
+    <div class="method-cols">
+      <div class="mcol">
+        <h3>Speed, from temperature and pressure</h3>
+        <p>Mackenzie's nine-term equation takes salinity, temperature and depth and returns sound speed to about 0.1&nbsp;m/s. I keep the cast updated each turnaround: a basin that warms by half a degree moves the axis by tens of metres, and the mooring depth with it.</p>
+        <p class="stat"><span>1,487.0</span> m/s at the axis, 2023 cast</p>
+      </div>
+      <div class="mcol">
+        <h3>Loss, from spreading and absorption</h3>
+        <p>Spreading removes 20&nbsp;dB per decade of range; a trapped ray loses 15. Absorption adds on top and is brutally frequency-dependent: 0.003&nbsp;dB/km at 20&nbsp;Hz, 1.6&nbsp;dB/km at 12&nbsp;kHz. That contrast is why a blue whale crosses an ocean and a sperm whale click dies inside a canyon.</p>
+        <p class="stat"><span>0.003 → 1.64</span> dB/km, 20 Hz to 12 kHz</p>
+      </div>
+      <div class="mcol">
+        <h3>Noise, from weather and traffic</h3>
+        <p>Below 300&nbsp;Hz the basin is dominated by shipping, and it never stops: I have recorded a 6&nbsp;dB rise in the 40–80&nbsp;Hz band across eight years of moorings on the same line. Above 50&nbsp;kHz, wind and rain take over and sea state sets the floor.</p>
+        <p class="stat"><span>+6</span> dB of traffic noise, 2015–2023</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="heard" id="heard">
+    <div class="heard-head">
+      <p class="kicker">02 — What the array hears</p>
+      <h2>The catalogue, with the numbers a regulator asks for</h2>
+      <p class="heard-lede">Source levels are on-axis, referenced to 1&nbsp;µPa at 1&nbsp;m. Detection ranges are from the 1,000&nbsp;m mooring with a 9&nbsp;dB threshold — not from a textbook.</p>
+    </div>
+    <table class="catalogue">
+      <thead>
+        <tr><th scope="col">Signaller</th><th scope="col">Band</th><th scope="col">Duration</th><th scope="col">Source level</th><th scope="col">Season</th><th scope="col">Range here</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Blue whale <em>B. musculus</em></th><td>15–25 Hz</td><td>10–20 s</td><td>185 dB</td><td>Jan–Apr</td><td>200–300 km</td></tr>
+        <tr><th scope="row">Fin whale <em>B. physalus</em></th><td>17–25 Hz</td><td>0.7–1.2 s</td><td>180 dB</td><td>May–Sep</td><td>200–300 km</td></tr>
+        <tr><th scope="row">Antarctic blue <em>Z-call</em></th><td>26–28 Hz</td><td>18 s</td><td>183 dB</td><td>Jun–Aug</td><td>300–350 km</td></tr>
+        <tr><th scope="row">Sperm whale <em>P. macrocephalus</em></th><td>5–25 kHz</td><td>100 µs clicks</td><td>205 dB</td><td>Year-round</td><td>30–40 km</td></tr>
+        <tr><th scope="row">Humpback <em>M. novaeangliae</em></th><td>100 Hz–4 kHz</td><td>8–20 min</td><td>165 dB</td><td>Jul–Oct</td><td>30–50 km</td></tr>
+        <tr><th scope="row">Seismic airgun array</th><td>5–300 Hz</td><td>10–20 ms</td><td>225 dB</td><td>Survey-dependent</td><td>Basin-wide</td></tr>
+        <tr><th scope="row">Container ship, 14 kn</th><td>20–500 Hz</td><td>continuous</td><td>175 dB</td><td>Year-round</td><td>120–150 km</td></tr>
+      </tbody>
+    </table>
+    <p class="table-foot">Range is the radius at which signal-to-noise falls below 9&nbsp;dB. Airgun exposure is limited by onset rate, not by detectability — see the <a href="projects.html">Mawson line</a>.</p>
+  </section>
+
+  <section class="teaser">
+    <div class="teaser-head">
+      <p class="kicker">03 — Selected deployments</p>
+      <h2>Three moorings, three arguments</h2>
+    </div>
+    <div class="teaser-grid">
+      <article class="tcard">
+        <p class="tcard-meta">2021–2023 · Southern Ocean · 4,120 m</p>
+        <h3>The Mawson line</h3>
+        <p>Sixteen months of continuous recording under the Antarctic Circumpolar Current, used to show that a seismic survey's 20&nbsp;Hz energy reached the krill ground at 41&nbsp;dB above background.</p>
+        <p class="tcard-stat">18,400 blue whale calls · 62 dB dynamic range</p>
+        <a href="projects.html">Read the deployment</a>
+      </article>
+      <article class="tcard">
+        <p class="tcard-meta">2020 · Gulf of Guinea · 2,300 m</p>
+        <h3>Canyon shadow</h3>
+        <p>A twelve-hydrophone VLF array across a submarine canyon, testing whether the canyon walls duct sperm whale clicks out of the basin and into deep water.</p>
+        <p class="tcard-stat">Detected 3.4× further inside the canyon</p>
+        <a href="projects.html">Read the deployment</a>
+      </article>
+      <article class="tcard">
+        <p class="tcard-meta">2019 · Bay of Bengal · 1,040 m</p>
+        <h3>Shipping ledger</h3>
+        <p>A year on the busiest shipping lane in the Indian Ocean, converting AIS tracks and acoustic spectra into a per-vessel noise contribution at the channel axis.</p>
+        <p class="tcard-stat">1,912 vessels attributed · +6 dB since 2015</p>
+        <a href="projects.html">Read the deployment</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-inner">
+      <p class="kicker">Next window: March 2027</p>
+      <h2>Building a monitoring programme, or answering a consent condition?</h2>
+      <p>I take on three deployments a year: full design, mooring, recovery and the analysis that goes with it. Bring me a site, a species list and a question that has to survive cross-examination.</p>
+      <div class="cta-actions">
+        <a class="btn" href="contact.html">Brief a survey</a>
+        <a class="btn btn-ghost" href="projects.html">See the method in the field</a>
+      </div>
+    </div>
+    <div class="cta-art" aria-hidden="true">
+      <svg viewBox="0 0 320 320">
+        <g fill="none" stroke="#5ee0c4" stroke-opacity=".35">
+          <circle cx="160" cy="160" r="40"/><circle cx="160" cy="160" r="78"/><circle cx="160" cy="160" r="116"/><circle cx="160" cy="160" r="154"/>
+        </g>
+        <path d="M160 6v308M6 160h308" stroke="#5ee0c4" stroke-opacity=".12"/>
+        <circle cx="160" cy="160" r="5" fill="#e0a850"/>
+        <path d="M160 160 L236 96" stroke="#e0a850" stroke-opacity=".6" stroke-dasharray="3 5"/>
+      </svg>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <p><strong>Sounding Line</strong> — Maren Okonkwo, underwater bioacoustics. Lisbon &amp; Station 47.</p>
+  <p class="foot-links"><a href="about.html">Analyst</a> · <a href="projects.html">Deployments</a> · <a href="contact.html">Contact</a></p>
+  <p class="foot-note">All figures on this site are from the practice's own moorings or from published source levels; where a number is modelled, the model is named.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

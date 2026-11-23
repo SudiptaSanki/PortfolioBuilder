@@ -1,0 +1,521 @@
+/* Geometric Fold — Mara Ellison, origami artist
+   Design system: the crease pattern. Paper white, ink, one vermilion.
+   In the diagrams, mountain folds are dash-dot lines, valley folds dashed.
+   Sharp corners throughout — paper does not do pill shapes. */
+
+:root{
+  --paper:#faf8f2;
+  --paper-2:#f2eee1;
+  --ink:#201c15;
+  --ink-soft:#4a4436;
+  --muted:#6f6753;
+  --line:#d9d2bd;
+  --line-dark:#b7ae94;
+  --accent:#a83a10;
+  --accent-bright:#c1441c;
+  --accent-ink:#93330d;
+  --display:"Space Grotesk",system-ui,sans-serif;
+  --body:"Inter",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%}
+a{color:var(--accent-ink)}
+::selection{background:var(--accent);color:#fff}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+
+/* ---------- header ---------- */
+.site-head{
+  border-bottom:1px solid var(--ink);
+  background:var(--paper);
+}
+.site-head .wrap{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;padding-top:20px;padding-bottom:20px;flex-wrap:wrap;
+}
+.brand{text-decoration:none;color:var(--ink);line-height:1.15}
+.brand .brand-name{
+  font-family:var(--display);font-weight:600;font-size:1.35rem;
+  letter-spacing:.01em;display:block;
+}
+.brand .brand-sub{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);display:block;margin-top:2px;
+}
+.main-nav{display:flex;gap:8px;flex-wrap:wrap}
+.main-nav a{
+  color:var(--ink);text-decoration:none;font-weight:500;font-size:.98rem;
+  padding:10px 14px;min-height:44px;display:inline-flex;align-items:center;
+}
+.main-nav a:hover{color:var(--accent-ink)}
+.main-nav a[aria-current="page"]{
+  color:var(--accent-ink);
+  box-shadow:inset 0 -2px 0 var(--accent);
+}
+
+/* ---------- diagram furniture ---------- */
+.fig-label{
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent-ink);
+  display:flex;align-items:center;gap:12px;margin-bottom:16px;
+}
+.fig-label::after{content:"";flex:1;border-top:1px solid var(--line-dark)}
+.fig-note{
+  font-family:var(--mono);font-size:.78rem;color:var(--muted);line-height:1.6;
+}
+.legend{display:flex;gap:28px;flex-wrap:wrap;margin-top:12px}
+.legend span{
+  font-family:var(--mono);font-size:.75rem;color:var(--ink-soft);
+  display:inline-flex;align-items:center;gap:10px;
+}
+.sw{
+  display:inline-block;width:44px;height:8px;flex:none;
+  background-repeat:no-repeat;background-position:center;
+}
+.sw.mountain{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='8'%3E%3Cline x1='0' y1='4' x2='44' y2='4' stroke='%23201c15' stroke-width='2' stroke-dasharray='12 3 3 3'/%3E%3C/svg%3E")}
+.sw.valley{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='8'%3E%3Cline x1='0' y1='4' x2='44' y2='4' stroke='%23c1441c' stroke-width='2' stroke-dasharray='7 4'/%3E%3C/svg%3E")}
+.sw.edge{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='8'%3E%3Cline x1='0' y1='4' x2='44' y2='4' stroke='%23b7ae94' stroke-width='2'/%3E%3C/svg%3E")}
+
+/* crease rule: a hairline with a fold node at its centre */
+.crease-rule{
+  border:0;border-top:1px solid var(--line-dark);
+  position:relative;margin:0;
+}
+.crease-rule::after{
+  content:"";position:absolute;left:50%;top:-5px;width:9px;height:9px;
+  background:var(--paper);border:1px solid var(--ink);
+  transform:translateX(-50%) rotate(45deg);
+}
+
+/* ---------- type ---------- */
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.12;color:var(--ink)}
+h1{font-size:clamp(2.6rem,6vw,4.4rem);letter-spacing:-.01em}
+h2{font-size:clamp(1.9rem,3.6vw,2.7rem);margin-bottom:16px}
+h3{font-size:1.28rem;margin-bottom:8px}
+.lede{font-size:1.16rem;color:var(--ink-soft);max-width:56ch}
+p{max-width:68ch}
+section{padding:72px 0}
+.sec-head{max-width:720px;margin-bottom:40px}
+.sec-head p{color:var(--ink-soft)}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;min-height:48px;
+  padding:12px 24px;background:var(--ink);color:var(--paper);
+  font-family:var(--display);font-weight:500;font-size:1rem;
+  text-decoration:none;border:1px solid var(--ink);cursor:pointer;
+}
+.btn:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{color:var(--accent-ink);border-color:var(--accent-ink);background:transparent}
+.btn-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:32px}
+
+/* ---------- hero ---------- */
+.hero{
+  padding:64px 0 72px;border-bottom:1px solid var(--line);
+  background:var(--paper-2);
+  clip-path:polygon(0 18px,100% 0,100% 100%,0 100%);
+}
+.hero-grid{
+  display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:start;
+}
+.hero h1{margin-bottom:20px}
+.hero h1 .accent{color:var(--accent-ink)}
+.hero .proposition{font-size:1.14rem;color:var(--ink-soft);max-width:52ch}
+.facts{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border:1px solid var(--line-dark);margin-top:56px;background:var(--paper);
+}
+.facts div{padding:20px;border-right:1px solid var(--line)}
+.facts div:last-child{border-right:0}
+.facts dt{
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:6px;
+}
+.facts dd{font-weight:500;font-size:.98rem;line-height:1.45}
+.sheet{
+  border:1px solid var(--ink);background:#fff;padding:20px;
+}
+.sheet svg{width:100%;height:auto;display:block}
+.sheet figcaption{margin-top:16px}
+.hero-photo{margin-top:24px;border:1px solid var(--line-dark)}
+.hero-photo img{width:100%;height:300px;object-fit:cover}
+.hero-photo figcaption{
+  padding:10px 14px;font-family:var(--mono);font-size:.75rem;color:var(--muted);
+  border-top:1px solid var(--line);background:var(--paper);
+}
+
+/* ---------- gallery ---------- */
+.gallery{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:32px;
+}
+.piece{
+  border:1px solid var(--line-dark);background:#fff;display:flex;flex-direction:column;
+}
+.piece-media{position:relative;border-bottom:1px solid var(--line)}
+.piece-media img{width:100%;height:340px;object-fit:cover;cursor:zoom-in}
+.piece-media .cp-view{background:var(--paper);padding:16px}
+.piece-media .cp-view svg{width:100%;height:auto;display:block}
+.piece-body{padding:24px;display:flex;flex-direction:column;gap:16px;flex:1}
+.piece-body h3{margin-bottom:0}
+.tombstone{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;
+  font-size:.92rem;border-top:1px solid var(--line);padding-top:16px;
+}
+.tombstone div{display:flex;flex-direction:column}
+.tombstone dt{
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);
+}
+.tombstone dd{font-weight:500}
+.status-available{color:var(--accent-ink)}
+.view-toggle{
+  display:flex;border:1px solid var(--ink);align-self:flex-start;margin-top:auto;
+}
+.view-toggle button{
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;
+  padding:10px 16px;min-height:44px;background:#fff;color:var(--ink);
+  border:0;cursor:pointer;
+}
+.view-toggle button + button{border-left:1px solid var(--ink)}
+.view-toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.piece-link{font-weight:500;text-decoration:none}
+.piece-link:hover{text-decoration:underline}
+
+/* ---------- process ---------- */
+.process-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.process-photo{border:1px solid var(--line-dark)}
+.process-photo img{width:100%;height:420px;object-fit:cover}
+.process-photo figcaption{
+  padding:10px 14px;font-family:var(--mono);font-size:.75rem;color:var(--muted);
+  border-top:1px solid var(--line);background:var(--paper);
+}
+.steps{list-style:none;counter-reset:step}
+.steps li{
+  counter-increment:step;padding:20px 0 20px 64px;position:relative;
+  border-bottom:1px dashed var(--line-dark);
+}
+.steps li:last-child{border-bottom:0}
+.steps li::before{
+  content:"0" counter(step);position:absolute;left:0;top:22px;
+  font-family:var(--mono);font-size:.85rem;color:var(--accent-ink);
+  border:1px solid var(--accent-ink);width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;background:var(--paper);
+}
+.steps p{color:var(--ink-soft);font-size:.99rem}
+
+/* ---------- commissions ---------- */
+.comm-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start}
+.price-table{width:100%;border-collapse:collapse;font-size:.97rem;background:#fff}
+.price-table caption{
+  text-align:left;font-family:var(--mono);font-size:.75rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);padding-bottom:12px;
+}
+.price-table th,.price-table td{
+  text-align:left;padding:12px 14px;border:1px solid var(--line-dark);vertical-align:top;
+}
+.price-table th{font-family:var(--display);font-weight:600;background:var(--paper-2)}
+.price-table td.price{font-weight:600;white-space:nowrap}
+.comm-steps{list-style:none}
+.comm-steps li{padding:16px 0;border-bottom:1px dashed var(--line-dark)}
+.comm-steps li:last-child{border-bottom:0}
+.comm-steps strong{font-family:var(--display)}
+.comm-steps p{color:var(--ink-soft);font-size:.99rem}
+
+/* ---------- testimonial ---------- */
+.testimonial{
+  border:1px solid var(--ink);background:var(--paper-2);padding:40px;
+}
+.testimonial blockquote{
+  font-family:var(--display);font-size:1.45rem;font-weight:500;line-height:1.4;
+  max-width:44ch;
+}
+.testimonial .who{margin-top:20px;font-size:.95rem;color:var(--ink-soft)}
+.testimonial .who strong{color:var(--ink)}
+
+/* ---------- CTA band ---------- */
+.cta-band{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:56px 0}
+.cta-band .wrap{display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.cta-band h2{margin-bottom:8px}
+.cta-band p{color:var(--ink-soft)}
+.cta-band .mail{font-family:var(--mono);font-size:.9rem;margin-top:12px;display:block}
+
+/* ---------- case studies ---------- */
+.case{padding:56px 0;border-bottom:1px solid var(--line)}
+.case:first-of-type{padding-top:8px}
+.case-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.case img{border:1px solid var(--line-dark);width:100%;height:360px;object-fit:cover}
+.case .cp-sheet{border:1px solid var(--ink);background:#fff;padding:16px;margin-top:24px}
+.case .cp-sheet svg{width:100%;height:auto;display:block}
+.case h3{font-size:1.5rem}
+.case .phase{margin-top:20px}
+.case .phase h4{
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--accent-ink);margin-bottom:6px;font-weight:500;
+}
+.case .phase p{color:var(--ink-soft)}
+.case-meta{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:8px 24px;margin-top:24px;
+  border:1px solid var(--line-dark);background:#fff;padding:20px;font-size:.92rem;
+}
+.case-meta div{display:flex;flex-direction:column}
+.case-meta dt{
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);
+}
+.case-meta dd{font-weight:500}
+
+/* ---------- about ---------- */
+.about-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:start}
+.about-photo{border:1px solid var(--line-dark)}
+.about-photo img{width:100%;height:440px;object-fit:cover}
+.about-photo figcaption{
+  padding:10px 14px;font-family:var(--mono);font-size:.75rem;color:var(--muted);
+  border-top:1px solid var(--line);background:var(--paper);
+}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.table-wrap:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.data-table{width:100%;border-collapse:collapse;font-size:.96rem;background:#fff}
+.data-table caption{
+  text-align:left;font-family:var(--mono);font-size:.75rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);padding-bottom:12px;
+}
+.data-table th,.data-table td{
+  text-align:left;padding:12px 14px;border:1px solid var(--line-dark);vertical-align:top;
+}
+.data-table th{font-family:var(--display);font-weight:600;background:var(--paper-2)}
+.care-list{list-style:none}
+.care-list li{padding:16px 0;border-bottom:1px dashed var(--line-dark)}
+.care-list li:last-child{border-bottom:0}
+.care-list strong{font-family:var(--display)}
+.care-list p{color:var(--ink-soft);font-size:.99rem}
+
+/* ---------- contact ---------- */
+.contact-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:start}
+.contact-info p{color:var(--ink-soft);margin-bottom:16px}
+.contact-info .mail-big{
+  font-family:var(--display);font-size:1.3rem;font-weight:600;color:var(--accent-ink);
+  text-decoration:none;word-break:break-all;
+}
+.contact-info .mail-big:hover{text-decoration:underline}
+form .field{margin-bottom:20px}
+form label{display:block;font-weight:500;margin-bottom:8px}
+form label .req{color:var(--accent-ink)}
+form input,form select,form textarea{
+  width:100%;padding:12px 14px;min-height:48px;font:inherit;color:var(--ink);
+  background:#fff;border:1px solid var(--line-dark);border-radius:0;
+}
+form textarea{min-height:150px;resize:vertical}
+form input:focus,form select:focus,form textarea:focus{
+  outline:2px solid var(--accent);outline-offset:1px;border-color:var(--ink);
+}
+form [aria-invalid="true"]{border-color:var(--accent-ink);outline-color:var(--accent-ink)}
+.field-error{color:var(--accent-ink);font-size:.9rem;margin-top:6px;font-weight:500}
+.form-note{font-size:.9rem;color:var(--muted);margin-top:16px}
+.confirmation{
+  border:1px solid var(--ink);background:var(--paper-2);padding:32px;
+}
+.confirmation h3{margin-bottom:12px}
+.confirmation .ref{
+  font-family:var(--mono);font-size:.9rem;background:#fff;border:1px dashed var(--line-dark);
+  padding:10px 14px;display:inline-block;margin:8px 0 16px;
+}
+
+/* ---------- footer ---------- */
+.site-foot{border-top:1px solid var(--ink);margin-top:0;padding:48px 0 40px;background:var(--paper)}
+.foot-grid{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:40px;margin-bottom:32px}
+.site-foot h4{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px;font-weight:500;
+}
+.site-foot p,.site-foot a{font-size:.94rem;color:var(--ink-soft)}
+.site-foot nav{display:flex;flex-direction:column;gap:8px}
+.site-foot nav a{color:var(--ink-soft);text-decoration:none;padding:4px 0}
+.site-foot nav a:hover{color:var(--accent-ink)}
+.fiction{
+  border-top:1px dashed var(--line-dark);padding-top:20px;
+  font-size:.86rem;color:var(--muted);max-width:78ch;
+}
+.foot-base{
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  margin-top:16px;font-family:var(--mono);font-size:.75rem;color:var(--muted);
+}
+
+/* ---------- lightbox ---------- */
+.lightbox{
+  position:fixed;inset:0;background:rgba(24,21,16,.94);z-index:60;
+  display:none;align-items:center;justify-content:center;padding:24px;
+}
+.lightbox.open{display:flex}
+.lightbox figure{max-width:min(920px,100%);width:100%}
+.lightbox img{width:100%;max-height:72vh;object-fit:contain;background:#111}
+.lightbox figcaption{color:#f2eee1;padding:16px 4px 0;font-size:.95rem}
+.lightbox figcaption .lb-title{font-family:var(--display);font-weight:600;display:block;font-size:1.1rem}
+.lightbox figcaption .lb-meta{font-family:var(--mono);font-size:.78rem;color:#c9c2ab;display:block;margin-top:6px}
+.lb-btn{
+  position:absolute;background:transparent;border:1px solid #f2eee1;color:#f2eee1;
+  font-family:var(--mono);font-size:.85rem;cursor:pointer;min-width:48px;min-height:48px;
+  display:flex;align-items:center;justify-content:center;padding:8px 14px;
+}
+.lb-btn:hover{background:#f2eee1;color:#201c15}
+.lb-close{top:20px;right:20px}
+.lb-prev{left:20px;top:50%;transform:translateY(-50%)}
+.lb-next{right:20px;top:50%;transform:translateY(-50%)}
+.lb-count{
+  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+  color:#c9c2ab;font-family:var(--mono);font-size:.8rem;
+}
+
+/* ---------- reveal (motion with a job: reading order only) ---------- */
+@media (prefers-reduced-motion: no-preference){
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+  .reveal.in{opacity:1;transform:none}
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:960px){
+  .hero-grid,.process-grid,.comm-grid,.about-grid,.contact-grid,.case-grid{
+    grid-template-columns:1fr;
+  }
+  .facts{grid-template-columns:1fr 1fr}
+  .facts div:nth-child(2){border-right:0}
+  .facts div:nth-child(1),.facts div:nth-child(2){border-bottom:1px solid var(--line)}
+  .gallery{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+  section{padding:52px 0}
+  .lb-prev{left:8px}.lb-next{right:8px}
+}
+@media (max-width:560px){
+  .wrap{padding:0 20px}
+  .facts{grid-template-columns:1fr}
+  .facts div{border-right:0;border-bottom:1px solid var(--line)}
+  .facts div:last-child{border-bottom:0}
+  .tombstone{grid-template-columns:1fr}
+  .piece-media img{height:260px}
+  .testimonial{padding:28px}
+  .site-head .wrap{padding-top:16px;padding-bottom:16px}
+}
+
+/* Mobile audit fixes (touch, 390/360): footer nav rows get full-height tap
+   targets; data labels (brand sub-line, footer headings) meet the 12px floor. */
+@media (max-width:860px){
+  .site-foot nav a{padding-top:.55rem;padding-bottom:.55rem}
+  .brand .brand-sub{font-size:.75rem}
+  .site-foot h4{font-size:.75rem}
+}
+
+/* ---------- individuality pass (2026-11-20) ----------
+   This header never carried the generic strip — its facts live in the
+   brand sub-line. The pass adds: a diagonal fold cut on the hero's top
+   edge (the hero becomes a sheet of paper-2 laid on the page, its top
+   edge creased), a mobile menu whose button is the studio's triangle
+   mark — it unfolds (rotates 90°) when open — and a panel that unfolds
+   from the top of the screen, its links divided by dashed valley-fold
+   lines. Page changes fold in: a 2° rotateX settle, like a sheet being
+   laid flat. */
+
+/* mobile nav — hidden entirely on desktop */
+.nav-toggle{display:none}
+.fold-panel{display:none}
+.fold-scrim{display:none}
+
+@media (max-width:860px){
+  .main-nav{display:none}
+
+  .nav-toggle{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:48px;height:48px;padding:9px;
+    background:#fff;border:1px solid var(--ink);
+    color:var(--ink);cursor:pointer;
+  }
+  .nav-toggle svg{width:100%;height:100%;display:block;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+  .nav-toggle[aria-expanded="true"] svg{transform:rotate(90deg)}
+
+  .fold-scrim{
+    display:block;position:fixed;inset:0;
+    background:rgba(24,21,16,.5);z-index:70;
+    opacity:0;transition:opacity .24s ease;
+  }
+  .fold-scrim[hidden]{display:none}
+  .fold-scrim.open{opacity:1;transition-duration:.34s}
+
+  .fold-panel{
+    display:flex;flex-direction:column;
+    position:fixed;top:0;left:0;right:0;
+    max-height:100dvh;overflow-y:auto;
+    background:var(--paper);border-bottom:1px solid var(--ink);
+    z-index:80;
+    transform-origin:top center;
+    transform:scaleY(0);
+    pointer-events:none;
+    transition:transform .3s ease-in;
+  }
+  .fold-panel[hidden]{display:none}
+  .fold-panel.open{
+    transform:scaleY(1);
+    pointer-events:auto;
+    transition:transform .42s cubic-bezier(.16,1,.3,1);
+  }
+  .fold-panel-head{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:16px 20px;border-bottom:1px solid var(--ink);
+  }
+  .fold-panel-brand{font-family:var(--display);font-weight:600;font-size:1.1rem}
+  .fold-close{
+    min-height:48px;padding:10px 18px;
+    background:var(--ink);color:var(--paper);
+    border:1px solid var(--ink);
+    font-family:var(--display);font-weight:500;font-size:.95rem;
+    cursor:pointer;
+  }
+  .fold-panel nav{display:flex;flex-direction:column}
+  .fold-panel nav a{
+    display:flex;align-items:center;
+    min-height:56px;padding:12px 20px;
+    color:var(--ink);text-decoration:none;
+    font-weight:500;font-size:1.02rem;
+    border-bottom:1px dashed var(--line-dark);
+  }
+  .fold-panel nav a[aria-current="page"]{
+    color:var(--accent-ink);
+    box-shadow:inset 3px 0 0 var(--accent);
+  }
+  .fold-panel-facts{
+    padding:16px 20px 20px;
+    font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .fold-panel,.fold-scrim,.nav-toggle svg{transition:none}
+}
+
+/* page transition — the fold-in. Cross-page: the new page settles from a
+   2° fold as it fades in; on entry, main does the same settle once.
+   Content is never hidden awaiting the animation: the from-state lasts
+   half a second and reduced motion removes all of it. */
+@view-transition{navigation:auto}
+
+@keyframes fold-out{to{opacity:0}}
+@keyframes fold-in{
+  from{opacity:0;transform:perspective(1100px) rotateX(2.2deg)}
+  to{opacity:1;transform:none}
+}
+
+@media (prefers-reduced-motion: no-preference){
+  ::view-transition-old(root){animation:fold-out .4s ease both}
+  ::view-transition-new(root){animation:fold-in .45s cubic-bezier(.16,1,.3,1) both}
+  main{animation:fold-in .5s cubic-bezier(.16,1,.3,1)}
+}

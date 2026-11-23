@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book bench time — Coherent Bench</title>
+<meta name="description" content="Book interferometer bench time: the part, the tolerance, the wavelength, lead times and what a measurement report contains.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230d0d0f'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23ff4136' stroke-width='0.8'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23ff4136' stroke-width='0.8'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23ff4136'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="head-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 34 20"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="0.9"/><circle cx="10" cy="10" r="3.5" fill="none" stroke="currentColor" stroke-width="0.9"/><circle cx="28" cy="10" r="1.6" fill="currentColor"/></svg>
+      </span>
+      <span class="brand-name">Coherent&nbsp;Bench</span>
+    </a>
+    <nav class="site-nav" id="site-nav" aria-label="Primary">
+      <a href="index.html">Bench</a>
+      <a href="about.html">Lab</a>
+      <a href="projects.html">Instruments</a>
+      <a href="contact.html" aria-current="page">Book time</a>
+    </nav>
+    <p class="head-note">Delft · 52°00′N 4°22′E</p>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span><span class="sr-only">Menu</span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="page-head">
+    <div>
+      <p class="kicker">Bench booking · reply within two working days</p>
+      <h1>Part, tolerance, wavelength.</h1>
+    </div>
+    <p class="lede">Those three decide whether the measurement is possible and which bench it needs. Everything else — the mount, the reference, the number of rotations — we work out when we see the drawing.</p>
+  </section>
+
+  <section class="contact-grid">
+    <div>
+      <div class="form-intro">
+        <h2>Bench booking</h2>
+        <p>The form assembles a request on your own device. Nothing is transmitted until you send it from your mail client; Coherent Bench holds no form data.</p>
+      </div>
+
+      <form class="brief-form" id="benchForm" novalidate>
+        <div class="field-row">
+          <div class="field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" autocomplete="name" required>
+            <span class="err" id="err-name" role="alert" hidden>Please give a name for the reply.</span>
+          </div>
+          <div class="field">
+            <label for="org">Organisation</label>
+            <input type="text" id="org" name="org" autocomplete="organization">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+            <span class="err" id="err-email" role="alert" hidden>A full email address, please.</span>
+          </div>
+          <div class="field">
+            <label for="geometry">Geometry</label>
+            <select id="geometry" name="geometry">
+              <option>Michelson · figure / flatness</option>
+              <option>Fizeau · spherical or aspheric</option>
+              <option>Fabry-Pérot · etalon / cavity</option>
+              <option>Low coherence · thickness</option>
+              <option>Not sure — advise</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="part">Part</label>
+            <input type="text" id="part" name="part" placeholder="e.g. 150 mm fused-silica flat, 12 mm thick" required>
+            <span class="err" id="err-part" role="alert" hidden>Size, material and shape are enough to start.</span>
+          </div>
+          <div class="field">
+            <label for="tol">Tolerance</label>
+            <input type="text" id="tol" name="tol" placeholder="e.g. λ/20 figure, or 5 nm RMS" required>
+            <span class="err" id="err-tol" role="alert" hidden>A figure tolerance, please — PV or RMS.</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="message">Finish, coating and timing</label>
+          <textarea id="message" name="message" required placeholder="Surface finish, coating, how many parts, when you need the report, and whether the part has to be measured in its mount."></textarea>
+          <span class="err" id="err-message" role="alert" hidden>A sentence about the finish and the deadline is enough.</span>
+        </div>
+
+        <div class="consent">
+          <input type="checkbox" id="consent" name="consent">
+          <label for="consent">I understand this assembles a draft email locally and nothing is sent until I send it myself.</label>
+        </div>
+        <span class="err" id="err-consent" role="alert" hidden>Please tick the box so the draft can be assembled.</span>
+
+        <div class="submit-row">
+          <button class="btn" type="submit">Assemble the request</button>
+          <p class="form-note">Plain text. Editable before sending.</p>
+        </div>
+      </form>
+
+      <div class="brief-result" id="benchResult" hidden aria-live="polite">
+        <h3>Draft ready</h3>
+        <p class="form-note">This is the whole message. Nothing has left your browser.</p>
+        <pre id="benchPreview"></pre>
+        <div class="brief-actions">
+          <a class="btn" id="benchSend" href="mailto:bench@coherentbench.example">Open in mail client</a>
+          <button class="linkish" type="button" id="benchEdit">Back to the form</button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="contact-side">
+      <div class="block">
+        <h3>Direct</h3>
+        <p><a href="mailto:bench@coherentbench.example">bench@coherentbench.example</a><br>
+        <a href="mailto:reports@coherentbench.example">reports@coherentbench.example</a> (certificates)</p>
+      </div>
+
+      <div class="block">
+        <h3>Lead times and rates</h3>
+        <p>Standard measurements are turned round in five working days. A cold or mounted measurement takes two to three weeks because the mount has to be characterised first. Instrument builds are quoted separately.</p>
+        <div class="rate"><span>Bench day, 100 mm</span><span>€1,250</span></div>
+        <div class="rate"><span>Bench day, 300 mm</span><span>€2,400</span></div>
+        <div class="rate"><span>Cryogenic, per cycle</span><span>€6,800</span></div>
+        <div class="rate"><span>Certificate, per part</span><span>€380</span></div>
+      </div>
+
+      <div class="block">
+        <h3>What the report contains</h3>
+        <p>The phase map, the Zernike coefficients to 36 terms, the residual PV and RMS, a repeatability figure from two rotations, and the reference flat's certificate number. Everything needed for someone else to doubt the number properly.</p>
+      </div>
+
+      <div class="block">
+        <h3>What we will not do</h3>
+        <p>We do not measure a surface too rough to unwrap, we do not certify a part tested in a different orientation from its service orientation, and we do not report a figure without the repeatability that goes with it.</p>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <p><strong>Coherent Bench BV</strong> — optical metrology, Delft. Founded 2012.</p>
+  <p class="foot-links"><a href="about.html">Lab</a> · <a href="projects.html">Instruments</a> · <a href="contact.html">Book time</a></p>
+  <p class="foot-note">Fringe fields and Airy curves on this page are computed in the browser from the stated geometry; quoted instrument performance is from acceptance test reports, not from a model.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

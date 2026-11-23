@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Method &amp; Limits — Tomas Berg, Smart Contract Engineering &amp; Security Review</title>
+<meta name="description" content="How Tomas Berg works: spec before code, standard patterns, independent review of his own code, and an honest account of what a security review is not.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%231B1E23'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='56' font-weight='bold' fill='%23FAF9F5' text-anchor='middle'%3EB%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="brand" href="index.html" aria-label="Tomas Berg — overview">
+      <svg class="seal" width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="1.5" y="1.5" width="37" height="37" rx="6" fill="none" stroke="#1B1E23" stroke-width="2.5"/><rect x="7" y="7" width="26" height="26" rx="3" fill="none" stroke="#2B50AA" stroke-width="1.5"/><text x="20" y="27" font-family="Georgia,serif" font-size="16" font-weight="bold" fill="#1B1E23" text-anchor="middle">B</text></svg>
+      <span class="brand-text"><strong>Tomas Berg</strong><small>Smart contract engineering &amp; review</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Main">
+      <a href="index.html">Overview</a>
+      <a href="projects.html">Case files</a>
+      <a href="about.html" aria-current="page">Method &amp; limits</a>
+      <a href="contact.html">Enquire</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobilePanel">☰ Contents</button>
+  </div>
+  <div class="mobile-panel" id="mobilePanel">
+    <nav aria-label="Mobile">
+      <a href="index.html">Overview <small>§ Index</small></a>
+      <a href="projects.html">Case files <small>§ Work</small></a>
+      <a href="about.html" aria-current="page">Method &amp; limits <small>§ About</small></a>
+      <a href="contact.html">Enquire <small>§ Contact</small></a>
+    </nav>
+    <p class="panel-note">Booking: one security-review slot — March 2026</p>
+  </div>
+</header>
+
+<main>
+  <!-- STORY -->
+  <section class="block" style="padding-bottom:24px" aria-labelledby="story-h">
+    <div class="wrap">
+      <p class="kicker">About · The short version</p>
+      <h1 id="story-h" style="font-size:clamp(34px,5vw,48px);margin-bottom:24px">Twelve years of backend systems<br>before the first contract</h1>
+      <div class="two-col">
+        <div>
+          <p class="body">I started in 2011 building payment backends, and spent a decade learning distributed systems the expensive way: the race condition that only fires on holidays, the migration that could not be rolled back, the integration whose documentation described a system that no longer existed. A master’s in computer science from a Swedish technical university gave me the theory; production gave me the suspicion of undocumented behaviour that this work runs on.</p>
+          <p class="body">The first smart contract I read closely, in 2019, was a friend’s token contract. I found it wanting — and found the work interesting, because a contract is a backend system with two unusual properties: it is public, and it cannot be patched quietly. Every habit I had — spec first, distrust the happy path, write it down — turned out to be worth more here than where I learned it.</p>
+          <p class="body">I have been independent since 2022, working from Gothenburg with clients in nine countries, in English, in writing, async-first. I take one review slot at a time. The slowness is the product: a review is reading, and reading does not parallelise.</p>
+        </div>
+        <figure class="shot">
+          <img src="assets/pair-review.jpg" alt="Two developers discussing code on a laptop in an office" width="1200" height="1800" loading="lazy">
+          <figcaption><strong>Reference photograph</strong> — two developers reviewing code together (Mizuno K, Pexels). Review here is a conversation, but it ends in a document. The people in this photograph are not Tomas Berg or his clients.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- METHOD -->
+  <section class="block tight" aria-labelledby="method-h">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="sec-label">Method · How an engagement runs</p>
+        <h2 id="method-h">Six rules, in the order I apply them</h2>
+      </div>
+      <div class="two-col">
+        <ol class="method-list rv">
+          <li>
+            <h3>Spec before code</h3>
+            <p>If the intended behaviour is not written down, the review has nothing to check the code against. No spec, no engagement — I will help you write one, as phase 01.</p>
+          </li>
+          <li>
+            <h3>Standard patterns, named</h3>
+            <p>Checks-effects-interactions on value-moving functions. Pull payments over push. Least-privilege roles. These have names because they are known answers; novelty in a contract is a cost, not a feature.</p>
+          </li>
+          <li>
+            <h3>Tests that can fail</h3>
+            <p>Property tests on the invariants in the spec, fuzzing on the maths, and a coverage floor of 95% on in-scope contracts. A test suite that has never failed is decoration.</p>
+          </li>
+          <li>
+            <h3>Independent eyes on my own code</h3>
+            <p>Code I write is reviewed by a peer reviewer I commission and pay out of my fee, named to the client. Reviewing your own work is how flaws survive to launch — see Case file 01, which was someone else’s code and nearly everyone’s story.</p>
+          </li>
+          <li>
+            <h3>Testnet and fork rehearsal before mainnet</h3>
+            <p>Deployment is rehearsed against live chain state and executed from the rehearsed script. Constructor arguments are diffed, not remembered.</p>
+          </li>
+          <li>
+            <h3>Findings in writing, answered in writing</h3>
+            <p>Every finding is severity-rated with impact and likelihood stated separately, and every one gets a written response — fixed, accepted, or disputed with reasons. The report is the deliverable; the call is just the summary.</p>
+          </li>
+        </ol>
+        <figure class="shot rv">
+          <img src="assets/spec-whiteboard.jpg" alt="Two colleagues planning at a whiteboard covered in notes" width="1600" height="1067" loading="lazy">
+          <figcaption><strong>Reference photograph</strong> — specification work at a whiteboard (Walls.io, Pexels). Phase 01 produces a document; it often starts like this.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- HONESTY -->
+  <section class="block tight" aria-labelledby="honesty-h">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="sec-label">Limits · The honesty page</p>
+        <h2 id="honesty-h">What a review is not</h2>
+        <p class="lede">Four sentences I say in every first call, printed here so you can hold me to them.</p>
+      </div>
+      <div class="honesty-grid rv">
+        <div class="honesty-cell">
+          <h3><span class="not">Not</span> a guarantee</h3>
+          <p>Reviewed and audited code has failed in public before, and will again. A review reduces risk; it does not delete it. Anyone who tells you otherwise is selling something, and it is probably a token.</p>
+        </div>
+        <div class="honesty-cell">
+          <h3><span class="not">Not</span> an endorsement</h3>
+          <p>My report describes code. It says nothing about the worth of a project, a team or a token. My terms forbid using my name or my report in token marketing, and I will say so publicly if it happens.</p>
+        </div>
+        <div class="honesty-cell">
+          <h3><span class="not">Not</span> investment advice</h3>
+          <p>I never comment on whether a token is worth buying, and nothing on this site should be read that way. Most tokens go to zero. The honest prior is that any given one will too.</p>
+        </div>
+        <div class="honesty-cell">
+          <h3><span class="not">Not</span> permanent protection</h3>
+          <p>Immutability cuts both ways: a deployed contract cannot be patched quietly when the world changes. That is why the specification and the review happen before deployment — afterwards, your options are migration and apology.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIGURES + TERMS -->
+  <section class="block tight" aria-labelledby="terms-h">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="sec-label">Terms · The practice, on paper</p>
+        <h2 id="terms-h">Figures and engagement terms</h2>
+        <p class="lede">The practice’s own figures for the last two years, and the terms every engagement runs under. Both are the kind of thing I would want to read before hiring me.</p>
+      </div>
+      <dl class="terms-list rv">
+        <div><dt>Reviews delivered, 2024–25</dt><dd>23 — median 11 findings per review, 261 findings in total, every one answered in writing</dd></div>
+        <div><dt>Development engagements, 2024–25</dt><dd>9 contract systems, spec to deploy; 6 gas optimisation passes</dd></div>
+        <div><dt>Launches I advised delaying</dt><dd>4 — in 3 cases the client delayed, fixed and shipped; the fourth is a longer story I tell on the call, not here</dd></div>
+        <div><dt>Fee basis</dt><dd>Written scope and fixed fee before work starts; 40% on booking for reviews, balance on delivery of the report</dd></div>
+        <div><dt>Deliverables</dt><dd>Report as PDF plus a machine-readable findings file; one re-review of fixes included in every review fee</dd></div>
+        <div><dt>Confidentiality</dt><dd>Client code and findings are never published, quoted or reused by me; case files here are anonymised with permission</dd></div>
+        <div><dt>Conflicts</dt><dd>I do not take a second engagement on a direct fork of a current client’s system, and I disclose past work in the same protocol family</dd></div>
+        <div><dt>Keys &amp; custody</dt><dd>I never hold client keys, funds or admin roles — at deployment, admin rights transfer to the client against a signed checklist</dd></div>
+      </dl>
+      <div class="cta-band rv" style="margin-top:36px">
+        <div>
+          <h3>Sound like a fit?</h3>
+          <p>Tell me what the contracts do, how many lines they run to, and when you plan to ship. Replies within two working days.</p>
+        </div>
+        <a class="btn" href="contact.html">Start an enquiry</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div>
+      <h4>Tomas Berg</h4>
+      <p>Independent smart contract engineering and security review. Gothenburg, Sweden; working worldwide, in writing, async-first.</p>
+    </div>
+    <div>
+      <h4>Pages</h4>
+      <nav aria-label="Footer">
+        <a href="index.html">Overview</a>
+        <a href="projects.html">Case files</a>
+        <a href="about.html">Method &amp; limits</a>
+        <a href="contact.html">Enquire</a>
+      </nav>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>Email: <a href="mailto:tomas@berg-contracts.example">tomas@berg-contracts.example</a><br>Booking: one security-review slot, March 2026.<br>Replies within two working days.</p>
+    </div>
+  </div>
+  <div class="wrap foot-base">
+    <p>© 2026 Tomas Berg. <strong>Tomas Berg is a fictional portfolio persona</strong>; the practice, clients and figures on this site are illustrative, and no real person or project is depicted. Photographs are reference images credited in CREDITS.md inside this template folder.</p>
+    <p>No investment advice is offered anywhere on this site. A security review is not an endorsement of any project or token.</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

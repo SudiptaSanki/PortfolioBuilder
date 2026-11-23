@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notebook — Haddad Lab, neuromorphic perception</title>
+<meta name="description" content="How the Haddad Lab calibrates spiking models to silicon, what it measures, and why an event-driven result needs its sensor in the energy account.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Spline+Sans+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f4f1e7'/%3E%3Cpath d='M4 44 H16 V20 H28 V36 H40 V14 H52 V44 H60' fill='none' stroke='%230f4c4a' stroke-width='3'/%3E%3Ccircle cx='52' cy='14' r='4' fill='%23b4442a'/%3E%3C/svg%3E">
+</head>
+<body data-page="about">
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="wrap">
+  <header class="masthead">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Haddad Lab</span>
+      <span class="brand-sub">Neuromorphic perception · Delft</span>
+    </a>
+    <nav class="topnav" aria-label="Primary">
+      <a href="index.html">Bench</a>
+      <a href="projects.html">Research</a>
+      <a href="about.html" aria-current="page">Notebook</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <p class="kicker">Notebook · methods</p>
+      <h1>A spike is a measurement, not a metaphor.</h1>
+      <p class="lede">The lab works on the unglamorous half of neuromorphic computing: matching a simulated neuron to the one on the die, counting events rather than multiply-accumulates, and publishing the harness so the counts can be checked.</p>
+    </section>
+
+    <div class="layout-2">
+      <div class="prose">
+        <h2>Why the lab exists</h2>
+        <p>Neuromorphic hardware is sold on a promise: perception at microwatts, because nothing computes unless something moves. The promise is real in the right conditions and wildly overstated in the wrong ones. A spiking network on a static scene is cheap; the same network on a crowded street can cost more than a dense model, because the event rate becomes the workload and the event rate is set by the world, not by the chip.</p>
+        <p>Our work is mostly about that boundary. Which visual tasks are naturally sparse, which become dense the moment the camera moves, and what a fair energy comparison looks like when the sensor is part of the system. That last question is the one we keep coming back to, because most papers still report the accelerator's energy and quietly leave the sensor out.</p>
+
+        <h2>Three habits</h2>
+        <p><strong>Calibrate before you claim.</strong> A LIF model in a simulator has a threshold and a time constant that are numbers in a file. The neuron on Loihi 2 has a threshold and a time constant that vary from core to core. We fit both from a short sweep — 200 samples across 16 bias settings — and then test the fitted model against spike trains it has never seen. If the fit does not hold on held-out data, the simulation is a story.</p>
+        <p><strong>Count the whole system.</strong> Energy per inference includes the sensor, the input encoding, the network and the readout. We report it per correctly classified sample, because a cheap model that is wrong more often is not cheap.</p>
+        <p><strong>Keep the seed.</strong> Every figure in a paper can be regenerated from a command in the repository. The bench on the front page of this site follows the same rule: the noise is seeded, so the trace you see is the trace anyone else sees.</p>
+
+        <h2>On the bench right now</h2>
+        <p>The single-cell bench is a teaching instrument as much as a research one. It exists because the fastest way to explain a membrane time constant is to let someone move it and watch the rate collapse or the cell go silent. The numbers are computed by forward Euler at 50 µs with a fixed noise seed, which is coarse by simulation standards, and honest about it: the bench tells you what a LIF cell does, not what a cortical neuron does.</p>
+        <p>What it deliberately does not do is add an audio output for spikes. Two reviewers asked. The answer is no: the lab is a shared office, and an event-driven demo that clicks at 40 Hz is a way to lose colleagues, not to explain dynamics.</p>
+
+        <h2>Reading list for new students</h2>
+        <ul>
+          <li>Davies et al., “Loihi: a neuromorphic manycore processor with on-chip learning”, IEEE Micro, 2018 — the 23.6 pJ figure everyone quotes, with its conditions.</li>
+          <li>Gerstner, Kistler, Naud, Paninski, <em>Neuronal Dynamics</em>, chapters 1–5. Read the LIF chapter twice.</li>
+          <li>Gallego et al., “Event-based vision: a survey”, TPAMI 2020 — the sensor side, which is where most energy arguments are won or lost.</li>
+          <li>Orchard et al., “Converting static image datasets to spiking neuromorphic datasets”, Frontiers in Neuroscience, 2015 — useful, and a good example of a benchmark that does not measure what people think it measures.</li>
+        </ul>
+
+        <h2>The group</h2>
+        <p>Five people: two PhD candidates on event-based front ends, one postdoc on silicon calibration, one master's student on the energy accounting, and me. We share a lab with a group that works on analog-to-digital converters, which means there is always someone who can explain why our bias current drifts when the radiator comes on.</p>
+        <p>We meet on Tuesday mornings for a working session, not a seminar: someone brings a failing trace and the room tries to explain it. The rule is that the person with the failing trace talks last.</p>
+      </div>
+
+      <aside>
+        <div class="aside-box">
+          <h3>The lab</h3>
+          <dl>
+            <div><dt>Faculty</dt><dd>EEMCS, Delft</dd></div>
+            <div><dt>Room</dt><dd>12.340, building 28</dd></div>
+            <div><dt>People</dt><dd>5, plus visitors</dd></div>
+            <div><dt>Silicon</dt><dd>Loihi 2, Speck</dd></div>
+            <div><dt>Sensors</dt><dd>GenX320, DVS128</dd></div>
+          </dl>
+        </div>
+        <div class="aside-box">
+          <h3>Reviewing</h3>
+          <p>NeurIPS (2024–2026), ICLR (2025–2026), IEEE BioCAS (2023–2026), and the event-based vision workshop at ECCV. I decline reviews on work I have commented on publicly.</p>
+        </div>
+        <div class="aside-box">
+          <h3>Teaching</h3>
+          <p>“Spiking models and their hardware”, 4 EC, spring semester. Ten lectures, four labs, and a final project that must run on either the chip or a calibrated simulator — not on a laptop-class metaphor.</p>
+        </div>
+        <div class="aside-box">
+          <h3>A note on numbers</h3>
+          <p>Energy figures on this site are per inference on the stated hardware with the sensor included. They are not directly comparable to accelerator-only numbers, including our own older papers.</p>
+        </div>
+      </aside>
+    </div>
+
+    <section class="sheet" aria-labelledby="tableTitle">
+      <div class="sheet-head">
+        <span class="sheet-no">§ 05</span>
+        <div>
+          <h2 id="tableTitle">Measurement setup</h2>
+          <p>The same table appears in every paper, because a result without its conditions is a number without a unit.</p>
+        </div>
+      </div>
+      <div class="body-grid">
+        <div class="margin-note">
+          <b>Version</b>
+          Bench firmware 4.2, Lava 0.6, calibration sweep 200 samples.
+        </div>
+        <div>
+          <table class="data-table">
+            <caption>Current measurement configuration</caption>
+            <thead>
+              <tr><th scope="col">Quantity</th><th scope="col">Instrument</th><th scope="col">Resolution</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Board power</th><td>Nordic PPK2, 1 kHz sampling</td><td>0.2 µA</td></tr>
+              <tr><th scope="row">Event rate</th><td>Sensor timestamp stream, 1 µs</td><td>1 event</td></tr>
+              <tr><th scope="row">Spike count</th><td>On-chip counters, per core</td><td>1 spike</td></tr>
+              <tr><th scope="row">Latency</th><td>GPIO marker at inference start and end</td><td>10 µs</td></tr>
+              <tr><th scope="row">Membrane state</th><td>Read-out probe on 16 of 512 neurons</td><td>1 mV</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-top">
+      <div>
+        <p class="foot-mark">Haddad Lab</p>
+        <p>Neuromorphic perception<br>Faculty of EEMCS, Delft</p>
+      </div>
+      <div>
+        <p class="mono">Contact</p>
+        <p><a href="mailto:n.haddad@lab.tudelft.nl">n.haddad@lab.tudelft.nl</a><br>Office 12.340, building 28</p>
+      </div>
+      <div>
+        <p class="mono">Open positions</p>
+        <p>One PhD, event-based vision<br>One postdoc, silicon calibration</p>
+      </div>
+    </div>
+    <p class="foot-fine">© 2026 Haddad Lab · figures generated in the browser from the model described · no audio, by design</p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

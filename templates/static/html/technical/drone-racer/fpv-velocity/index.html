@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kai Renner — FPV race pilot and airframe builder</title>
+<meta name="description" content="Five-inch class FPV race pilot and builder. Thrust-to-weight, prop tip speed, pack choice and the tuning numbers behind a 25-second lap.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0c0e'/%3E%3Cpath d='M6 16h6M20 16h6M12 12l4 4-4 4M20 12l-4 4 4 4' stroke='%23c8f24d' stroke-width='1.5' fill='none'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">KR</span>
+      <span class="brand-name">Kai Renner<small>FPV race pilot · 5-inch class</small></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav">Menu</button>
+    <nav class="nav" id="siteNav" aria-label="Main">
+      <a href="projects.html">Heats</a>
+      <a href="index.html#bench">Bench</a>
+      <a href="about.html">Pilot</a>
+      <a href="contact.html" class="nav-cta">Race with me</a>
+    </nav>
+    <div class="top-stats">
+      <span><b>2026</b> season</span>
+      <span><b>4</b> podiums</span>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="kicker">Leipzig · Vektor FPV · 5-inch class</p>
+      <h1>Every gram is a corner you have to pay for.</h1>
+      <p class="lede">I build and race five-inch quadcopters on a circuit of old quarry roads outside Leipzig. The useful part of the sport is arithmetic: thrust against mass, prop tip speed, pack sag, and the ten seconds where a race is actually decided. The rest is nerve and a good pair of goggles.</p>
+      <div class="hero-actions">
+        <a class="btn" href="projects.html">See the heats</a>
+        <a class="btn btn-line" href="contact.html">Build enquiry</a>
+      </div>
+      <dl class="hero-facts">
+        <div><dt>Best lap</dt><dd>24.81<small>seconds, quarry circuit</small></dd></div>
+        <div><dt>Thrust-to-weight</dt><dd>8.8<small>at full pack</small></dd></div>
+        <div><dt>Airframe mass</dt><dd>612<small>grams with a 6S pack</small></dd></div>
+      </dl>
+    </div>
+
+    <section class="bench" id="bench" aria-labelledby="benchTitle">
+      <div class="bench-head">
+        <div>
+          <h2 id="benchTitle">Thrust, current and prop speed</h2>
+          <p>Static bench numbers for one motor. Four motors make the aircraft.</p>
+        </div>
+        <span class="chip">Bench 04</span>
+      </div>
+
+      <div class="bench-canvas">
+        <canvas id="curve" width="720" height="360" role="img" aria-label="Thrust per motor against throttle, with current on a second axis and the hover point marked"></canvas>
+      </div>
+
+      <dl class="readouts">
+        <div><dt>Thrust per motor</dt><dd id="outThrust">—</dd></div>
+        <div><dt>Thrust to weight</dt><dd id="outTw">—</dd></div>
+        <div><dt>Hover throttle</dt><dd id="outHover">—</dd></div>
+        <div><dt>Current, full</dt><dd id="outCurrent">—</dd></div>
+        <div><dt>Pack endurance</dt><dd id="outEndurance">—</dd></div>
+        <div><dt>Pitch speed</dt><dd id="outPitch">—</dd></div>
+      </dl>
+
+      <div class="bench-controls">
+        <div class="ctl">
+          <label for="kv">Motor KV <output id="kvOut">1960</output></label>
+          <input type="range" id="kv" min="1400" max="3000" step="20" value="1960">
+        </div>
+        <div class="ctl">
+          <label for="cells">Pack <output id="cellsOut">6S</output></label>
+          <input type="range" id="cells" min="3" max="6" step="1" value="6">
+        </div>
+        <div class="ctl">
+          <label for="prop">Prop diameter <output id="propOut">5.1 in</output></label>
+          <input type="range" id="prop" min="4" max="7" step="0.1" value="5.1">
+        </div>
+        <div class="ctl">
+          <label for="pitch">Prop pitch <output id="pitchOut">4.6 in</output></label>
+          <input type="range" id="pitch" min="2.5" max="6" step="0.1" value="4.6">
+        </div>
+        <div class="ctl">
+          <label for="mass">All-up mass <output id="massOut">612 g</output></label>
+          <input type="range" id="mass" min="380" max="900" step="4" value="612">
+        </div>
+        <div class="ctl">
+          <label for="altitude">Air density altitude <output id="altitudeOut">120 m</output></label>
+          <input type="range" id="altitude" min="0" max="2500" step="20" value="120">
+        </div>
+      </div>
+
+      <div class="bench-foot">
+        <p class="bench-note" id="benchNote">8.8 to 1 at 612 g. Hover sits at 34% throttle, so most of the stick is in the top half where the current climbs fast.</p>
+        <div class="audio-row">
+          <button type="button" class="btn-audio" id="propPlay">Play the prop harmonic</button>
+          <p class="audio-note">Optional. Builds one brushless tone from the KV and battery you have set, only after you press it. No autoplay, nothing loops.</p>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <section class="tape" aria-label="Season record">
+    <div class="tape-in">
+      <div><span>Season heats</span><b>28</b></div>
+      <div><span>Podiums</span><b>4</b></div>
+      <div><span>Crashes that ended a heat</span><b>3</b></div>
+      <div><span>Props broken in practice</span><b>219</b></div>
+    </div>
+  </section>
+
+  <section class="tower-section">
+    <aside class="tower" aria-label="Lap times, quarry circuit">
+      <div class="tower-head">
+        <h2>Quarry circuit</h2>
+        <p>Lap times, best of session</p>
+      </div>
+      <ol class="laps">
+        <li><span class="lap-pos">1</span><span class="lap-name">M. Voss</span><span class="lap-time">24.51</span><span class="lap-bar" style="--w:100%"></span></li>
+        <li class="me"><span class="lap-pos">2</span><span class="lap-name">K. Renner</span><span class="lap-time">24.81</span><span class="lap-bar" style="--w:98%"></span></li>
+        <li><span class="lap-pos">3</span><span class="lap-name">T. Ålund</span><span class="lap-time">25.06</span><span class="lap-bar" style="--w:96%"></span></li>
+        <li><span class="lap-pos">4</span><span class="lap-name">S. Duarte</span><span class="lap-time">25.40</span><span class="lap-bar" style="--w:93%"></span></li>
+        <li><span class="lap-pos">5</span><span class="lap-name">J. Behrens</span><span class="lap-time">25.72</span><span class="lap-bar" style="--w:90%"></span></li>
+        <li><span class="lap-pos">6</span><span class="lap-name">L. Petrov</span><span class="lap-time">26.14</span><span class="lap-bar" style="--w:86%"></span></li>
+      </ol>
+      <p class="tower-foot">Six pilots within 1.6 seconds. The circuit rewards a clean line out of the third gate and nothing else.</p>
+    </aside>
+
+    <div class="tower-main">
+      <section class="section">
+        <div class="sec-head">
+          <p class="kicker">01 — Build</p>
+          <h2>The numbers that decide a heat</h2>
+          <p class="sec-intro">A five-inch race quad is a compromise written in grams. Four numbers set the compromise, and I change only one of them at a time.</p>
+        </div>
+        <div class="build-grid">
+          <article>
+            <p class="build-fig">8.8:1</p>
+            <h3>Thrust to weight</h3>
+            <p>Below 6:1 the aircraft cannot recover from a mistake at gate three. Above 12:1 the throttle becomes a switch and the line gets sloppy. Eight to nine is where a five-inch race quad actually lives, and every gram you take off moves it up a point.</p>
+          </article>
+          <article>
+            <p class="build-fig">34%</p>
+            <h3>Hover throttle</h3>
+            <p>The single most useful tuning number. A hover near a quarter stick leaves three quarters of the range for the corner, and it means a heavy gust does not put the aircraft on the ground while you are looking at the next gate.</p>
+          </article>
+          <article>
+            <p class="build-fig">233 m/s</p>
+            <h3>Prop tip speed</h3>
+            <p>Past about 200 m/s the prop starts to lose efficiency to compressibility and gets loud, which on a race circuit means protest forms. It is also the number that tells me a motor is too hot for the prop.</p>
+          </article>
+          <article>
+            <p class="build-fig">1.8 min</p>
+            <h3>Pack endurance</h3>
+            <p>A heat is 90 seconds of hard flying. The pack is sized for a heat plus a lap of margin, not for cruising, because a 1,300 mAh pack that lands at 3.5 V per cell is a pack that was the right choice.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="sec-head">
+          <p class="kicker">02 — Airframe</p>
+          <h2>What is on the bench this season</h2>
+        </div>
+        <div class="spec-row">
+          <table class="spec">
+            <tbody>
+              <tr><th>Frame</th><td>5-inch dead-cat, 6 mm arms, 78 g</td></tr>
+              <tr><th>Motors</th><td>2207, 1,960 KV, 4 per set</td></tr>
+              <tr><th>Props</th><td>5.1 × 4.6 × 3, polycarbonate</td></tr>
+              <tr><th>Stack</th><td>45 A four-in-one ESC, F7 flight controller</td></tr>
+              <tr><th>Pack</th><td>6S 1,300 mAh, 120C, 218 g</td></tr>
+            </tbody>
+          </table>
+          <table class="spec">
+            <tbody>
+              <tr><th>All-up mass</th><td>612 g with pack and camera</td></tr>
+              <tr><th>Static thrust</th><td>5.4 kg across four motors</td></tr>
+              <tr><th>Camera</th><td>19 × 19 mm, 1,200 TVL, 4:3</td></tr>
+              <tr><th>Video</th><td>Analog 5.8 GHz, 25 mW, race band</td></tr>
+              <tr><th>Spare parts per event</th><td>6 props, 2 arms, 1 camera</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="sec-head">
+          <p class="kicker">03 — Method</p>
+          <h2>How a build gets faster</h2>
+        </div>
+        <ol class="method">
+          <li><span class="m-no">01</span><div><h3>Weigh everything, then believe the scale</h3><p>Every component goes on a 0.1 g scale before it goes on the frame. A build sheet that says 600 g and a scale that says 618 g is a build sheet that is lying, and the hover throttle will tell you which one to trust.</p></div></li>
+          <li><span class="m-no">02</span><div><h3>One variable per session</h3><p>Prop, KV, pack or mass. Never two. Three laps of a known circuit are enough to see whether a change helped; a whole session of mixed changes is a session with no data in it.</p></div></li>
+          <li><span class="m-no">03</span><div><h3>Log the crash, not the lap</h3><p>Every DVR file gets a note: which gate, which corner, what the stick was doing. The fastest pilots I know can describe their crashes better than their clean laps.</p></div></li>
+        </ol>
+      </section>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-in">
+      <div>
+        <h2>Builds, tunes and race coaching</h2>
+        <p>I take on a handful of builds a season and coach two or three pilots. If you are moving from a whoop to a five-inch, the first session is about the bench numbers, not the sticks.</p>
+      </div>
+      <a class="btn" href="contact.html">Start a build</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="foot-in">
+    <div>
+      <strong>Kai Renner · Vektor FPV</strong>
+      <p>Five-inch class race pilot and airframe builder. Leipzig, Germany, travelling the European circuit.</p>
+    </div>
+    <div>
+      <p class="foot-label">Team</p>
+      <p>Vektor FPV, Leipzig<br>MultiGP chapter 118<br>Race band 5.8 GHz, 25 mW</p>
+    </div>
+    <div>
+      <p class="foot-label">Contact</p>
+      <p><a href="mailto:kai@vektorfpv.de">kai@vektorfpv.de</a><br>+49 341 555 0177</p>
+    </div>
+  </div>
+  <p class="foot-base">© 2026 Kai Renner · Static template, no trackers</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

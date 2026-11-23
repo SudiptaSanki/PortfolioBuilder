@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tomas Berg — Smart Contract Engineering &amp; Security Review</title>
+<meta name="description" content="Independent smart contract development and security review for EVM teams. Written specifications, tested code, findings in writing. Fees published in full.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%231B1E23'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='56' font-weight='bold' fill='%23FAF9F5' text-anchor='middle'%3EB%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="brand" href="index.html" aria-label="Tomas Berg — overview">
+      <svg class="seal" width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="1.5" y="1.5" width="37" height="37" rx="6" fill="none" stroke="#1B1E23" stroke-width="2.5"/><rect x="7" y="7" width="26" height="26" rx="3" fill="none" stroke="#2B50AA" stroke-width="1.5"/><text x="20" y="27" font-family="Georgia,serif" font-size="16" font-weight="bold" fill="#1B1E23" text-anchor="middle">B</text></svg>
+      <span class="brand-text"><strong>Tomas Berg</strong><small>Smart contract engineering &amp; review</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Main">
+      <a href="index.html" aria-current="page">Overview</a>
+      <a href="projects.html">Case files</a>
+      <a href="about.html">Method &amp; limits</a>
+      <a href="contact.html">Enquire</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobilePanel">☰ Contents</button>
+  </div>
+  <div class="mobile-panel" id="mobilePanel">
+    <nav aria-label="Mobile">
+      <a href="index.html" aria-current="page">Overview <small>§ Index</small></a>
+      <a href="projects.html">Case files <small>§ Work</small></a>
+      <a href="about.html">Method &amp; limits <small>§ About</small></a>
+      <a href="contact.html">Enquire <small>§ Contact</small></a>
+    </nav>
+    <p class="panel-note">Booking: one security-review slot — March 2026</p>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <div class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="kicker">Smart contract engineering · Gothenburg · Independent since 2022</p>
+        <h1>Contracts you can read.<br>Risks in writing.</h1>
+        <p class="lede">I’m Tomas Berg, an independent smart contract engineer. I write, test and review EVM contracts for teams who have to live with what they deploy — because once code is on-chain, so is every mistake in it. Every engagement starts with a written specification and ends with a written report. Nothing in between is a surprise.</p>
+        <div class="cta-row">
+          <a class="btn" href="projects.html">Read the case files</a>
+          <a class="btn ghost" href="contact.html?type=review">Book a review</a>
+        </div>
+      </div>
+      <figure class="shot">
+        <img src="assets/code-review.jpg" alt="Close-up of program code on a laptop screen in an office" width="1600" height="1063">
+        <figcaption><strong>Reference photograph</strong> — code on a laptop screen (Rodrigo Santos, Pexels). Most of a security review is spent exactly like this: reading. It does not photograph dramatically, and it is the whole job.</figcaption>
+      </figure>
+    </div>
+    <div class="fact-strip" role="list" aria-label="Practice figures">
+      <div class="fact" role="listitem"><b>40+</b><span>Contracts reviewed or shipped since 2022</span></div>
+      <div class="fact" role="listitem"><b>100%</b><span>Of findings answered in writing</span></div>
+      <div class="fact" role="listitem"><b>0</b><span>Contracts shipped without a written spec</span></div>
+      <div class="fact" role="listitem"><b>€1,300</b><span>Day rate — full fees in §04 below</span></div>
+    </div>
+  </div>
+
+  <!-- §01 LIFECYCLE EXPLORER -->
+  <section class="block" aria-labelledby="lifecycle-h">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="sec-label">§01 · The signature instrument</p>
+        <h2 id="lifecycle-h">One engagement, five phases</h2>
+        <p class="lede">Follow one real-shaped engagement — a vesting contract for a small DAO tooling team — from first call to handover. The client’s name is withheld; the phases, and the failure classes each phase exists to catch, are the ones I see every quarter. Step through it.</p>
+      </div>
+      <div class="explorer rv">
+        <div class="phase-tabs" role="tablist" aria-label="Engagement phases">
+          <button class="phase-tab" role="tab" id="tab-0" aria-selected="true" aria-controls="phaseSheet">01<small>Specification</small></button>
+          <button class="phase-tab" role="tab" id="tab-1" aria-selected="false" aria-controls="phaseSheet" tabindex="-1">02<small>Implementation</small></button>
+          <button class="phase-tab" role="tab" id="tab-2" aria-selected="false" aria-controls="phaseSheet" tabindex="-1">03<small>Testing</small></button>
+          <button class="phase-tab" role="tab" id="tab-3" aria-selected="false" aria-controls="phaseSheet" tabindex="-1">04<small>Review</small></button>
+          <button class="phase-tab" role="tab" id="tab-4" aria-selected="false" aria-controls="phaseSheet" tabindex="-1">05<small>Deployment</small></button>
+        </div>
+        <div class="phase-sheet" id="phaseSheet" role="tabpanel" aria-live="polite" aria-labelledby="tab-0">
+          <p class="phase-meta"><b data-p="no">Phase 01</b><span data-p="when">Days 1–4 · before any code</span></p>
+          <h3 data-p="title">Specification</h3>
+          <div class="sheet-grid">
+            <div class="sheet-cell">
+              <h4>The deliverable</h4>
+              <p data-p="deliverable">A written specification, agreed before code: the state the contract holds, every function and who may call it, the invariants it must never break, and the threats we are designing against.</p>
+            </div>
+            <div class="sheet-cell">
+              <h4>The failure it exists to catch</h4>
+              <p data-p="catches">The unwritten assumption. On this engagement the client assumed only the treasurer could pause distributions; nothing in their draft said so. Writing it down turned an argument into a line in a table.</p>
+            </div>
+            <div class="sheet-cell">
+              <h4>The artefact</h4>
+              <p data-p="artefact">The SPEC document — versioned, signed off by both sides — with a threat list: one line per threat, and the design answer to each.</p>
+            </div>
+          </div>
+        </div>
+        <div class="phase-nav">
+          <button class="step-btn" id="phasePrev" disabled>← Previous phase</button>
+          <span class="phase-count" id="phaseCount">Phase 1 of 5</span>
+          <button class="step-btn" id="phaseNext">Next phase →</button>
+        </div>
+      </div>
+      <p class="fineprint">Every phase produces a document. If a phase of your current project produced nothing you can read, it did not happen — whatever the invoice says.</p>
+    </div>
+  </section>
+
+  <!-- §02 GAS ESTIMATOR -->
+  <section class="block tight" aria-labelledby="gas-h">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="sec-label">§02 · The arithmetic habit</p>
+        <h2 id="gas-h">What a transaction costs, worked in the open</h2>
+        <p class="lede">Gas is how the network meters computation: every operation carries a price in gas, and you pay <strong>gas used × gas price</strong>. Pick an operation class and a gas-price band, and do the multiplication the way I make clients do it before we discuss optimisation.</p>
+      </div>
+      <div class="gas-grid">
+        <div class="rv">
+          <div class="chip-group">
+            <h4>Operation class — illustrative gas used</h4>
+            <div class="chips" role="group" aria-label="Operation class">
+              <button class="chip" data-op="transfer" aria-pressed="false">Native transfer<small>21,000 gas · fixed by the protocol</small></button>
+              <button class="chip" data-op="token" aria-pressed="false">Token transfer<small>52,000 gas · ERC-20 class</small></button>
+              <button class="chip" data-op="mint" aria-pressed="false">Mint-class<small>121,000 gas · new storage writes</small></button>
+              <button class="chip" data-op="swap" aria-pressed="true">Swap-class<small>148,000 gas · DEX trade</small></button>
+            </div>
+          </div>
+          <div class="chip-group">
+            <h4>Gas price band — per unit of gas</h4>
+            <div class="chips" role="group" aria-label="Gas price band">
+              <button class="chip" data-band="quiet" aria-pressed="false">Quiet<small>8 gwei</small></button>
+              <button class="chip" data-band="typical" aria-pressed="true">Typical<small>25 gwei</small></button>
+              <button class="chip" data-band="busy" aria-pressed="false">Busy<small>60 gwei</small></button>
+              <button class="chip" data-band="congested" aria-pressed="false">Congested<small>140 gwei</small></button>
+            </div>
+          </div>
+          <p class="fineprint"><strong>Illustration only.</strong> The gas figures are representative classes, not measurements of your contract; real costs depend on storage state and calldata. Gas prices move block by block, and layer-2 networks meter differently — usually for far less. This panel teaches the multiplication. It is not a quote, and it says nothing whatsoever about what any token is worth.</p>
+        </div>
+        <div class="readout rv" id="gasOut" aria-live="polite">
+          <p class="ro-label">Estimated cost</p>
+          <p class="ro-big" data-g="big">0.003700 <small>ETH</small></p>
+          <p data-g="what">Swap-class (DEX trade) at a typical gas price.</p>
+          <p class="ro-formula" data-g="formula">148,000 gas × 25 gwei = 3,700,000 gwei = 0.003700 ETH</p>
+          <p class="ro-note">1 ETH = 1,000,000,000 gwei. If the formula above ever disagrees with the big number, the formula is the one to trust — and you should tell me.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §03 SERVICES REGISTER -->
+  <section class="block tight" aria-labelledby="services-h">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="sec-label">§03 · Services register</p>
+        <h2 id="services-h">What you can engage, and whether there is room</h2>
+      </div>
+      <div class="table-scroll rv">
+        <table class="data">
+          <caption>Services, clients and current availability — updated November 2026</caption>
+          <thead><tr><th scope="col">Service</th><th scope="col">Who it is for</th><th scope="col">Status</th></tr></thead>
+          <tbody>
+            <tr><td class="svc">Security review</td><td>Protocol teams, DAOs and product teams with contracts live or launching</td><td><span class="status open">Booking — one slot, March 2026</span></td></tr>
+            <tr><td class="svc">Contract development, spec to deploy</td><td>Startups and product teams building a contract system</td><td><span class="status open">One slot — Q2 2026</span></td></tr>
+            <tr><td class="svc">Pre-audit readiness check</td><td>Teams booked with an audit firm who want to arrive ready, not hopeful</td><td><span class="status open">Booking now</span></td></tr>
+            <tr><td class="svc">Gas optimisation pass</td><td>Teams with live contracts and real transaction volume</td><td><span class="status open">Booking now</span></td></tr>
+            <tr><td class="svc">Integration &amp; advisory</td><td>Engineering teams adding contract features to an existing product</td><td><span class="status">Limited — two days a week</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- §04 FEES -->
+  <section class="block tight" aria-labelledby="fees-h">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="sec-label">§04 · Fees, in print</p>
+        <h2 id="fees-h">What it costs, before you ask</h2>
+        <p class="lede">Fees are quoted in writing before work starts and do not change mid-engagement. A review fee buys the findings, whatever they are — including the finding that says <em>do not launch yet</em>.</p>
+      </div>
+      <div class="table-scroll rv">
+        <table class="data">
+          <caption>Fee schedule — EUR, excluding VAT where it applies</caption>
+          <thead><tr><th scope="col">Engagement</th><th scope="col">Fee</th><th scope="col">Basis</th></tr></thead>
+          <tbody>
+            <tr><td class="svc">Integration &amp; advisory</td><td class="num">€1,300</td><td>Per day, two-day minimum</td></tr>
+            <tr><td class="svc">Pre-audit readiness check</td><td class="num">€2,400 fixed</td><td>Two days; findings letter included</td></tr>
+            <tr><td class="svc">Security review</td><td class="num">from €8,500</td><td>Per reviewer-week; a single contract system typically takes 1–2 weeks</td></tr>
+            <tr><td class="svc">Gas optimisation pass</td><td class="num">from €4,500</td><td>Fixed scope; before/after report included</td></tr>
+            <tr><td class="svc">Contract development</td><td class="num">from €25,000</td><td>Per contract system, spec to deploy, milestone-priced</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="rv" style="margin-top:26px">
+        <h3 style="margin-bottom:10px">What moves the price</h3>
+        <ul class="tight movers">
+          <li><strong>Scope:</strong> number of contracts and lines of code in scope</li>
+          <li><strong>Complexity:</strong> external calls, cross-contract interaction, callbacks</li>
+          <li><strong>Admin design:</strong> upgradeability and key management multiply review surface</li>
+          <li><strong>The spec:</strong> a written spec that already exists is worth money off</li>
+          <li><strong>Timeline:</strong> a launch date I did not choose costs more than one I did</li>
+          <li><strong>Chain count:</strong> every additional deployment target is reviewed separately</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- §05 TESTIMONIAL -->
+  <section class="block tight" aria-labelledby="testimonial-h">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <p class="sec-label">§05 · Word of mouth</p>
+        <h2 id="testimonial-h">From the client in Case file 01</h2>
+      </div>
+      <figure class="testimonial rv">
+        <blockquote>“Tomas found the flaw our own tests had walked past for two months, and explained it so plainly that our board understood it in one reading. The launch slipped nine days. That was the cheapest nine days we ever bought.”</blockquote>
+        <figcaption><b>Peter Almqvist</b>, Head of Engineering — the DAO tooling team in <a href="projects.html#case-01">Case file 01</a>. Company name withheld under NDA; role and words used with permission.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="block tight">
+    <div class="wrap">
+      <div class="cta-band rv">
+        <div>
+          <h3>Have contracts heading for launch?</h3>
+          <p>The cheapest time to find a critical flaw is before the announcement tweet. One review slot is open for March 2026 — tell me what the contracts do, how many lines they run to, and when you plan to ship.</p>
+        </div>
+        <a class="btn" href="contact.html?type=review">Start an enquiry</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-grid">
+    <div>
+      <h4>Tomas Berg</h4>
+      <p>Independent smart contract engineering and security review. Gothenburg, Sweden; working worldwide, in writing, async-first.</p>
+    </div>
+    <div>
+      <h4>Pages</h4>
+      <nav aria-label="Footer">
+        <a href="index.html">Overview</a>
+        <a href="projects.html">Case files</a>
+        <a href="about.html">Method &amp; limits</a>
+        <a href="contact.html">Enquire</a>
+      </nav>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>Email: <a href="mailto:tomas@berg-contracts.example">tomas@berg-contracts.example</a><br>Booking: one security-review slot, March 2026.<br>Replies within two working days.</p>
+    </div>
+  </div>
+  <div class="wrap foot-base">
+    <p>© 2026 Tomas Berg. <strong>Tomas Berg is a fictional portfolio persona</strong>; the practice, clients and figures on this site are illustrative, and no real person or project is depicted. Photographs are reference images credited in CREDITS.md inside this template folder.</p>
+    <p>No investment advice is offered anywhere on this site. A security review is not an endorsement of any project or token.</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

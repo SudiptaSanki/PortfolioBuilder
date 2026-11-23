@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qubit Cipher — Clara Behrens, quantum cryptography, Berlin</title>
+<meta name="description" content="Clara Behrens designs and audits quantum key distribution links and post-quantum migration. BB84 deployment, QBER measurement and cryptographic review from Berlin.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23191a1c'/%3E%3Cpath d='M8 8h16v16H8z' fill='none' stroke='%23b3402a' stroke-width='1.2'/%3E%3Cpath d='M12 16h8M16 12v8' stroke='%23f2efe8' stroke-width='1.2'/%3E%3C/svg%3E">
+</head>
+<body data-page="index">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><strong>Qubit Cipher</strong><small>Clara Behrens · Berlin</small></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav">Menu</button>
+    <nav class="nav" id="siteNav" aria-label="Main">
+      <a href="index.html" aria-current="page">Overview</a>
+      <a href="about.html">The desk</a>
+      <a href="projects.html">Register</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <span class="case mono">Case 041 · QBER 3.1%</span>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-split">
+        <div class="hero-left">
+          <h1>A key is only secret until someone measures it.</h1>
+          <p class="lede">I design and audit quantum key distribution links, and the post-quantum migration that has to work on the days the link does not. Twenty-two deployments, four standards, one rule: if the error rate is not measured, the key is not secret.</p>
+          <div class="hero-actions">
+            <a class="btn" href="contact.html#enquiry">Request an audit</a>
+            <a class="text-link" href="projects.html">The deployment register</a>
+          </div>
+        </div>
+        <aside class="register-card" aria-label="Practice register">
+          <p class="reg-title mono">Register</p>
+          <dl>
+            <div><dt>Deployments</dt><dd>22 since 2017</dd></div>
+            <div><dt>Longest link</dt><dd>148 km fibre, 4 nodes</dd></div>
+            <div><dt>QBER threshold</dt><dd>11.0%, abort below</dd></div>
+            <div><dt>Standards</dt><dd>ETSI ISG QKD, ISO/IEC 23837</dd></div>
+            <div><dt>Post-quantum</dt><dd>ML-KEM and ML-DSA migration</dd></div>
+          </dl>
+          <p class="reg-stamp mono">verified<br>2026</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="instrument" aria-labelledby="simTitle">
+    <div class="wrap">
+      <div class="inst-head">
+        <div>
+          <h2 id="simTitle">BB84 with an eavesdropper</h2>
+          <p class="inst-sub">Alice sends one qubit per bit in a random basis. Eve intercepts a fraction of them and re-sends; every wrong guess shows up as an error after sifting. The tape below is the first forty rounds of the run.</p>
+        </div>
+        <span class="mono inst-ver">model 4.0 · asymptotic key rate</span>
+      </div>
+
+      <div class="controls">
+        <div class="control">
+          <label for="qubits">Qubits sent <output id="qubitsOut" class="mono">1,024</output></label>
+          <input type="range" id="qubits" min="128" max="4096" step="128" value="1024">
+        </div>
+        <div class="control">
+          <label for="eve">Eve intercepts <output id="eveOut" class="mono">20%</output></label>
+          <input type="range" id="eve" min="0" max="100" step="1" value="20">
+        </div>
+        <div class="control">
+          <label for="noise">Channel noise <output id="noiseOut" class="mono">1.5%</output></label>
+          <input type="range" id="noise" min="0" max="5" step="0.1" value="1.5">
+        </div>
+        <div class="control">
+          <button type="button" class="btn btn-small" id="rerun">Run again</button>
+          <p class="hint" id="runHint">run 0412</p>
+        </div>
+      </div>
+
+      <figure class="tape-figure">
+        <canvas id="tapeCanvas" aria-label="Key tape showing Alice's basis and bit, Bob's basis and bit, and the errors after sifting"></canvas>
+        <figcaption class="tape-legend">
+          <span><i class="glyph">+</i> rectilinear basis</span>
+          <span><i class="glyph">×</i> diagonal basis</span>
+          <span><i class="dot"></i> bit 1</span>
+          <span><i class="err-mark"></i> error after sifting</span>
+        </figcaption>
+      </figure>
+
+      <div class="verdict-row">
+        <div class="verdict" id="verdict">
+          <span class="mono">Verdict</span>
+          <strong id="verdictText">—</strong>
+        </div>
+        <dl class="readouts">
+          <div><dt>Sifted bits</dt><dd id="outSifted">—</dd></div>
+          <div><dt>Errors</dt><dd id="outErrors">—</dd></div>
+          <div><dt>QBER</dt><dd id="outQber">—</dd></div>
+          <div><dt>Key rate</dt><dd id="outRate">—</dd></div>
+          <div><dt>Final key</dt><dd id="outFinal">—</dd></div>
+        </dl>
+      </div>
+
+      <p class="inst-note" id="simNote">With Eve on 20% of the qubits and 1.5% channel noise, the QBER lands near 6%: above the 1-2-2 threshold for a secure key, below the 11% abort. The run yields a key, and it is shorter than it would have been without her.</p>
+    </div>
+  </section>
+
+  <section class="bands">
+    <div class="wrap">
+      <div class="band">
+        <p class="band-label mono">01 · Preparation</p>
+        <div class="band-body">
+          <h2>Four operations, and one of them is arithmetic.</h2>
+          <ol class="steps">
+            <li><span class="mono">A</span><div><strong>Prepare</strong><p>Alice encodes each bit in one of two bases chosen at random: rectilinear (0°, 90°) or diagonal (45°, 135°). One photon, one bit, no amplification.</p></div></li>
+            <li><span class="mono">B</span><div><strong>Measure</strong><p>Bob measures in a basis of his own choosing, also at random. When the bases match, his result is Alice's bit. When they differ, it is a coin toss.</p></div></li>
+            <li><span class="mono">C</span><div><strong>Sift</strong><p>They compare bases over an authenticated classical channel and keep only the matches: about half the raw bits. The bases are public; the bits are not.</p></div></li>
+            <li><span class="mono">D</span><div><strong>Estimate and amplify</strong><p>A sample of the sifted key is sacrificed to measure the error rate. If it is below threshold, privacy amplification compresses what remains into a shorter key Eve cannot know.</p></div></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="band">
+        <p class="band-label mono">02 · Threats</p>
+        <div class="band-body">
+          <h2>What actually breaks a link.</h2>
+          <div class="threats">
+            <table>
+              <thead>
+                <tr><th scope="col">Attack</th><th scope="col">What it exploits</th><th scope="col">Our countermeasure</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Intercept–resend</td><td>Eve measures and re-sends in the wrong basis</td><td>Detected as QBER; decoy states bound the information she can hold</td></tr>
+                <tr><td>Detector blinding</td><td>Bright light saturates the avalanche photodiodes</td><td>Optical power monitor, gated detectors, calibrated after every maintenance window</td></tr>
+                <tr><td>Trojan horse</td><td>Back-reflected light reveals Alice’s basis</td><td>Isolators and a filter on the source; the basis choice is never classical</td></tr>
+                <tr><td>Trusted node</td><td>The repeater in the middle holds the key in clear</td><td>Node audit, tamper-evident housing, and a written statement of trust in every topology diagram</td></tr>
+                <tr><td>Key exhaustion</td><td>Traffic outruns the key generation rate</td><td>Sized buffers and a policy that falls back to post-quantum key exchange, not to RSA</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="band">
+        <p class="band-label mono">03 · Position</p>
+        <div class="band-body">
+          <h2>QKD is not a replacement for post-quantum cryptography.</h2>
+          <p>QKD gives two parties a key with a physics-based argument about eavesdropping, but it needs a dedicated link, trusted hardware and a working classical channel to authenticate the sifting. Post-quantum cryptography runs on the internet you already have, and its security rests on a mathematical assumption that could, in principle, be wrong.</p>
+          <p>I work on both because the honest architecture uses both: ML-KEM for the general case, QKD where a fibre already exists and the threat model justifies the hardware. Anyone selling one as the answer to everything is selling something else.</p>
+          <a class="text-link" href="about.html">How I got to that position</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap cta-in">
+      <div>
+        <h2>If your QBER is not being measured, it is not being managed.</h2>
+        <p>An audit takes two days on site and produces a QBER budget, a threat table specific to your topology, and a list of the assumptions your vendor made on your behalf.</p>
+      </div>
+      <a class="btn btn-light" href="contact.html#enquiry">Book an audit</a>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <p>Qubit Cipher · Dr. Clara Behrens · Chausseestraße 42, Berlin</p>
+      <p class="mono">Last deployment 06 Nov 2026 · next standards meeting 21 Jan 2027</p>
+    </div>
+  </footer>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

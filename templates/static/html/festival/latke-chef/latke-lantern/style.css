@@ -1,0 +1,263 @@
+/* The Latke Lantern — a food-magazine grid (Frame F11).
+   Paper, ink, ruled lines. Flat colour only: no gradients, no glass,
+   no shadows, no hover-lift. Bitter for display, Public Sans for text. */
+
+:root{
+  --paper:#FAF5EA;
+  --paper-2:#F2E9D5;
+  --paper-3:#FFFDF6;
+  --ink:#221C12;
+  --ink-soft:#5A5342;
+  --gold:#A8741A;
+  --blue:#2C4A73;
+  --red:#A03A2A;
+  --line:#CDBFA1;
+  --wrap:1180px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:17px;
+  line-height:1.55;
+}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:3px solid var(--gold);outline-offset:2px;
+}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:24px;padding-right:24px}
+
+h1,h2,h3,.display{font-family:"Bitter",Georgia,"Times New Roman",serif;color:var(--ink)}
+h1{font-size:clamp(2.3rem,5.2vw,3.9rem);line-height:1.04;font-weight:900;margin:0 0 14px}
+h2{font-size:clamp(1.6rem,3.2vw,2.3rem);line-height:1.12;font-weight:800;margin:0 0 10px}
+h3{font-size:1.22rem;line-height:1.25;font-weight:700;margin:0 0 8px}
+p{margin:0 0 14px}
+.kicker{
+  font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);margin:0 0 10px;
+}
+.kicker.blue{color:var(--blue)}
+.lede{font-size:1.14rem;line-height:1.55}
+.small{font-size:.9rem;color:var(--ink-soft)}
+.caption{font-size:.85rem;color:var(--ink-soft);margin-top:8px;line-height:1.45}
+
+/* ---------- Masthead (the magazine nameplate carries the facts) ---------- */
+.masthead{border-bottom:4px double var(--ink);background:var(--paper)}
+.mast-top{
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding-top:12px;font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+}
+.nameplate{
+  font-family:"Bitter",Georgia,serif;font-weight:900;
+  font-size:clamp(2.4rem,6.4vw,4.3rem);line-height:1;
+  letter-spacing:-.01em;margin:8px 0 4px;color:var(--ink);text-decoration:none;display:block;
+}
+.nameplate .amp{color:var(--gold)}
+.tagline{font-family:"Bitter",Georgia,serif;font-style:italic;font-size:1.02rem;color:var(--ink-soft);margin:0 0 12px}
+.navrow{
+  border-top:1px solid var(--ink);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding-top:10px;padding-bottom:10px;
+}
+.nav-links{display:flex;gap:26px;list-style:none;margin:0;padding:0}
+.nav-links a{
+  color:var(--ink);text-decoration:none;font-weight:700;font-size:.86rem;
+  letter-spacing:.1em;text-transform:uppercase;padding:6px 2px;
+}
+.nav-links a[aria-current="page"]{color:var(--gold);border-bottom:3px solid var(--gold)}
+.nav-note{font-size:.85rem;color:var(--ink-soft)}
+.contents-btn{
+  display:none;
+  font:inherit;font-weight:700;font-size:.86rem;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+  padding:12px 18px;min-height:48px;cursor:pointer;
+}
+.contents-btn .arr{display:inline-block;margin-left:8px;transition:transform .3s ease}
+.contents-btn[aria-expanded="true"] .arr{transform:rotate(180deg)}
+
+/* Contents panel — the mobile menu, styled as a magazine contents page */
+.toc-panel{
+  background:var(--paper-2);border-bottom:1px solid var(--ink);
+  max-height:0;overflow:hidden;
+  visibility:hidden;opacity:0;transform:translateY(-8px);
+  transition:max-height .35s ease,opacity .32s ease,transform .32s ease,visibility 0s linear .35s;
+}
+.toc-panel.open{max-height:380px;visibility:visible;opacity:1;transform:translateY(0);transition:max-height .35s ease,opacity .32s ease,transform .32s ease}
+.toc-panel nav{padding-top:10px;padding-bottom:16px}
+.toc-panel p{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:6px 0 8px}
+.toc-panel ul{list-style:none;margin:0;padding:0}
+.toc-panel li{border-top:1px solid var(--line)}
+.toc-panel a{
+  display:flex;align-items:baseline;gap:14px;padding:14px 2px;min-height:48px;
+  color:var(--ink);text-decoration:none;font-family:"Bitter",Georgia,serif;font-size:1.15rem;font-weight:700;
+}
+.toc-panel a .no{font-family:"Public Sans",sans-serif;font-size:.8rem;font-weight:700;color:var(--gold);letter-spacing:.1em}
+.toc-panel a .pg{margin-left:auto;font-size:.85rem;color:var(--ink-soft);font-family:"Public Sans",sans-serif;font-weight:400}
+
+/* ---------- Page entry + cross-page transition ---------- */
+main{animation:fadein .4s ease both}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:vt-out .26s ease both}
+::view-transition-new(root){animation:vt-in .26s ease both}
+@keyframes vt-out{to{opacity:0}}
+@keyframes vt-in{from{opacity:0}}
+
+/* ---------- Magazine grid ---------- */
+.mag{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}
+.cell{border:1px solid var(--line);background:var(--paper);padding:24px;min-width:0}
+.cell.feature{border:1px solid var(--ink)}
+.cell.tint{background:var(--paper-2)}
+.cell.blue{border-top:6px solid var(--blue)}
+.cell.gold{border-top:6px solid var(--gold)}
+.span7{grid-column:span 7}.span5{grid-column:span 5}
+.span8{grid-column:span 8}.span4{grid-column:span 4}
+.span6{grid-column:span 6}.span3{grid-column:span 3}
+.span12{grid-column:span 12}
+section.block{padding-top:44px;padding-bottom:8px}
+.sec-head{border-top:3px solid var(--ink);padding-top:14px;margin-bottom:20px}
+.sec-head .kicker{margin-bottom:6px}
+
+/* ---------- Hero ---------- */
+.hero{padding-top:28px}
+.hero-photo{padding:0;border:1px solid var(--ink)}
+.hero-photo img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/4.4}
+.hero-photo figcaption{padding:10px 14px;font-size:.85rem;color:var(--ink-soft);border-top:1px solid var(--line);background:var(--paper)}
+.hero-story{display:flex;flex-direction:column}
+.hero-story .spacer{flex:1}
+.btnrow{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.btn{
+  display:inline-flex;align-items:center;min-height:48px;padding:12px 22px;
+  background:var(--ink);color:var(--paper);border:1px solid var(--ink);
+  font-weight:700;font-size:.95rem;text-decoration:none;cursor:pointer;font-family:inherit;
+}
+.btn.alt{background:transparent;color:var(--ink)}
+.notice{border:1px solid var(--ink);background:var(--paper-3);padding:18px 20px}
+.notice h3{font-size:1.05rem}
+.notice ul{margin:0;padding-left:18px}
+.notice li{margin-bottom:6px}
+
+/* ---------- Scoreboard ---------- */
+.score{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  border:1px solid var(--ink);margin-top:18px;background:var(--paper);
+}
+.score div{padding:16px 18px;min-width:0}
+.score div+div{border-left:1px solid var(--line)}
+.score .num{font-family:"Bitter",Georgia,serif;font-weight:900;font-size:2rem;line-height:1;display:block}
+.score .lab{font-size:.85rem;color:var(--ink-soft);display:block;margin-top:6px;line-height:1.4}
+
+/* ---------- Planner ---------- */
+.planner-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}
+.ctl{margin-bottom:20px}
+.ctl .lab{display:block;font-weight:700;font-size:.9rem;letter-spacing:.04em;margin-bottom:8px}
+.stepper{display:inline-flex;align-items:stretch;border:1px solid var(--ink);background:var(--paper-3)}
+.stepper button{
+  width:48px;min-height:48px;font-family:"Bitter",Georgia,serif;font-size:1.35rem;font-weight:700;
+  background:var(--paper-2);color:var(--ink);border:0;cursor:pointer;
+}
+.stepper button:active{background:var(--gold);color:#fff}
+.stepper output{
+  min-width:70px;display:flex;align-items:center;justify-content:center;
+  font-family:"Bitter",Georgia,serif;font-weight:800;font-size:1.3rem;
+  border-left:1px solid var(--line);border-right:1px solid var(--line);padding:0 8px;
+}
+.ctl .unit{font-size:.85rem;color:var(--ink-soft);margin-left:10px}
+.panset{display:inline-flex;border:1px solid var(--ink)}
+.panset button{
+  font:inherit;font-weight:700;min-height:48px;padding:10px 18px;cursor:pointer;
+  background:var(--paper-3);color:var(--ink);border:0;
+}
+.panset button+button{border-left:1px solid var(--ink)}
+.panset button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+table.data{width:100%;border-collapse:collapse}
+table.data th,table.data td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.data td.n,table.data th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.data tr.total td{border-bottom:0;border-top:2px solid var(--ink);font-weight:700}
+.out-table td:first-child{color:var(--ink-soft)}
+.out-table td.n{font-weight:700;color:var(--ink)}
+.verdict{
+  margin-top:18px;padding:14px 16px;border:1px solid var(--line);border-left:6px solid var(--blue);
+  background:var(--paper-3);font-size:.98rem;
+}
+.verdict .vh{display:block;font-weight:700;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;color:var(--ink-soft)}
+.verdict.warn{border-left-color:var(--gold)}
+.verdict.over{border-left-color:var(--red)}
+.recipe-card{background:var(--paper-2);border:1px solid var(--ink);padding:20px 22px}
+.recipe-card h3{margin-bottom:4px}
+.table-scroll{overflow-x:auto}
+
+/* ---------- Menu / offerings ---------- */
+.price{font-family:"Bitter",Georgia,serif;font-weight:900;font-size:1.5rem}
+.price small{font-size:.85rem;font-family:"Public Sans",sans-serif;font-weight:600;color:var(--ink-soft)}
+.menu-cell .tag{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.menu-cell.feature .price{font-size:2rem}
+
+/* ---------- Technique notes ---------- */
+.note-no{font-family:"Bitter",Georgia,serif;font-weight:900;font-size:1.6rem;color:var(--gold);display:block;margin-bottom:6px}
+
+/* ---------- Stories ---------- */
+.story img{width:100%;object-fit:cover;aspect-ratio:16/10}
+.story .meta{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.story .meta span{
+  font-size:.8rem;font-weight:700;letter-spacing:.05em;border:1px solid var(--line);
+  padding:4px 10px;background:var(--paper-3);
+}
+blockquote{
+  margin:16px 0 0;padding:14px 18px;border-left:4px solid var(--gold);background:var(--paper-3);
+  font-family:"Bitter",Georgia,serif;font-style:italic;font-size:1.05rem;line-height:1.5;
+}
+blockquote footer{font-family:"Public Sans",sans-serif;font-style:normal;font-size:.88rem;color:var(--ink-soft);margin-top:8px}
+
+/* ---------- Forms ---------- */
+.field{margin-bottom:18px}
+.field label{display:block;font-weight:700;font-size:.92rem;margin-bottom:6px}
+.field input,.field select,.field textarea{
+  width:100%;font:inherit;color:var(--ink);background:var(--paper-3);
+  border:1px solid var(--ink-soft);padding:12px 14px;min-height:48px;border-radius:0;
+}
+.field textarea{min-height:120px;resize:vertical}
+.confirm{border:1px solid var(--ink);background:var(--paper-2);padding:24px}
+.confirm .ref{font-family:"Bitter",Georgia,serif;font-weight:900;font-size:1.6rem;letter-spacing:.02em}
+.steps{list-style:none;margin:0;padding:0}
+.steps li{padding:12px 0;border-top:1px solid var(--line)}
+.steps li:first-child{border-top:0;padding-top:0}
+.steps b{font-family:"Bitter",Georgia,serif}
+
+/* ---------- Footer ---------- */
+.site-foot{border-top:4px double var(--ink);margin-top:56px;padding-top:28px;padding-bottom:36px}
+.foot-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}
+.site-foot h3{font-size:1rem}
+.site-foot p,.site-foot li{font-size:.92rem}
+.site-foot ul{list-style:none;margin:0;padding:0}
+.site-foot li{margin-bottom:6px}
+.disclosure{border-top:1px solid var(--line);margin-top:22px;padding-top:14px;font-size:.85rem;color:var(--ink-soft)}
+
+/* ---------- Responsive ---------- */
+@media (max-width:960px){
+  .span7,.span5,.span8,.span4,.span6,.span3{grid-column:span 12}
+  .mag .half{grid-column:span 6}
+  .score{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .score div+div{border-left:0}
+  .score div:nth-child(even){border-left:1px solid var(--line)}
+  .score div:nth-child(n+3){border-top:1px solid var(--line)}
+  .hero-photo img{aspect-ratio:16/11}
+}
+@media (max-width:560px){
+  .mag .half{grid-column:span 12}
+}
+@media (max-width:760px){
+  .nav-links,.nav-note{display:none}
+  .contents-btn{display:inline-flex;align-items:center}
+  .navrow{justify-content:flex-end}
+  .mast-top{font-size:.72rem}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}

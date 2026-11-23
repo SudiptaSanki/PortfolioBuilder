@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shot Log — Particle Field | Case Files: Cinderfall, The Longest Gale, Ignite</title>
+<meta name="description" content="Three particle-simulation case files told as brief, decisions, outcome — including the 03:40 farm failure on Cinderfall and the scale problem on The Longest Gale.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23101114'/%3E%3Crect x='44' y='44' width='12' height='12' fill='%23e8a33d'/%3E%3Ccircle cx='24' cy='30' r='4' fill='%23ece9e1'/%3E%3Ccircle cx='72' cy='24' r='3' fill='%23ece9e1'/%3E%3Ccircle cx='78' cy='66' r='4' fill='%23ece9e1'/%3E%3Ccircle cx='28' cy='74' r='3' fill='%23ece9e1'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="slate">
+    <a class="brand" href="index.html" aria-label="Particle Field — home">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="brand-name">PARTICLE FIELD<span class="brand-role">VFX SUPERVISION · PARTICLE TD</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Main">
+      <a href="index.html"><span class="sq">SQ010</span> Overview</a>
+      <a href="projects.html" aria-current="page"><span class="sq">SQ020</span> Shot Log</a>
+      <a href="about.html"><span class="sq">SQ030</span> The TD</a>
+      <a href="contact.html"><span class="sq">SQ040</span> Book a Bid</a>
+    </nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="shot-panel">Shot List<span class="chev" aria-hidden="true">▸</span></button>
+    <div class="head-readout" aria-hidden="true">SUITE <b>MONTRÉAL</b> · FARM <b>24 NODES</b></div>
+  </div>
+  <nav class="shot-panel" id="shot-panel" aria-label="Mobile" aria-hidden="true">
+    <a href="index.html"><span class="sq">SQ010</span> Overview <span class="hint">THE WEDGE BENCH</span></a>
+    <a href="projects.html" aria-current="page"><span class="sq">SQ020</span> Shot Log <span class="hint">CASE FILES</span></a>
+    <a href="about.html"><span class="sq">SQ030</span> The TD <span class="hint">PIPELINE &amp; TERMS</span></a>
+    <a href="contact.html"><span class="sq">SQ040</span> Book a Bid <span class="hint">FORM + EMAIL</span></a>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap hero rise">
+    <p class="spec"><span class="n">LOG 002</span> · SHOT LOG — THREE CASE FILES</p>
+    <h1>Brief, decisions, outcome. <span class="amber">Failures included.</span></h1>
+    <p class="lede">A case file that only lists successes is a brochure. Each file below records the decision that cost something, the incident that hurt, and the number the shot actually finalled at — <strong>because that is what a producer is buying evidence of.</strong></p>
+  </div>
+
+  <!-- ============ CASE 1: CINDERFALL ============ -->
+  <section class="block wrap" id="cinderfall" aria-labelledby="cf-h">
+    <article class="case">
+      <div class="case-head">
+        <p class="spec"><span class="n">CASE FILE 01</span> · STREAMING SERIES · FINALLED 2026</p>
+        <h3 id="cf-h">Cinderfall, Season 2 — a bridge comes down in 118 shots</h3>
+      </div>
+      <div class="case-meta">
+        <div><p class="k">Shots</p><p class="v">118 (31 hero)</p></div>
+        <div><p class="k">Peak sim</p><p class="v">212M particles</p></div>
+        <div><p class="k">Cache written</p><p class="v">88 TB, checkpointed</p></div>
+        <div><p class="k">Hero shot finalled at</p><p class="v">v047</p></div>
+      </div>
+      <div class="case-body">
+        <div>
+          <h4>The brief</h4>
+          <p>A suspension bridge fails progressively across a nine-week schedule: cable snaps, deck torsion, a full collapse into a river gorge, and the dust that outlives the structure by a full minute of screen time. The show's own team had the destruction models; <strong>Particle Field was hired for everything that moves after the geometry breaks</strong> — dust, debris, spray and atmosphere across 118 shots.</p>
+        </div>
+        <figure class="plate">
+          <img src="assets/set-camera.jpg" alt="Photograph of a camera operator filming on a dimly lit set" width="1260" height="840" loading="lazy">
+          <figcaption><span class="tag">On set · Reference</span><strong>Where the plates come from.</strong> A camera operator at work on a dim set — the collapse was shot against plates like these, and every sim was judged against them in dailies. Stock photograph by Kyle Loftus, via Pexels; it shows a set, not this production.</figcaption>
+        </figure>
+        <div>
+          <h4>The decisions</h4>
+          <p><strong>Coupled solvers, one cache.</strong> The dust was not a separate effect layered over the debris: the RBD fracture drove the pyro source directly, so dust bursts inherit the debris' timing exactly. It cost two extra wedge rounds to art-direct, and saved an estimated three weeks of per-shot hand-matching.</p>
+          <p><strong>Checkpoint everything.</strong> After a near-miss in week 3, every cache was written with a checkpoint every 20 frames and a checksum on completion. Storage rose by roughly 15%. The producer approved the cost in writing; the incident below is why.</p>
+        </div>
+        <div>
+          <h4>The incident — 03:40, last Tuesday of finals</h4>
+          <p>A farm node died mid-cache on the hero collapse shot, 11 hours into its final pass. The job restarted from the frame-380 checkpoint: <strong>40 minutes lost, zero frames of approved work lost</strong>, dailies held at 09:00 as scheduled. The same failure on an uncheckpointed pipeline would have restarted the pass from frame 1 and put delivery a day out. The full incident note is quoted by the show's producer on the <a href="index.html">overview page</a>.</p>
+        </div>
+        <div>
+          <h4>The outcome</h4>
+          <p>All 118 shots finalled inside the nine weeks, the hero at v047 — high, and honestly reported: 31 of those versions were lighting-driven re-caches after the grade changed, not failed sims. Final delivery: 4K EXR, ACES, with sim sheets archived for the Season 3 team.</p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ CASE 2: THE LONGEST GALE ============ -->
+  <section class="block wrap" aria-labelledby="lg-h">
+    <article class="case">
+      <div class="case-head">
+        <p class="spec"><span class="n">CASE FILE 02</span> · FEATURE FILM · FINALLED 2025</p>
+        <h3 id="lg-h">The Longest Gale — a storm the audience had to believe</h3>
+      </div>
+      <div class="case-meta">
+        <div><p class="k">Shots</p><p class="v">64</p></div>
+        <div><p class="k">Peak sim</p><p class="v">390M FLIP particles</p></div>
+        <div><p class="k">Cache written</p><p class="v">61 TB</p></div>
+        <div><p class="k">Delivery</p><p class="v">4K EXR · ACES 1.3</p></div>
+      </div>
+      <div class="case-body">
+        <div>
+          <h4>The brief</h4>
+          <p>A North Atlantic storm sequence for a feature: a trawler taking green water over the bow for six minutes of screen time. The director's note was one sentence — <strong>“the sea is the antagonist; it cannot look like a screensaver.”</strong> Plates were shot in a tank at partial scale, which set the central problem of the job.</p>
+        </div>
+        <figure class="plate">
+          <img src="assets/plate-sea.jpg" alt="Photograph of huge waves breaking against a rocky shoreline" width="1260" height="840" loading="lazy">
+          <figcaption><span class="tag">Plate ref · Ocean behaviour</span><strong>The antagonist, photographed.</strong> Storm surf breaking on the rocks at Portocolom — reference for how real whitewater sheets, rebounds and hangs in the air before it falls. Photograph by Jaume, via Pexels; reference only, not a frame from the film.</figcaption>
+        </figure>
+        <div>
+          <h4>The decisions</h4>
+          <p><strong>Simulate at 0.7 scale, on purpose.</strong> Physically true 1:1 spray looked wrong against the tank plates — real droplets at full scale read as “CG rain”. The sims were run at the plates' effective scale so droplet size, hang time and sheet breakup matched the photography. The cheat is documented in the sim sheet; matching the plate is the job, and physics is the starting point, not the deliverable.</p>
+          <p><strong>Foam as its own pass.</strong> Foam and spray were separated into two particle systems with different lifespans, letting the director art-direct “more violence in the foam” without re-running the body of the wave. It halved the iteration cost on 40 of the 64 shots.</p>
+        </div>
+        <div>
+          <h4>The outcome</h4>
+          <p>64 shots finalled; the sequence's longest single cache ran 31 hours across the farm without a failure — the checkpointing discipline from Cinderfall was already standard practice here. The film's VFX coverage singled out the storm as “the sequence that sells the third act”, which is quoted here from the review the client forwarded, not invented for this page.</p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ CASE 3: IGNITE ============ -->
+  <section class="block wrap" aria-labelledby="ig-h">
+    <article class="case">
+      <div class="case-head">
+        <p class="spec"><span class="n">CASE FILE 03</span> · COMMERCIAL · FINALLED 2026</p>
+        <h3 id="ig-h">Aurora Bank, “Ignite” — six shots, eleven days, one changed mind</h3>
+      </div>
+      <div class="case-meta">
+        <div><p class="k">Shots</p><p class="v">6</p></div>
+        <div><p class="k">Peak sim</p><p class="v">48M particles</p></div>
+        <div><p class="k">Versions on hero</p><p class="v">14</p></div>
+        <div><p class="k">Schedule</p><p class="v">11 days, held</p></div>
+      </div>
+      <div class="case-body">
+        <div>
+          <h4>The brief</h4>
+          <p>A 30-second spot ending on a spark burst that resolves into the bank's mark. Agency boards were precise about the first 90% and vague about the resolve — which is where commercials usually go to die. The wedge package was sold first, specifically to lock the resolve before the schedule did.</p>
+        </div>
+        <figure class="plate">
+          <img src="assets/plate-sparks.jpg" alt="Photograph of sparks flying from metal being cut in a workshop" width="840" height="1260" loading="lazy">
+          <figcaption><span class="tag">Plate ref · The match target</span><strong>What the burst had to match.</strong> A practical spark element photographed in a workshop — ballistic arcs, cooling colour, gravity doing its work. The sim was approved when a blind A/B against this plate stopped being obvious. Photograph by Andres Idda Bianchi, via Pexels.</figcaption>
+        </figure>
+        <div>
+          <h4>The decisions</h4>
+          <p><strong>Sim against the plate, not against taste.</strong> The burst was tuned against a licensed practical spark element (above) until the art director failed a blind A/B twice running. Every later note could then be judged against a fixed reference instead of a mood.</p>
+          <p><strong>The changed mind, priced honestly.</strong> At v09 the client replaced the end-frame mark. Because the burst's final 20 frames were a separate, small cache, the change cost one evening of re-sim on those frames — quoted as a change at the agreed Class B rate and approved before work started, not absorbed and not inflated.</p>
+        </div>
+        <div>
+          <h4>The outcome</h4>
+          <p>Six shots finalled in eleven days, hero at v14, aired on schedule. The agency has since booked the same workflow — wedge first, plate-matched — for two further spots, which is the outcome a commercial case file is actually for.</p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <div class="wrap">
+    <div class="cta-band">
+      <div>
+        <h2>Your production could be case file 04.</h2>
+        <p>It starts the same way these did: boards, frame ranges, and a wedge package at a fixed £2,400 — credited against the first invoice.</p>
+      </div>
+      <a class="btn" href="contact.html">Book a bid</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <p class="fbrand">Particle Field · Montréal</p>
+      <nav aria-label="Footer">
+        <a href="index.html">Overview</a>
+        <a href="projects.html">Shot Log</a>
+        <a href="about.html">The TD</a>
+        <a href="contact.html">Book a Bid</a>
+      </nav>
+    </div>
+    <p class="fineprint">Noor Haddad and Particle Field are fictional; the productions, clients and testimonial on this site are invented for this portfolio template, and no real film is depicted. Prices, pipelines and failure stories are written to be true to how particle supervision is actually bid and delivered. Photographs are from Pexels under its free licence and are captioned with their real role — full credits in CREDITS.md, shipped with this template. This site carries no audio, by design: film FX is a visual trade.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

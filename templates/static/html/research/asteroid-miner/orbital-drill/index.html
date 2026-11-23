@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orbital Drill — asteroid extraction engineering, Luxembourg</title>
+<meta name="description" content="Tobias Renn designs anchoring, volatile extraction and material handling for near-Earth asteroid missions. Anchor margins, oven energy and water yield modelled before a gram of hardware is built.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400;500;600&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314120f'/%3E%3Cpath d='M8 6l6 20 4-9 6-3z' fill='none' stroke='%23e0a13a' stroke-width='1.4'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23b8512a'/%3E%3C/svg%3E">
+</head>
+<body data-page="index">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span class="brand-name">Orbital Drill</span>
+    <span class="brand-sub">Asteroid extraction engineering</span>
+  </a>
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav">Menu</button>
+  <nav class="nav" id="siteNav" aria-label="Main">
+    <a href="index.html" aria-current="page">Overview</a>
+    <a href="about.html">Field notes</a>
+    <a href="projects.html">Assets</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <span class="status mono"><i></i>47 Egeria · 2.7 AU · link nominal</span>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1>Nothing in microgravity stays where you put it.</h1>
+        <p class="lede">I design the machines that hold onto an asteroid long enough to take it apart — anchors that bite regolith instead of relying on weight, ovens that liberate water at 2.8 MJ/kg, and hoppers that move rubble without an atmosphere or a gravity field to help.</p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="contact.html#enquiry">Start a mission study</a>
+          <a class="btn btn-line" href="projects.html">Read the trial data</a>
+        </div>
+        <dl class="hero-facts">
+          <div><dt>Anchor margin</dt><dd>0.9 kN<small>47 Egeria, 3 m auger</small></dd></div>
+          <div><dt>Water at 12 wt%</dt><dd>2,400 kg<small>per 20 t processed</small></dd></div>
+          <div><dt>Oven demand</dt><dd>3.8 kWh<small>per kg of water, 32% efficient</small></dd></div>
+        </dl>
+      </div>
+
+      <div class="viewport">
+        <div class="vp-head">
+          <span class="mono">Nav cam · 47 Egeria</span>
+          <span class="mono vp-tag">simulated</span>
+        </div>
+        <canvas id="rockCanvas" aria-label="Simulated view of a rotating carbonaceous asteroid with a landed drill module"></canvas>
+        <div class="vp-foot">
+          <span class="mono" id="vpSpin">rotation 4.2 h</span>
+          <span class="mono">range 0.4 km</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-label="Mission figures">
+    <div class="wrap band-in">
+      <div><strong>12 wt%</strong><span>water in the C-type regolith we drilled in the 2025 analogue campaign</span></div>
+      <div><strong>0.4–0.9 kPa</strong><span>cohesion of the simulant at 0.1 g, measured with a vane shear</span></div>
+      <div><strong>9.2 kN</strong><span>peak reaction force of the 40 mm auger at 6 kN feed</span></div>
+      <div><strong>32%</strong><span>whole-chain oven efficiency at 2.7 AU, aperture and regolith heating included</span></div>
+    </div>
+  </section>
+
+  <section class="instrument" aria-labelledby="toolTitle">
+    <div class="wrap">
+      <div class="inst-head">
+        <div>
+          <h2 id="toolTitle">Anchor and volatile balance</h2>
+          <p class="inst-sub">A first-pass check before any hardware is drawn: does the anchor hold the drill, and does the oven pay for the water it liberates? Change the body, the distance from the sun, or the feed force and read both margins.</p>
+        </div>
+        <span class="mono inst-ver">tool 2.4 · analogue data</span>
+      </div>
+
+      <div class="inst-body">
+        <div class="controls">
+          <fieldset class="control">
+            <legend>Body</legend>
+            <div class="seg seg-body" role="group" aria-label="Asteroid type">
+              <button type="button" data-body="c" aria-pressed="true">C-type</button>
+              <button type="button" data-body="s" aria-pressed="false">S-type</button>
+              <button type="button" data-body="m" aria-pressed="false">M-type</button>
+            </div>
+            <p class="hint" id="bodyHint">Carbonaceous, 1.3 g/cm³, 12 wt% water, cohesion 0.6 kPa.</p>
+          </fieldset>
+
+          <div class="control">
+            <label for="dist">Solar distance <output id="distOut" class="mono">2.70 AU</output></label>
+            <input type="range" id="dist" min="1.1" max="3.4" step="0.05" value="2.7">
+          </div>
+
+          <div class="control">
+            <label for="feed">Auger feed force <output id="feedOut" class="mono">6.0 kN</output></label>
+            <input type="range" id="feed" min="1" max="10" step="0.5" value="6">
+          </div>
+
+          <fieldset class="control">
+            <legend>Anchor</legend>
+            <div class="seg" role="group" aria-label="Anchor type">
+              <button type="button" data-anchor="auger" aria-pressed="true">Auger</button>
+              <button type="button" data-anchor="screw" aria-pressed="false">Ice screw</button>
+              <button type="button" data-anchor="harpoon" aria-pressed="false">Harpoon</button>
+            </div>
+          </fieldset>
+
+          <div class="control">
+            <label for="rate">Processing rate <output id="rateOut" class="mono">20 t/day</output></label>
+            <input type="range" id="rate" min="4" max="40" step="1" value="20">
+          </div>
+
+          <p class="control-note" id="toolNote">The anchor holds with 0.9 kN to spare at 6 kN feed. That margin disappears at 6.9 kN, which is where the rig starts walking off the surface.</p>
+        </div>
+
+        <div class="tool-main">
+          <svg id="sectionSvg" viewBox="0 0 560 300" role="img" aria-labelledby="secTitle secDesc">
+            <title id="secTitle">Drill anchor cross-section through asteroid regolith</title>
+            <desc id="secDesc">A lander foot on a regolith surface, with an auger driven three metres into layered material. Force arrows show the drill reaction upward and the anchor capacity downward.</desc>
+            <defs>
+              <pattern id="regolith" width="8" height="8" patternUnits="userSpaceOnUse">
+                <rect width="8" height="8" fill="#1b1815"/>
+                <circle cx="2" cy="3" r="0.8" fill="#3a342c"/>
+                <circle cx="6" cy="6" r="0.6" fill="#332e28"/>
+              </pattern>
+              <linearGradient id="shadow" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#e0a13a" stop-opacity="0.14"/>
+                <stop offset="1" stop-color="#e0a13a" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+
+            <rect x="0" y="0" width="560" height="76" fill="#14120f"/>
+            <rect x="0" y="76" width="560" height="224" fill="url(#regolith)"/>
+            <line x1="0" y1="76" x2="560" y2="76" stroke="#8f7d5b" stroke-width="1.2"/>
+            <path d="M0 120 H560 M0 181 H560" stroke="#2f2a24" stroke-width="0.8" stroke-dasharray="4 5"/>
+            <text x="14" y="114" font-size="8" fill="#8a8378" font-family="IBM Plex Mono, monospace">0.8 m</text>
+            <text x="14" y="175" font-size="8" fill="#8a8378" font-family="IBM Plex Mono, monospace">1.9 m</text>
+
+            <rect x="0" y="0" width="560" height="76" fill="url(#shadow)"/>
+            <rect x="196" y="40" width="168" height="36" fill="#221e19" stroke="#8f7d5b"/>
+            <rect x="210" y="48" width="36" height="20" fill="#0f0d0b" stroke="#4a4339"/>
+            <text x="228" y="62" text-anchor="middle" font-size="7" fill="#e0a13a" font-family="IBM Plex Mono, monospace">PWR</text>
+            <rect x="256" y="48" width="96" height="20" fill="#0f0d0b" stroke="#4a4339"/>
+            <text x="304" y="62" text-anchor="middle" font-size="7" fill="#a9a196" font-family="IBM Plex Mono, monospace">DRIVE 6.0 kN</text>
+            <rect x="200" y="20" width="4" height="20" fill="#6e6a62"/>
+            <rect x="356" y="20" width="4" height="20" fill="#6e6a62"/>
+            <rect x="176" y="8" width="208" height="12" fill="#2b2620" stroke="#4a4339"/>
+
+            <g stroke="#b9ae9b" stroke-width="0.7">
+              <path d="M196 76 L172 92 M364 76 L388 92"/>
+            </g>
+            <rect x="162" y="90" width="24" height="6" fill="#8f7d5b"/>
+            <rect x="374" y="90" width="24" height="6" fill="#8f7d5b"/>
+
+            <g id="augerGroup">
+              <rect x="272" y="76" width="16" height="150" fill="#cfc3a9"/>
+              <path id="flights" d="M272 88 L288 96 M272 104 L288 112 M272 120 L288 128 M272 136 L288 144 M272 152 L288 160 M272 168 L288 176 M272 184 L288 192 M272 200 L288 208" stroke="#e0a13a" stroke-width="2.2" fill="none"/>
+              <path d="M280 226 L268 242 L292 242 Z" fill="#e0a13a"/>
+            </g>
+
+            <g stroke="#e0a13a" stroke-width="1.2" fill="none">
+              <path d="M470 100 V66"/>
+              <path d="M464 74 l6 -8 l6 8"/>
+            </g>
+            <text x="474" y="112" font-size="7.5" fill="#e0a13a" font-family="IBM Plex Mono, monospace" id="reactionLbl">reaction 6.0 kN</text>
+            <g stroke="#b8512a" stroke-width="1.2">
+              <path d="M118 100 V128"/>
+              <path d="M112 120 l6 8 l6 -8"/>
+            </g>
+            <text x="40" y="96" font-size="8" fill="#b8512a" font-family="IBM Plex Mono, monospace" id="capacityLbl">capacity 6.9 kN</text>
+
+            <g id="depthMark">
+              <line x1="272" y1="76" x2="272" y2="226" stroke="#14120f" stroke-width="0.6" stroke-dasharray="2 4"/>
+            </g>
+            <text x="300" y="256" font-size="8" fill="#6e6a62" font-family="IBM Plex Mono, monospace">anchor depth 3.0 m</text>
+            <text x="440" y="286" font-size="8" fill="#6e6a62" font-family="IBM Plex Mono, monospace" id="holdLbl">hold time 41 min</text>
+          </svg>
+
+          <dl class="readouts">
+            <div><dt>Solar flux</dt><dd id="outFlux">—</dd></div>
+            <div><dt>Oven power</dt><dd id="outPower">—</dd></div>
+            <div><dt>Water per day</dt><dd id="outWater">—</dd></div>
+            <div><dt>Anchor margin</dt><dd id="outMargin">—</dd></div>
+            <div><dt>Break-even</dt><dd id="outCost">—</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rows">
+    <div class="wrap">
+      <div class="row">
+        <p class="row-label mono">The problem</p>
+        <div class="row-body">
+          <h2>An asteroid does not hold still, and it does not hold you.</h2>
+          <p>Surface gravity on a 1 km body is around 0.0003 m/s². A drill pushing down at 6 kN therefore pushes the spacecraft up with almost the same force. Every extraction architecture starts with a question that lunar and Martian mining never has to ask: what is the anchor attached to, and what happens to the reaction when the bit jams?</p>
+          <p>Our answer is not a bigger anchor but a different order of operations. We anchor first with a low-force auger, use the resulting hold to drive two more, and only then bring the drill to full feed. The rig is designed to lose the argument gracefully — the flight computer sheds feed force faster than the anchor can fail.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <p class="row-label mono">Process</p>
+        <div class="row-body">
+          <h2>Four operations, in this order, every time.</h2>
+          <ol class="steps">
+            <li>
+              <span class="step-num mono">A</span>
+              <div><strong>Prospect from 40 km</strong><p>Thermal inertia and a 2.2 µm hydration band pick the landing ellipse. We need a rock we can reach, not a rock with a good spectrum.</p></div>
+            </li>
+            <li>
+              <span class="step-num mono">B</span>
+              <div><strong>Touch and anchor</strong><p>A 40 mm auger into the first 300 mm at 0.8 kN, then a pull test to 1.5× the expected reaction before the drill is released from its launch lock.</p></div>
+            </li>
+            <li>
+              <span class="step-num mono">C</span>
+              <div><strong>Dig and hoist</strong><p>Regolith goes to the oven in 2 kg batches. The rig moves 20 t a day at 12 wt% water, which is one tonne of material every 71 minutes.</p></div>
+            </li>
+            <li>
+              <span class="step-num mono">D</span>
+              <div><strong>Cook and store</strong><p>The cavity receiver holds 420 °C. Vapour passes a cold trap at 180 K; the non-condensables are vented, and the product is kept as ice, not liquid.</p></div>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="row">
+        <p class="row-label mono">Limits</p>
+        <div class="row-body">
+          <h2>What this design cannot do.</h2>
+          <div class="limits">
+            <article>
+              <h3>Deep ice</h3>
+              <p>Below 4 m the auger cannot clear cuttings in vacuum; the hole packs and the bit seizes. Anything deeper needs a different cuttings path, which we have not flown.</p>
+            </article>
+            <article>
+              <h3>Fast rotators</h3>
+              <p>Above a 2.2 h rotation period the thermal cycle fatigues the anchor and the solar array cannot track continuously. We decline those targets rather than design for them.</p>
+            </article>
+            <article>
+              <h3>Metal-rich bodies</h3>
+              <p>M-types are worth more per tonne and are far harder to drill. Our auger is qualified for regolith, not for a nickel-iron surface, and I will not pretend otherwise in a proposal.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <p class="row-label mono">Assets</p>
+        <div class="row-body">
+          <h2>Hardware that has been in a vacuum chamber.</h2>
+          <ul class="asset-list">
+            <li><a href="projects.html#egeria"><span class="mono a-id">A-04</span><strong>47 Egeria anchor trial</strong><span>Three augers, 0.9 kN margin, 41 minutes of hold on the shaker table.</span></a></li>
+            <li><a href="projects.html#oven"><span class="mono a-id">A-03</span><strong>Solar cavity oven</strong><span>3.8 kWh per kilogram of water at 2.7 AU, measured on a 40 kg analogue batch.</span></a></li>
+            <li><a href="projects.html#hopper"><span class="mono a-id">A-02</span><strong>Microgravity hopper</strong><span>2 kg batches, 0.4 g/s, no atmosphere required, 93% mass closure over 60 cycles.</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap cta-in">
+      <div>
+        <h2>Bring me a target and a launch date.</h2>
+        <p>A mission study takes six weeks and ends with an anchor margin, an oven energy budget and a list of the assumptions that would sink both.</p>
+      </div>
+      <a class="btn btn-solid" href="contact.html#enquiry">Write the brief</a>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <p>Orbital Drill · Tobias Renn · 9 rue de la Logistique, Luxembourg</p>
+      <p class="mono">Trial log 2026-11-08 · next vacuum campaign February 2027</p>
+    </div>
+  </footer>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

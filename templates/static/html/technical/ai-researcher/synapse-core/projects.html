@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research — Haddad Lab, neuromorphic perception</title>
+<meta name="description" content="Five research threads: event-driven corner detection, LIF calibration on Loihi 2, spike-budgeted STDP, event-based optical flow, and an honest energy account for event vision.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Spline+Sans+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f4f1e7'/%3E%3Cpath d='M4 44 H16 V20 H28 V36 H40 V14 H52 V44 H60' fill='none' stroke='%230f4c4a' stroke-width='3'/%3E%3Ccircle cx='52' cy='14' r='4' fill='%23b4442a'/%3E%3C/svg%3E">
+</head>
+<body data-page="projects">
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="wrap">
+  <header class="masthead">
+    <a class="brand" href="index.html">
+      <span class="brand-name">Haddad Lab</span>
+      <span class="brand-sub">Neuromorphic perception · Delft</span>
+    </a>
+    <nav class="topnav" aria-label="Primary">
+      <a href="index.html">Bench</a>
+      <a href="projects.html" aria-current="page">Research</a>
+      <a href="about.html">Notebook</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <p class="kicker">Research · 2023–2026</p>
+      <h1>Five threads, one accounting question.</h1>
+      <p class="lede">Each project below ends with an energy number on real hardware. The interesting part is usually the gap between the number in the paper and the number on the bench, and what closes it.</p>
+    </section>
+
+    <section class="sheet">
+      <div class="sheet-head">
+        <span class="sheet-no">§ 02</span>
+        <div>
+          <h2>Current projects</h2>
+          <p>Ordered by how much of the lab's time they take, not by how recently they started.</p>
+        </div>
+      </div>
+      <div class="body-grid">
+        <div class="margin-note">
+          <b>Reproduce</b>
+          Each project has a repository with the calibration sweep, the seeds and the energy log. Ask for access.
+        </div>
+        <div>
+          <article class="study">
+            <span class="sn">P-01</span>
+            <div>
+              <h3>Event-driven corner detection at 40 µW</h3>
+              <p>A 5×5 learned kernel over the event stream, computed as a sparse convolution on Loihi 2. On a static scene the sensor emits almost nothing and the network idles; on a moving scene the cost tracks the event rate, which is exactly the behaviour the format promises. The project is about where that promise breaks: fast panning fills the event buffer and the energy advantage disappears.</p>
+              <p class="spec">Hardware: GenX320 + Loihi 2 · 0.9 mJ per inference, static scene 41 µW<br>Status: paper at NeurIPS 2026 · dataset released with the sensor bias log</p>
+            </div>
+          </article>
+
+          <article class="study">
+            <span class="sn">P-02</span>
+            <div>
+              <h3>Calibrating LIF parameters to Loihi 2</h3>
+              <p>Per-neuron threshold and time constant are fitted from a 200-sample sweep across 16 bias settings, then validated against held-out spike trains from the same core. The fitted model removes most of the rate drift that makes simulated results fail to transfer, and it gives a per-core mismatch map that other groups can use before they trust a port.</p>
+              <p class="spec">Hardware: Loihi 2, 512 neurons across 8 cores · median rate error 3.8 %<br>Status: ICLR 2026 · calibration tooling in Lava 0.6</p>
+            </div>
+          </article>
+
+          <article class="study">
+            <span class="sn">P-03</span>
+            <div>
+              <h3>STDP under a spike budget</h3>
+              <p>Unsupervised STDP learns a useful representation and then keeps firing. We add a per-neuron refractory penalty during training, so the equilibrium of the learned weights sits below an event budget instead of above it. The representation loses a little linear separability and gains a 27 % reduction in spikes at the same probe accuracy.</p>
+              <p class="spec">Hardware: Loihi 2 · −27 % spikes, −0.4 pt linear-probe accuracy<br>Status: Frontiers in Neuroscience, 2025</p>
+            </div>
+          </article>
+
+          <article class="study">
+            <span class="sn">P-04</span>
+            <div>
+              <h3>Event-based optical flow at 0.4 mJ</h3>
+              <p>A plane-fitting flow estimator on the event stream, with the plane parameters read out from a spiking population rather than a dense correlation volume. On the MVSEC outdoor day sequences it is within 8 % of a dense baseline's endpoint error at a fraction of the energy — but only when the camera is not rolling, which the paper says plainly.</p>
+              <p class="spec">Hardware: DVS128 + Speck · 0.4 mJ per frame at 30 fps equivalent<br>Status: ECCV workshop 2025 · code released</p>
+            </div>
+          </article>
+
+          <article class="study">
+            <span class="sn">P-05</span>
+            <div>
+              <h3>An honest energy account for event vision</h3>
+              <p>A position paper with a measurement protocol: sensor, encoding, network, readout, and the idle power of the board, reported per correctly classified sample at three event rates. Applied to four published systems, it changes the ranking in two of them. The protocol is the contribution; the ranking is a consequence.</p>
+              <p class="spec">Method: PPK2 logging, 1 kHz, whole-board · four systems re-measured<br>Status: under review · preprint available on request</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet" aria-labelledby="hardwareTitle">
+      <div class="sheet-head">
+        <span class="sheet-no">§ 03</span>
+        <div>
+          <h2 id="hardwareTitle">What runs where</h2>
+          <p>The lab's rule: a model is only real when it has run on at least one of these, with the sensor attached.</p>
+        </div>
+      </div>
+      <div class="body-grid">
+        <div class="margin-note">
+          <b>Access</b>
+          Visiting researchers can book the Loihi board for a week; the sensor is shared and needs two weeks' notice.
+        </div>
+        <div>
+          <table class="data-table">
+            <caption>Platforms in the lab, November 2026</caption>
+            <thead>
+              <tr><th scope="col">Platform</th><th scope="col">Used for</th><th scope="col">Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Loihi 2 (Lava)</th><td>Full SNN, on-chip STDP, calibration</td><td>8 cores, 1M neurons</td></tr>
+              <tr><th scope="row">Speck</th><td>Always-on gesture and flow</td><td>Low power, fixed front end</td></tr>
+              <tr><th scope="row">GenX320</th><td>Event camera, 320×320</td><td>On loan, 1 µs timestamps</td></tr>
+              <tr><th scope="row">DVS128</th><td>Legacy comparisons</td><td>128×128, noisy</td></tr>
+              <tr><th scope="row">Jetson Orin Nano</th><td>Dense baseline for the energy account</td><td>15 W cap</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="sheet" aria-labelledby="studentTitle">
+      <div class="sheet-head">
+        <span class="sheet-no">§ 04</span>
+        <div>
+          <h2 id="studentTitle">Student projects, finished</h2>
+        </div>
+      </div>
+      <div class="body-grid">
+        <div class="margin-note">
+          <b>Archive</b>
+          Theses are in the faculty repository; the code is in the lab group.
+        </div>
+        <div class="two-up">
+          <article class="entry">
+            <span class="tag">MSc 2026</span>
+            <h3>Sparse encoding of LiDAR returns</h3>
+            <p>Converted a 64-beam LiDAR stream into events and ran a spiking segmentation head. The conversion cost more than the network saved, which is a result worth writing down.</p>
+          </article>
+          <article class="entry">
+            <span class="tag">MSc 2025</span>
+            <h3>Refractory periods as a rate control</h3>
+            <p>Showed that a 1 ms shift in refractory period changes the energy budget of the front end by 14 %, more than most architecture choices.</p>
+          </article>
+          <article class="entry">
+            <span class="tag">BSc 2025</span>
+            <h3>Bias drift with temperature</h3>
+            <p>Measured the neuron bias current against board temperature over four hours. The drift is the reason the calibration has to be repeated after warm-up.</p>
+          </article>
+          <article class="entry">
+            <span class="tag">MSc 2024</span>
+            <h3>A spike-count readout for gesture recognition</h3>
+            <p>Replaced a rate-decoding layer with a population count over 20 ms and matched accuracy while cutting the readout energy by a third.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-top">
+      <div>
+        <p class="foot-mark">Haddad Lab</p>
+        <p>Neuromorphic perception<br>Faculty of EEMCS, Delft</p>
+      </div>
+      <div>
+        <p class="mono">Contact</p>
+        <p><a href="mailto:n.haddad@lab.tudelft.nl">n.haddad@lab.tudelft.nl</a><br>Office 12.340, building 28</p>
+      </div>
+      <div>
+        <p class="mono">Open positions</p>
+        <p>One PhD, event-based vision<br>One postdoc, silicon calibration</p>
+      </div>
+    </div>
+    <p class="foot-fine">© 2026 Haddad Lab · figures generated in the browser from the model described · no audio, by design</p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

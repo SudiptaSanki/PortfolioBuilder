@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slipstream — maglev guideway engineering</title>
+<meta name="description" content="Slipstream engineers superconducting maglev guideways: alignment survey, coil packs, levitation gap control and the aerodynamics of running at 500 km/h in a tube.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23EDECE7'/%3E%3Cpath d='M6 40h52' stroke='%231A1A16' stroke-width='3'/%3E%3Cpath d='M14 40c0-8 6-14 14-14h6l14 14' fill='none' stroke='%23BE3A22' stroke-width='3'/%3E%3Cpath d='M10 46h8M26 46h8M42 46h8' stroke='%2363645A' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <a class="masthead__brand" href="index.html">
+    <svg class="masthead__mark" viewBox="0 0 40 24" aria-hidden="true" focusable="false">
+      <path d="M2 20h36" stroke="currentColor" stroke-width="2"/>
+      <path d="M8 20c0-6 4-10 9-10h4l11 10" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M6 24h8M22 24h8" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+    <span>Slipstream<em>guideway engineering &middot; Nagoya</em></span>
+  </a>
+  <nav class="masthead__nav" aria-label="Primary">
+    <a href="index.html" aria-current="page"><i>01</i>Systems</a>
+    <a href="about.html"><i>02</i>Method</a>
+    <a href="projects.html"><i>03</i>Lines</a>
+    <a href="contact.html"><i>04</i>Route brief</a>
+  </nav>
+  <p class="masthead__meta">35.18&deg;N 136.91&deg;E &middot; test line 42&nbsp;km</p>
+</header>
+
+<main id="main">
+
+  <section class="opening" aria-labelledby="open-title">
+    <div class="opening__left">
+      <p class="eyebrow">Superconducting maglev &middot; since 2008</p>
+      <h1 id="open-title">Six hundred kilometres an hour, ten centimetres above the ground</h1>
+    </div>
+    <div class="opening__right">
+      <p class="lede">We design the guideway, not the train. The part that decides whether a maglev works is the alignment of a concrete beam over forty kilometres, the coil pack bolted to it, and the control loop that keeps a 40&nbsp;tonne car in the middle of a gap the width of a hand.</p>
+      <dl class="stats">
+        <div><dt>Guideway surveyed</dt><dd>212<span>km</span></dd></div>
+        <div><dt>Alignment tolerance</dt><dd>&plusmn;1.5<span>mm</span></dd></div>
+        <div><dt>Fastest run</dt><dd>603<span>km/h</span></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="ribbon" aria-label="Speed scale of the Yamanashi test line, with the 2015 record marked">
+    <canvas id="speed-ribbon" width="1440" height="220" role="img" aria-label="A side view of the guideway with a speed scale from zero to 700 kilometres per hour; the 603 kilometre per hour record of 2015 is marked."></canvas>
+    <div class="ribbon__foot">
+      <p><span class="swatch" aria-hidden="true"></span>L0 series, Yamanashi test line, 21 April 2015. Seven cars, 28 superconducting magnets, 603&nbsp;km/h for 10.8&nbsp;seconds.</p>
+      <p class="mono">Scale 0&ndash;700 km/h</p>
+    </div>
+  </section>
+
+  <section class="tool" id="gap-tool" aria-labelledby="tool-title">
+    <div class="tool__head">
+      <p class="eyebrow">Tool 01 &middot; levitation and drag</p>
+      <h2 id="tool-title">Gap and drag</h2>
+      <p class="tool__sub">The on-board superconducting magnets induce a current in the figure-eight coils on the ground; the field they make holds the car up. Lift falls off exponentially with gap, so the car settles where lift equals weight. Move the current, the mass or the tunnel pressure and see where that is.</p>
+    </div>
+
+    <div class="tool__grid">
+      <form class="tool__form" id="gap-form" aria-label="Guideway parameters">
+        <div class="field">
+          <label for="speed">Speed <output id="speed-out" for="speed">500 km/h</output></label>
+          <input type="range" id="speed" name="speed" min="0" max="700" step="1" value="500">
+        </div>
+        <div class="field">
+          <label for="mass">Car mass <output id="mass-out" for="mass">40 t</output></label>
+          <input type="range" id="mass" name="mass" min="20" max="60" step="1" value="40">
+        </div>
+        <div class="field">
+          <label for="current">Magnet current <output id="current-out" for="current">800 kA</output></label>
+          <input type="range" id="current" name="current" min="400" max="1200" step="10" value="800">
+        </div>
+        <div class="field">
+          <label for="pressure">Tunnel pressure <output id="pressure-out" for="pressure">40 kPa</output></label>
+          <input type="range" id="pressure" name="pressure" min="10" max="101" step="1" value="40">
+        </div>
+        <div class="field field--wide">
+          <button type="button" class="btn btn--ghost" id="preset-service">Service 500 km/h</button>
+          <button type="button" class="btn btn--ghost" id="preset-record">Record 603 km/h</button>
+        </div>
+      </form>
+
+      <figure class="section-drawing">
+        <svg id="section" viewBox="0 0 420 260" role="img" aria-label="Cross-section of the guideway with the vehicle levitating above the coil pack; the gap dimension updates with the model.">
+          <g class="sec__ground">
+            <path d="M30 214h360" stroke="currentColor" stroke-width="1"/>
+            <path d="M30 214v8M70 214v5M110 214v5M150 214v5M190 214v5M230 214v5M270 214v5M310 214v5M350 214v5M390 214v8" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+          </g>
+          <g class="sec__guide">
+            <path d="M60 214V150h44v64" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M316 214V150h44v64" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M104 176h212" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+            <g stroke="currentColor" stroke-width="1.2" opacity="0.85">
+              <path d="M116 190h24M152 190h24M188 190h24M224 190h24M260 190h24M296 190h24"/>
+              <path d="M118 186v8M154 186v8M190 186v8M226 186v8M262 186v8M298 186v8"/>
+            </g>
+          </g>
+          <g class="sec__car" id="car-group">
+            <rect x="96" y="112" width="228" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="2.4"/>
+            <path d="M96 132h228" stroke="currentColor" stroke-width="1" opacity="0.35"/>
+            <rect x="120" y="120" width="34" height="10" rx="2" fill="currentColor" opacity="0.25"/>
+            <rect x="168" y="120" width="34" height="10" rx="2" fill="currentColor" opacity="0.25"/>
+            <rect x="216" y="120" width="34" height="10" rx="2" fill="currentColor" opacity="0.25"/>
+            <circle cx="120" cy="158" r="5" fill="currentColor"/>
+            <circle cx="300" cy="158" r="5" fill="currentColor"/>
+          </g>
+          <g id="gap-dim" class="sec__dim">
+            <path d="M340 158v32" stroke="currentColor" stroke-width="0.8" opacity="0.6"/>
+            <path d="M336 160h8M336 188h8" stroke="currentColor" stroke-width="0.8" opacity="0.6"/>
+            <text x="348" y="178" id="gap-text">120 mm</text>
+          </g>
+          <text x="30" y="246" class="sec__label">coil pack &middot; null-flux, figure-eight</text>
+          <text x="300" y="246" class="sec__label">slab tolerance &plusmn;1.5 mm</text>
+        </svg>
+        <figcaption>Section through a guideway. The vehicle rides on the field of the ground coils; nothing touches.</figcaption>
+      </figure>
+    </div>
+
+    <div class="tool__out">
+      <div class="out-grid" aria-live="polite">
+        <div><p class="k">Equilibrium gap</p><p class="v" id="out-gap">120<span>mm</span></p></div>
+        <div><p class="k">Lift margin at 100 mm</p><p class="v" id="out-lift">+105<span>%</span></p></div>
+        <div><p class="k">Aerodynamic drag</p><p class="v" id="out-aero">35.0<span>kN</span></p></div>
+        <div><p class="k">Magnetic drag</p><p class="v" id="out-mdrag">2.4<span>kN</span></p></div>
+        <div><p class="k">Traction power</p><p class="v" id="out-power">6.2<span>MW</span></p></div>
+        <div><p class="k">Energy per seat-km</p><p class="v" id="out-energy">21<span>Wh</span></p></div>
+      </div>
+
+      <div class="chart">
+        <div class="chart__head">
+          <span>Drag against speed &middot; this mass, current and pressure</span>
+          <span class="mono" id="chart-note">total 37.4 kN at 500 km/h</span>
+        </div>
+        <svg id="drag-chart" viewBox="0 0 640 240" role="img" aria-label="Chart of aerodynamic, magnetic and total drag against speed with the current operating point marked"></svg>
+        <p class="chart__foot">Aerodynamic drag uses CdA 7.5&nbsp;m&sup2; and the tunnel pressure above. Magnetic drag is the EDS penalty that peaks at low speed and disappears as the field is dragged along. Both fall to zero if the car stops, which is why the low-speed drag peak is where the guideway is hardest to cool.</p>
+      </div>
+      <p class="verdict" id="verdict">Set a speed to run the model.</p>
+    </div>
+  </section>
+
+  <section class="bands" aria-labelledby="bands-title">
+    <h2 id="bands-title" class="sr-only">What the guideway has to do</h2>
+
+    <article class="band">
+      <div class="band__label">
+        <p class="eyebrow">01</p>
+        <h3>Alignment</h3>
+      </div>
+      <div class="band__body">
+        <p>A maglev guideway is a survey problem before it is a magnetic one. The slab has to hold &plusmn;1.5&nbsp;mm over a 3&nbsp;m chord along a 40&nbsp;km curve, in a structure that moves with the ground and expands in the sun. We set the alignment from a monumented control network, then re-survey after every thermal cycle of the concrete.</p>
+      </div>
+      <dl class="band__spec">
+        <div><dt>Chord</dt><dd>3 m</dd></div>
+        <div><dt>Tolerance</dt><dd>&plusmn;1.5 mm</dd></div>
+        <div><dt>Re-survey</dt><dd>seasonal</dd></div>
+      </dl>
+    </article>
+
+    <article class="band">
+      <div class="band__label">
+        <p class="eyebrow">02</p>
+        <h3>Coils</h3>
+      </div>
+      <div class="band__body">
+        <p>Figure-eight ground coils do two jobs at once: they levitate and they guide. Each is a closed aluminium loop with a crossover, and its response depends on the vehicle's superconducting magnets, which are never allowed to quench. We have installed 11,200 of them on three lines and replaced 34.</p>
+      </div>
+      <dl class="band__spec">
+        <div><dt>Coil pitch</dt><dd>1.2 m</dd></div>
+        <div><dt>Installed</dt><dd>11,200</dd></div>
+        <div><dt>Replaced</dt><dd>34</dd></div>
+      </dl>
+    </article>
+
+    <article class="band">
+      <div class="band__label">
+        <p class="eyebrow">03</p>
+        <h3>Aero</h3>
+      </div>
+      <div class="band__body">
+        <p>At 500&nbsp;km/h the air is the dominant loss and the dominant noise. A partially evacuated tube removes most of it, and adds two new problems: the pressure wave the train pushes ahead of itself, and what happens to the gap control when the vehicle passes a tunnel portal. We test both at 1:12 scale before a slab is cast.</p>
+      </div>
+      <dl class="band__spec">
+        <div><dt>Model scale</dt><dd>1:12</dd></div>
+        <div><dt>Test speed</dt><dd>208 m/s</dd></div>
+        <div><dt>Wave limit</dt><dd>0.12 bar</dd></div>
+      </dl>
+    </article>
+  </section>
+
+  <section class="closing">
+    <div class="closing__quote">
+      <p>The train is the easy part. The ground is where the money goes, and the ground is where a maglev project succeeds or quietly stops.</p>
+      <p class="mono">Hana Ito, guideway lead</p>
+    </div>
+    <div class="closing__cta">
+      <h2>We work from the alignment out</h2>
+      <p>Route feasibility, slab and coil design, gap control and the test campaign. If a route has been priced by someone who has never surveyed a beam in the sun, bring it to us and we will tell you what the tolerance really costs.</p>
+      <a class="btn" href="contact.html">Send a route brief</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot__brand">
+    <p class="foot__word">Slipstream</p>
+    <p>Guideway engineering for superconducting maglev. Nagoya, with a survey team that travels.</p>
+  </div>
+  <div>
+    <p class="foot__label">Index</p>
+    <a href="index.html">Systems</a>
+    <a href="about.html">Method</a>
+    <a href="projects.html">Lines</a>
+    <a href="contact.html">Route brief</a>
+  </div>
+  <div>
+    <p class="foot__label">Contact</p>
+    <a href="mailto:office@slipstream.example">office@slipstream.example</a>
+    <p class="mono">+81 52 000 0000</p>
+  </div>
+  <p class="foot__legal">&copy; <span data-year>2026</span> Slipstream KK. The gap and drag model is a two-parameter fit to published test-line data; it is a design aid, not a certification tool.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

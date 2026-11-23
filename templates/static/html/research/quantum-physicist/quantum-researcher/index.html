@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iris Kovač — quantum optics, Ljubljana</title>
+<meta name="description" content="Iris Kovač runs a quantum optics lab in Ljubljana studying how long a superposition survives when the environment is watching. Interferometry, decoherence and single-photon detection.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&family=Inter+Tight:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f7f7f2'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%2316241d' stroke-width='1.2'/%3E%3Cellipse cx='16' cy='16' rx='10' ry='3.4' fill='none' stroke='%2316241d' stroke-width='0.9'/%3E%3Cpath d='M16 16 L23 10' stroke='%23c03b2d' stroke-width='1.6'/%3E%3C/svg%3E">
+</head>
+<body data-page="index">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="head">
+  <div class="wrap head-in">
+    <a class="brand" href="index.html">
+      <strong>Iris Kovač</strong>
+      <span>Quantum optics · Ljubljana</span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav">Menu</button>
+    <nav class="nav" id="siteNav" aria-label="Main">
+      <a href="index.html" aria-current="page">Lab</a>
+      <a href="about.html">About</a>
+      <a href="projects.html">Experiments</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <span class="semester mono">Winter 2026 · week 46</span>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap">
+      <h1>A single photon interferes with itself. Everything else is bookkeeping.</h1>
+      <div class="hero-grid">
+        <div>
+          <p class="lede">I run a six-person quantum optics lab at the Jožef Stefan Institute. We measure how long a superposition survives while the environment is watching, and we build the interferometers that make the question answerable.</p>
+          <div class="hero-actions">
+            <a class="btn" href="projects.html">The experiments</a>
+            <a class="text-link" href="contact.html#enquiry">Talk about a collaboration</a>
+          </div>
+        </div>
+        <aside class="lab-card" aria-label="Lab facts">
+          <dl>
+            <div><dt>Group</dt><dd>6 people, 2 benches</dd></div>
+            <div><dt>Benches</dt><dd>one Mach–Zehnder, one double slit</dd></div>
+            <div><dt>Detectors</dt><dd>2 SNSPDs, 78% at 810 nm</dd></div>
+            <div><dt>Current question</dt><dd>does a phonon bath remember?</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="instrument" aria-labelledby="labTitle">
+    <div class="wrap">
+      <div class="inst-head">
+        <h2 id="labTitle">Interference and decoherence</h2>
+        <p class="inst-sub">One state, two pictures. Move the state on the sphere and then let the environment watch: the Bloch vector shortens and the fringes lose contrast by the same amount.</p>
+        <span class="mono inst-ver">demonstration model</span>
+      </div>
+
+      <div class="controls-bar">
+        <div class="control">
+          <label for="theta">Polar angle θ <output id="thetaOut" class="mono">90°</output></label>
+          <input type="range" id="theta" min="0" max="180" step="1" value="90">
+        </div>
+        <div class="control">
+          <label for="phi">Azimuth φ <output id="phiOut" class="mono">0°</output></label>
+          <input type="range" id="phi" min="0" max="360" step="1" value="0">
+        </div>
+        <div class="control">
+          <label for="gamma">Which-path knowledge <output id="gammaOut" class="mono">0%</output></label>
+          <input type="range" id="gamma" min="0" max="100" step="1" value="0">
+        </div>
+        <div class="control measure">
+          <button type="button" class="btn btn-small" id="measureBtn">Measure 200 shots</button>
+          <p class="hint" id="measureOut">no measurement yet</p>
+        </div>
+      </div>
+
+      <div class="panels">
+        <figure class="panel">
+          <figcaption class="panel-head"><span class="mono">A</span> Bloch sphere</figcaption>
+          <canvas id="blochCanvas" aria-label="Bloch sphere with the qubit state vector"></canvas>
+          <p class="panel-foot" id="blochFoot">Pure state, vector length 1.00.</p>
+        </figure>
+
+        <figure class="panel">
+          <figcaption class="panel-head"><span class="mono">B</span> Double-slit fringes</figcaption>
+          <canvas id="fringeCanvas" aria-label="Interference fringes whose contrast falls as which-path knowledge rises"></canvas>
+          <p class="panel-foot" id="fringeFoot">Visibility 100%: the two paths are indistinguishable.</p>
+        </figure>
+      </div>
+
+      <dl class="readouts">
+        <div><dt>P(|0⟩)</dt><dd id="outP0">—</dd></div>
+        <div><dt>P(|1⟩)</dt><dd id="outP1">—</dd></div>
+        <div><dt>Coherence |ρ₀₁|</dt><dd id="outCoh">—</dd></div>
+        <div><dt>Fringe visibility</dt><dd id="outVis">—</dd></div>
+        <div><dt>Purity</dt><dd id="outPur">—</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="entries">
+    <div class="wrap">
+
+      <div class="entry">
+        <div class="entry-main">
+          <h2>Dephasing is not decay</h2>
+          <p>An excited atom that emits a photon loses energy: that is T1, and it is irreversible in the obvious way. An atom that is merely watched loses coherence without losing energy. The populations stay where they were; the off-diagonal terms of the density matrix shrink. In the sphere above, the vector tips toward the equator and then shortens along that direction.</p>
+          <p>The distinction matters experimentally because the two processes have different signatures. Energy decay removes contrast and changes the count rate; pure dephasing removes contrast and leaves the count rate alone. If your fringes fade and your singles rate is flat, the environment is watching but not taking.</p>
+        </div>
+        <aside class="margin-note">
+          <span class="mono">Note 1</span>
+          <p>For a two-level system the coherence is ρ₀₁, and the visibility of a fringe is 2|ρ₀₁|. A visibility of 1 means a pure superposition; 0 means a classical mixture of paths.</p>
+        </aside>
+      </div>
+
+      <div class="entry">
+        <div class="entry-main">
+          <h2>The fringe is a measurement, not a picture</h2>
+          <p>In the double-slit panel, each bright band is a place where the two path amplitudes add. The moment any physical record distinguishes the paths — a polariser, a stray photon, a detector that does not fire — the bands fill in. The pattern does not fade gradually because the apparatus is imperfect; it fades because the paths are no longer indistinguishable.</p>
+          <p>Englert’s relation makes this quantitative: V² + D² ≤ 1, where V is fringe visibility and D is the distinguishability of the paths. You can have a perfect fringe or perfect knowledge, never both. Most of our lab time goes into pushing D down without losing photons.</p>
+        </div>
+        <aside class="margin-note">
+          <span class="mono">Note 2</span>
+          <p>Englert, Phys. Rev. Lett. 77, 2154 (1996). The bound is saturated by an ideal which-path detector; real detectors sit inside it.</p>
+        </aside>
+      </div>
+
+      <div class="entry">
+        <div class="entry-main">
+          <h2>What we actually measure</h2>
+          <p>Our interferometer is a fibre Mach–Zehnder with a 4 m path imbalance and a piezo stretcher in one arm. We count coincidences between two superconducting nanowire detectors at 810 nm and sweep the piezo through 2π. A run takes eleven minutes and produces about 40,000 counts, which is enough to fit a visibility to ±0.4%.</p>
+          <p>The hard part is not the optics; it is the 4 m of fibre that is not in the cryostat. Thermal drift in that spool moves the phase faster than the piezo can compensate, so the whole bench sits on a floating slab in a room held at 21 ± 0.2 °C.</p>
+        </div>
+        <aside class="margin-note">
+          <span class="mono">Note 3</span>
+          <p>The 4 m imbalance is deliberate: it lets us insert a delay line and ask whether coherence survives a longer path, which is the whole point of the phonon-bath experiment.</p>
+        </aside>
+      </div>
+
+      <div class="entry">
+        <div class="entry-main">
+          <h2>Current questions</h2>
+          <ul class="questions">
+            <li><span class="mono">Q1</span><p>Does a mechanical phonon bath retain a record of a photon that passed through, and for how long?</p></li>
+            <li><span class="mono">Q2</span><p>Can we use a second photon as a which-path detector with a controlled, calibrated D?</p></li>
+            <li><span class="mono">Q3</span><p>What is the visibility floor set by the detector timing jitter rather than by the state?</p></li>
+          </ul>
+        </div>
+        <aside class="margin-note">
+          <span class="mono">Open</span>
+          <p>Two of the three are doctoral projects. The third is the question every referee asks, and I would like an answer that is not an estimate.</p>
+        </aside>
+      </div>
+
+      <div class="entry">
+        <div class="entry-main">
+          <h2>Recent papers</h2>
+          <ul class="papers">
+            <li>
+              <span class="mono">2026</span>
+              <div><strong>Visibility recovery in a fibre interferometer with an active phase lock</strong><span>I. Kovač, M. Zupan, T. Achebe. Optics Express 34, 8812. The lock that keeps the 4 m spool from drifting.</span></div>
+            </li>
+            <li>
+              <span class="mono">2025</span>
+              <div><strong>A calibrated which-path detector at the single-photon level</strong><span>I. Kovač, L. Ferreira. Physical Review A 111, 023714. How we set D without trusting the model.</span></div>
+            </li>
+            <li>
+              <span class="mono">2024</span>
+              <div><strong>Coherence of a photon after a 40 m delay</strong><span>I. Kovač, M. Zupan. New Journal of Physics 26, 093021. The first result from the spool, and the reason for the current question.</span></div>
+            </li>
+          </ul>
+        </div>
+        <aside class="margin-note">
+          <span class="mono">Preprint</span>
+          <p>The phonon-bath manuscript is with a referee. I will post it when it comes back, whatever the answer is.</p>
+        </aside>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap cta-in">
+      <h2>The lab is small on purpose.</h2>
+      <p>Two doctoral students, one postdoc, one technician who keeps the laser alive, and me. We take one collaboration at a time and we finish it.</p>
+      <a class="btn" href="contact.html#enquiry">Write to the lab</a>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <p>Iris Kovač · quantum optics · Jožef Stefan Institute, Ljubljana</p>
+      <p class="mono">Last bench day 18 Nov 2026 · next proposal deadline 4 Feb 2027</p>
+    </div>
+  </footer>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

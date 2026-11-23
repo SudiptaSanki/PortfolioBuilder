@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marta Kowalczyk — EEG Signal Engineering · Signals, not mind reading</title>
+<meta name="description" content="Non-invasive EEG signal-processing engineering for research groups and assistive-technology teams: dataset audits, analysis pipelines, real-time BCI prototyping. No medical claims, no mind reading.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Libre+Franklin:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 44'%3E%3Crect width='64' height='44' fill='%23FAF6ED'/%3E%3Cpath d='M4 22 L18 22 L24 8 L32 36 L38 22 L60 22' fill='none' stroke='%230B5F5B' stroke-width='3'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap head-block">
+    <a class="brand" href="index.html" aria-label="Marta Kowalczyk — EEG Signal Engineering, home">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 64 44" preserveAspectRatio="none"><path d="M4 22 L18 22 L24 8 L32 36 L38 22 L60 22" fill="none" stroke="#0B5F5B" stroke-width="2.5"/></svg></span>
+      <span>
+        <span class="brand-name">Marta Kowalczyk</span>
+        <span class="brand-sub" style="display:block">EEG Signal Engineering</span>
+      </span>
+    </a>
+    <div class="head-facts" aria-hidden="true">
+      <div><b>Base</b> · Kraków, Poland</div>
+      <div><b>Practice</b> · since 2019</div>
+      <div><b>Scope</b> · non-invasive EEG only</div>
+    </div>
+  </div>
+  <nav class="main-nav" aria-label="Main">
+    <div class="wrap nav-row">
+      <ul class="nav-links">
+        <li><a href="index.html" aria-current="page"><span class="n">01</span>Index</a></li>
+        <li><a href="projects.html"><span class="n">02</span>Case files</a></li>
+        <li><a href="about.html"><span class="n">03</span>About &amp; method</a></li>
+        <li><a href="contact.html"><span class="n">04</span>Contact</a></li>
+      </ul>
+      <span class="nav-cta">Enquiries · marta@kowalczyk-signal.example</span>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobilePanel"><span class="mb-ico" aria-hidden="true">☰</span> Notebook index</button>
+    </div>
+  </nav>
+</header>
+
+<div class="scrim" id="scrim"></div>
+<aside class="mobile-panel" id="mobilePanel" aria-label="Notebook index">
+  <button class="mp-close" aria-label="Close menu">✕</button>
+  <p class="mp-title">Notebook index</p>
+  <ul class="mp-links">
+    <li><a href="index.html" aria-current="page">Index <span class="pg">sheet 01</span></a></li>
+    <li><a href="projects.html">Case files <span class="pg">sheet 02</span></a></li>
+    <li><a href="about.html">About &amp; method <span class="pg">sheet 03</span></a></li>
+    <li><a href="contact.html">Contact <span class="pg">sheet 04</span></a></li>
+  </ul>
+  <p class="mp-note">EEG signal engineering for research groups and assistive-technology teams. Non-invasive only. No medical claims — and no mind reading; see sheet 03 for what this practice will not do.</p>
+</aside>
+
+<main id="main">
+
+  <!-- ================= HERO ================= -->
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="kicker">BCI signal processing · research &amp; assistive technology</p>
+        <h1>Signals, not <span class="reject">mind reading</span>.</h1>
+        <p class="standfirst">I build and audit the signal pipelines behind non-invasive EEG research: the filtering, epoching and artefact rejection that decide whether a result is a result. Most of the job is throwing data away — honestly, and in writing.</p>
+        <div class="hero-ctas">
+          <a class="btn" href="contact.html?type=audit">Ask for a dataset audit</a>
+          <a class="btn btn-ghost" href="projects.html">Read the case files</a>
+        </div>
+        <div class="fact-row">
+          <div><p class="f-k">The signal</p><p class="f-v">Scalp potentials, in microvolts</p></div>
+          <div><p class="f-k">The bands</p><p class="f-v">δ θ α β γ · 0.5 Hz and up</p></div>
+          <div><p class="f-k">The real work</p><p class="f-v">Artefact rejection, logged</p></div>
+          <div><p class="f-k">The limit</p><p class="f-v">Non-invasive. No exceptions</p></div>
+        </div>
+      </div>
+      <figure class="shot rv">
+        <img src="assets/eeg-session.jpg" alt="A scalp-EEG recording session in progress, with a recording device at the participant's head" width="1260" height="840">
+        <figcaption><b>Reference photograph.</b> A scalp-EEG recording session. Not this practice's laboratory, equipment or participants — the work here happens in the data, after sessions like this one.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <!-- ================= §01 BAND EXPLORER ================= -->
+  <section class="block wrap" aria-labelledby="bands-h">
+    <div class="sec-head">
+      <span class="sec-no">§ 01</span>
+      <h2 id="bands-h">The Band Explorer</h2>
+      <span class="sec-note">Five bands · one honest line each</span>
+    </div>
+    <p class="lede rv">EEG is the summed electrical activity of cortex, picked up at the scalp in microvolts — millionths of a volt. By convention it is read in five frequency bands. Pick one: the sheet shows its character, where it dominates, and — the part the brochures leave out — what it does <em>not</em> mean.</p>
+
+    <div class="band-tabs rv" role="group" aria-label="Choose a frequency band" style="margin-top:30px">
+      <button type="button" data-band="delta" aria-pressed="false">Delta δ <span class="r">0.5–4 Hz</span></button>
+      <button type="button" data-band="theta" aria-pressed="false">Theta θ <span class="r">4–8 Hz</span></button>
+      <button type="button" data-band="alpha" aria-pressed="true">Alpha α <span class="r">8–13 Hz</span></button>
+      <button type="button" data-band="beta" aria-pressed="false">Beta β <span class="r">13–30 Hz</span></button>
+      <button type="button" data-band="gamma" aria-pressed="false">Gamma γ <span class="r">30 Hz +</span></button>
+    </div>
+
+    <div class="explorer-grid">
+      <div class="trace-panel rv" role="img" aria-label="Schematic EEG traces for the five bands; the selected band is shown">
+        <svg id="trace-delta" viewBox="0 0 600 160" hidden aria-hidden="true"><path d="M0 80.0 L3 74.8 L6 69.7 L9 64.7 L12 59.8 L15 55.0 L18 50.5 L21 46.3 L24 42.3 L27 38.7 L30 35.5 L33 32.7 L36 30.2 L39 28.3 L42 26.7 L45 25.7 L48 25.1 L51 25.0 L54 25.4 L57 26.3 L60 27.7 L63 29.5 L66 31.8 L69 34.5 L72 37.6 L75 41.1 L78 44.9 L81 49.1 L84 53.5 L87 58.2 L90 63.0 L93 68.0 L96 73.1 L99 78.3 L102 83.5 L105 88.6 L108 93.7 L111 98.6 L114 103.4 L117 108.0 L120 112.3 L123 116.4 L126 120.1 L129 123.5 L132 126.4 L135 129.0 L138 131.1 L141 132.8 L144 134.0 L147 134.8 L150 135.0 L153 134.8 L156 134.0 L159 132.8 L162 131.1 L165 129.0 L168 126.4 L171 123.5 L174 120.1 L177 116.4 L180 112.3 L183 108.0 L186 103.4 L189 98.6 L192 93.7 L195 88.6 L198 83.5 L201 78.3 L204 73.1 L207 68.0 L210 63.0 L213 58.2 L216 53.5 L219 49.1 L222 44.9 L225 41.1 L228 37.6 L231 34.5 L234 31.8 L237 29.5 L240 27.7 L243 26.3 L246 25.4 L249 25.0 L252 25.1 L255 25.7 L258 26.7 L261 28.3 L264 30.2 L267 32.7 L270 35.5 L273 38.7 L276 42.3 L279 46.3 L282 50.5 L285 55.0 L288 59.8 L291 64.7 L294 69.7 L297 74.8 L300 80.0 L303 85.2 L306 90.3 L309 95.3 L312 100.2 L315 105.0 L318 109.5 L321 113.7 L324 117.7 L327 121.3 L330 124.5 L333 127.3 L336 129.8 L339 131.7 L342 133.3 L345 134.3 L348 134.9 L351 135.0 L354 134.6 L357 133.7 L360 132.3 L363 130.5 L366 128.2 L369 125.5 L372 122.4 L375 118.9 L378 115.1 L381 110.9 L384 106.5 L387 101.8 L390 97.0 L393 92.0 L396 86.9 L399 81.7 L402 76.5 L405 71.4 L408 66.3 L411 61.4 L414 56.6 L417 52.0 L420 47.7 L423 43.6 L426 39.9 L429 36.5 L432 33.6 L435 31.0 L438 28.9 L441 27.2 L444 26.0 L447 25.2 L450 25.0 L453 25.2 L456 26.0 L459 27.2 L462 28.9 L465 31.0 L468 33.6 L471 36.5 L474 39.9 L477 43.6 L480 47.7 L483 52.0 L486 56.6 L489 61.4 L492 66.3 L495 71.4 L498 76.5 L501 81.7 L504 86.9 L507 92.0 L510 97.0 L513 101.8 L516 106.5 L519 110.9 L522 115.1 L525 118.9 L528 122.4 L531 125.5 L534 128.2 L537 130.5 L540 132.3 L543 133.7 L546 134.6 L549 135.0 L552 134.9 L555 134.3 L558 133.3 L561 131.7 L564 129.8 L567 127.3 L570 124.5 L573 121.3 L576 117.7 L579 113.7 L582 109.5 L585 105.0 L588 100.2 L591 95.3 L594 90.3 L597 85.2 L600 80.0" fill="none" stroke="#0B5F5B" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <svg id="trace-theta" viewBox="0 0 600 160" hidden aria-hidden="true"><path d="M0 73.3 L3 68.0 L6 63.7 L9 60.4 L12 58.1 L15 56.6 L18 55.7 L21 55.3 L24 55.1 L27 55.1 L30 55.0 L33 54.9 L36 54.8 L39 54.8 L42 55.1 L45 56.0 L48 57.6 L51 60.0 L54 63.5 L57 68.0 L60 73.4 L63 79.7 L66 86.4 L69 93.3 L72 100.0 L75 106.1 L78 111.2 L81 115.1 L84 117.4 L87 118.2 L90 117.5 L93 115.3 L96 111.9 L99 107.6 L102 102.6 L105 97.5 L108 92.4 L111 87.5 L114 83.2 L117 79.4 L120 76.1 L123 73.3 L126 70.9 L129 68.5 L132 66.2 L135 63.7 L138 61.1 L141 58.2 L144 55.3 L147 52.4 L150 49.9 L153 47.9 L156 46.7 L159 46.6 L162 47.8 L165 50.4 L168 54.4 L171 59.6 L174 65.9 L177 72.9 L180 80.3 L183 87.7 L186 94.6 L189 100.7 L192 105.7 L195 109.5 L198 111.9 L201 112.9 L204 112.7 L207 111.5 L210 109.6 L213 107.1 L216 104.4 L219 101.6 L222 99.0 L225 96.5 L228 94.2 L231 92.0 L234 89.8 L237 87.2 L240 84.4 L243 80.9 L246 77.0 L249 72.4 L252 67.4 L255 62.1 L258 56.8 L261 51.8 L264 47.5 L267 44.2 L270 42.2 L273 41.6 L276 42.6 L279 45.2 L282 49.2 L285 54.5 L288 60.6 L291 67.3 L294 74.1 L297 80.7 L300 86.7 L303 92.0 L306 96.3 L309 99.6 L312 101.9 L315 103.4 L318 104.3 L321 104.7 L324 104.9 L327 104.9 L330 105.0 L333 105.1 L336 105.2 L339 105.2 L342 104.9 L345 104.0 L348 102.4 L351 100.0 L354 96.5 L357 92.0 L360 86.6 L363 80.3 L366 73.6 L369 66.7 L372 60.0 L375 53.9 L378 48.8 L381 44.9 L384 42.6 L387 41.8 L390 42.5 L393 44.7 L396 48.1 L399 52.4 L402 57.4 L405 62.5 L408 67.6 L411 72.5 L414 76.8 L417 80.6 L420 83.9 L423 86.7 L426 89.1 L429 91.5 L432 93.8 L435 96.3 L438 98.9 L441 101.8 L444 104.7 L447 107.6 L450 110.1 L453 112.1 L456 113.3 L459 113.4 L462 112.2 L465 109.6 L468 105.6 L471 100.4 L474 94.1 L477 87.1 L480 79.7 L483 72.3 L486 65.4 L489 59.3 L492 54.3 L495 50.5 L498 48.1 L501 47.1 L504 47.3 L507 48.5 L510 50.4 L513 52.9 L516 55.6 L519 58.4 L522 61.0 L525 63.5 L528 65.8 L531 68.0 L534 70.2 L537 72.8 L540 75.6 L543 79.1 L546 83.0 L549 87.6 L552 92.6 L555 97.9 L558 103.2 L561 108.2 L564 112.5 L567 115.8 L570 117.8 L573 118.4 L576 117.4 L579 114.8 L582 110.8 L585 105.5 L588 99.4 L591 92.7 L594 85.9 L597 79.3 L600 73.3" fill="none" stroke="#0B5F5B" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <svg id="trace-alpha" viewBox="0 0 600 160" aria-hidden="true"><path d="M0 80.0 L3 74.8 L6 70.1 L9 66.1 L12 63.5 L15 62.4 L18 63.1 L21 65.5 L24 69.3 L27 74.3 L30 80.0 L33 85.8 L36 91.2 L39 95.6 L42 98.5 L45 99.7 L48 98.9 L51 96.2 L54 91.9 L57 86.3 L60 80.0 L63 73.5 L66 67.6 L69 62.8 L72 59.6 L75 58.3 L78 59.2 L81 62.2 L84 66.9 L87 73.1 L90 80.0 L93 87.1 L96 93.5 L99 98.8 L102 102.2 L105 103.6 L108 102.6 L111 99.3 L114 94.2 L117 87.5 L120 80.0 L123 72.4 L126 65.4 L129 59.8 L132 56.1 L135 54.7 L138 55.8 L141 59.3 L144 64.9 L147 72.0 L150 80.0 L153 88.1 L156 95.5 L159 101.4 L162 105.3 L165 106.8 L168 105.6 L171 101.9 L174 96.0 L177 88.4 L180 80.0 L183 71.5 L186 63.7 L189 57.5 L192 53.5 L195 52.0 L198 53.3 L201 57.2 L204 63.3 L207 71.2 L210 80.0 L213 88.8 L216 96.9 L219 103.3 L222 107.5 L225 109.0 L228 107.6 L231 103.6 L234 97.2 L237 89.0 L240 80.0 L243 70.9 L246 62.7 L249 56.1 L252 51.9 L255 50.4 L258 51.8 L261 56.0 L264 62.5 L267 70.8 L270 80.0 L273 89.2 L276 97.6 L279 104.2 L282 108.5 L285 110.0 L288 108.5 L291 104.3 L294 97.6 L297 89.3 L300 80.0 L303 70.7 L306 62.4 L309 55.7 L312 51.5 L315 50.0 L318 51.5 L321 55.8 L324 62.4 L327 70.8 L330 80.0 L333 89.2 L336 97.5 L339 104.0 L342 108.2 L345 109.6 L348 108.1 L351 103.9 L354 97.3 L357 89.1 L360 80.0 L363 71.0 L366 62.8 L369 56.4 L372 52.4 L375 51.0 L378 52.5 L381 56.7 L384 63.1 L387 71.2 L390 80.0 L393 88.8 L396 96.7 L399 102.8 L402 106.7 L405 108.0 L408 106.5 L411 102.5 L414 96.3 L417 88.5 L420 80.0 L423 71.6 L426 64.0 L429 58.1 L432 54.4 L435 53.2 L438 54.7 L441 58.6 L444 64.5 L447 71.9 L450 80.0 L453 88.0 L456 95.1 L459 100.7 L462 104.2 L465 105.3 L468 103.9 L471 100.2 L474 94.6 L477 87.6 L480 80.0 L483 72.5 L486 65.8 L489 60.7 L492 57.4 L495 56.4 L498 57.8 L501 61.2 L504 66.5 L507 72.9 L510 80.0 L513 86.9 L516 93.1 L519 97.8 L522 100.8 L525 101.7 L528 100.4 L531 97.2 L534 92.4 L537 86.5 L540 80.0 L543 73.7 L546 68.1 L549 63.8 L552 61.1 L555 60.3 L558 61.5 L561 64.4 L564 68.8 L567 74.2 L570 80.0 L573 85.7 L576 90.7 L579 94.5 L582 96.9 L585 97.6 L588 96.5 L591 93.9 L594 89.9 L597 85.2 L600 80.0" fill="none" stroke="#0B5F5B" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <svg id="trace-beta" viewBox="0 0 600 160" hidden aria-hidden="true"><path d="M0 77.1 L3 69.2 L6 68.0 L9 72.7 L12 79.2 L15 83.5 L18 84.0 L21 82.2 L24 80.1 L27 78.5 L30 76.5 L33 73.7 L36 71.5 L39 72.3 L42 77.7 L45 85.9 L48 92.3 L51 92.5 L54 85.6 L57 75.8 L60 69.4 L63 70.8 L66 78.7 L69 88.1 L72 93.0 L75 91.2 L78 84.8 L81 78.2 L84 74.6 L87 74.2 L90 75.2 L93 76.2 L96 77.5 L99 80.0 L102 83.6 L105 85.8 L108 83.9 L111 77.5 L114 69.6 L117 65.7 L120 69.1 L123 78.6 L126 88.8 L129 93.4 L132 90.1 L135 81.6 L138 73.8 L141 71.4 L144 74.8 L147 81.0 L150 85.9 L153 87.7 L156 87.1 L159 85.9 L162 84.4 L165 81.8 L168 77.4 L171 72.6 L174 70.7 L177 73.9 L180 81.4 L183 88.7 L186 90.4 L189 84.6 L192 74.4 L195 66.1 L198 64.9 L201 71.3 L204 80.8 L207 87.8 L210 88.9 L213 85.1 L216 80.2 L219 77.2 L222 76.6 L225 77.3 L228 78.0 L231 79.4 L234 82.5 L237 87.3 L240 91.3 L243 90.9 L246 84.7 L249 75.5 L252 68.6 L255 68.7 L258 76.0 L261 85.7 L264 91.4 L267 89.6 L270 81.6 L273 72.7 L276 68.1 L279 69.3 L282 74.1 L285 78.8 L288 81.6 L291 82.8 L294 83.5 L297 84.0 L300 82.9 L303 79.3 L306 74.4 L309 71.6 L312 74.1 L315 82.1 L318 91.2 L321 95.7 L324 92.2 L327 82.7 L330 72.9 L333 68.8 L336 72.3 L339 80.1 L342 86.8 L345 88.6 L348 85.6 L351 80.7 L354 76.7 L357 74.6 L360 73.4 L363 72.5 L366 72.6 L369 75.3 L372 80.9 L375 86.8 L378 89.1 L381 85.1 L384 76.7 L387 69.1 L390 67.7 L393 74.2 L396 84.8 L399 93.1 L402 94.4 L405 88.7 L408 80.5 L411 74.9 L414 74.1 L417 76.9 L420 80.3 L423 82.5 L426 83.5 L429 84.4 L432 85.1 L435 84.0 L438 79.6 L441 72.9 L444 67.5 L447 67.5 L450 74.1 L453 83.8 L456 90.5 L459 89.9 L462 82.2 L465 72.7 L468 67.4 L471 69.5 L474 77.0 L477 84.9 L480 89.1 L483 88.8 L486 85.9 L489 83.1 L492 81.1 L495 79.3 L498 77.1 L501 75.6 L504 76.9 L507 81.9 L510 88.3 L513 91.6 L516 88.5 L519 79.5 L522 69.5 L525 64.7 L528 68.1 L531 77.3 L534 86.1 L537 89.4 L540 85.9 L543 78.8 L546 73.0 L549 71.4 L552 73.4 L555 76.7 L558 79.5 L561 82.0 L564 84.8 L567 87.9 L570 89.0 L573 86.1 L576 79.5 L579 72.8 L582 70.7 L585 75.6 L588 85.0 L591 93.0 L594 94.2 L597 87.5 L600 77.1" fill="none" stroke="#0B5F5B" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <svg id="trace-gamma" viewBox="0 0 600 160" hidden aria-hidden="true"><path d="M0 78.4 L3 74.8 L6 79.1 L9 85.5 L12 84.4 L15 77.9 L18 76.3 L21 80.8 L24 82.5 L27 77.9 L30 75.1 L33 80.2 L36 86.0 L39 83.7 L42 77.1 L45 76.3 L48 81.1 L51 82.2 L54 77.4 L57 75.6 L60 81.2 L63 86.2 L66 82.9 L69 76.4 L72 76.5 L75 81.5 L78 82.0 L81 77.1 L84 76.1 L87 82.2 L90 86.3 L93 81.9 L96 75.7 L99 76.8 L102 81.9 L105 81.7 L108 76.9 L111 76.8 L114 83.1 L117 86.1 L120 80.9 L123 75.2 L126 77.2 L129 82.2 L132 81.4 L135 76.7 L138 77.5 L141 83.8 L144 85.8 L147 79.8 L150 74.8 L153 77.7 L156 82.6 L159 81.1 L162 76.7 L165 78.2 L168 84.4 L171 85.3 L174 78.7 L177 74.5 L180 78.2 L183 82.9 L186 80.8 L189 76.7 L192 79.0 L195 84.9 L198 84.6 L201 77.7 L204 74.3 L207 78.9 L210 83.2 L213 80.5 L216 76.8 L219 79.7 L222 85.2 L225 83.8 L228 76.7 L231 74.4 L234 79.6 L237 83.4 L240 80.2 L243 76.9 L246 80.4 L249 85.4 L252 82.9 L255 75.8 L258 74.6 L261 80.4 L264 83.6 L267 79.9 L270 77.1 L273 81.1 L276 85.4 L279 81.9 L282 75.1 L285 75.0 L288 81.2 L291 83.7 L294 79.6 L297 77.3 L300 81.6 L303 85.2 L306 80.9 L309 74.5 L312 75.6 L315 82.1 L318 83.7 L321 79.2 L324 77.5 L327 82.1 L330 84.9 L333 79.8 L336 74.0 L339 76.3 L342 82.9 L345 83.7 L348 78.9 L351 77.8 L354 82.6 L357 84.4 L360 78.8 L363 73.8 L366 77.1 L369 83.6 L372 83.5 L375 78.5 L378 78.0 L381 82.9 L384 83.9 L387 77.8 L390 73.7 L393 78.1 L396 84.3 L399 83.2 L402 78.1 L405 78.3 L408 83.1 L411 83.2 L414 76.9 L417 73.9 L420 79.1 L423 84.8 L426 82.8 L429 77.8 L432 78.6 L435 83.3 L438 82.5 L441 76.2 L444 74.2 L447 80.2 L450 85.2 L453 82.3 L456 77.4 L459 78.9 L462 83.3 L465 81.8 L468 75.6 L471 74.7 L474 81.3 L477 85.5 L480 81.8 L483 77.1 L486 79.2 L489 83.3 L492 81.0 L495 75.1 L498 75.4 L501 82.3 L504 85.7 L507 81.1 L510 76.8 L513 79.5 L516 83.2 L519 80.3 L522 74.8 L525 76.2 L528 83.3 L531 85.6 L534 80.4 L537 76.6 L540 79.8 L543 83.1 L546 79.6 L549 74.6 L552 77.1 L555 84.2 L558 85.4 L561 79.6 L564 76.4 L567 80.1 L570 82.9 L573 78.9 L576 74.6 L579 78.1 L582 84.9 L585 85.0 L588 78.8 L591 76.3 L594 80.4 L597 82.7 L600 78.4" fill="none" stroke="#0B5F5B" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <div class="trace-cap"><span>Fig. 1 — <span id="bandCapName">Alpha α</span>, schematic</span><b>Drawn, not recorded</b></div>
+      </div>
+
+      <div class="sheet rv" aria-live="polite">
+        <h3><span id="bandName">Alpha</span><span class="hz" id="bandRangeTag">8–13 Hz</span></h3>
+        <dl class="spec">
+          <dt>Range</dt><dd id="bandRange">8–13 Hz</dd>
+          <dt>Character</dt><dd id="bandCharacter">A regular, spindle-shaped rhythm — the steadiest handwriting on the sheet.</dd>
+          <dt>Amplitude</dt><dd id="bandAmp">About 10–50 µV</dd>
+          <dt>Dominates</dt><dd id="bandWhere">Back of the head (occipital), awake and relaxed with the eyes closed. It blocks — visibly shrinks — the moment the eyes open.</dd>
+        </dl>
+        <div class="notmean">
+          <p class="nm-k">What it does not mean</p>
+          <p id="bandNotMean">Alpha is not “calmness”, measured. It is the idling rhythm of the visual system, and it disappears when the eyes open and the visual world comes back in.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-scroll rv" tabindex="0" role="region" aria-label="Reference table of the five EEG bands, scrollable" style="margin-top:36px">
+      <table class="data">
+        <caption>Table 1 — The five bands, as printed on the lab wall</caption>
+        <thead><tr><th scope="col">Band</th><th scope="col">Range</th><th scope="col">Typical amplitude (scalp)</th><th scope="col">Seen most clearly</th></tr></thead>
+        <tbody>
+          <tr><td class="band">Delta δ</td><td class="hz">0.5–4 Hz</td><td>Up to ~100 µV in deep sleep</td><td>Deep (NREM) sleep</td></tr>
+          <tr><td class="band">Theta θ</td><td class="hz">4–8 Hz</td><td>About 10–50 µV</td><td>Drowsiness, light sleep</td></tr>
+          <tr><td class="band">Alpha α</td><td class="hz">8–13 Hz</td><td>About 10–50 µV</td><td>Awake, eyes closed, occipital</td></tr>
+          <tr><td class="band">Beta β</td><td class="hz">13–30 Hz</td><td>About 5–20 µV</td><td>Alert thought, frontal / central</td></tr>
+          <tr><td class="band">Gamma γ</td><td class="hz">30 Hz and up</td><td>A few µV at most</td><td>Task cortex — and every muscle</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tbl-note">Amplitudes are typical adult scalp values, stated as approximations — any single record can sit outside them, which is a finding, not an error.</p>
+  </section>
+
+  <!-- ================= §02 ARTEFACT PANEL ================= -->
+  <section class="block wrap" aria-labelledby="art-h" style="border-top:1px solid var(--rule)">
+    <div class="sec-head">
+      <span class="sec-no">§ 02</span>
+      <h2 id="art-h">The Artefact Panel</h2>
+      <span class="sec-note">The skill is the throwing-away</span>
+    </div>
+    <p class="lede rv">Before any band means anything, the record has to survive its artefacts — signals that are not brain at all, and are usually bigger than the ones that are. Eye blinks and muscle noise dwarf the EEG; mains hum writes through everything. This panel is the honest core of the trade: three impostors, their signatures, and how each is handled.</p>
+
+    <div class="art-tabs rv" role="group" aria-label="Choose an artefact" style="margin-top:30px">
+      <button type="button" data-art="blink" aria-pressed="true">Eye blink</button>
+      <button type="button" data-art="muscle" aria-pressed="false">Muscle (EMG)</button>
+      <button type="button" data-art="mains" aria-pressed="false">Mains hum</button>
+    </div>
+
+    <div class="explorer-grid">
+      <div class="trace-panel rv" role="img" aria-label="Schematic traces of the three artefacts; the selected artefact is shown">
+        <svg id="trace-blink" viewBox="0 0 600 160" aria-hidden="true"><path d="M0 80.0 L3 77.5 L6 75.3 L9 73.5 L12 72.4 L15 72.0 L18 72.4 L21 73.5 L24 75.3 L27 77.5 L30 80.0 L33 82.5 L36 84.7 L39 86.5 L42 87.6 L45 88.0 L48 87.6 L51 86.5 L54 84.7 L57 82.5 L60 80.0 L63 77.5 L66 75.3 L69 73.5 L72 72.4 L75 72.0 L78 72.4 L81 73.5 L84 75.3 L87 77.5 L90 80.0 L93 82.5 L96 84.7 L99 86.5 L102 87.6 L105 88.0 L108 87.6 L111 86.5 L114 84.7 L117 82.5 L120 80.0 L123 77.5 L126 75.3 L129 73.5 L132 72.4 L135 72.0 L138 72.4 L141 73.5 L144 75.3 L147 77.5 L150 80.0 L153 82.5 L156 84.7 L159 86.5 L162 87.6 L165 88.0 L168 87.6 L171 86.5 L174 84.7 L177 82.5 L180 80.0 L183 77.5 L186 75.3 L189 73.5 L192 72.3 L195 71.9 L198 72.3 L201 73.4 L204 75.1 L207 77.2 L210 79.6 L213 81.9 L216 83.9 L219 85.4 L222 86.2 L225 86.1 L228 85.1 L231 83.2 L234 80.5 L237 77.1 L240 73.3 L243 69.1 L246 65.0 L249 60.9 L252 57.2 L255 53.9 L258 51.1 L261 48.8 L264 46.8 L267 45.1 L270 43.5 L273 41.9 L276 40.1 L279 37.9 L282 35.3 L285 32.4 L288 29.1 L291 25.6 L294 22.1 L297 18.8 L300 16.0 L303 13.9 L306 12.7 L309 12.7 L312 13.9 L315 16.4 L318 20.1 L321 24.9 L324 30.6 L327 36.9 L330 43.5 L333 50.1 L336 56.2 L339 61.7 L342 66.4 L345 69.9 L348 72.4 L351 73.9 L354 74.4 L357 74.1 L360 73.3 L363 72.2 L366 71.1 L369 70.3 L372 69.9 L375 70.1 L378 71.0 L381 72.5 L384 74.5 L387 77.0 L390 79.6 L393 82.2 L396 84.5 L399 86.3 L402 87.5 L405 87.9 L408 87.6 L411 86.4 L414 84.7 L417 82.5 L420 80.0 L423 77.5 L426 75.3 L429 73.5 L432 72.4 L435 72.0 L438 72.4 L441 73.5 L444 75.3 L447 77.5 L450 80.0 L453 82.5 L456 84.7 L459 86.5 L462 87.6 L465 88.0 L468 87.6 L471 86.5 L474 84.7 L477 82.5 L480 80.0 L483 77.5 L486 75.3 L489 73.5 L492 72.4 L495 72.0 L498 72.4 L501 73.5 L504 75.3 L507 77.5 L510 80.0 L513 82.5 L516 84.7 L519 86.5 L522 87.6 L525 88.0 L528 87.6 L531 86.5 L534 84.7 L537 82.5 L540 80.0 L543 77.5 L546 75.3 L549 73.5 L552 72.4 L555 72.0 L558 72.4 L561 73.5 L564 75.3 L567 77.5 L570 80.0 L573 82.5 L576 84.7 L579 86.5 L582 87.6 L585 88.0 L588 87.6 L591 86.5 L594 84.7 L597 82.5 L600 80.0" fill="none" stroke="#9E3B26" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <svg id="trace-muscle" viewBox="0 0 600 160" hidden aria-hidden="true"><path d="M0 80.0 L3 78.1 L6 76.5 L9 75.1 L12 74.3 L15 74.0 L18 74.3 L21 75.1 L24 76.5 L27 78.1 L30 80.0 L33 81.9 L36 83.5 L39 84.9 L42 85.7 L45 86.0 L48 85.7 L51 84.9 L54 83.5 L57 81.9 L60 80.0 L63 78.1 L66 76.5 L69 75.1 L72 74.3 L75 74.0 L78 74.3 L81 75.1 L84 76.5 L87 78.1 L90 80.0 L93 81.9 L96 83.5 L99 84.9 L102 85.7 L105 86.0 L108 85.7 L111 84.9 L114 83.5 L117 81.9 L120 80.0 L123 78.1 L126 76.5 L129 75.1 L132 74.3 L135 74.0 L138 74.3 L141 75.1 L144 76.5 L147 78.1 L150 80.0 L153 81.9 L156 83.5 L159 84.9 L162 85.7 L165 86.0 L168 85.7 L171 84.9 L174 83.5 L177 81.9 L180 80.0 L183 78.1 L186 76.5 L189 75.1 L192 74.3 L195 74.0 L198 74.3 L201 75.1 L204 76.5 L207 78.1 L210 80.0 L213 81.9 L216 84.0 L219 85.9 L222 83.8 L225 83.2 L228 85.8 L231 87.1 L234 87.6 L237 84.4 L240 72.9 L243 68.4 L246 82.4 L249 89.9 L252 73.7 L255 60.8 L258 68.7 L261 78.9 L264 84.2 L267 88.0 L270 77.0 L273 61.3 L276 76.7 L279 107.2 L282 101.2 L285 72.1 L288 68.9 L291 84.5 L294 91.4 L297 94.4 L300 87.9 L303 61.9 L306 53.8 L309 85.4 L312 102.5 L315 74.9 L318 53.1 L321 65.7 L324 81.4 L327 88.1 L330 92.5 L333 79.7 L336 61.1 L339 76.1 L342 107.0 L345 101.9 L348 74.4 L351 70.3 L354 82.7 L357 87.5 L360 88.6 L363 83.8 L366 67.4 L369 62.0 L372 78.6 L375 87.6 L378 75.5 L381 67.0 L384 72.8 L387 79.5 L390 82.5 L393 84.5 L396 83.4 L399 82.5 L402 85.1 L405 86.0 L408 85.7 L411 84.9 L414 83.5 L417 81.9 L420 80.0 L423 78.1 L426 76.5 L429 75.1 L432 74.3 L435 74.0 L438 74.3 L441 75.1 L444 76.5 L447 78.1 L450 80.0 L453 81.9 L456 83.5 L459 84.9 L462 85.7 L465 86.0 L468 85.7 L471 84.9 L474 83.5 L477 81.9 L480 80.0 L483 78.1 L486 76.5 L489 75.1 L492 74.3 L495 74.0 L498 74.3 L501 75.1 L504 76.5 L507 78.1 L510 80.0 L513 81.9 L516 83.5 L519 84.9 L522 85.7 L525 86.0 L528 85.7 L531 84.9 L534 83.5 L537 81.9 L540 80.0 L543 78.1 L546 76.5 L549 75.1 L552 74.3 L555 74.0 L558 74.3 L561 75.1 L564 76.5 L567 78.1 L570 80.0 L573 81.9 L576 83.5 L579 84.9 L582 85.7 L585 86.0 L588 85.7 L591 84.9 L594 83.5 L597 81.9 L600 80.0" fill="none" stroke="#9E3B26" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <svg id="trace-mains" viewBox="0 0 600 160" hidden aria-hidden="true"><path d="M0 80.0 L3 70.6 L6 64.8 L9 64.8 L12 70.6 L15 80.0 L18 89.4 L21 95.2 L24 95.2 L27 89.4 L30 80.0 L33 70.6 L36 64.8 L39 64.8 L42 70.6 L45 80.0 L48 89.4 L51 95.2 L54 95.2 L57 89.4 L60 80.0 L63 70.6 L66 64.8 L69 64.8 L72 70.6 L75 80.0 L78 89.4 L81 95.2 L84 95.2 L87 89.4 L90 80.0 L93 70.6 L96 64.8 L99 64.8 L102 70.6 L105 80.0 L108 89.4 L111 95.2 L114 95.2 L117 89.4 L120 80.0 L123 70.6 L126 64.8 L129 64.8 L132 70.6 L135 80.0 L138 89.4 L141 95.2 L144 95.2 L147 89.4 L150 80.0 L153 70.6 L156 64.8 L159 64.8 L162 70.6 L165 80.0 L168 89.4 L171 95.2 L174 95.2 L177 89.4 L180 80.0 L183 70.6 L186 64.8 L189 64.8 L192 70.6 L195 80.0 L198 89.4 L201 95.2 L204 95.2 L207 89.4 L210 80.0 L213 70.6 L216 64.8 L219 64.8 L222 70.6 L225 80.0 L228 89.4 L231 95.2 L234 95.2 L237 89.4 L240 80.0 L243 70.6 L246 64.8 L249 64.8 L252 70.6 L255 80.0 L258 89.4 L261 95.2 L264 95.2 L267 89.4 L270 80.0 L273 70.6 L276 64.8 L279 64.8 L282 70.6 L285 80.0 L288 89.4 L291 95.2 L294 95.2 L297 89.4 L300 80.0 L303 70.6 L306 64.8 L309 64.8 L312 70.6 L315 80.0 L318 89.4 L321 95.2 L324 95.2 L327 89.4 L330 80.0 L333 70.6 L336 64.8 L339 64.8 L342 70.6 L345 80.0 L348 89.4 L351 95.2 L354 95.2 L357 89.4 L360 80.0 L363 70.6 L366 64.8 L369 64.8 L372 70.6 L375 80.0 L378 89.4 L381 95.2 L384 95.2 L387 89.4 L390 80.0 L393 70.6 L396 64.8 L399 64.8 L402 70.6 L405 80.0 L408 89.4 L411 95.2 L414 95.2 L417 89.4 L420 80.0 L423 70.6 L426 64.8 L429 64.8 L432 70.6 L435 80.0 L438 89.4 L441 95.2 L444 95.2 L447 89.4 L450 80.0 L453 70.6 L456 64.8 L459 64.8 L462 70.6 L465 80.0 L468 89.4 L471 95.2 L474 95.2 L477 89.4 L480 80.0 L483 70.6 L486 64.8 L489 64.8 L492 70.6 L495 80.0 L498 89.4 L501 95.2 L504 95.2 L507 89.4 L510 80.0 L513 70.6 L516 64.8 L519 64.8 L522 70.6 L525 80.0 L528 89.4 L531 95.2 L534 95.2 L537 89.4 L540 80.0 L543 70.6 L546 64.8 L549 64.8 L552 70.6 L555 80.0 L558 89.4 L561 95.2 L564 95.2 L567 89.4 L570 80.0 L573 70.6 L576 64.8 L579 64.8 L582 70.6 L585 80.0 L588 89.4 L591 95.2 L594 95.2 L597 89.4 L600 80.0" fill="none" stroke="#9E3B26" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <div class="trace-cap"><span>Fig. 2 — <span id="artCapName">Eye blink</span>, schematic</span><b>Drawn, not recorded</b></div>
+      </div>
+
+      <div class="sheet rv" aria-live="polite">
+        <h3 id="artName">Eye blink</h3>
+        <dl class="spec">
+          <dt>Signature</dt><dd id="artSignature">One large, smooth deflection, roughly 200–400 ms long, standing alone in an otherwise quiet trace.</dd>
+          <dt>Where</dt><dd id="artWhere">Largest at the front of the head (Fp1/Fp2) and fading towards the back — the eyes are electrical, and they sit close to those electrodes.</dd>
+          <dt>Size</dt><dd id="artSize">Often 50–150 µV — bigger than any band on the reference table beside it.</dd>
+        </dl>
+        <div class="handling">
+          <p class="nm-k">The honest handling</p>
+          <p id="artHandling">Record a dedicated eye channel (EOG) at every session, without exception. Then reject or correct the affected epochs — and log how many went. A blink must never be averaged into a result.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= §03 P300 ================= -->
+  <section class="block wrap" aria-labelledby="p300-h" style="border-top:1px solid var(--rule)">
+    <div class="sec-head">
+      <span class="sec-no">§ 03</span>
+      <h2 id="p300-h">One honest signal: the P300</h2>
+      <span class="sec-note">Why a speller can work at all</span>
+    </div>
+    <div class="p300-grid">
+      <div class="rv">
+        <h3>Attention leaves a timestamp</h3>
+        <p class="body">Show a person a stream of flashes where one item in many is the one they are counting, and about 300 milliseconds after that item appears, the averaged EEG carries a positive bump — the P300. It is one of the most replicated findings in the field, and it is the whole basis of the P300 speller: attend to a letter, and the bump says which one.</p>
+        <p class="body">Two honest qualifications, printed here rather than in a footnote. First, the bump is invisible in any single trial — it emerges only after averaging dozens, because the background EEG is louder than the response. Second, that is why a speller is slow: letters arrive at the speed of averaging, not the speed of thought. Case File 02 shows what that means in practice.</p>
+      </div>
+      <div class="trace-panel rv" role="img" aria-label="Schematic averaged evoked response: small fluctuations, a dip near 200 milliseconds, and a positive bump near 300 milliseconds labelled P300">
+        <svg viewBox="0 0 600 140">
+          <line x1="0" y1="95" x2="600" y2="95" stroke="#A99B78" stroke-width="1"/>
+          <line x1="305" y1="18" x2="305" y2="95" stroke="#9E3B26" stroke-width="1" stroke-dasharray="4 4"/>
+          <path d="M0 95.0 L3 92.8 L6 91.4 L9 91.1 L12 91.8 L15 92.9 L18 93.9 L21 94.1 L24 93.7 L27 92.9 L30 92.5 L33 92.9 L36 94.4 L39 96.5 L42 98.5 L45 99.6 L48 99.6 L51 98.5 L54 96.9 L57 95.5 L60 94.9 L63 95.0 L66 95.6 L69 95.9 L72 95.6 L75 94.3 L78 92.5 L81 90.8 L84 90.0 L87 90.5 L90 92.0 L93 94.0 L96 95.7 L99 96.6 L102 96.6 L105 96.0 L108 95.5 L111 95.6 L114 96.4 L117 97.8 L120 99.0 L123 99.4 L126 98.7 L129 96.9 L132 94.6 L135 92.7 L138 91.8 L141 91.9 L144 92.7 L147 93.6 L150 94.0 L153 93.6 L156 92.7 L159 91.9 L162 91.8 L165 92.8 L168 94.7 L171 97.0 L174 99.0 L177 100.0 L180 100.2 L183 99.8 L186 99.6 L189 100.4 L192 102.2 L195 104.8 L198 107.4 L201 108.9 L204 108.7 L207 106.8 L210 103.7 L213 100.6 L216 98.1 L219 96.9 L222 96.7 L225 97.0 L228 97.2 L231 96.8 L234 96.0 L237 95.2 L240 94.9 L243 95.5 L246 96.8 L249 98.3 L252 99.2 L255 98.9 L258 97.3 L261 94.8 L264 91.9 L267 89.4 L270 87.6 L273 86.3 L276 85.0 L279 83.1 L282 80.2 L285 76.3 L288 72.2 L291 68.6 L294 66.3 L297 65.6 L300 66.1 L303 67.3 L306 68.6 L309 69.6 L312 70.3 L315 71.2 L318 72.8 L321 75.3 L324 78.8 L327 82.5 L330 85.6 L333 87.7 L336 88.4 L339 88.1 L342 87.6 L345 87.5 L348 88.4 L351 90.1 L354 92.2 L357 93.9 L360 94.8 L363 94.8 L366 94.3 L369 94.0 L372 94.4 L375 95.7 L378 97.5 L381 99.1 L384 100.0 L387 99.5 L390 98.0 L393 96.0 L396 94.3 L399 93.4 L402 93.4 L405 94.0 L408 94.5 L411 94.4 L414 93.6 L417 92.2 L420 91.0 L423 90.6 L426 91.3 L429 93.1 L432 95.4 L435 97.3 L438 98.2 L441 98.1 L444 97.3 L447 96.4 L450 96.0 L453 96.4 L456 97.3 L459 98.1 L462 98.2 L465 97.3 L468 95.4 L471 93.1 L474 91.3 L477 90.6 L480 91.0 L483 92.2 L486 93.6 L489 94.4 L492 94.5 L495 94.0 L498 93.4 L501 93.4 L504 94.3 L507 96.0 L510 98.0 L513 99.5 L516 100.0 L519 99.2 L522 97.5 L525 95.7 L528 94.4 L531 94.1 L534 94.4 L537 95.0 L540 95.1 L543 94.5 L546 93.1 L549 91.5 L552 90.4 L555 90.4 L558 91.5 L561 93.5 L564 95.6 L567 97.1 L570 97.5 L573 97.1 L576 96.3 L579 95.9 L582 96.1 L585 97.1 L588 98.2 L591 98.9 L594 98.6 L597 97.2 L600 95.0" fill="none" stroke="#0B5F5B" stroke-width="2.5" stroke-linejoin="round"/>
+          <text x="312" y="30" font-family="Space Mono, monospace" font-size="13" fill="#9E3B26" font-weight="700">P300 ≈ 300 ms</text>
+          <text x="6" y="132" font-family="Space Mono, monospace" font-size="11" fill="#4C5D66">flash →</text>
+          <text x="520" y="132" font-family="Space Mono, monospace" font-size="11" fill="#4C5D66">600 ms</text>
+        </svg>
+        <div class="trace-cap"><span>Fig. 3 — Averaged evoked response, schematic</span><b>Drawn, not recorded</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= §04 REGISTER ================= -->
+  <section class="block wrap" aria-labelledby="reg-h" style="border-top:1px solid var(--rule)">
+    <div class="sec-head">
+      <span class="sec-no">§ 04</span>
+      <h2 id="reg-h">Services register</h2>
+      <span class="sec-note">What is on the book now</span>
+    </div>
+    <div class="reg rv">
+      <div class="reg-row">
+        <div><span class="reg-k">Service</span><p class="reg-name"><a href="projects.html#case-01">Dataset quality audit</a></p></div>
+        <div><span class="reg-k">Who for</span>Research groups</div>
+        <div><span class="reg-k">Basis</span>Fixed fee</div>
+        <div><span class="reg-k">Status</span><p class="reg-status"><span class="dot"></span>Booking — 2 slots this quarter</p></div>
+      </div>
+      <div class="reg-row">
+        <div><span class="reg-k">Service</span><p class="reg-name"><a href="projects.html#case-03">Offline analysis pipelines</a></p></div>
+        <div><span class="reg-k">Who for</span>Research groups &amp; labs</div>
+        <div><span class="reg-k">Basis</span>Project, scoped in writing</div>
+        <div><span class="reg-k">Status</span><p class="reg-status"><span class="dot"></span>Booking open</p></div>
+      </div>
+      <div class="reg-row">
+        <div><span class="reg-k">Service</span><p class="reg-name"><a href="projects.html#case-02">Real-time BCI prototyping</a></p></div>
+        <div><span class="reg-k">Who for</span>Assistive-technology teams</div>
+        <div><span class="reg-k">Basis</span>Project, staged</div>
+        <div><span class="reg-k">Status</span><p class="reg-status"><span class="dot wait"></span>1 slot this quarter</p></div>
+      </div>
+      <div class="reg-row">
+        <div><span class="reg-k">Service</span><p class="reg-name">Recording-protocol review</p></div>
+        <div><span class="reg-k">Who for</span>Labs setting up</div>
+        <div><span class="reg-k">Basis</span>Fixed fee</div>
+        <div><span class="reg-k">Status</span><p class="reg-status"><span class="dot"></span>Booking open</p></div>
+      </div>
+      <div class="reg-row">
+        <div><span class="reg-k">Service</span><p class="reg-name">Signal-processing training</p></div>
+        <div><span class="reg-k">Who for</span>Lab teams</div>
+        <div><span class="reg-k">Basis</span>Two-day workshop</div>
+        <div><span class="reg-k">Status</span><p class="reg-status"><span class="dot wait"></span>By arrangement</p></div>
+      </div>
+    </div>
+
+    <div class="testimonial rv">
+      <p class="attach">Attached to Case File 01 — the dataset audit</p>
+      <blockquote>“Marta's audit saved us from submitting an artefact. She showed us our effect sitting in the eye channel, in writing, before the paper went anywhere — and then stayed to help us record it properly.”</blockquote>
+      <p class="who"><b>Prof. Laura Benedetti</b> · Principal Investigator, Language &amp; Cognition Laboratory (client, Case File 01)</p>
+    </div>
+  </section>
+
+  <!-- ================= §05 FEES ================= -->
+  <section class="block wrap" aria-labelledby="fees-h" style="border-top:1px solid var(--rule)">
+    <div class="sec-head">
+      <span class="sec-no">§ 05</span>
+      <h2 id="fees-h">Fees, in print</h2>
+      <span class="sec-note">The shape, before any conversation</span>
+    </div>
+    <div class="fees-grid">
+      <div class="rv">
+        <ul class="fee-list">
+          <li><span class="f-name">Consultancy<small>Day rate, on site or remote</small></span><span class="f-price">€1,150 / day</span></li>
+          <li><span class="f-name">Dataset quality audit<small>Fixed fee, set by dataset hours before work starts</small></span><span class="f-price">from €4,800</span></li>
+          <li><span class="f-name">Offline analysis pipeline<small>Scoped in writing, staged payments</small></span><span class="f-price">from €16,000</span></li>
+          <li><span class="f-name">Real-time prototype support<small>Speller and communication-aid pipelines</small></span><span class="f-price">from €22,000</span></li>
+          <li><span class="f-name">Team training<small>Two days on site, up to 8 people</small></span><span class="f-price">€5,200</span></li>
+        </ul>
+        <p class="fee-note">Fees buy engineering time and a written record. Ethics approval, participant recruitment and clinical oversight belong to the client institution — always, and never bundled into an engineering fee.</p>
+      </div>
+      <div class="movers rv">
+        <h3>What moves the price</h3>
+        <ul>
+          <li><b>Channel count.</b> Sixteen channels and 128 channels are different jobs at every step downstream.</li>
+          <li><b>Dataset hours.</b> Auditing 4 hours of data is not auditing 400; the fee follows the hours.</li>
+          <li><b>Real-time vs offline.</b> Real-time adds soak testing, gap logging and failure behaviour — priced in, not discovered later.</li>
+          <li><b>Documentation.</b> Undocumented data costs a documentation week before analysis can honestly start.</li>
+          <li><b>Travel.</b> Beyond Kraków, at cost, agreed in advance.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="hero-ctas rv" style="margin-top:44px">
+      <a class="btn" href="contact.html">Start an enquiry</a>
+      <a class="btn btn-ghost" href="about.html">How the work is done</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="fiction">
+        <b>Fiction &amp; honesty note</b>
+        Marta Kowalczyk is a fictional persona created for this portfolio template. The practice, clients and case files are illustrative; the signal processing, the band ranges and the artefact signatures are real. Photographs are reference images from Pexels, credited in CREDITS.md in this template's folder — never this practice's laboratory or participants.
+      </div>
+      <nav aria-label="Footer">
+        <ul class="foot-nav">
+          <li><a href="index.html">Index <span class="mono" style="font-size:.75rem;color:var(--ink-soft)">01</span></a></li>
+          <li><a href="projects.html">Case files <span class="mono" style="font-size:.75rem;color:var(--ink-soft)">02</span></a></li>
+          <li><a href="about.html">About &amp; method <span class="mono" style="font-size:.75rem;color:var(--ink-soft)">03</span></a></li>
+          <li><a href="contact.html">Contact <span class="mono" style="font-size:.75rem;color:var(--ink-soft)">04</span></a></li>
+        </ul>
+      </nav>
+    </div>
+    <p class="foot-small">
+      Sound: none, anywhere on this site. EEG has no soundtrack, and a sonified trace here would be decoration — ruled out by the sound need-test.<br>
+      The stub's canvas wave and hover beep were replaced by the Band Explorer and the Artefact Panel; the replacement is recorded in CREDITS.md.<br>
+      © 2026 Kowalczyk Signal Engineering (fictional practice). Template set 4 — The Field &amp; The Lab.
+    </p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

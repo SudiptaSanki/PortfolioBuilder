@@ -1,12 +1,14 @@
 @echo off
-title Portfolio Builder - Interactive Collection (40)
+title Portfolio Builder - Interactive Collection (42)
 call "%~dp0scripts\_pb-env.bat" ensure
 if errorlevel 1 pause & exit /b 1
 
 set "BASE=http://127.0.0.1:%PB_PORT%"
-echo [PB] Opening all 40 interactive portfolio templates (one tab each)...
+echo [PB] Opening all 42 interactive portfolio templates (one tab each)...
 
-start "" "%BASE%/technical/ml-engineer/3d-ai-gpu-datacenter-tour/index.html"
+start "" "%BASE%/technical/ml-engineer/3d-ai-gpu-datacenter-tour/index.html"
+ping -n 2 127.0.0.1 >nul
+start "" "%BASE%/research/researcher/3d-computational-research-campus/index.html"
 ping -n 2 127.0.0.1 >nul
 start "" "%BASE%/creative/immersive-designer/3d-deep-ocean-immersive/index.html"
 ping -n 2 127.0.0.1 >nul
@@ -56,7 +58,9 @@ start "" "%BASE%/technical/experience-studio/cybernetic-3d-experience/index.html
 ping -n 2 127.0.0.1 >nul
 start "" "%BASE%/technical/motion-developer/dark-neon-3d-motion/index.html"
 ping -n 2 127.0.0.1 >nul
-start "" "%BASE%/creative/brand-systems-designer/editorial-brand-systems/index.html"
+start "" "%BASE%/creative/brand-systems-designer/editorial-brand-systems/index.html"
+ping -n 2 127.0.0.1 >nul
+start "" "%BASE%/law-public/lawyer/editorial-litigation-chambers/index.html"
 ping -n 2 127.0.0.1 >nul
 start "" "%BASE%/creative/motion-designer/editorial-scroll-parallax/index.html"
 ping -n 2 127.0.0.1 >nul
@@ -86,7 +90,7 @@ start "" "%BASE%/creative/design-engineer/sunset-valley-parallax/index.html"
 ping -n 2 127.0.0.1 >nul
 start "" "%BASE%/creative/studio-designer/tile-constellation-studio/index.html"
 
-echo [PB] All 40 opened. Tip: they are also in the Preview Hub (run-preview-hub.bat).
+echo [PB] All 42 opened. Tip: they are also in the Preview Hub (run-preview-hub.bat).
 echo [PB] Server stays minimized - use run-stop-server.bat to close it.
 timeout /t 4 >nul
 exit /b 0
